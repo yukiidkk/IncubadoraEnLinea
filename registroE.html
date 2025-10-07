@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión | ITS</title>
+    <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/estilos.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <img src="./images/logoITS.png" alt="Logo ITS">
+            <h1>Instituto Tecnológico de Saltillo</h1>
+        </div>
+    </header>
+    <body>
+    <div class="container">
+        <header>
+            <h1>Incubadora En Línea</h1>
+            <h2>Crea una cuenta</h2>
+            <p>Llena los siguientes campos según corresponda:</p>
+        </header>
+
+        <div class="form-container">
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="nombres">Nombre(s):</label>
+                    <input type="text" id="nombres" placeholder="Ingrese su nombre(s)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellidos">Apellidos:</label>
+                    <input type="text" id="apellidos" placeholder="Ingresa tus apellidos" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="telefono">Número de teléfono:</label>
+                        <input type="tel" id="telefono" placeholder="Ingrese su número de teléfono" required>
+                    </div>
+                     <div class="form-col">
+                            <label>Ingrese su fecha de nacimiento</label>
+                            <div class="date-inputs">
+                                <select id="dia" required>
+                                    <option value="" disabled selected>Día</option>
+                                </select>
+                                <select id="mes" required>
+                                    <option value="" disabled selected>Mes</option>
+                                </select>
+                                <select id="anio" required>
+                                    <option value="" disabled selected>Año</option>
+                                </select>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" id="email" placeholder="Ingrese su correo electrónico" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="ingresos">Ingresos:</label>
+                        <input type="number" id="ingresos" placeholder="Ingrese su ingreso mensual" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="dependientes">Dependientes económicos:</label>
+                        <select id="dependientes" required>
+                            <option value="" disabled selected>Seleccione la cantidad</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5+">5 o más</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Ingrese su contraseña:</label>
+                    <input type="password" id="password" placeholder="Ingrese su contraseña" required>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="rfc">RFC:</label>
+                        <input type="text" id="rfc" placeholder="Ingrese su RFC" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="curp">CURP:</label>
+                        <input type="text" id="curp" placeholder="Ingrese su CURP" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="estadoCivil">Estado civil:</label>
+                        <select id="estadoCivil" required>
+                            <option value="" disabled selected>Seleccione su estado civil</option>
+                            <option value="soltero">Soltero(a)</option>
+                            <option value="casado">Casado(a)</option>
+                            <option value="divorciado">Divorciado(a)</option>
+                            <option value="viudo">Viudo(a)</option>
+                            <option value="union">Unión libre</option>
+                        </select>
+                    </div>
+                    <div class="form-col">
+                        <label for="genero">Género:</label>
+                        <select id="genero" required>
+                            <option value="" disabled selected>Seleccione su género</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="femenino">Femenino</option>
+                            <option value="otro">Otro</option>
+                            <option value="prefiero">Prefiero no decir</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Domicilio</label>
+                    <div class="form-row">
+                        <div class="form-col address-group">
+                            <input type="text" id="cp" placeholder="Código Postal" maxlength="5">
+                            <div id="cp-suggestions" class="suggestions" style="display: none;"></div>
+                        </div>
+                        <div class="form-col">
+                            <input type="text" id="colonia" placeholder="Colonia">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="calle" placeholder="Calle">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="jornada">Jornada laboral:</label>
+                        <select id="jornada" required>
+                            <option value="" disabled selected>Seleccione su jornada</option>
+                            <option value="NoAplica">No aplica</option>
+                            <option value="vespertina">Completa</option>
+                            <option value="nocturna">Media</option>
+                            <option value="mixta">Mixta</option>
+                        </select>
+                    </div>
+                    <div class="form-col">
+                        <label for="numeroControl">Número de control:</label>
+                        <input type="text" id="numeroControl" placeholder="Ingrese su número de control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="especialidad">Seleccione su especialidad:</label>
+                    <select id="especialidad" required>
+                        <option value="" disabled selected>Seleccione su especialidad</option>
+                        <option value="sistemas">Ingeniería en Sistemas Computacionales</option>
+                        <option value="industrial">Ingeniería Industrial</option>
+                        <option value="electromecanica">Ingeniería Electromecánica</option>
+                        <option value="gestion">Ingeniería en Gestión Empresarial</option>
+                        <option value="electrica">Ingeniería Eléctrica</option>
+                        <option value="electronica">Ingeniería Electrónica</option>
+                        <option value="mecatronica">Ingeniería Mecatrónica</option>
+                        <option value="bioquimica">No aplica</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit">Crear cuenta</button>
+            </form>
+        </div>
+    </div>
+    </body>
+</html>
