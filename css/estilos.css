@@ -569,3 +569,58 @@ input:focus {
     font-size: 0.95rem;
     color: #333;
 }
+
+.permissions-group {
+    /* Usamos flexbox para alinear las casillas en una sola línea horizontal */
+    display: flex;
+    flex-wrap: wrap; /* Permite que las casillas salten de línea en móvil */
+    gap: 25px; /* Espacio entre cada opción de permiso */
+    margin-top: 10px; /* Separación de la etiqueta principal "Permisos del rol" */
+}
+
+/* Estilo para cada etiqueta de checkbox */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    /* Evita que el texto de la casilla ocupe todo el espacio de la columna */
+    flex: none; 
+}
+
+/* Estilo del input checkbox */
+.permissions-group input[type="checkbox"] {
+    width: 20px; /* Define el tamaño de la caja */
+    height: 20px;
+    margin-right: 8px; /* Espacio entre la caja y el texto */
+    /* Asegúrate de que no herede los estilos grandes de los inputs de texto */
+    border: 1px solid #ccc;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+/* Media query para móviles: apila las casillas si el espacio es limitado */
+@media (max-width: 600px) {
+    .permissions-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+.modules-grid-lite {
+    /* Define que la cuadrícula intente mantener un máximo de 4 columnas */
+    /* El valor max-width en el media query asegura que se ajusten bien */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    max-width: 900px; /* Limita el ancho total para que los 4 módulos se vean centrados */
+    margin: 0 auto;
+    justify-content: center; /* No afecta a grid, pero lo ponemos por si acaso */
+}
+
+/* En pantallas más grandes, aseguramos que la cuadrícula no se expanda más allá de 4 columnas */
+@media (min-width: 900px) {
+    .modules-grid-lite {
+        /* Para asegurar exactamente 4 columnas cuando hay espacio */
+        grid-template-columns: repeat(4, 1fr); 
+    }
+}

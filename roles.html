@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Emprendurismo ITS</title>
+    <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/estilos.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <img src="./images/logoITS.png" alt="ITS" />
+                <span>Instituto Tecnológico de Saltillo</span>
+            </div>
+
+            <div class="user-info">
+                <span class="user-text">USUARIO</span>
+                <div class="user-icon">👤</div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="main-content role-management-view">
+        <div class="form-container">
+            <header>
+                <h2>Gestión de Roles</h2>
+                <p>Llena los siguientes campos según corresponda:</p>
+            </header>
+            
+            <div class="search-bar search-bar-small">
+                <input type="text" placeholder="Buscar un usuario">
+                <button type="button" class="btn-search">Buscar</button>
+            </div>
+            
+            <form class="role-form">
+                
+                <div class="columns-wrapper two-fields-row">
+                    
+                    <div class="column">
+                        <div class="form-group">
+                            <label for="nombre-rol">Nombre del rol</label>
+                            <input type="text" id="nombre-rol" name="nombre-rol" placeholder="Ingrese nombre del rol">
+                        </div>
+                    </div>
+                    
+                    <div class="column">
+                        <div class="form-group">
+                            <label>Permisos del rol:</label>
+                            <div class="permissions-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="permisos[]" value="vista"> Vista
+                                </label>
+                                
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="permisos[]" value="actualizar"> Actualizar
+                                </label>
+                                
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="permisos[]" value="eliminar"> Eliminar
+                                </label>
+                                
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="permisos[]" value="crear"> Crear
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions form-actions-roles">
+                    <button type="submit" class="btn-primary-its btn-action-small" name="action" value="create">Crear rol</button>
+                    <button type="button" class="btn-secondary-its btn-action-small" name="action" value="update">Actualizar rol</button>
+                    <button type="button" class="btn-delete-its btn-action-small" name="action" value="delete">Eliminar rol</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
