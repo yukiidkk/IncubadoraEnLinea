@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creación de nuevo proyecto</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f1f1f1;
+      margin: 0;
+    }
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header .left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    header img {
+      height: 35px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+
+    header nav a:hover {
+      text-decoration: underline;
+    }
+
+    .usuario {
+      font-weight: bold;
+      background-color: white;
+      color: #003366;
+      padding: 6px 15px;
+      border-radius: 20px;
+    }
+
+    .contenido {
+      padding: 20px 40px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #003366;
+    }
+
+    .subnav {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .subnav a {
+      margin: 0 15px;
+      color: #003366;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .acciones {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .acciones input[type="text"],
+    .acciones select {
+      padding: 6px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      min-width: 180px;
+    }
+
+    .acciones button {
+      background-color: #1e63b5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .acciones button:hover {
+      background-color: #004b9a;
+    }
+
+    .acciones .descargar {
+      background-color: #759fcf;
+    }
+
+    /* --- Sección de formulario --- */
+    .formulario {
+      background-color: #c9dcfa;
+      border: 1px solid #999;
+      border-radius: 4px;
+      padding: 20px;
+      margin-top: 10px;
+    }
+
+    .formulario h3 {
+      background-color: #e8eef8;
+      border-bottom: 1px solid #999;
+      margin-top: 0;
+      padding: 8px;
+      color: #003366;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"], textarea, select {
+      width: 100%;
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #888;
+      font-family: inherit;
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    .socios {
+      border: 1px solid #999;
+      background-color: white;
+      height: 150px;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .socios div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    .socios label {
+      margin: 0;
+    }
+
+    .añadir {
+      color: green;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .eliminar {
+      color: red;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .buscar-socio {
+      display: flex;
+      margin-top: 8px;
+      gap: 8px;
+    }
+
+    .buscar-socio input {
+      flex: 1;
+    }
+
+    .botones {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .botones button {
+      margin: 0 8px;
+      background-color: #1e63b5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .botones button:hover {
+      background-color: #004b9a;
+    }
+
+    .socios {
+  border: 1px solid #999;
+  background-color: #e8eef8;
+  border-radius: 6px;
+  padding: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+/* Tarjeta individual de socio */
+.socio-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  transition: box-shadow 0.2s ease;
+}
+
+.socio-card:hover {
+  box-shadow: 0 0 5px rgba(0,0,0,0.15);
+}
+
+.socio-card .info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.socio-card img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.acciones-socio {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-add, .btn-del {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+}
+
+.btn-add {
+  background-color: #2e8b57; /* verde */
+}
+
+.btn-del {
+  background-color: #c62828; /* rojo */
+}
+
+.btn-add:hover {
+  background-color: #256f46;
+}
+
+.btn-del:hover {
+  background-color: #a61b1b;
+}
+
+.subir-archivo {
+  background-color: #e8eef8;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+input[type="file"] {
+  width: 100%;
+  border: none;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #003366;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  background-color: #1e63b5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+  background-color: #004b9a;
+}
+.socios-agregados {
+  margin-top: 15px;
+  background-color: #e8eef8;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 10px 15px;
+}
+
+.socios-agregados h4 {
+  margin-top: 0;
+  color: #003366;
+}
+
+#listaSocios {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#listaSocios li {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#listaSocios li span {
+  color: #003366;
+  font-weight: bold;
+}
+
+#listaSocios button {
+  background-color: #c62828;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+#listaSocios button:hover {
+  background-color: #a61b1b;
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="left">
+      <img src="images/logoITS.png" alt="Logo ITS">
+      <span>Instituto Tecnológico de Saltillo</span>
+      <nav>
+        <a href="inicioE.html">Home</a>
+        <a href="proyectos.html">Proyectos</a>
+      </nav>
+    </div>
+    <div class="usuario">USUARIO</div>
+  </header>
+
+  <div class="contenido">
+    <h1>Página principal de proyectos</h1>
+
+    <div class="subnav">
+      <a href="#">Inicio</a> |
+      <a href="#">Seguimiento de proyectos</a>
+    </div>
+
+    <div class="acciones">
+      <input type="text" placeholder="Buscar..">
+      <select>
+        <option value="">Filtrar por...</option>
+      </select>
+      <button>Crear nuevo proyecto ➕</button>
+      <button class="descargar">Descargar formato de registro</button>
+    </div>
+
+    <div class="formulario" id="formProyecto">
+      <h3>Creación de nuevo proyecto</h3>
+
+      <div class="form-grid">
+        <div>
+          <label for="nombre">Nombre del proyecto</label>
+          <input type="text" id="nombre">
+
+          <label for="desc">Descripción</label>
+          <textarea id="desc"></textarea>
+        </div>
+
+        <div>
+          <label for="archivo">Subir formato de registro:</label>
+<div class="subir-archivo">
+  <input type="file" id="archivo" name="archivo" accept=".doc,.docx,.pdf">
+</div>
+
+
+          <label>Agregar socios:</label>
+
+<div class="socios">
+  <div class="socio-card">
+    <div class="info">
+      <img src="images/user-icon.png" alt="icono usuario">
+      <span><strong>USUARIO 1</strong></span>
+    </div>
+    <div class="acciones-socio">
+      <button class="btn-add" data-nombre="USUARIO 1">Añadir</button>
+    </div>
+  </div>
+
+  <div class="socio-card">
+    <div class="info">
+      <img src="images/user-icon.png" alt="icono usuario">
+      <span><strong>USUARIO 2</strong></span>
+    </div>
+    <div class="acciones-socio">
+      <button class="btn-add" data-nombre="USUARIO 2">Añadir</button>
+    </div>
+  </div>
+
+  <div class="socio-card">
+    <div class="info">
+      <img src="images/user-icon.png" alt="icono usuario">
+      <span><strong>USUARIO 3</strong></span>
+    </div>
+    <div class="acciones-socio">
+      <button class="btn-add" data-nombre="USUARIO 3">Añadir</button>
+    </div>
+  </div>
+</div>
+
+<div class="buscar-socio">
+  <input type="text" placeholder="Buscar usuario por nombre...">
+  <button>Buscar</button>
+</div>
+
+<div class="socios-agregados">
+  <h4>Socios agregados al proyecto:</h4>
+  <ul id="listaSocios"></ul>
+</div>
+
+          <div class="buscar-socio">
+            <input type="text" placeholder="Nombre del usuario">
+            <button>Buscar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="botones">
+  <button id="btnGuardar">Guardar</button>
+  <button id="btnLimpiar">Limpiar campos</button>
+  <a href="proyectos.html"><button type="button">Cerrar</button></a>
+</div>
+
+    </div>
+  </div>
+
+<script>
+  // Botón limpiar
+  document.getElementById('btnLimpiar').addEventListener('click', function() {
+    // Selecciona todos los campos dentro del formulario
+    const form = document.getElementById('formProyecto');
+    const inputs = form.querySelectorAll('input, textarea, select');
+
+    // Limpia cada uno
+    inputs.forEach(campo => {
+      if (campo.type === 'radio' || campo.type === 'checkbox') {
+        campo.checked = false;
+      } else {
+        campo.value = '';
+      }
+    });
+
+    alert('Todos los campos han sido limpiados');
+  });
+
+</script>
+
+<script>
+  const listaSocios = document.getElementById('listaSocios');
+
+  // Delegamos los clics en toda la página
+  document.addEventListener('click', (e) => {
+    // Añadir socio
+    if (e.target.classList.contains('btn-add')) {
+      const nombre = e.target.dataset.nombre;
+
+      // Verificar si ya está agregado
+      const existe = [...listaSocios.children].some(li => li.dataset.nombre === nombre);
+      if (existe) {
+        alert(`${nombre} ya está agregado al proyecto.`);
+        return;
+      }
+
+      // Crear un nuevo elemento <li>
+      const li = document.createElement('li');
+      li.dataset.nombre = nombre;
+      li.innerHTML = `
+        <span>${nombre}</span>
+        <button class="btnEliminarSocio">Quitar</button>
+      `;
+      listaSocios.appendChild(li);
+
+      alert(`${nombre} ha sido agregado al proyecto `);
+    }
+
+    // Eliminar socio (desde las tarjetas originales)
+    if (e.target.classList.contains('btn-del')) {
+      const nombre = e.target.dataset.nombre;
+      const elemento = [...listaSocios.children].find(li => li.dataset.nombre === nombre);
+      if (elemento) {
+        elemento.remove();
+        alert(`${nombre} fue eliminado del proyecto `);
+      } else {
+        alert(`${nombre} no está en la lista de socios agregados.`);
+      }
+    }
+
+    // Quitar socio desde la lista final
+    if (e.target.classList.contains('btnEliminarSocio')) {
+      e.target.parentElement.remove();
+    }
+  });
+</script>
+
+</body>
+</html>
