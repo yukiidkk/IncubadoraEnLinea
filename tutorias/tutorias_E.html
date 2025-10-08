@@ -1,78 +1,167 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo de Tutorías</title>
+    <title>Tutorías </title>
     <link rel="stylesheet" href="css/tutorias.css">
-    <link rel="stylesheet" href="css/calendario.css">
-    <script defer src="js/menu.js"></script>
 </head>
-<body>
 
-    <header>
+<body>
+    <!-- ENCABEZADO -->
+    <header class="header">
         <div class="logo">
-            <img src="IncubadoraEnLinea/images/logoITS.png" alt="">
+            <img src="logoTec.png" alt="Logo" class="logo-img">
             <span>Instituto Tecnológico de Saltillo</span>
         </div>
-
-        <nav>
+        <nav class="nav">
             <a href="#">Home</a>
-            <a href="#">Proyectos</a>
+            <a href="proyectos.html">Proyectos</a>
+            <a href="reportes.html">Reportes</a>
+            <a href="eventos.html">Eventos</a>
+            <a href="tutorias_E.html">Tutorias</a>
         </nav>
-
-        <div class="user">Usuario</div>
-
-        <!-- Botón hamburguesa -->
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="usuario">
+            <span>Emprendedor</span>
         </div>
     </header>
 
+    <!-- CONTENEDOR PRINCIPAL -->
     <div class="container">
-        <aside class="sidebar" id="sidebar">
-            <h2>Menú</h2>
+        <!-- MENÚ LATERAL -->
+        <aside class="sidebar">
+            <h3>Menú</h3>
             <ul>
-                <li><a href="#">Agendar tutoría</a></li>
-                <li><a href="#">Historial</a></li>
+
+                <li><a href="tutorias_E.html" class="active">Agenda</a></li>
+                <li><a href="historial_E.html">Historial</a></li>
             </ul>
         </aside>
 
-        <main class="content">
-            <h1>Tutorías</h1>
-            <section class="agenda">
-                <h2>Agenda</h2>
-                <div class="agenda-container">
-                    <div class="calendar">
-                        <input type="date" id="fecha" name="fecha">
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main">
+            <h2>Tutorías</h2>
+            <h3>Agenda</h3>
+            <!--CALENDATIO-->
+            <div class="content">
+                <div class="calendar">
+                    <input type="month" id="mes" value="2016-06">
+                    <div class="calendar-box">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Dom</th>
+                                    <th>Lun</th>
+                                    <th>Mar</th>
+                                    <th>Mie</th>
+                                    <th>Jue</th>
+                                    <th>Vie</th>
+                                    <th>Sab</th>
+                                </tr>
+                            </thead>
+                            <tbody id="calendar-body"></tbody>
+                        </table>
                     </div>
-
-                    <form class="form">
-                        <label for="emprendedor">Nombre Tutor:</label>
-                        <input type="text" id="tutor" placeholder="Nombre del tutor">
-
-                        <label for="proyecto">Nombre del proyecto:</label>
-                        <input type="text" id="proyecto" placeholder="Nombre del proyecto">
-
-                        <label for="hora">Hora:</label>
-                        <input type="time" id="hora">
-
-                        <div class="buttons">
-                            <button type="button" class="btn registrar">Registrar</button>
-        
-                        </div>
-                    </form>
                 </div>
-            </section>
-        </main>
+
+                <script>
+                    const monthInput = document.getElementById("mes");
+                    const calendarBody = document.getElementById("calendar-body");
+
+                    function generarCalendario(year, month) {
+                        calendarBody.innerHTML = "";
+                        const firstDay = new Date(year, month, 1).getDay();
+                        const lastDate = new Date(year, month + 1, 0).getDate();
+                        let date = 1;
+
+                        for (let i = 0; i < 6; i++) {
+                            const row = document.createElement("tr");
+                            for (let j = 0; j < 7; j++) {
+                                const cell = document.createElement("td");
+                                if (i === 0 && j < firstDay) {
+                                    cell.classList.add("empty");
+                                    row.appendChild(cell);
+                                } else if (date > lastDate) {
+                                    cell.classList.add("empty");
+                                    row.appendChild(cell);
+                                } else {
+                                    cell.textContent = date;
+                                    cell.addEventListener("click", () => seleccionarFecha(cell));
+                                    row.appendChild(cell);
+                                    date++;
+                                }
+                            }
+                            calendarBody.appendChild(row);
+                        }
+                    }
+
+                    function seleccionarFecha(cell) {
+                        document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
+                        cell.classList.add("selected");
+                    }
+
+                    monthInput.addEventListener("change", () => {
+                        const [year, month] = monthInput.value.split("-").map(Number);
+                        generarCalendario(year, month - 1);
+                    });
+
+                    // Inicializar calendario al cargar
+                    const [initYear, initMonth] = monthInput.value.split("-").map(Number);
+                    generarCalendario(initYear, initMonth - 1);
+                </script>
+            </div>
+
+            <!-- FORMULARIO -->
+            <div class="form-section">
+                 <div class="form-group">
+                    <label>Nombre del emprendedor</label>
+                    <select>
+                        <option>Emprendedor</option>
+                    </select>
+                </div>
+                 <div class="form-group">
+                    <label>Nombre del proyecto</label>
+                    <select>
+                        <option>Proyecto</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de tutoría</label>
+                    <div class="row">
+                        <select>
+                            <option>Día</option>
+                        </select>
+                        <select>
+                            <option>Mes</option>
+                        </select>
+                        <select>
+                            <option>Año</option>
+                        </select>
+                        
+                    </div>
+                </div>
+
+               
+
+                <div class="form-group">
+                    <label>Seleccionar hora </label>
+                    <select>
+                        <option>Hora</option>
+                    </select>
+                </div>
+
+               
+
+                <div class="buttons">
+                    <button class="btn registrar">Registrar</button>
+                </div>
+            </div>
+    </div>
+    </main>
     </div>
 
-    <footer>
-        &copy; 2025 Instituto Tecnológico -  Tutorías
-    </footer>
-<script src="js/tutorias.js"></script>
 
 </body>
+
 </html>
