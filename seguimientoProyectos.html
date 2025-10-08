@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seguimiento de proyectos</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f1f1f1;
+      margin: 0;
+    }
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header .left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    header img {
+      height: 35px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+
+    .usuario {
+      font-weight: bold;
+      background-color: white;
+      color: #003366;
+      padding: 6px 15px;
+      border-radius: 20px;
+    }
+
+    .contenido {
+      padding: 20px 40px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #003366;
+    }
+
+    /* Botón volver */
+    #btnVolver {
+      background-color: #1e63b5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+
+    #btnVolver:hover {
+      background-color: #004b9a;
+    }
+
+    /* Columnas y tarjetas */
+    .tablero {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .columna {
+      flex: 1;
+      background-color: #e8eef8;
+      border: 1px solid #999;
+      border-radius: 5px;
+      min-width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .columna h3 {
+      width: 100%;
+      background-color: #aac1e2;
+      text-align: center;
+      margin: 0;
+      padding: 8px;
+      border-bottom: 1px solid #999;
+      color: #003366;
+    }
+
+    .contenido-columna {
+      width: 95%;
+      flex-grow: 1;
+      min-height: 300px;
+      padding: 10px;
+    }
+
+    .tarjeta-proyecto {
+      background-color: #c9dcfa;
+      border: 1px solid #999;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      position: relative;
+      transition: 0.2s;
+    }
+
+    .tarjeta-proyecto:hover {
+      background-color: #b2cef5;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #003366;
+    }
+
+    .lista-tareas {
+      margin-top: 10px;
+      padding-left: 10px;
+      border-left: 2px solid #003366;
+      display: none;
+    }
+
+    .tarea {
+      background-color: #d9f5d9;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      padding: 8px;
+      margin: 6px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: 0.2s;
+    }
+
+    .tarea.completada {
+      background-color: #b0f0b0;
+      text-decoration: line-through;
+      color: #444;
+    }
+
+    .tarea span {
+      flex-grow: 1;
+      margin-left: 5px;
+    }
+
+    .estado {
+      font-size: 0.85em;
+      color: #003366;
+      margin-left: 8px;
+    }
+
+    .progreso {
+      height: 8px;
+      background-color: #cfe2ff;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .barra {
+      height: 100%;
+      background-color: #1e63b5;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .botones-columna {
+      text-align: center;
+      margin: 10px 0 15px 0;
+    }
+
+    .botones-columna button {
+      background-color: #1e63b5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .botones-columna button:hover {
+      background-color: #004b9a;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="left">
+      <img src="images/logoITS.png" alt="Logo ITS">
+      <span>Instituto Tecnológico de Saltillo</span>
+      <nav>
+        <a href="#" id="btnHome">Home</a>
+        <a href="proyectos.html">Proyectos</a>
+      </nav>
+    </div>
+    <div class="usuario">USUARIO</div>
+  </header>
+
+  <div class="contenido">
+    <h1>Seguimiento de proyectos</h1>
+    <div style="text-align:center;">
+      <button id="btnVolver">← Volver a proyectos</button>
+    </div>
+
+    <div class="tablero">
+      <!-- Columna 1 -->
+      <div class="columna">
+        <h3>Tareas por hacer</h3>
+        <div class="contenido-columna" id="colTareas">
+          <p style="text-align:center; color:#555;">Selecciona un proyecto para ver o agregar tareas.</p>
+        </div>
+        <div class="botones-columna">
+          <button id="btnAsignar" disabled>Asignar nueva tarea</button>
+        </div>
+      </div>
+
+      <!-- Columna 2 -->
+      <div class="columna">
+        <h3>En curso</h3>
+        <div class="contenido-columna" id="colEnCurso">
+          <div class="tarjeta-proyecto" data-proyecto="Proyecto 1">
+            <strong>Proyecto 1</strong>
+            <div class="arrow">▼</div>
+            <div class="lista-tareas">
+              <div class="tarea"><input type="checkbox"><span>Documentación inicial</span><span class="estado">En progreso</span></div>
+              <div class="tarea"><input type="checkbox"><span>Revisión técnica</span><span class="estado">En progreso</span></div>
+            </div>
+            <div class="progreso"><div class="barra" style="width: 0%;"></div></div>
+          </div>
+        </div>
+        <div class="botones-columna">
+          <button id="btnEditar" disabled>Editar tarea</button>
+        </div>
+      </div>
+
+      <!-- Columna 3 -->
+      <div class="columna">
+        <h3>Completadas</h3>
+        <div class="contenido-columna" id="colCompletadas">
+          <div class="tarjeta-proyecto">
+            <strong>Proyecto 3</strong>
+            <p>Proyecto aprobado</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // Lee el rol desde URL o localStorage
+  const params = new URLSearchParams(window.location.search);
+  let rol = params.get('rol') || localStorage.getItem('rolUsuario') || 'emprendedor';
+  localStorage.setItem('rolUsuario', rol); // persistir
+
+  // Mostrar/ocultar "Crear nuevo proyecto" según rol
+  const btnCrear = document.getElementById('btnCrear');
+  if (rol === 'coordinador') {
+    // Coordinador NO crea proyectos
+    if (btnCrear) btnCrear.style.display = 'none';
+  } else {
+    // Emprendedor SÍ crea proyectos
+    if (btnCrear) btnCrear.style.display = 'inline-block';
+  }
+
+  // Seguimiento preservando el rol
+  document.getElementById('btnSeguimiento').addEventListener('click', () => {
+    window.location.href = `seguimientoProyectos.html?rol=${rol}`;
+  });
+</script>
+
+<script>
+  const btnHome = document.getElementById('btnHome');
+  const rolUsuario = localStorage.getItem('rolUsuario');
+
+  if (btnHome) {
+    btnHome.addEventListener('click', e => {
+      e.preventDefault();
+      if (rolUsuario === 'coordinador') {
+        window.location.href = 'inicioC.html';
+      } else {
+        window.location.href = 'inicioE.html';
+      }
+    });
+  }
+    // Lógica de tareas
+    const tarjetas = document.querySelectorAll('.tarjeta-proyecto');
+    const colTareas = document.getElementById('colTareas');
+    const btnAsignar = document.getElementById('btnAsignar');
+    const btnEditar = document.getElementById('btnEditar');
+    let proyectoSeleccionado = null;
+
+    tarjetas.forEach(tarjeta => {
+      tarjeta.addEventListener('click', () => {
+        tarjetas.forEach(t => t.style.backgroundColor = '#c9dcfa');
+        tarjeta.style.backgroundColor = '#bdf5bd';
+        proyectoSeleccionado = tarjeta.dataset.proyecto;
+        btnAsignar.disabled = false;
+        btnEditar.disabled = false;
+        mostrarTareas(proyectoSeleccionado);
+      });
+
+      const arrow = tarjeta.querySelector('.arrow');
+      const lista = tarjeta.querySelector('.lista-tareas');
+      arrow.addEventListener('click', e => {
+        e.stopPropagation();
+        lista.style.display = lista.style.display === 'block' ? 'none' : 'block';
+        arrow.textContent = lista.style.display === 'block' ? '▲' : '▼';
+      });
+    });
+
+    function mostrarTareas(nombre) {
+      const tareas = document.querySelector(`.tarjeta-proyecto[data-proyecto="${nombre}"] .lista-tareas`);
+      colTareas.innerHTML = `<h4>Tareas de ${nombre}</h4>`;
+      tareas.querySelectorAll('.tarea').forEach(t => colTareas.appendChild(t.cloneNode(true)));
+    }
+
+    // Rol control
+    if (rol === 'emprendedor') {
+      btnAsignar.style.display = 'none';
+      btnEditar.style.display = 'none';
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.disabled = true);
+      const msg = document.createElement('p');
+      msg.textContent = 'Modo lectura: solo puedes consultar el avance.';
+      msg.style.color = '#003366';
+      msg.style.textAlign = 'center';
+      msg.style.fontWeight = 'bold';
+      document.querySelector('.contenido').prepend(msg);
+    }
+  </script>
+
+
+</body>
+</html>

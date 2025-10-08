@@ -1,216 +1,123 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página principal de proyectos</title>
-  <link rel="stylesheet" href="css/estilos.css"> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Proyectos</title>
+  <link rel="stylesheet" href="css/normalize.css"/>
+  <link rel="stylesheet" href="css/estilos.css"/>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f1f1f1;
-      margin: 0;
-    }
+    body { background:#f1f1f1; margin:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    header{background:#003366;color:#fff;padding:10px 40px;display:flex;align-items:center;justify-content:space-between}
+    header .left{display:flex;align-items:center;gap:15px} header img{height:35px}
+    header nav a{color:#fff;text-decoration:none;margin-right:20px;font-weight:bold}
+    header nav a:hover{text-decoration:underline}
+    .usuario{font-weight:bold;background:#fff;color:#003366;padding:6px 15px;border-radius:20px}
+    .contenido{padding:20px 40px}
+    h1{text-align:center;color:#003366}
 
-    header {
-      background-color: #003366;
-      color: white;
-      padding: 10px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden}
+    th,td{padding:10px;border-bottom:1px solid #ccc;text-align:left}
+    th{background:#aac1e2;color:#003366}
 
-    header .left {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    header img {
-      height: 35px;
-    }
-
-    header nav a {
-      color: white;
-      text-decoration: none;
-      margin-right: 20px;
-      font-weight: bold;
-    }
-
-    header nav a:hover {
-      text-decoration: underline;
-    }
-
-    .usuario {
-      font-weight: bold;
-      background-color: white;
-      color: #003366;
-      padding: 6px 15px;
-      border-radius: 20px;
-    }
-
-    .contenido {
-      padding: 20px 40px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #003366;
-    }
-
-    .subnav {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    .subnav a {
-      margin: 0 15px;
-      color: #003366;
-      font-weight: 500;
-      text-decoration: none;
-    }
-
-    .acciones {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .acciones input[type="text"],
-    .acciones select {
-      padding: 6px;
-      border: 1px solid #aaa;
-      border-radius: 5px;
-      min-width: 180px;
-    }
-
-    .acciones button {
-      background-color: #1e63b5;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 7px 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .acciones button:hover {
-      background-color: #004b9a;
-    }
-
-    .acciones .descargar {
-      background-color: #759fcf;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: #d9e6f9;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      text-align: center;
-      padding: 10px;
-    }
-
-    th {
-      background-color: #e8eef8;
-      color: #003366;
-    }
-
-    td button {
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      font-weight: bold;
-      cursor: pointer;
-      color: white;
-    }
-
-    .editar {
-      background-color: #1e63b5;
-    }
-
-    .ver {
-      background-color: #003366;
-    }
-
-    .editar:hover {
-      background-color: #004b9a;
-    }
-
-    .ver:hover {
-      background-color: #00224d;
-    }
-
+    .botones{display:flex;justify-content:center;gap:12px;margin:22px 0}
+    .botones a,.botones button{background:#1e63b5;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:bold;text-decoration:none;cursor:pointer}
+    .botones a:hover,.botones button:hover{background:#004b9a}
+    .descargar{background:#759fcf}
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="left">
-      <img src="images/logoITS.png" alt="Logo ITS">
-      <span>Instituto Tecnológico de Saltillo</span>
-      <nav>
-        <a href="inicioE.html">Home</a>
-        <a href="proyectos.html">Proyectos</a>
-      </nav>
-    </div>
-    <div class="usuario">USUARIO</div>
-  </header>
-
-  <div class="contenido">
-    <h1>Página principal de proyectos</h1>
-
-    <div class="subnav">
-      <a href="#">Inicio</a> |
-      <a href="#">Seguimiento de proyectos</a>
-    </div>
-
-    <div class="acciones">
-      <input type="text" placeholder="Buscar...">
-      <select>
-        <option value="">Filtrar por...</option>
-        <option value="aprobado">Aprobado</option>
-        <option value="revision">En revisión</option>
-      </select>
-      <a href="crearProyecto.html"><button>Crear nuevo proyecto </button></a>
-      <a href="documentos/Formato_20de_20_Registro.doc" download>
-  <button class="descargar">Descargar formato de registro</button>
-</a>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Título del proyecto</th>
-          <th>Fecha de inicio</th>
-          <th>Estatus</th>
-          <th>Progreso</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Proyecto prueba</td>
-          <td>00/00/00</td>
-          <td>Aprobado</td>
-          <td>En revisión</td>
-          <td>
-            <a href="editarProyecto.html"><button class="editar">E</button></a>
-            <a href="verProyecto.html"><button class="ver">V</button></a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<header>
+  <div class="left">
+    <img src="images/logoITS.png" alt="Logo ITS">
+    <span>Instituto Tecnológico de Saltillo</span>
+    <nav>
+      <a href="#" id="btnHome">Home</a>
+      <a href="proyectos.html">Proyectos</a>
+    </nav>
   </div>
+  <div class="usuario">USUARIO</div>
+</header>
+
+<div class="contenido">
+  <h1>Página principal de proyectos</h1>
+
+  <!-- Acciones (crear solo para emprendedor) -->
+  <div class="botones">
+    <a id="btnCrear" href="crearProyecto.html">Crear nuevo proyecto ➕</a>
+    <a class="descargar" href="documentos/Formato_20de_20_Registro.doc" download>Descargar formato de registro</a>
+    <a id="btnSeguimiento" href="#">Seguimiento de proyectos</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Título del proyecto</th>
+        <th>Responsable</th>
+        <th>Fecha de inicio</th>
+        <th>Estatus</th>
+        <th>Progreso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Proyecto A</td>
+        <td>Juan Pérez</td>
+        <td>01/09/25</td>
+        <td>En curso</td>
+        <td>En revisión</td>
+      </tr>
+      <tr>
+        <td>Proyecto B</td>
+        <td>María López</td>
+        <td>15/08/25</td>
+        <td>Aprobado</td>
+        <td>80%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  // Lee el rol desde URL o localStorage
+  const params = new URLSearchParams(window.location.search);
+  let rol = params.get('rol') || localStorage.getItem('rolUsuario') || 'emprendedor';
+  localStorage.setItem('rolUsuario', rol); // persistir
+
+  // Mostrar/ocultar "Crear nuevo proyecto" según rol
+  const btnCrear = document.getElementById('btnCrear');
+  if (rol === 'coordinador') {
+    // Coordinador NO crea proyectos
+    if (btnCrear) btnCrear.style.display = 'none';
+  } else {
+    // Emprendedor SÍ crea proyectos
+    if (btnCrear) btnCrear.style.display = 'inline-block';
+  }
+
+  // Seguimiento preservando el rol
+  document.getElementById('btnSeguimiento').addEventListener('click', () => {
+    window.location.href = `seguimientoProyectos.html?rol=${rol}`;
+  });
+</script>
+
+<script>
+  const btnHome = document.getElementById('btnHome');
+  const rolUsuario = localStorage.getItem('rolUsuario');
+
+  if (btnHome) {
+    btnHome.addEventListener('click', e => {
+      e.preventDefault();
+      if (rolUsuario === 'coordinador') {
+        window.location.href = 'inicioC.html';
+      } else {
+        window.location.href = 'inicioE.html';
+      }
+    });
+  }
+</script>
+
+
 
 </body>
 </html>

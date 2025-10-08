@@ -1,75 +1,72 @@
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Emprendurismo ITS</title>
-    <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
-    <link rel="stylesheet" href="./css/normalize.css">
-    <link rel="stylesheet" href="./css/estilos.css">
-    </head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Centro de Emprendurismo ITS — Emprendedor</title>
+  <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon" />
+  <link rel="stylesheet" href="./css/normalize.css" />
+  <link rel="stylesheet" href="./css/estilos.css" />
+  <style>
+    body { background:#eaf2ff; margin:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .navbar{background:#003366;color:#fff;padding:10px 40px;display:flex;justify-content:space-between;align-items:center}
+    .logo{display:flex;align-items:center;gap:10px}.logo img{height:40px}
+    .dashboard-container{max-width:1000px;margin:30px auto;background:#f7faff;border-radius:10px;padding:25px 30px}
+    .welcome-header{text-align:center;margin-bottom:20px}
+    .modules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:25px;justify-items:center}
+    .module-card{background:#fff;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1);padding:25px 20px;text-align:center;text-decoration:none;color:#000;width:180px;transition:.25s}
+    .module-card:hover{transform:scale(1.05);background:#e3ecff}
+    .icon-circle{width:60px;height:60px;border-radius:50%;background:#eaf2ff;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px}
+  </style>
+</head>
 <body>
 
-    <header class="navbar">
-        <div class="container nav-content">
-            <div class="logo">
-                <img src="./images/logoITS.png" alt="ITS" />
-                <span>Instituto Tecnológico de Saltillo</span>
-            </div>
-            <div class="user-info">
-                <span class="user-text">USUARIO</span>
-                <div class="user-icon">👤</div>
-            </div>
-        </div>
-    </header>
-    
-    <div class="dashboard-container">
-        
-        <div class="welcome-header">
-            <h1>Bienvenidos</h1>
-            <p>Centro de Incubación ITS</p>
-        </div>
+<header class="navbar">
+  <div class="logo">
+    <img src="./images/logoITS.png" alt="ITS" />
+    <span>Instituto Tecnológico de Saltillo</span>
+  </div>
+  <div class="user-info">
+    <span class="user-text">USUARIO</span>
+    <div class="user-icon">👤</div>
+  </div>
+</header>
 
-        <section class="modules-section">
-            <h2>Módulos</h2>
-            
-            <div class="modules-grid modules-grid-lite">
-                
-                <a href="proyectos.html" class="module-card">
-                    <div class="icon-circle">
-                        <span class="icon">📁</span>
-                    </div>
-                    <span class="module-name">Proyectos</span>
-                </a>
+<div class="dashboard-container">
+  <div class="welcome-header">
+    <h1>Bienvenidos</h1>
+    <p>Centro de Incubación ITS</p>
+  </div>
 
-                <a href="#" class="module-card">
-                    <div class="icon-circle">
-                        <span class="icon">📄</span> 
-                    </div>
-                    <span class="module-name">Reportes</span>
-                </a>
-                
-                <a href="#" class="module-card">
-                    <div class="icon-circle">
-                        <span class="icon">🗓️</span> 
-                    </div>
-                    <span class="module-name">Eventos</span>
-                </a>
+  <section class="modules-section">
+    <h2>Módulos</h2>
 
-                <a href="#" class="module-card">
-                    <div class="icon-circle">
-                        <span class="icon">✏️</span> 
-                    </div>
-                    <span class="module-name">Tutorías</span>
-                </a>
-                
-            </div>
-        </section>
+    <div class="modules-grid">
+      <!-- Solo lo permitido para emprendedor -->
+      <a href="proyectos.html?rol=emprendedor" class="module-card">
+        <div class="icon-circle">📁</div><span class="module-name">Proyectos</span>
+      </a>
 
+      <a href="#" class="module-card">
+        <div class="icon-circle">📄</div><span class="module-name">Reportes</span>
+      </a>
+
+      <a href="#" class="module-card">
+        <div class="icon-circle">🗓️</div><span class="module-name">Eventos</span>
+      </a>
+
+      <a href="#" class="module-card">
+        <div class="icon-circle">✏️</div><span class="module-name">Tutorías</span>
+      </a>
     </div>
+  </section>
+</div>
+
+<script>
+  // Guarda el rol para las demás páginas
+  localStorage.setItem('rolUsuario', 'emprendedor');
+</script>
 
 </body>
 </html>
