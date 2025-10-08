@@ -1,0 +1,170 @@
+/* ===== ESTILOS GENERALES ===== */
+body {
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  background-color: #f6f8fb;
+}
+
+/* ===== ENCABEZADO ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #002b5c;
+  color: white;
+  padding: 10px 30px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  width: 35px;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+.usuario {
+  font-weight: bold;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.container {
+  display: flex;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  background-color: #003b80;
+  color: white;
+  width: 200px;
+  height: calc(100vh - 60px);
+  padding: 20px;
+}
+
+.sidebar h3 {
+  border-bottom: 1px solid #fff;
+  padding-bottom: 10px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.sidebar li {
+  margin: 15px 0;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  display: block;
+  border-radius: 5px;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+  background-color: #0056b3;
+}
+
+/* ===== CONTENIDO ===== */
+.main {
+  flex: 1;
+  padding: 20px 40px;
+}
+
+.main h2 {
+  color: #002b5c;
+  margin-bottom: 5px;
+}
+
+.main h3 {
+  color: #004aad;
+  margin-bottom: 20px;
+}
+
+/* ===== CALENDARIO Y LISTA ===== */
+.content {
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+}
+
+/* ===== CALENDARIO ===== */
+.calendar {
+  background-color: #4e4e4e;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+.calendar-box table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+}
+
+.calendar-box th, .calendar-box td {
+  padding: 8px;
+}
+
+.calendar-box td {
+  cursor: pointer;
+}
+
+.calendar-box td.selected {
+  background-color: #004aad;
+  border-radius: 50%;
+}
+
+/* ===== LISTA DE TUTORÍAS ===== */
+.tutorias {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  width: 280px;
+}
+
+.tutorias h4 {
+  margin-bottom: 15px;
+  color: #002b5c;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 8px;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: #f6f8fb;
+  border-radius: 8px;
+  padding: 10px;
+  transition: 0.2s ease;
+}
+
+.item:hover {
+  background-color: #e1ebff;
+}
+
+.item input[type="radio"] {
+  accent-color: #004aad;
+  margin-top: 3px;
+}

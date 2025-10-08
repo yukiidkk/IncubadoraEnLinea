@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorías - Coordinador</title>
+    <link rel="stylesheet" href="css/tutorias.css">
+</head>
+
+<body>
+    <!-- ENCABEZADO -->
+    <header class="header">
+        <div class="logo">
+            <img src="logoTec.png" alt="Logo" class="logo-img">
+            <span>Instituto Tecnológico de Saltillo</span>
+        </div>
+        <nav class="nav">
+            <a href="#">Home</a>
+            <a href="#">Proyectos</a>
+            <a href="#"></a>
+            <a href="#">Proyectos</a>
+            <a href="#">Proyectos</a>
+        </nav>
+        <div class="usuario">
+            <span>Coordinador</span>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="container">
+        <!-- MENÚ LATERAL -->
+        <aside class="sidebar">
+            <h3>Menú</h3>
+            <ul>
+
+                <li><a href="#" class="active">Agenda</a></li>
+                <li><a href="#">Disponibilidad</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main">
+            <h2>Tutorías</h2>
+            <h3>Agenda</h3>
+            <!--CALENDATIO-->
+            <div class="content">
+                <div class="calendar">
+                    <input type="month" id="mes" value="2016-06">
+                    <div class="calendar-box">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sun</th>
+                                    <th>Mon</th>
+                                    <th>Tue</th>
+                                    <th>Wed</th>
+                                    <th>Thu</th>
+                                    <th>Fri</th>
+                                    <th>Sat</th>
+                                </tr>
+                            </thead>
+                            <tbody id="calendar-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <script>
+                    const monthInput = document.getElementById("mes");
+                    const calendarBody = document.getElementById("calendar-body");
+
+                    function generarCalendario(year, month) {
+                        calendarBody.innerHTML = "";
+                        const firstDay = new Date(year, month, 1).getDay();
+                        const lastDate = new Date(year, month + 1, 0).getDate();
+                        let date = 1;
+
+                        for (let i = 0; i < 6; i++) {
+                            const row = document.createElement("tr");
+                            for (let j = 0; j < 7; j++) {
+                                const cell = document.createElement("td");
+                                if (i === 0 && j < firstDay) {
+                                    cell.classList.add("empty");
+                                    row.appendChild(cell);
+                                } else if (date > lastDate) {
+                                    cell.classList.add("empty");
+                                    row.appendChild(cell);
+                                } else {
+                                    cell.textContent = date;
+                                    cell.addEventListener("click", () => seleccionarFecha(cell));
+                                    row.appendChild(cell);
+                                    date++;
+                                }
+                            }
+                            calendarBody.appendChild(row);
+                        }
+                    }
+
+                    function seleccionarFecha(cell) {
+                        document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
+                        cell.classList.add("selected");
+                    }
+
+                    monthInput.addEventListener("change", () => {
+                        const [year, month] = monthInput.value.split("-").map(Number);
+                        generarCalendario(year, month - 1);
+                    });
+
+                    // Inicializar calendario al cargar
+                    const [initYear, initMonth] = monthInput.value.split("-").map(Number);
+                    generarCalendario(initYear, initMonth - 1);
+                </script>
+            </div>
+
+            <!-- FORMULARIO -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Fecha de tutoría</label>
+                    <div class="row">
+                        <select>
+                            <option>Día</option>
+                        </select>
+                        <select>
+                            <option>Mes</option>
+                        </select>
+                        <select>
+                            <option>Año</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Seleccionar Tutor</label>
+                    <select>
+                        <option>Tutor</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Seleccionar hora disponible</label>
+                    <select>
+                        <option>Hora</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Horas Disponibles</label>
+                    <textarea placeholder="Horas para agenda"></textarea>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn registrar">Registrar</button>
+                    <button class="btn actualizar">Actualizar</button>
+                    <button class="btn eliminar">Eliminar</button>
+                </div>
+            </div>
+    </div>
+    </main>
+    </div>
+
+
+</body>
+
+</html>

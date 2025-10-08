@@ -1,0 +1,183 @@
+/* ===== ESTILOS GENERALES ===== */
+body {
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    background-color: #f6f8fb;
+}
+
+/* ===== HEADER ===== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #002b5c;
+    color: white;
+    padding: 10px 30px;
+}
+
+.header .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header .logo-img {
+    width: 35px;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+.usuario {
+    font-weight: bold;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.container {
+    display: flex;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    background-color: #003b80;
+    color: white;
+    width: 200px;
+    height: calc(100vh - 60px);
+    padding: 20px;
+}
+
+.sidebar h3 {
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.sidebar li {
+    margin: 15px 0;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    display: block;
+    border-radius: 5px;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+    background-color: #0056b3;
+}
+
+/* ===== CONTENIDO ===== */
+.main {
+    flex: 1;
+    padding: 20px 40px;
+}
+
+.main h2 {
+    color: #002b5c;
+    margin-bottom: 5px;
+}
+
+.main h3 {
+    color: #004aad;
+    margin-bottom: 20px;
+}
+
+/* ===== CALENDARIO Y FORMULARIO ===== */
+.content {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+/* Calendario */
+.calendar {
+    background-color: #4e4e4e;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+.calendar-box table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+
+.calendar-box th, .calendar-box td {
+    padding: 8px;
+}
+
+.calendar-box td {
+    cursor: pointer;
+}
+
+.calendar-box td.selected {
+    background-color: #004aad;
+    border-radius: 50%;
+}
+
+/* ===== FORMULARIO ===== */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.row select {
+    margin-right: 5px;
+}
+
+select, textarea {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 180px;
+}
+
+textarea {
+    width: 200px;
+    height: 70px;
+    resize: none;
+}
+
+/* ===== BOTONES ===== */
+.buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.btn.registrar { background-color: #004aad; }
+.btn.actualizar { background-color: #0073e6; }
+.btn.eliminar { background-color: #c0392b; }
+
+.btn:hover {
+    opacity: 0.85;
+}

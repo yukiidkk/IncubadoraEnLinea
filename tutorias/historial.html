@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorías - Historial</title>
+  <link rel="stylesheet" href="css/historial.css">
+</head>
+<body>
+  <!-- ===== ENCABEZADO ===== -->
+  <header class="header">
+    <div class="logo">
+      <img src="logoTec.png" alt="Logo" class="logo-img">
+      <span>Instituto Tecnológico de Saltillo </span>
+    </div>
+    <nav class="nav">
+      <a href="#">Home</a>
+      <a href="#">Proyectos</a>
+    </nav>
+    <div class="usuario">
+      <span>Coordinador</span>
+    </div>
+  </header>
+
+  <!-- ===== CONTENEDOR PRINCIPAL ===== -->
+  <div class="container">
+    <!-- MENÚ LATERAL -->
+    <aside class="sidebar">
+      <h3>Menú</h3>
+      <ul>
+        <li><a href="#">Agenda</a></li>
+        <li><a href="#">Disponibilidad</a></li>
+        <li><a href="#" class="active">Historial</a></li>
+      </ul>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main">
+      <h2>Tutorías</h2>
+      <h3>Historial</h3>
+
+      <div class="content">
+        <!-- CALENDARIO -->
+        <div class="calendar">
+          <input type="month" id="mes" value="2016-06">
+          <div class="calendar-box">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td><td></td><td class="selected">1</td><td>2</td><td>3</td><td>4</td><td>5</td>
+                </tr>
+                <tr>
+                  <td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td>
+                </tr>
+                <tr>
+                  <td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td>
+                </tr>
+                <tr>
+                  <td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td>
+                </tr>
+                <tr>
+                  <td>27</td><td>28</td><td>29</td><td>30</td><td></td><td></td><td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- LISTA DE TUTORÍAS -->
+        <div class="tutorias">
+          <h4>Tutorías Agendadas</h4>
+          <div class="lista">
+            <label class="item">
+              <input type="radio" name="tutoria" checked>
+              <div>
+                <strong>Hora X</strong><br>
+                <small>Nombre proyecto, nombre emprendedor</small>
+              </div>
+            </label>
+
+            <label class="item">
+              <input type="radio" name="tutoria">
+              <div>
+                <strong>Evento X</strong><br>
+                <small>Nombre proyecto, nombre emprendedor</small>
+              </div>
+            </label>
+
+            <label class="item">
+              <input type="radio" name="tutoria">
+              <div>
+                <strong>Evento X</strong><br>
+                <small>Nombre proyecto, nombre emprendedor</small>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
