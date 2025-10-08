@@ -214,3 +214,152 @@ input:focus {
     background-color: #00264d;
 }
 
+/* Contenedor principal para centrar el formulario */
+.main-content {
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    background-color: #dbeafe; /* Fondo azul claro del body */
+    min-height: 100vh;
+}
+
+/* Estilo general del contenedor del formulario */
+.form-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1100px; /* Ajusta el ancho máximo según necesites */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Encabezado del formulario */
+.form-container header h2 {
+    color: #003366; /* Color azul institucional */
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+.form-container header p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Estructura de columnas */
+.columns-wrapper {
+    display: flex;
+    gap: 40px; /* Espacio entre las columnas */
+}
+
+.column {
+    flex: 1; /* Hace que ambas columnas ocupen el mismo espacio */
+    min-width: 45%; /* Asegura que no se hagan muy pequeñas */
+}
+
+/* Grupo de campo (label + input/select) */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.account-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+/* Estilos para INPUT y SELECT (sobrescribe los estilos anteriores si es necesario) */
+.account-form input[type="text"],
+.account-form input[type="email"],
+.account-form input[type="tel"],
+.account-form input[type="number"],
+.account-form input[type="password"],
+.account-form select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box; /* Importante para que el padding no desborde el ancho */
+    /* El placeholder text debe ser claro */
+}
+
+.account-form select {
+    appearance: none; /* Quita el estilo nativo en algunos navegadores */
+    background-color: white;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%20197.9c-2.4-2.4-5.6-3.7-9.4-3.7h-268c-3.8%200-7%201.3-9.4%203.7-4.8%204.8-4.8%2012.5%200%2017.3l134%20134c2.4%202.4%205.6%203.7%209.4%203.7s7-1.3%209.4-3.7l134-134c4.8-4.8%204.8-12.5%200-17.3z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 10px auto;
+    cursor: pointer;
+}
+
+
+/* Grupos de campos en línea (ej. fecha de nacimiento, estado civil/género, domicilio) */
+.date-group,
+.inline-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* Ajuste específico para los selects de fecha (Día, Mes, Año) */
+.date-group select {
+    flex: 1; /* Distribuye equitativamente el espacio entre los 3 selects */
+}
+
+/* Ajuste para los campos de Estado Civil/Género y Colonia/C.P. */
+.inline-group input,
+.inline-group select {
+    flex: 1;
+}
+
+/* Ajuste para el campo C.P. */
+.inline-group input[name="cp"] {
+    max-width: 150px; 
+    flex: none; /* No permite que se estire tanto */
+}
+
+/* Botón de "Crear Cuenta" */
+.btn-primary-its {
+    background-color: #003366; /* Azul fuerte para el botón principal */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary-its:hover {
+    background-color: #00264d;
+}
+
+/* Contenedor para centrar el botón */
+.button-center {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Media query para diseño responsivo: pasa a una sola columna en pantallas pequeñas */
+@media (max-width: 768px) {
+    .columns-wrapper {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* En móvil, los campos de domicilio y estado civil también pueden ser de una sola columna */
+    .inline-group {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .inline-group input[name="cp"] {
+        max-width: 100%; 
+    }
+}

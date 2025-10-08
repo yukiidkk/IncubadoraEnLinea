@@ -10,171 +10,143 @@
     <link rel="stylesheet" href="./css/estilos.css">
 </head>
 <body>
-    <!-- NAVBAR -->
+
     <header class="navbar">
-        <div class="nav-container">
-            <img src="./images/logoITS.png" alt="Logo ITS">
-            <h1>Instituto Tecnológico de Saltillo</h1>
+        <div class="container nav-content">
+            <div class="logo">
+                <img src="./images/logoITS.png" alt="ITS" />
+                <span>Instituto Tecnológico de Saltillo</span>
+            </div>
         </div>
     </header>
-    <body>
-    <div class="container">
-        <header>
-            <h1>Incubadora En Línea</h1>
-            <h2>Crea una cuenta</h2>
-            <p>Llena los siguientes campos según corresponda:</p>
-        </header>
-
+    
+    <div class="main-content">
         <div class="form-container">
-            <form id="registrationForm">
-                <div class="form-group">
-                    <label for="nombres">Nombre(s):</label>
-                    <input type="text" id="nombres" placeholder="Ingrese su nombre(s)" required>
-                </div>
+            <header>
+                <h2>Crea una cuenta</h2>
+                <p>Llena los siguientes campos según corresponda:</p>
+            </header>
+            
+            <form class="account-form">
+                <div class="columns-wrapper">
+                    
+                    <div class="column">
+                        <div class="form-group">
+                            <label for="nombre">Nombre(s):</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre(s)" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="apellidos">Apellidos:</label>
+                            <input type="text" id="apellidos" name="apellidos" placeholder="Ingresa tus apellidos" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="telefono">Número de teléfono:</label>
+                            <input type="tel" id="telefono" name="telefono" placeholder="Ingrese su número de teléfono" required>
+                        </div>
 
-                <div class="form-group">
-                    <label for="apellidos">Apellidos:</label>
-                    <input type="text" id="apellidos" placeholder="Ingresa tus apellidos" required>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-col">
-                        <label for="telefono">Número de teléfono:</label>
-                        <input type="tel" id="telefono" placeholder="Ingrese su número de teléfono" required>
-                    </div>
-                     <div class="form-col">
+                        <div class="form-group">
                             <label>Ingrese su fecha de nacimiento</label>
-                            <div class="date-inputs">
-                                <select id="dia" required>
-                                    <option value="" disabled selected>Día</option>
-                                </select>
-                                <select id="mes" required>
-                                    <option value="" disabled selected>Mes</option>
-                                </select>
-                                <select id="anio" required>
-                                    <option value="" disabled selected>Año</option>
-                                </select>
+                            <div class="date-group">
+                                <select name="dia" required>
+                                    <option value="">Día</option>
+                                    </select>
+                                <select name="mes" required>
+                                    <option value="">Mes</option>
+                                    </select>
+                                <select name="anio" required>
+                                    <option value="">Año</option>
+                                    </select>
                             </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Correo electrónico:</label>
-                    <input type="email" id="email" placeholder="Ingrese su correo electrónico" required>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-col">
-                        <label for="ingresos">Ingresos:</label>
-                        <input type="number" id="ingresos" placeholder="Ingrese su ingreso mensual" required>
-                    </div>
-                    <div class="form-col">
-                        <label for="dependientes">Dependientes económicos:</label>
-                        <select id="dependientes" required>
-                            <option value="" disabled selected>Seleccione la cantidad</option>
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5+">5 o más</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Ingrese su contraseña:</label>
-                    <input type="password" id="password" placeholder="Ingrese su contraseña" required>
-                </div>
-
-                <div class="divider"></div>
-
-                <div class="form-row">
-                    <div class="form-col">
-                        <label for="rfc">RFC:</label>
-                        <input type="text" id="rfc" placeholder="Ingrese su RFC" required>
-                    </div>
-                    <div class="form-col">
-                        <label for="curp">CURP:</label>
-                        <input type="text" id="curp" placeholder="Ingrese su CURP" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-col">
-                        <label for="estadoCivil">Estado civil:</label>
-                        <select id="estadoCivil" required>
-                            <option value="" disabled selected>Seleccione su estado civil</option>
-                            <option value="soltero">Soltero(a)</option>
-                            <option value="casado">Casado(a)</option>
-                            <option value="divorciado">Divorciado(a)</option>
-                            <option value="viudo">Viudo(a)</option>
-                            <option value="union">Unión libre</option>
-                        </select>
-                    </div>
-                    <div class="form-col">
-                        <label for="genero">Género:</label>
-                        <select id="genero" required>
-                            <option value="" disabled selected>Seleccione su género</option>
-                            <option value="masculino">Masculino</option>
-                            <option value="femenino">Femenino</option>
-                            <option value="otro">Otro</option>
-                            <option value="prefiero">Prefiero no decir</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Domicilio</label>
-                    <div class="form-row">
-                        <div class="form-col address-group">
-                            <input type="text" id="cp" placeholder="Código Postal" maxlength="5">
-                            <div id="cp-suggestions" class="suggestions" style="display: none;"></div>
                         </div>
-                        <div class="form-col">
-                            <input type="text" id="colonia" placeholder="Colonia">
+
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" id="email" name="email" placeholder="Ingrese su correo electrónico" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ingresos">Ingresos:</label>
+                            <input type="number" id="ingresos" name="ingresos" placeholder="Ingrese su ingreso mensual" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dependientes">Dependientes económicos</label>
+                            <select id="dependientes" name="dependientes">
+                                <option value="">Seleccione la cantidad de dependientes económicos de ud</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Ingrese su contraseña</label>
+                            <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <input type="text" id="calle" placeholder="Calle">
+
+                    <div class="column">
+                        <div class="form-group">
+                            <label for="rfc">RFC:</label>
+                            <input type="text" id="rfc" name="rfc" placeholder="Ingrese su RFC" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="curp">CURP:</label>
+                            <input type="text" id="curp" name="curp" placeholder="Ingrese su CURP" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Estado civil y Género:</label>
+                            <div class="inline-group">
+                                <select name="estado-civil" required>
+                                    <option value="">Seleccione su estado civil</option>
+                                    </select>
+                                <select name="genero" required>
+                                    <option value="">Seleccione su género</option>
+                                    </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Domicilio</label>
+                            <div class="inline-group">
+                                <input type="text" name="colonia" placeholder="Colonia" required>
+                                <input type="text" name="cp" placeholder="C.P." required>
+                            </div>
+                            <input type="text" name="calle" placeholder="Calle" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="jornada">Jornada laboral</label>
+                            <select id="jornada" name="jornada">
+                                <option value="">Seleccione su jornada</option>
+                                </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="control-number">Número de control</label>
+                            <input type="text" id="control-number" name="control-number" placeholder="Ingrese su número de control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="especialidad">Seleccione su especialidad</label>
+                            <select id="especialidad" name="especialidad">
+                                <option value="">Seleccione su especialidad</option>
+                                </select>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-col">
-                        <label for="jornada">Jornada laboral:</label>
-                        <select id="jornada" required>
-                            <option value="" disabled selected>Seleccione su jornada</option>
-                            <option value="NoAplica">No aplica</option>
-                            <option value="vespertina">Completa</option>
-                            <option value="nocturna">Media</option>
-                            <option value="mixta">Mixta</option>
-                        </select>
-                    </div>
-                    <div class="form-col">
-                        <label for="numeroControl">Número de control:</label>
-                        <input type="text" id="numeroControl" placeholder="Ingrese su número de control" required>
-                    </div>
+                <div class="form-group button-center">
+                    <button type="submit" class="btn-primary-its">Crear cuenta</button>
                 </div>
 
-                <div class="form-group">
-                    <label for="especialidad">Seleccione su especialidad:</label>
-                    <select id="especialidad" required>
-                        <option value="" disabled selected>Seleccione su especialidad</option>
-                        <option value="sistemas">Ingeniería en Sistemas Computacionales</option>
-                        <option value="industrial">Ingeniería Industrial</option>
-                        <option value="electromecanica">Ingeniería Electromecánica</option>
-                        <option value="gestion">Ingeniería en Gestión Empresarial</option>
-                        <option value="electrica">Ingeniería Eléctrica</option>
-                        <option value="electronica">Ingeniería Electrónica</option>
-                        <option value="mecatronica">Ingeniería Mecatrónica</option>
-                        <option value="bioquimica">No aplica</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn-submit">Crear cuenta</button>
             </form>
         </div>
     </div>
-    </body>
+
+</body>
 </html>
