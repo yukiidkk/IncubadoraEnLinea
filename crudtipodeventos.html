@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tipos de Eventos - Instituto Tecnológico de Saltillo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #f5f6fa;
+    }
+
+    /* Encabezado */
+    header {
+      background-color: #002855;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 40px;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    header .logo img {
+      height: 25px;
+      margin-right: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .usuario {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .usuario .circle {
+      width: 20px;
+      height: 20px;
+      background-color: #eee;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    /* Contenido principal */
+    .content {
+      padding: 40px;
+      background-color: #f5f6fa;
+    }
+
+    h2 {
+      color: #002855;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .form-section {
+      background-color: #cfe1ff;
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .search-box {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .search-box button {
+      background-color: #002855;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .form-group {
+      margin: 0 auto;
+      text-align: left;
+      max-width: 500px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+
+    /* Botones inferiores */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-top: 40px;
+    }
+
+    .buttons button {
+      background-color: #002855;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .buttons button:hover {
+      background-color: #004aad;
+    }
+
+    /* Responsividad */
+    @media (max-width: 700px) {
+      .buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .search-box {
+        flex-direction: column;
+      }
+
+      .search-box input, .search-box button {
+        width: 100%;
+        border-radius: 5px;
+      }
+
+      .search-box button {
+        margin-top: 10px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="C:\Users\reyes\OneDrive\Documentos\IncubadoraEnLinea\images\logoITS.png" alt="">
+      Instituto Tecnológico de Saltillo
+    </div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Proyectos</a>
+      <a href="#">Usuarios</a>
+      <a href="#">Roles</a>
+    </nav>
+    <div class="usuario">
+      <div class="circle"></div>
+      USUARIO
+    </div>
+  </header>
+
+  <div class="content">
+    <h2>Tipos de Eventos</h2>
+    <p>Llena los siguientes campos según corresponda:</p>
+
+    <div class="form-section">
+      <div class="search-box">
+        <input type="text" placeholder="Buscar un Tipo de Evento">
+        <button>Buscar</button>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre del tipo de evento</label>
+        <input type="text" placeholder="Ingrese nombre del evento">
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button>Crear tipo evento</button>
+      <button>Actualizar tipo evento</button>
+      <button>Eliminar tipo evento</button>
+    </div>
+  </div>
+
+</body>
+</html>
