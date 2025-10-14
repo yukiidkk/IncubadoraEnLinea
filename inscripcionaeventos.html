@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscripción de Eventos - Instituto Tecnológico de Saltillo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #f5f6fa;
+    }
+
+    /* Encabezado */
+    header {
+      background-color: #002855;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 40px;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    header .logo img {
+      height: 25px;
+      margin-right: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .usuario {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .usuario .circle {
+      width: 20px;
+      height: 20px;
+      background-color: #eee;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    /* Contenedor principal */
+    .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 25px;
+      padding: 40px;
+    }
+
+    .panel {
+      background-color: white;
+      flex: 1;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #002855;
+      margin-bottom: 20px;
+    }
+
+    /* Panel de búsqueda */
+    .search-box {
+      display: flex;
+      margin-bottom: 25px;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+    }
+
+    .search-box button {
+      background-color: #002855;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+
+    /* Lista de eventos */
+    .event-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .event-icon {
+      background-color: #e6f0ff;
+      border-radius: 50%;
+      padding: 8px;
+    }
+
+    .event-icon::before {
+      content: "✔";
+      color: #002855;
+      font-size: 14px;
+    }
+
+    .event-info strong {
+      color: #002855;
+      display: block;
+    }
+
+    .event-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Formulario */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .submit-btn {
+      display: block;
+      background-color: #002855;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      font-size: 16px;
+      margin: 25px auto 0;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background-color: #004aad;
+    }
+
+    /* Responsividad */
+    @media (max-width: 1000px) {
+      .container {
+        flex-direction: column;
+      }
+      .panel {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="C:\Users\reyes\OneDrive\Documentos\IncubadoraEnLinea\images\logoITS.png" alt="">
+      Instituto Tecnológico de Saltillo
+    </div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Proyectos</a>
+      <a href="#">Usuarios</a>
+      <a href="#">Roles</a>
+      <a href="#">Eventos</a>
+    </nav>
+    <div class="usuario">
+      <div class="circle"></div>
+      USUARIO
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Panel Izquierdo -->
+    <div class="panel">
+      <h2>Eventos Próximos</h2>
+      <div class="search-box">
+        <input type="text" placeholder="Buscar un evento por nombre">
+        <button>Buscar</button>
+      </div>
+
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel Central -->
+    <div class="panel">
+      <h2>Inscripción Evento</h2>
+
+      <div class="form-grid">
+        <div>
+          <label>Nombre del evento</label>
+          <input type="text" placeholder="Nombre del evento">
+        </div>
+
+        <div>
+          <label>Encargado del evento</label>
+          <input type="text" placeholder="Información encargado evento">
+        </div>
+
+        <div>
+          <label>Fecha del evento</label>
+          <input type="text" placeholder="Información fecha y hora del evento">
+        </div>
+
+        <div>
+          <label>Cupo del evento</label>
+          <input type="text" placeholder="Número de lugares disponibles">
+        </div>
+
+        <div class="full-width">
+          <label>Descripción del evento</label>
+          <textarea placeholder="Descripción del evento"></textarea>
+        </div>
+      </div>
+
+      <button class="submit-btn">Inscribirse</button>
+    </div>
+
+    <!-- Panel Derecho -->
+    <div class="panel">
+      <h2>Mis Eventos</h2>
+
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eventos - Instituto Tecnológico de Saltillo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #f5f6fa;
+    }
+
+    /* Encabezado */
+    header {
+      background-color: #002855;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 40px;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    header .logo img {
+      height: 25px;
+      margin-right: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .usuario {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .usuario .circle {
+      width: 20px;
+      height: 20px;
+      background-color: #eee;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    /* Contenedor principal */
+    .container {
+      display: flex;
+      gap: 30px;
+      padding: 40px;
+    }
+
+    /* Panel izquierdo */
+    .form-panel {
+      background-color: white;
+      flex: 2;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #002855;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    textarea {
+      height: 100px;
+      resize: none;
+    }
+
+    .row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .buttons {
+      margin-top: 25px;
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      background-color: #002855;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      background-color: #004aad;
+    }
+
+    /* Panel derecho */
+    .right-panel {
+      background-color: white;
+      flex: 1;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .search-box {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+    }
+
+    .search-box button {
+      border-radius: 0 5px 5px 0;
+      background-color: #002855;
+      padding: 10px 20px;
+    }
+
+    .event-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .event-icon {
+      background-color: #e6f0ff;
+      border-radius: 50%;
+      padding: 8px;
+    }
+
+    .event-icon::before {
+      content: "✔";
+      color: #002855;
+      font-size: 14px;
+    }
+
+    .event-info strong {
+      color: #002855;
+      display: block;
+    }
+
+    .event-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="Logo">
+      <img src="C:\Users\reyes\OneDrive\Documentos\IncubadoraEnLinea\images\logoITS.png" alt="">
+      Instituto Tecnológico de Saltillo
+    </div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Proyectos</a>
+      <a href="#">Usuarios</a>
+      <a href="#">Roles</a>
+      <a href="#">Eventos</a>
+    </nav>
+    <div class="usuario">
+      <div class="circle"></div>
+      USUARIO
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Panel Izquierdo -->
+    <div class="form-panel">
+      <h2>Eventos</h2>
+
+      <label>Nombre del evento</label>
+      <input type="text" placeholder="Ingrese el nombre del evento">
+
+      <div class="row">
+        <div style="flex: 1;">
+          <label>Encargado del evento</label>
+          <select>
+            <option>Seleccionar coordinador</option>
+          </select>
+        </div>
+        <div style="flex: 1;">
+          <label>Tipo evento</label>
+          <select>
+            <option>Tipo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div style="flex: 1;">
+          <label>Fecha del evento</label>
+          <div class="row">
+            <select><option>Día</option></select>
+            <select><option>Mes</option></select>
+            <select><option>Año</option></select>
+          </div>
+        </div>
+        <div style="flex: 1;">
+          <label>Cupo del evento</label>
+          <input type="number" placeholder="Ingrese cupo">
+        </div>
+      </div>
+
+      <label>Descripción del evento</label>
+      <textarea placeholder="Descripción del evento"></textarea>
+
+      <div class="buttons">
+        <button>Registrar</button>
+        <button>Actualizar</button>
+        <button>Eliminar</button>
+      </div>
+    </div>
+
+    <!-- Panel Derecho -->
+    <div class="right-panel">
+      <h2>Eventos Próximos</h2>
+      <div class="search-box">
+        <input type="text" placeholder="Buscar un evento por nombre">
+        <button>Buscar</button>
+      </div>
+
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-icon"></div>
+        <div class="event-info">
+          <strong>Evento X</strong>
+          <p>Descripción del evento</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
