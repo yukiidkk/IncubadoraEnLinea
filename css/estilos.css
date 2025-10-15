@@ -444,9 +444,9 @@ input:focus {
     text-align: center;
 }
 
-/* Estilo para el botón de Actualizar (similar a un botón secundario) */
+/* Estilo para el botón de Actualizar*/
 .btn-secondary-its {
-    background-color: #1a73e8; /* Un azul diferente, puedes usar el que más te guste */
+    background-color: #1a73e8; 
     color: white;
     border: none;
     transition: background-color 0.3s ease;
@@ -456,9 +456,9 @@ input:focus {
     background-color: #0d5ddf;
 }
 
-/* Estilo para el botón de Eliminar (color rojo para indicar peligro) */
+/* Estilo para el botón de Eliminar*/
 .btn-delete-its {
-    background-color: #dc3545; /* Rojo */
+    background-color: #dc3545;
     color: white;
     border: none;
     transition: background-color 0.3s ease;

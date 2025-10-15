@@ -3,21 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seguimiento de proyectos</title>
+  <title>Seguimiento de avances de proyectos</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f1f1f1;
+      background-color: #f5f7fb;
       margin: 0;
+      padding: 0;
     }
 
+    /* Encabezado institucional */
     header {
       background-color: #003366;
       color: white;
-      padding: 10px 40px;
+      padding: 12px 30px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
 
     header .left {
@@ -34,7 +36,7 @@
       color: white;
       text-decoration: none;
       margin-right: 20px;
-      font-weight: bold;
+      font-weight: 500;
     }
 
     .usuario {
@@ -45,80 +47,91 @@
       border-radius: 20px;
     }
 
-    .contenido {
-      padding: 20px 40px;
-    }
-
+    /* Título principal */
     h1 {
       text-align: center;
       color: #003366;
+      margin-top: 25px;
     }
 
-    /* Botón volver */
+    .subtitulo {
+      text-align: center;
+      color: #004c99;
+      font-size: 0.9em;
+      margin-bottom: 20px;
+    }
+
+    /* Botón Volver */
     #btnVolver {
+      display: block;
+      margin: 0 auto 25px auto;
       background-color: #1e63b5;
       color: white;
       border: none;
       border-radius: 8px;
-      padding: 8px 16px;
+      padding: 8px 18px;
       font-weight: bold;
       cursor: pointer;
-      margin-bottom: 15px;
+      transition: background-color 0.2s;
     }
 
     #btnVolver:hover {
       background-color: #004b9a;
     }
 
-    /* Columnas y tarjetas */
+    /* Tablero */
     .tablero {
       display: flex;
-      justify-content: space-between;
-      gap: 20px;
+      justify-content: center;
+      gap: 25px;
       flex-wrap: wrap;
+      padding: 0 40px;
     }
 
     .columna {
       flex: 1;
-      background-color: #e8eef8;
-      border: 1px solid #999;
-      border-radius: 5px;
-      min-width: 260px;
+      min-width: 250px;
+      max-width: 300px;
+      background-color: #edf2fa;
+      border: 1px solid #7d8aa3;
+      border-radius: 4px;
       display: flex;
       flex-direction: column;
-      align-items: center;
     }
 
     .columna h3 {
-      width: 100%;
-      background-color: #aac1e2;
+      background-color: #b8c9e8;
       text-align: center;
+      color: #003366;
       margin: 0;
       padding: 8px;
-      border-bottom: 1px solid #999;
-      color: #003366;
+      border-bottom: 1px solid #7d8aa3;
     }
 
     .contenido-columna {
-      width: 95%;
       flex-grow: 1;
-      min-height: 300px;
       padding: 10px;
+      min-height: 280px;
+      background-color: #f1f8f1;
     }
 
     .tarjeta-proyecto {
-      background-color: #c9dcfa;
-      border: 1px solid #999;
-      border-radius: 8px;
+      border: 1px solid #777;
+      border-radius: 5px;
       padding: 10px;
       margin-bottom: 10px;
-      cursor: pointer;
+      background-color: #b8e7b8;
       position: relative;
-      transition: 0.2s;
     }
 
-    .tarjeta-proyecto:hover {
-      background-color: #b2cef5;
+    .tarjeta-proyecto.azul {
+      background-color: #c9dcfa;
+    }
+
+    .tarjeta-proyecto strong {
+      display: block;
+      color: #003366;
+      font-weight: 600;
     }
 
     .arrow {
@@ -131,62 +144,23 @@
     }
 
     .lista-tareas {
-      margin-top: 10px;
-      padding-left: 10px;
+      margin-top: 5px;
+      padding-left: 15px;
       border-left: 2px solid #003366;
-      display: none;
     }
 
     .tarea {
-      background-color: #d9f5d9;
-      border: 1px solid #aaa;
-      border-radius: 6px;
-      padding: 8px;
-      margin: 6px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: 0.2s;
+      margin: 4px 0;
+      font-size: 0.9em;
     }
 
-    .tarea.completada {
-      background-color: #b0f0b0;
-      text-decoration: line-through;
-      color: #444;
-    }
-
-    .tarea span {
-      flex-grow: 1;
-      margin-left: 5px;
-    }
-
-    .estado {
-      font-size: 0.85em;
-      color: #003366;
-      margin-left: 8px;
-    }
-
-    .progreso {
-      height: 8px;
-      background-color: #cfe2ff;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-
-    .barra {
-      height: 100%;
-      background-color: #1e63b5;
-      width: 0%;
-      transition: width 0.3s;
-    }
-
-    .botones-columna {
+    /* Botones inferiores */
+    .botones-inferiores {
       text-align: center;
-      margin: 10px 0 15px 0;
+      margin: 20px;
     }
 
-    .botones-columna button {
+    .botones-inferiores button {
       background-color: #1e63b5;
       color: white;
       border: none;
@@ -194,159 +168,245 @@
       padding: 7px 15px;
       font-weight: bold;
       cursor: pointer;
+      margin: 0 10px;
     }
 
-    .botones-columna button:hover {
+    .botones-inferiores button:hover {
       background-color: #004b9a;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      width: 380px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .modal-content h3 {
+      text-align: center;
+      color: #003366;
+      margin-top: 0;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .modal-content input, .modal-content select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 4px;
+      border-radius: 4px;
+      border: 1px solid #999;
+    }
+
+    .modal-buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .modal-buttons button {
+      margin: 0 10px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-guardar {
+      background-color: #1e63b5;
+      color: white;
+    }
+
+    .btn-cerrar {
+      background-color: #ccc;
     }
   </style>
 </head>
 <body>
 
+  <!-- Encabezado -->
   <header>
     <div class="left">
       <img src="images/logoITS.png" alt="Logo ITS">
       <span>Instituto Tecnológico de Saltillo</span>
       <nav>
-        <a href="#" id="btnHome">Home</a>
-        <a href="proyectos.html">Proyectos</a>
+        <a href="#">Home</a>
+        <a href="#">Proyectos</a>
       </nav>
     </div>
     <div class="usuario">USUARIO</div>
   </header>
 
-  <div class="contenido">
-    <h1>Seguimiento de proyectos</h1>
-    <div style="text-align:center;">
-      <button id="btnVolver">← Volver a proyectos</button>
+  <!-- Contenido -->
+  <h1>Seguimiento de avances de proyectos</h1>
+  <div class="subtitulo">Inicio  |  Seguimiento de proyectos</div>
+
+  <button id="btnVolver">← Volver a proyectos</button>
+
+  <div class="tablero">
+    <!-- Columna 1 -->
+    <div class="columna">
+      <h3>Tareas por hacer</h3>
+      <div class="contenido-columna" id="colTareas">
+        <strong>Tareas pendientes</strong>
+        <div class="lista-tareas">
+          <div class="tarea">Tarea 1</div>
+          <div class="tarea">Tarea 2</div>
+          <div class="tarea">Tarea 3</div>
+        </div>
+      </div>
     </div>
 
-    <div class="tablero">
-      <!-- Columna 1 -->
-      <div class="columna">
-        <h3>Tareas por hacer</h3>
-        <div class="contenido-columna" id="colTareas">
-          <p style="text-align:center; color:#555;">Selecciona un proyecto para ver o agregar tareas.</p>
+    <!-- Columna 2 -->
+    <div class="columna">
+      <h3>En curso</h3>
+      <div class="contenido-columna" id="colEnCurso">
+        <div class="tarjeta-proyecto verde">
+          <strong>Proyecto 1</strong>
+          <div class="arrow">▲</div>
+          <div>Pendiente de aprobación</div>
         </div>
-        <div class="botones-columna">
-          <button id="btnAsignar" disabled>Asignar nueva tarea</button>
+
+        <div class="tarjeta-proyecto azul">
+          <strong>Proyecto 2</strong>
+          <div class="arrow">▼</div>
+          <div>Pendiente de asesoría</div>
         </div>
       </div>
+    </div>
 
-      <!-- Columna 2 -->
-      <div class="columna">
-        <h3>En curso</h3>
-        <div class="contenido-columna" id="colEnCurso">
-          <div class="tarjeta-proyecto" data-proyecto="Proyecto 1">
-            <strong>Proyecto 1</strong>
-            <div class="arrow">▼</div>
-            <div class="lista-tareas">
-              <div class="tarea"><input type="checkbox"><span>Documentación inicial</span><span class="estado">En progreso</span></div>
-              <div class="tarea"><input type="checkbox"><span>Revisión técnica</span><span class="estado">En progreso</span></div>
-            </div>
-            <div class="progreso"><div class="barra" style="width: 0%;"></div></div>
-          </div>
-        </div>
-        <div class="botones-columna">
-          <button id="btnEditar" disabled>Editar tarea</button>
-        </div>
-      </div>
-
-      <!-- Columna 3 -->
-      <div class="columna">
-        <h3>Completadas</h3>
-        <div class="contenido-columna" id="colCompletadas">
-          <div class="tarjeta-proyecto">
-            <strong>Proyecto 3</strong>
-            <p>Proyecto aprobado</p>
-          </div>
+    <!-- Columna 3 -->
+    <div class="columna">
+      <h3>Completadas</h3>
+      <div class="contenido-columna" id="colCompletadas">
+        <div class="tarjeta-proyecto azul">
+          <strong>Proyecto 3</strong>
+          <div class="arrow">▼</div>
+          <div>Proyecto aprobado</div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Botones inferiores -->
+  <div class="botones-inferiores">
+    <button id="btnAsignar">Asignar nueva tarea</button>
+    <button id="btnEditar" disabled>Editar tareas en curso</button>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalTarea" class="modal">
+    <div class="modal-content">
+      <h3 id="modalTitulo">Asignar nueva tarea</h3>
+      <label for="nombreTarea">Nombre de la tarea:</label>
+      <input type="text" id="nombreTarea" placeholder="Ej. Revisión técnica">
+      <label for="estadoTarea">Estado:</label>
+      <select id="estadoTarea">
+        <option>Por hacer</option>
+        <option>En curso</option>
+        <option>Completada</option>
+      </select>
+      <div class="modal-buttons">
+        <button class="btn-guardar" id="guardarTarea">Guardar</button>
+        <button class="btn-cerrar" id="cerrarModal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS funcional -->
   <script>
-  // Lee el rol desde URL o localStorage
-  const params = new URLSearchParams(window.location.search);
-  let rol = params.get('rol') || localStorage.getItem('rolUsuario') || 'emprendedor';
-  localStorage.setItem('rolUsuario', rol); // persistir
-
-  // Mostrar/ocultar "Crear nuevo proyecto" según rol
-  const btnCrear = document.getElementById('btnCrear');
-  if (rol === 'coordinador') {
-    // Coordinador NO crea proyectos
-    if (btnCrear) btnCrear.style.display = 'none';
-  } else {
-    // Emprendedor SÍ crea proyectos
-    if (btnCrear) btnCrear.style.display = 'inline-block';
-  }
-
-  // Seguimiento preservando el rol
-  document.getElementById('btnSeguimiento').addEventListener('click', () => {
-    window.location.href = `seguimientoProyectos.html?rol=${rol}`;
-  });
-</script>
-
-<script>
-  const btnHome = document.getElementById('btnHome');
-  const rolUsuario = localStorage.getItem('rolUsuario');
-
-  if (btnHome) {
-    btnHome.addEventListener('click', e => {
-      e.preventDefault();
-      if (rolUsuario === 'coordinador') {
-        window.location.href = 'inicioC.html';
-      } else {
-        window.location.href = 'inicioE.html';
-      }
-    });
-  }
-    // Lógica de tareas
-    const tarjetas = document.querySelectorAll('.tarjeta-proyecto');
-    const colTareas = document.getElementById('colTareas');
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('modalTarea');
+    const cerrarModal = document.getElementById('cerrarModal');
+    const guardarTarea = document.getElementById('guardarTarea');
     const btnAsignar = document.getElementById('btnAsignar');
     const btnEditar = document.getElementById('btnEditar');
-    let proyectoSeleccionado = null;
+    const tituloModal = document.getElementById('modalTitulo');
+    const nombreTarea = document.getElementById('nombreTarea');
+    const estadoTarea = document.getElementById('estadoTarea');
+    const colTareas = document.getElementById('colTareas');
+    const btnVolver = document.getElementById('btnVolver');
 
-    tarjetas.forEach(tarjeta => {
-      tarjeta.addEventListener('click', () => {
-        tarjetas.forEach(t => t.style.backgroundColor = '#c9dcfa');
-        tarjeta.style.backgroundColor = '#bdf5bd';
-        proyectoSeleccionado = tarjeta.dataset.proyecto;
-        btnAsignar.disabled = false;
-        btnEditar.disabled = false;
-        mostrarTareas(proyectoSeleccionado);
-      });
+    let modoEdicion = false;
+    let tareaSeleccionada = null;
 
-      const arrow = tarjeta.querySelector('.arrow');
-      const lista = tarjeta.querySelector('.lista-tareas');
-      arrow.addEventListener('click', e => {
-        e.stopPropagation();
-        lista.style.display = lista.style.display === 'block' ? 'none' : 'block';
-        arrow.textContent = lista.style.display === 'block' ? '▲' : '▼';
-      });
+    // Ir a vista de coordinador
+    btnVolver.addEventListener('click', () => {
+      window.location.href = "inicioC.html";
     });
 
-    function mostrarTareas(nombre) {
-      const tareas = document.querySelector(`.tarjeta-proyecto[data-proyecto="${nombre}"] .lista-tareas`);
-      colTareas.innerHTML = `<h4>Tareas de ${nombre}</h4>`;
-      tareas.querySelectorAll('.tarea').forEach(t => colTareas.appendChild(t.cloneNode(true)));
+    // Mostrar modal (nueva tarea)
+    btnAsignar.addEventListener('click', () => {
+      modoEdicion = false;
+      tituloModal.textContent = "Asignar nueva tarea";
+      nombreTarea.value = "";
+      estadoTarea.value = "Por hacer";
+      modal.style.display = "flex";
+    });
+
+    // Editar tarea seleccionada
+    btnEditar.addEventListener('click', () => {
+      if (!tareaSeleccionada) return;
+      modoEdicion = true;
+      tituloModal.textContent = "Editar tarea";
+      nombreTarea.value = tareaSeleccionada.textContent.trim();
+      modal.style.display = "flex";
+    });
+
+    // Cerrar modal
+    cerrarModal.addEventListener('click', () => modal.style.display = "none");
+    window.onclick = e => { if (e.target == modal) modal.style.display = "none"; };
+
+    // Guardar tarea
+    guardarTarea.addEventListener('click', () => {
+      if (nombreTarea.value.trim() === "") {
+        alert("Por favor ingresa un nombre de tarea");
+        return;
+      }
+
+      if (modoEdicion && tareaSeleccionada) {
+        tareaSeleccionada.textContent = nombreTarea.value;
+      } else {
+        const nueva = document.createElement('div');
+        nueva.classList.add('tarea');
+        nueva.textContent = nombreTarea.value;
+        colTareas.querySelector('.lista-tareas').appendChild(nueva);
+        activarSeleccionTarea(nueva);
+      }
+      modal.style.display = "none";
+    });
+
+    // Seleccionar tarea
+    function activarSeleccionTarea(tarea) {
+      tarea.addEventListener('click', () => {
+        document.querySelectorAll('.tarea').forEach(t => t.style.backgroundColor = '');
+        tarea.style.backgroundColor = '#bdf5bd';
+        tareaSeleccionada = tarea;
+        btnEditar.disabled = false;
+      });
     }
 
-    // Rol control
-    if (rol === 'emprendedor') {
-      btnAsignar.style.display = 'none';
-      btnEditar.style.display = 'none';
-      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.disabled = true);
-      const msg = document.createElement('p');
-      msg.textContent = 'Modo lectura: solo puedes consultar el avance.';
-      msg.style.color = '#003366';
-      msg.style.textAlign = 'center';
-      msg.style.fontWeight = 'bold';
-      document.querySelector('.contenido').prepend(msg);
-    }
+    document.querySelectorAll('.tarea').forEach(activarSeleccionTarea);
+  });
   </script>
-
-
 </body>
 </html>

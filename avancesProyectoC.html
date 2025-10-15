@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avances por Proyecto — Centro de Emprendurismo ITS</title>
+  <link rel="shortcut icon" href="images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/estilos.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      background-color: #f4f6fb;
+      color: #002f6c;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .main-container {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 220px;
+      background-color: #002f6c;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h2 {
+      padding: 20px;
+      margin: 0;
+      font-size: 16px;
+      background-color: #001f47;
+    }
+
+    .sidebar a {
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 14px;
+      display: block;
+    }
+
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #004a9f;
+    }
+
+    /* ===== CONTENIDO ===== */
+    .content {
+      flex: 1;
+      padding: 25px 35px;
+      overflow-y: auto;
+    }
+
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .header-section h1 {
+      color: #002f6c;
+      font-size: 22px;
+    }
+
+    .busqueda {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .busqueda input {
+      padding: 6px 10px;
+      width: 250px;
+      border: 1px solid #aaa;
+      border-radius: 3px;
+    }
+
+    .busqueda a {
+      color: #004a9f;
+      font-size: 14px;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    /* ===== CONTENEDORES ===== */
+    .contenedor {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 25px;
+      margin-bottom: 30px;
+      transition: all 0.3s;
+    }
+
+    .progreso, .notas {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .progreso h3, .notas h3 {
+      color: #002f6c;
+      margin-bottom: 10px;
+    }
+
+    .grafica {
+      text-align: center;
+    }
+
+    canvas {
+      max-width: 160px;
+      margin: 0 auto;
+    }
+
+    .hitos {
+      margin-top: 15px;
+      color: #002f6c;
+    }
+
+    .hitos label {
+      display: block;
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .notas textarea {
+      width: 100%;
+      height: 120px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      resize: none;
+      padding: 8px;
+    }
+
+    .notas button {
+      margin-top: 10px;
+      background-color: #004a9f;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .acciones {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .btn {
+      background-color: #004a9f;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #002f6c;
+    }
+
+    .mensaje {
+      text-align: center;
+      background-color: #e5ecfa;
+      color: #003366;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 35px auto;
+      width: 60%;
+      font-weight: bold;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ===== NAVBAR SUPERIOR ===== -->
+  <header class="navbar">
+    <div class="container nav-content">
+      <div class="logo">
+        <img src="images/logoITS.png" alt="ITS" />
+        <span>Instituto Tecnológico de Saltillo</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#" id="btnHome">Home</a>
+        <a href="#" id="btnProyectos">Proyectos</a>
+        <a href="reportesC.html" class="active">Reportes</a>
+      </nav>
+      <div class="user-info">
+        <span class="user-text">Coordinador</span>
+        <div class="user-icon">👤</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <h2>Home</h2>
+      <a href="reporteEmprendedoresC.html">Reporte de Emprendedores</a>
+      <a href="reporteProyectosC.html">Reporte de Proyectos</a>
+      <a href="avancesProyectoC.html" class="active">Avances por Proyecto</a>
+      <a href="estadisticasC.html">Estadísticas</a>
+    </aside>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <section class="content">
+      <div class="header-section">
+        <h1>Avances por Proyecto</h1>
+        <div class="busqueda">
+          <input type="text" id="inputProyecto" placeholder="Ingrese nombre del proyecto...">
+          <a id="btnActualizar">Actualizar Datos</a>
+        </div>
+      </div>
+
+      <div id="contenedorPrincipal"></div>
+
+      <div class="acciones">
+        <button class="btn">Exportar a Excel</button>
+        <button class="btn">Enviar Comentario a Emprendedor</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const contenedor = document.getElementById('contenedorPrincipal');
+    const inputProyecto = document.getElementById('inputProyecto');
+    const btnActualizar = document.getElementById('btnActualizar');
+
+    // Estado inicial
+    renderVista("inicial");
+
+    btnActualizar.addEventListener('click', () => {
+      const nombre = inputProyecto.value.trim().toLowerCase();
+      if (nombre === "medio ambiente") {
+        renderVista("completo");
+      } else if (nombre === "desconocido") {
+        renderVista("noEncontrado");
+      } else if (nombre === "") {
+        renderVista("sinInfo");
+      } else {
+        renderVista("noEncontrado");
+      }
+    });
+
+    function renderVista(tipo) {
+      contenedor.innerHTML = ""; // limpia
+
+      if (tipo === "completo") {
+        contenedor.innerHTML = `
+          <div class="contenedor">
+            <div class="progreso">
+              <h3>Progreso General</h3>
+              <div class="grafica">
+                <canvas id="graficaCircular"></canvas>
+                <p><strong>75% completado</strong></p>
+              </div>
+              <h4 style="color:#002f6c; margin-top:15px;">Hitos Clave</h4>
+              <div class="hitos">
+                <label><input type="checkbox" checked> Investigación de Física</label>
+                <label><input type="checkbox"> Prototipo inicial</label>
+                <label><input type="checkbox"> Pruebas de usuario</label>
+              </div>
+              <button class="btn" style="margin-top:15px;">Editar</button>
+            </div>
+            <div class="notas">
+              <h3>Notas de Supervisión <span style="font-size:18px;">➕</span></h3>
+              <textarea placeholder="Escriba aquí sus comentarios..."></textarea>
+              <button>Guardar Nota</button>
+            </div>
+          </div>
+        `;
+        crearGrafica(75);
+      }
+
+      if (tipo === "noEncontrado") {
+        contenedor.innerHTML = `
+          <div class="mensaje">⚠️ Proyecto no encontrado</div>
+        `;
+      }
+
+      if (tipo === "sinInfo") {
+        contenedor.innerHTML = `
+          <div class="mensaje">⚠️ No hay información disponible para este proyecto</div>
+        `;
+      }
+
+      if (tipo === "inicial") {
+        contenedor.innerHTML = `
+          <div class="mensaje">Ingrese el nombre del proyecto para consultar su avance.</div>
+        `;
+      }
+    }
+
+    function crearGrafica(porcentaje) {
+      const ctx = document.getElementById('graficaCircular');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Completado', 'Restante'],
+          datasets: [{
+            data: [porcentaje, 100 - porcentaje],
+            backgroundColor: ['#4a82e2', '#e0e0e0'],
+            cutout: '75%'
+          }]
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          responsive: true
+        }
+      });
+    }
+
+    // ====== Navegación por rol ======
+    const rol = localStorage.getItem('rolUsuario') || 'coordinador';
+    document.getElementById('btnHome').addEventListener('click', e => {
+      e.preventDefault();
+      window.location.href = rol === 'emprendedor' ? 'inicioE.html' : 'inicioC.html';
+    });
+    document.getElementById('btnProyectos').addEventListener('click', e => {
+      e.preventDefault();
+      window.location.href = `proyectos.html?rol=${rol}`;
+    });
+  </script>
+</body>
+</html>

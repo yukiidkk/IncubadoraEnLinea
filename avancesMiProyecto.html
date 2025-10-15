@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avances de Mi Proyecto</title>
+  <link rel="shortcut icon" href="images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/estilos.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f2f6fc;
+      color: #002f6c;
+    }
+
+    /* --- Encabezado superior --- */
+    header.navbar {
+      background-color: #003366;
+      color: white;
+      padding: 10px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* --- Barra lateral --- */
+    .sidebar {
+      width: 220px;
+      background-color: #002f6c;
+      color: white;
+      height: 100vh;
+      position: fixed;
+      top: 55px;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      font-size: 14px;
+      display: block;
+    }
+
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #014c99;
+    }
+
+    /* --- Contenedor principal --- */
+    .main-content {
+      margin-left: 240px;
+      padding: 25px 40px;
+      min-height: calc(100vh - 60px);
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px 30px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .section {
+      background-color: white;
+      border: 1px solid #d0d0d0;
+      border-radius: 4px;
+      margin-top: 20px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .input-box {
+      width: 300px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* --- Sección de progreso --- */
+    .progress-left {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      flex: 1;
+    }
+
+    .circle-progress {
+      width: 160px;
+      height: 160px;
+      border: 10px solid #5aa1e3;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-weight: bold;
+      color: #003366;
+      font-size: 18px;
+    }
+
+    .circle-progress small {
+      font-weight: normal;
+      font-size: 13px;
+    }
+
+    /* --- Hitos y notas --- */
+    .hitos {
+      flex: 1;
+      margin-left: 40px;
+    }
+
+    .hitos ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .hitos li {
+      margin: 10px 0;
+    }
+
+    .notas {
+      width: 280px;
+      border-left: 1px solid #ccc;
+      padding-left: 20px;
+    }
+
+    .notas textarea {
+      width: 100%;
+      height: 80px;
+      resize: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 8px;
+      padding: 6px;
+    }
+
+    .add-btn {
+      background: none;
+      border: 1px solid #ccc;
+      font-size: 18px;
+      cursor: pointer;
+      width: 25px;
+      height: 25px;
+      border-radius: 3px;
+      float: right;
+    }
+
+    /* --- Botones inferiores --- */
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 25px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 6px;
+      padding: 10px 18px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-pdf {
+      background-color: #5a8ef0;
+      color: white;
+    }
+
+    .btn-comment {
+      background-color: #d9d9d9;
+      color: black;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <div>
+      <img src="images/logoITS.png" alt="ITS" style="height:35px;vertical-align:middle;margin-right:10px;">
+      Instituto Tecnológico de Saltillo
+    </div>
+    <nav class="nav-links">
+      <a href="#" id="btnHome">Home</a>
+      <a href="#" id="btnProyectos">Proyectos</a>
+      <a href="#">Reportes</a>
+    </nav>
+    <div>👤 Emprendedor</div>
+  </header>
+
+  <aside class="sidebar">
+    <a href="proyectos.html">Proyecto</a>
+    <a href="avancesMiProyecto.html" class="active">Avances de Mi Proyecto</a>
+    <a href="eventos.html">Eventos</a>
+  </aside>
+
+  <main class="main-content">
+    <div class="container">
+      <h2>Avances de Mi Proyecto</h2>
+      <input type="text" class="input-box" placeholder="Nombre de mi proyecto">
+
+      <div class="section">
+        <div class="progress-left">
+          <div>
+            <h4>Progreso General</h4>
+            <div class="circle-progress">
+              <span>75%</span>
+              <small>completado</small>
+            </div>
+          </div>
+
+          <div class="hitos">
+            <h4>Hitos Clave</h4>
+            <ul>
+              <li><input type="checkbox" checked disabled> Investigación de Física</li>
+              <li><input type="checkbox" disabled> Prototipo inicial</li>
+              <li><input type="checkbox" disabled> Pruebas de usuario</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="notas">
+          <h4>Notas de Supervisión <button class="add-btn">+</button></h4>
+          <textarea placeholder="Escriba aquí sus comentarios..." disabled></textarea>
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <button class="btn btn-pdf">Exportar a PDF</button>
+        <button class="btn btn-comment">Enviar Comentario a coordinador</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+  // Rol actual
+  const rol = 'emprendedor';
+
+  // Botón "Home"
+  document.getElementById('btnHome').onclick = e => {
+    e.preventDefault();
+    window.location.href = 'inicioE.html';
+  };
+
+  // Botón "Proyectos" → vista de proyectos del emprendedor
+  document.getElementById('btnProyectos').onclick = e => {
+    e.preventDefault();
+    window.location.href = 'proyectos.html?rol=' + rol;
+  };
+</script>
+
+</body>
+</html>
