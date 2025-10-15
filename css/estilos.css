@@ -459,6 +459,7 @@ input:focus {
 /* Estilo para el botón de Eliminar*/
 .btn-delete-its {
     background-color: #dc3545;
+    color: white;
     border: none;
     transition: background-color 0.3s ease;
 }
