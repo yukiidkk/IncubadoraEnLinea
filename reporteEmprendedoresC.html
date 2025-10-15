@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes de Emprendedores — Centro de Emprendurismo ITS</title>
+  <link rel="shortcut icon" href="images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/estilos.css">
+  <style>
+    body {
+      background-color: #f5f7fb;
+      color: #003366;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* ==== Contenedor general ==== */
+    .report-container {
+      max-width: 1000px;
+      margin: 40px auto;
+      background-color: #e9f1ff;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 25px 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #003366;
+      margin-bottom: 20px;
+    }
+
+    .busqueda {
+      margin-bottom: 15px;
+    }
+
+    .busqueda label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .busqueda input {
+      width: 300px;
+      padding: 6px 10px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+    }
+
+    /* ==== Tabla ==== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #c9dcff;
+      border: 1px solid #333;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #e1e9ff;
+      color: #00264d;
+      font-weight: bold;
+    }
+
+    td {
+      color: #002b66;
+    }
+
+    .estado-activo {
+      color: green;
+      font-weight: bold;
+    }
+
+    /* ==== Botones ==== */
+    .botones {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      background-color: #2a62b8;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #003366;
+    }
+
+    /* ==== Mensaje vacío ==== */
+    .mensaje-vacio {
+      background-color: #dfe9f9;
+      border: 1px solid #999;
+      border-radius: 5px;
+      padding: 15px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      width: 50%;
+      margin: 40px auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- ====== NAVBAR ====== -->
+  <header class="navbar">
+    <div class="container nav-content">
+      <div class="logo">
+        <img src="images/logoITS.png" alt="ITS" />
+        <span>Instituto Tecnológico de Saltillo</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#" id="btnHome">Home</a>
+        <a href="#" id="btnProyectos">Proyectos</a>
+        <a href="reportesC.html" class="active">Reportes</a>
+        <a href="#">Eventos</a>
+      </nav>
+
+      <div class="user-info">
+        <span class="user-text">Coordinador</span>
+        <div class="user-icon">👤</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== CONTENIDO PRINCIPAL ====== -->
+  <div class="report-container">
+    <h1>Reportes de Emprendedores</h1>
+
+    <div class="busqueda">
+      <label for="busqueda">Buscar por nombre</label>
+      <input type="text" id="busqueda" placeholder="Buscar...">
+    </div>
+
+    <!-- Tabla con datos -->
+    <table id="tablaDatos">
+      <thead>
+        <tr>
+          <th>Nombre Emprendedor</th>
+          <th>Correo electrónico</th>
+          <th>Teléfono</th>
+          <th>Carrera</th>
+          <th>Semestre</th>
+          <th>Fecha de Registro</th>
+          <th>Estatus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Ejemplo de fila -->
+        <tr>
+          <td>Juan</td>
+          <td>juan@gmail.com</td>
+          <td>12345678</td>
+          <td>Ingeniería</td>
+          <td>6°</td>
+          <td>01/02/25</td>
+          <td class="estado-activo">Activo</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Mensaje cuando no hay datos -->
+    <div id="mensajeVacio" class="mensaje-vacio" style="display:none;">
+      No hay datos para generar el reporte !!
+    </div>
+
+    <div class="botones">
+      <button class="btn" id="btnExportar">Exportar Reporte Excel</button>
+      <button class="btn" id="btnRegresar">Regresar ←</button>
+    </div>
+  </div>
+
+  <script>
+    // Controlar la vista según datos
+    const tieneDatos = true; // Cambia a false para probar la vista vacía
+
+    const tabla = document.getElementById('tablaDatos');
+    const mensaje = document.getElementById('mensajeVacio');
+
+    if (!tieneDatos) {
+      tabla.style.display = 'none';
+      mensaje.style.display = 'block';
+    }
+
+    // Botón de regresar
+    document.getElementById('btnRegresar').addEventListener('click', () => {
+      window.location.href = 'reportesC.html';
+    });
+
+    // Exportar reporte simulado
+    document.getElementById('btnExportar').addEventListener('click', () => {
+      alert('Simulación: El reporte se exportaría a Excel o PDF.');
+    });
+
+    // Navegación según rol
+    const rol = localStorage.getItem('rolUsuario') || 'coordinador';
+    document.getElementById('btnHome').addEventListener('click', e => {
+      e.preventDefault();
+      window.location.href = rol === 'emprendedor' ? 'inicioE.html' : 'inicioC.html';
+    });
+    document.getElementById('btnProyectos').addEventListener('click', e => {
+      e.preventDefault();
+      window.location.href = `proyectos.html?rol=${rol}`;
+    });
+  </script>
+</body>
+</html>
