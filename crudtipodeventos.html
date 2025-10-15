@@ -138,19 +138,46 @@
       margin-top: 40px;
     }
 
-    .buttons button {
+    /* Estilo Base para los botones de acción (Registrar, Actualizar, Eliminar) */
+ .btn-action-small {
+flex: 1; 
+padding: 12px 15px;
+font-size: 1rem;
+ font-weight: 600;
+ border-radius: 4px;
+text-align: center;
+ color: white;
+border: none;
+ cursor: pointer;
+ transition: background-color 0.3s ease;
+ }
+    
+    /* Estilo para el botón de Registrar (ITS Blue) */
+    .btn-primary-its {
       background-color: #002855;
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
     }
-
-    .buttons button:hover {
+    .btn-primary-its:hover {
       background-color: #004aad;
     }
+
+/* Estilo para el botón de Actualizar (Secondary/Blue) */
+    .btn-secondary-its {
+  background-color: #1a73e8; 
+    }
+
+    .btn-secondary-its:hover {
+       background-color: #0d5ddf;
+    }
+
+    /* Estilo para el botón de Eliminar (Danger Red) */
+    .btn-delete-its {
+      background-color: #dc3545;
+    }
+    .btn-delete-its:hover {
+      background-color: #c82333;
+    }
+
+   
 
     /* Responsividad */
     @media (max-width: 700px) {
@@ -211,9 +238,9 @@
     </div>
 
     <div class="buttons">
-      <button>Crear tipo evento</button>
-      <button>Actualizar tipo evento</button>
-      <button>Eliminar tipo evento</button>
+       <button class="btn-action-small btn-primary-its">Registrar</button>
+<button class="btn-action-small btn-secondary-its">Actualizar</button>
+ <button class="btn-action-small btn-delete-its">Eliminar</button>
     </div>
   </div>
 
