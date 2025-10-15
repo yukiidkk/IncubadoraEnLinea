@@ -96,50 +96,20 @@ body {
 /* ===== CALENDARIO Y LISTA ===== */
 .content {
   display: flex;
-  gap: 60px;
+  gap: 40px;
   align-items: flex-start;
 }
 
 /* ===== CALENDARIO ===== */
-.calendar {
-  background-color: #4e4e4e;
-  color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-}
-
-.calendar-box table {
-  border-collapse: collapse;
-  width: 100%;
-  text-align: center;
-}
-
-.calendar-box th, .calendar-box td {
-  padding: 8px;
-}
-
-.calendar-box td {
-  cursor: pointer;
-}
-
-.calendar-box td.selected {
-  background-color: #004aad;
-  border-radius: 50%;
-}
-.content {
-    display: flex;
-    gap: 60px;
-    align-items: flex-start;
-}
-
 /* Calendario */
 .calendar {
+    flex: 1;
     background-color: #4e4e4e;
     color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    max-width: 400px;
 }
 
 .calendar-box table {
@@ -162,6 +132,7 @@ body {
 }
 /* ===== LISTA DE TUTORÍAS ===== */
 .tutorias {
+  flex: 1;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.1);

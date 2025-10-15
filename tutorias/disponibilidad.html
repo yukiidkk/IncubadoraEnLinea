@@ -46,68 +46,30 @@
         <main class="main">
             <h2>Tutorías</h2>
             <h3>Disponibilidad</h3>
-       <!--CALENDATIO-->
-            <div class="content">
-               <div class="calendar">
-    <input type="month" id="mes" value="2016-06">
-    <div class="calendar-box">
-        <table>
-            <thead>
-                <tr>
-                    <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
-                    <th>Thu</th><th>Fri</th><th>Sat</th>
-                </tr>
-            </thead>
-            <tbody id="calendar-body"></tbody>
-        </table>
-    </div>
-</div>
 
-<script>
-    const monthInput = document.getElementById("mes");
-    const calendarBody = document.getElementById("calendar-body");
-
-    function generarCalendario(year, month) {
-        calendarBody.innerHTML = "";
-        const firstDay = new Date(year, month, 1).getDay();
-        const lastDate = new Date(year, month + 1, 0).getDate();
-        let date = 1;
-
-        for (let i = 0; i < 6; i++) {
-            const row = document.createElement("tr");
-            for (let j = 0; j < 7; j++) {
-                const cell = document.createElement("td");
-                if (i === 0 && j < firstDay) {
-                    cell.classList.add("empty");
-                    row.appendChild(cell);
-                } else if (date > lastDate) {
-                    cell.classList.add("empty");
-                    row.appendChild(cell);
-                } else {
-                    cell.textContent = date;
-                    cell.addEventListener("click", () => seleccionarFecha(cell));
-                    row.appendChild(cell);
-                    date++;
-                }
-            }
-            calendarBody.appendChild(row);
-        }
-    }
-
-    function seleccionarFecha(cell) {
-        document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
-        cell.classList.add("selected");
-    }
-
-    monthInput.addEventListener("change", () => {
-        const [year, month] = monthInput.value.split("-").map(Number);
-        generarCalendario(year, month - 1);
-    });
-
-    // Inicializar calendario al cargar
-    const [initYear, initMonth] = monthInput.value.split("-").map(Number);
-    generarCalendario(initYear, initMonth - 1);
-</script>
+    <!-- CONTENEDOR DE CALENDARIO Y FORMULARIO -->
+            <div class="content-wrapper">
+                <!-- CALENDARIO -->
+                <div class="calendario-container">
+                    <div class="calendar">
+                        <input type="month" id="mes" value="2023-01">
+                        <div class="calendar-box">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Dom</th>
+                                        <th>Lun</th>
+                                        <th>Mar</th>
+                                        <th>Mie</th>
+                                        <th>Jue</th>
+                                        <th>Vie</th>
+                                        <th>Sab</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="calendar-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- FORMULARIO -->
@@ -125,12 +87,12 @@
                         <label>Seleccionar Tutor</label>
                         <select><option>Tutor</option></select>
                     </div>
-
+                    <!-- 
                     <div class="form-group">
                         <label>Seleccionar hora disponible</label>
                         <select><option>Hora</option></select>
                     </div>
-
+                    -->
                     <div class="form-group">
                         <label>Horas Disponibles</label>
                         <textarea placeholder="Horas para agenda"></textarea>
@@ -145,6 +107,52 @@
             </div>
         </main>
     </div>
+
+    <script>
+        const monthInput = document.getElementById("mes");
+        const calendarBody = document.getElementById("calendar-body");
+
+        function generarCalendario(year, month) {
+            calendarBody.innerHTML = "";
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            let date = 1;
+
+            for (let i = 0; i < 6; i++) {
+                const row = document.createElement("tr");
+                for (let j = 0; j < 7; j++) {
+                    const cell = document.createElement("td");
+                    if (i === 0 && j < firstDay) {
+                        cell.classList.add("empty");
+                        row.appendChild(cell);
+                    } else if (date > lastDate) {
+                        cell.classList.add("empty");
+                        row.appendChild(cell);
+                    } else {
+                        cell.textContent = date;
+                        cell.addEventListener("click", () => seleccionarFecha(cell));
+                        row.appendChild(cell);
+                        date++;
+                    }
+                }
+                calendarBody.appendChild(row);
+            }
+        }
+
+        function seleccionarFecha(cell) {
+            document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
+            cell.classList.add("selected");
+        }
+
+        monthInput.addEventListener("change", () => {
+            const [year, month] = monthInput.value.split("-").map(Number);
+            generarCalendario(year, month - 1);
+        });
+
+        // Inicializar calendario al cargar
+        const [initYear, initMonth] = monthInput.value.split("-").map(Number);
+        generarCalendario(initYear, initMonth - 1);
+    </script>
    
 
 </body>

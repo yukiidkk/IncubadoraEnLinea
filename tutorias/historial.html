@@ -45,22 +45,60 @@
     <main class="main">
       <h2>Tutorías</h2>
       <h3>Historial</h3>
+
+
           <!--CALENDATIO-->
-            <div class="content">
-               <div class="calendar">
-    <input type="month" id="mes" value="2016-06">
-    <div class="calendar-box">
-        <table>
+  <div class="content-wrapper">
+    <div class="content">
+      <div class="calendar">
+        <input type="month" id="mes" value="2023-01">
+        <div class="calendar-box">
+          <table>
             <thead>
-                <tr>
-                    <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
-                    <th>Thu</th><th>Fri</th><th>Sat</th>
-                </tr>
+              <tr>
+                <th>Dom</th>
+                <th>Lun</th>
+                <th>Ma</th>
+                <th>Mie</th>
+                <th>Jue</th>
+                <th>Vie</th>
+                <th>Sab</th>
+              </tr>
             </thead>
             <tbody id="calendar-body"></tbody>
-        </table>
-    </div>
-</div>
+          </table>
+        </div>
+      </div>
+      <!-- LISTA DE TUTORÍAS -->
+      <div class="tutorias">
+        <h4>Tutorías Agendadas</h4>
+        <div class="lista">
+          <label class="item">
+            <input type="radio" name="tutoria" checked>
+            <div>
+              <strong>Hora X</strong><br>
+              <small>Nombre proyecto, nombre emprendedor</small>
+            </div>
+          </label>
+  
+          <label class="item">
+            <input type="radio" name="tutoria">
+            <div>
+              <strong>Evento X</strong><br>
+              <small>Nombre proyecto, nombre emprendedor</small>
+            </div>
+          </label>
+  
+          <label class="item">
+            <input type="radio" name="tutoria">
+            <div>
+              <strong>Evento X</strong><br>
+              <small>Nombre proyecto, nombre emprendedor</small>
+            </div>
+          </label>
+        </div>
+        </main>
+      </div>
 
 <script>
     const monthInput = document.getElementById("mes");
@@ -109,35 +147,7 @@
 </script>
                 </div>
 
-        <!-- LISTA DE TUTORÍAS -->
-        <div class="tutorias">
-          <h4>Tutorías Agendadas</h4>
-          <div class="lista">
-            <label class="item">
-              <input type="radio" name="tutoria" checked>
-              <div>
-                <strong>Hora X</strong><br>
-                <small>Nombre proyecto, nombre emprendedor</small>
-              </div>
-            </label>
-
-            <label class="item">
-              <input type="radio" name="tutoria">
-              <div>
-                <strong>Evento X</strong><br>
-                <small>Nombre proyecto, nombre emprendedor</small>
-              </div>
-            </label>
-
-            <label class="item">
-              <input type="radio" name="tutoria">
-              <div>
-                <strong>Evento X</strong><br>
-                <small>Nombre proyecto, nombre emprendedor</small>
-              </div>
-            </label>
-          </div>
-        </div>
+        
       </div>
     </main>
   </div>

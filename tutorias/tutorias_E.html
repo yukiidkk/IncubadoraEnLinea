@@ -24,7 +24,7 @@
         </nav>
         <div class="usuario">
             <span>Emprendedor</span>
-             <img src="../images/user-icon.png" alt="usuario" class="usuario-img"  width="25" height="25">
+            <img src="../images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
         </div>
     </header>
 
@@ -40,127 +40,124 @@
             </ul>
         </aside>
 
-        <!-- CONTENIDO PRINCIPAL -->
+         <!-- CONTENIDO PRINCIPAL -->
         <main class="main">
             <h2>Tutorías</h2>
             <h3>Agenda</h3>
-            <!--CALENDATIO-->
-            <div class="content">
-                <div class="calendar">
-                    <input type="month" id="mes" value="2016-06">
-                    <div class="calendar-box">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Dom</th>
-                                    <th>Lun</th>
-                                    <th>Mar</th>
-                                    <th>Mie</th>
-                                    <th>Jue</th>
-                                    <th>Vie</th>
-                                    <th>Sab</th>
-                                </tr>
-                            </thead>
-                            <tbody id="calendar-body"></tbody>
-                        </table>
+            
+            <!-- CONTENEDOR DE CALENDARIO Y FORMULARIO -->
+            <div class="content-wrapper">
+                <div class="calendario-container">
+                    <div class="calendar">
+                        <input type="month" id="mes" value="2023-01">
+                        <div class="calendar-box">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Dom</th>
+                                        <th>Lun</th>
+                                        <th>Mar</th>
+                                        <th>Mie</th>
+                                        <th>Jue</th>
+                                        <th>Vie</th>
+                                        <th>Sab</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="calendar-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <script>
-                    const monthInput = document.getElementById("mes");
-                    const calendarBody = document.getElementById("calendar-body");
+                <!-- FORMULARIO -->
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label>Nombre del emprendedor</label>
+                            <select>
+                                <option>Emprendedor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre del proyecto</label>
+                            <select>
+                                <option>Proyecto</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de tutoría</label>
+                            <div class="row">
+                                <select>
+                                    <option>Día</option>
+                                </select>
+                                <select>
+                                    <option>Mes</option>
+                                </select>
+                                <select>
+                                    <option>Año</option>
+                                </select>
 
-                    function generarCalendario(year, month) {
-                        calendarBody.innerHTML = "";
-                        const firstDay = new Date(year, month, 1).getDay();
-                        const lastDate = new Date(year, month + 1, 0).getDate();
-                        let date = 1;
-
-                        for (let i = 0; i < 6; i++) {
-                            const row = document.createElement("tr");
-                            for (let j = 0; j < 7; j++) {
-                                const cell = document.createElement("td");
-                                if (i === 0 && j < firstDay) {
-                                    cell.classList.add("empty");
-                                    row.appendChild(cell);
-                                } else if (date > lastDate) {
-                                    cell.classList.add("empty");
-                                    row.appendChild(cell);
-                                } else {
-                                    cell.textContent = date;
-                                    cell.addEventListener("click", () => seleccionarFecha(cell));
-                                    row.appendChild(cell);
-                                    date++;
-                                }
-                            }
-                            calendarBody.appendChild(row);
-                        }
-                    }
-
-                    function seleccionarFecha(cell) {
-                        document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
-                        cell.classList.add("selected");
-                    }
-
-                    monthInput.addEventListener("change", () => {
-                        const [year, month] = monthInput.value.split("-").map(Number);
-                        generarCalendario(year, month - 1);
-                    });
-
-                    // Inicializar calendario al cargar
-                    const [initYear, initMonth] = monthInput.value.split("-").map(Number);
-                    generarCalendario(initYear, initMonth - 1);
-                </script>
-            </div>
-
-            <!-- FORMULARIO -->
-            <div class="form-section">
-                 <div class="form-group">
-                    <label>Nombre del emprendedor</label>
-                    <select>
-                        <option>Emprendedor</option>
-                    </select>
-                </div>
-                 <div class="form-group">
-                    <label>Nombre del proyecto</label>
-                    <select>
-                        <option>Proyecto</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Fecha de tutoría</label>
-                    <div class="row">
-                        <select>
-                            <option>Día</option>
-                        </select>
-                        <select>
-                            <option>Mes</option>
-                        </select>
-                        <select>
-                            <option>Año</option>
-                        </select>
-                        
-                    </div>
-                </div>
-
-               
-
-                <div class="form-group">
-                    <label>Seleccionar hora </label>
-                    <select>
-                        <option>Hora</option>
-                    </select>
-                </div>
-
-               
-
-                <div class="buttons">
-                    <button class="btn registrar">Registrar</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Seleccionar hora </label>
+                            <select>
+                                <option>Hora</option>
+                            </select>
+                        </div>
+                        <div class="buttons">
+                            <button class="btn registrar">Registrar</button>
+                        </div>
                 </div>
             </div>
+        </main>
     </div>
-    </main>
+    <script>
+        const monthInput = document.getElementById("mes");
+        const calendarBody = document.getElementById("calendar-body");
+
+        function generarCalendario(year, month) {
+            calendarBody.innerHTML = "";
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            let date = 1;
+
+            for (let i = 0; i < 6; i++) {
+                const row = document.createElement("tr");
+                for (let j = 0; j < 7; j++) {
+                    const cell = document.createElement("td");
+                    if (i === 0 && j < firstDay) {
+                        cell.classList.add("empty");
+                        row.appendChild(cell);
+                    } else if (date > lastDate) {
+                        cell.classList.add("empty");
+                        row.appendChild(cell);
+                    } else {
+                        cell.textContent = date;
+                        cell.addEventListener("click", () => seleccionarFecha(cell));
+                        row.appendChild(cell);
+                        date++;
+                    }
+                }
+                calendarBody.appendChild(row);
+            }
+        }
+
+        function seleccionarFecha(cell) {
+            document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
+            cell.classList.add("selected");
+        }
+
+        monthInput.addEventListener("change", () => {
+            const [year, month] = monthInput.value.split("-").map(Number);
+            generarCalendario(year, month - 1);
+        });
+
+        // Inicializar calendario al cargar
+        const [initYear, initMonth] = monthInput.value.split("-").map(Number);
+        generarCalendario(initYear, initMonth - 1);
+    </script>
     </div>
+
 
 
 </body>

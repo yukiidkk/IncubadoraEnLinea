@@ -77,7 +77,7 @@ body {
     background-color: #0056b3;
 }
 
-/* ===== CONTENIDO ===== */
+/* ===== CONTENIDO PRINCIPAL ===== */
 .main {
     flex: 1;
     padding: 20px 40px;
@@ -93,20 +93,22 @@ body {
     margin-bottom: 20px;
 }
 
-/* ===== CALENDARIO Y FORMULARIO ===== */
-.content {
+/* ===== CONTENEDOR DE CALENDARIO Y FORMULARIO ===== */
+.content-wrapper {
     display: flex;
-    gap: 60px;
+    gap: 40px;
     align-items: flex-start;
 }
 
 /* Calendario */
-.calendar {
+.calendario-container {
+    flex: 1;
     background-color: #4e4e4e;
     color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    max-width: 400px;
 }
 
 .calendar-box table {
@@ -130,9 +132,15 @@ body {
 
 /* ===== FORMULARIO ===== */
 .form-section {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    max-width: 400px;
 }
 
 .form-group label {
@@ -141,19 +149,24 @@ body {
     display: block;
 }
 
+.row {
+    display: flex;
+    gap: 5px;
+}
+
 .row select {
-    margin-right: 5px;
+    flex: 1;
 }
 
 select, textarea {
     padding: 8px;
     border-radius: 6px;
     border: 1px solid #ccc;
-    width: 180px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 textarea {
-    width: 200px;
     height: 70px;
     resize: none;
 }
@@ -172,6 +185,7 @@ textarea {
     cursor: pointer;
     border-radius: 5px;
     font-weight: 600;
+    flex: 1;
 }
 
 .btn.registrar { background-color: #004aad; }
@@ -181,3 +195,4 @@ textarea {
 .btn:hover {
     opacity: 0.85;
 }
+
