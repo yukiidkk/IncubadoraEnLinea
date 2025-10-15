@@ -23,11 +23,25 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
     }
 
     .logo {
       font-weight: bold;
       font-size: 18px;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 25px;
+      margin-right: 10px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      position: relative;
     }
 
     nav a {
@@ -35,6 +49,55 @@
       text-decoration: none;
       color: white;
       font-weight: bold;
+      position: relative;
+      padding: 5px 10px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* --- Dropdown --- */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown > a::after {
+      content: " ▼";
+      font-size: 0.8em;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #e0e0e0;
+      min-width: 230px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 10;
+      top: 35px;
+      left: 0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .dropdown-content a {
+      color: #043763;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #bfc8cf;
+    }
+
+    /* ✅ hace que el submenú permanezca visible mientras el cursor esté encima */
+    .dropdown:hover .dropdown-content,
+    .dropdown-content:hover {
+      display: block;
     }
 
     .user {
@@ -112,8 +175,19 @@
     .participants-box {
       border: 1px solid #ccc;
       padding: 10px;
-      height: 100px;
+      height: auto;
       margin-bottom: 10px;
+    }
+
+    .participant {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .participant input[type="checkbox"] {
+      margin-right: 8px;
+      cursor: pointer;
     }
 
     .btn {
@@ -140,13 +214,24 @@
       <img src="C:\Users\reyes\OneDrive\Documentos\IncubadoraEnLinea\images\logoITS.png" alt="">
       Instituto Tecnológico de Saltillo
     </div>
+
     <nav>
-      <a href="#">Home</a>
-      <a href="#">Proyectos</a>
-      <a href="#">Usuarios</a>
-      <a href="#">Roles</a>
-      <a href="#">Eventos</a>
+      <a href="http://127.0.0.1:5500/inicioC.html">Home</a>
+    <a href="http://127.0.0.1:5500/proyectos.html?rol=coordinador">Proyectos</a>
+    <a href="http://127.0.0.1:5500/gestionUsuarios.html">Usuarios</a>
+    <a href="http://127.0.0.1:5500/roles.html">Roles</a>
+
+
+      <!-- ✅ Nueva opción Eventos con submenú seleccionable -->
+      <div class="dropdown">
+        <a href="#">Eventos</a>
+        <div class="dropdown-content">
+          <a href="http://127.0.0.1:5500/CRUDEventos.html#">Administrar Evento</a>
+          <a href="http://127.0.0.1:5500/crudtipodeventos.html">Administrar Tipo de Evento</a>
+        </div>
+      </div>
     </nav>
+
     <div class="user">
       <div class="user-circle"></div>
       <span>USUARIO</span>
@@ -156,12 +241,11 @@
   <main class="container">
     <!-- Próximos eventos -->
     <div class="column">
-      <h2>Eventos Proximos.</h2>
+      <h2>Eventos Próximos</h2>
       <div class="search-box">
         <input type="text" placeholder="Buscar un evento por nombre">
         <button>Buscar</button>
       </div>
-      <!-- Lista de eventos -->
       <div class="event-item">
         <div class="event-icon">✔</div>
         <div>
@@ -172,14 +256,7 @@
       <div class="event-item">
         <div class="event-icon">✔</div>
         <div>
-          <strong>Evento X</strong><br>
-          <small>Descripción del evento</small>
-        </div>
-      </div>
-      <div class="event-item">
-        <div class="event-icon">✔</div>
-        <div>
-          <strong>Evento X</strong><br>
+          <strong>Evento Y</strong><br>
           <small>Descripción del evento</small>
         </div>
       </div>
@@ -190,12 +267,12 @@
       <h2>Evento X</h2>
       <p><strong>Participantes:</strong></p>
       <div class="participants-box">
-        Participante 1.<br>
-        Participante 2.<br>
-        Participante 3.<br>
-        Participante 4.
+        <div class="participant"><input type="checkbox"> Participante 1</div>
+        <div class="participant"><input type="checkbox"> Participante 2</div>
+        <div class="participant"><input type="checkbox"> Participante 3</div>
+        <div class="participant"><input type="checkbox"> Participante 4</div>
       </div>
-      <div class="small-text">Lugares disponibles: x</div>
+      <div class="small-text">Lugares disponibles: 5</div>
       <button class="btn">Inscribirse</button>
     </div>
 
@@ -205,14 +282,7 @@
       <div class="event-item">
         <div class="event-icon">✔</div>
         <div>
-          <strong>Evento X</strong><br>
-          <small>Descripción del evento</small>
-        </div>
-      </div>
-      <div class="event-item">
-        <div class="event-icon">✔</div>
-        <div>
-          <strong>Evento X</strong><br>
+          <strong>Evento Z</strong><br>
           <small>Descripción del evento</small>
         </div>
       </div>

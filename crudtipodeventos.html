@@ -33,15 +33,55 @@
       margin-right: 10px;
     }
 
+    nav {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
     nav a {
       color: white;
       text-decoration: none;
       margin: 0 15px;
       font-weight: 500;
+      position: relative;
     }
 
     nav a:hover {
       text-decoration: underline;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #e0e0e0;
+      min-width: 220px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      z-index: 1;
+      right: 0;
+    }
+
+    .dropdown-content a {
+      color: #000;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-weight: 500;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ccc;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
 
     .usuario {
@@ -138,21 +178,19 @@
       margin-top: 40px;
     }
 
-    /* Estilo Base para los botones de acción (Registrar, Actualizar, Eliminar) */
- .btn-action-small {
-flex: 1; 
-padding: 12px 15px;
-font-size: 1rem;
- font-weight: 600;
- border-radius: 4px;
-text-align: center;
- color: white;
-border: none;
- cursor: pointer;
- transition: background-color 0.3s ease;
- }
-    
-    /* Estilo para el botón de Registrar (ITS Blue) */
+    .btn-action-small {
+      flex: 1; 
+      padding: 12px 15px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      text-align: center;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
     .btn-primary-its {
       background-color: #002855;
     }
@@ -160,16 +198,13 @@ border: none;
       background-color: #004aad;
     }
 
-/* Estilo para el botón de Actualizar (Secondary/Blue) */
     .btn-secondary-its {
-  background-color: #1a73e8; 
+      background-color: #1a73e8; 
     }
-
     .btn-secondary-its:hover {
-       background-color: #0d5ddf;
+      background-color: #0d5ddf;
     }
 
-    /* Estilo para el botón de Eliminar (Danger Red) */
     .btn-delete-its {
       background-color: #dc3545;
     }
@@ -177,7 +212,6 @@ border: none;
       background-color: #c82333;
     }
 
-    /* Responsividad */
     @media (max-width: 700px) {
       .buttons {
         flex-direction: column;
@@ -208,10 +242,20 @@ border: none;
       Instituto Tecnológico de Saltillo
     </div>
     <nav>
-      <a href="#">Home</a>
-      <a href="#">Proyectos</a>
-      <a href="#">Usuarios</a>
-      <a href="#">Roles</a>
+    <a href="http://127.0.0.1:5500/inicioC.html">Home</a>
+    <a href="http://127.0.0.1:5500/proyectos.html?rol=coordinador">Proyectos</a>
+    <a href="http://127.0.0.1:5500/gestionUsuarios.html">Usuarios</a>
+    <a href="http://127.0.0.1:5500/roles.html">Roles</a>
+
+
+      <!-- 🔽 NUEVO MENÚ DESPLEGABLE -->
+      <div class="dropdown">
+        <a href="#">Eventos ▾</a>
+        <div class="dropdown-content">
+          <a href="http://127.0.0.1:5500/CRUDEventos.html#">Administrar Evento</a>
+          <a href="http://127.0.0.1:5500/gestioninscripcioneventos.html#">Inscripciones a Eventos</a>
+        </div>
+      </div>
     </nav>
     <div class="usuario">
       <div class="circle"></div>
@@ -236,9 +280,9 @@ border: none;
     </div>
 
     <div class="buttons">
-       <button class="btn-action-small btn-primary-its">Registrar</button>
-<button class="btn-action-small btn-secondary-its">Actualizar</button>
- <button class="btn-action-small btn-delete-its">Eliminar</button>
+      <button class="btn-action-small btn-primary-its">Registrar</button>
+      <button class="btn-action-small btn-secondary-its">Actualizar</button>
+      <button class="btn-action-small btn-delete-its">Eliminar</button>
     </div>
   </div>
 

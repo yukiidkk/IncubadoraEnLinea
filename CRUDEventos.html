@@ -15,117 +15,158 @@
     header {
       background-color: #002855;
       color: white;
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 10px 40px;
- }
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 40px;
+    }
 
-header .logo {
-display: flex;
- align-items: center;
- font-weight: bold;
- font-size: 18px;
-}
+    header .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
 
-header .logo img {
-height: 25px;
-margin-right: 10px;
-}
+    header .logo img {
+      height: 25px;
+      margin-right: 10px;
+    }
 
- nav a {
-color: white;
-text-decoration: none;
-margin: 0 15px;
-font-weight: 500;
- }
+    nav {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
 
- nav a:hover {
-text-decoration: underline;
-}
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 500;
+      position: relative;
+    }
 
- .usuario {
- display: flex;
-align-items: center;
-font-weight: bold;
- font-size: 18px;
- }
+    nav a:hover {
+      text-decoration: underline;
+    }
 
-.usuario .circle {
- width: 20px;
-height: 20px;
- background-color: #eee;
- border-radius: 50%;
- margin-right: 8px;
- }
+    /* ---- MENÚ DESPLEGABLE ---- */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
 
- /* Contenedor principal */
- .container {
- display: flex;
- gap: 30px;
- padding: 40px;
- }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #ddd;
+      min-width: 220px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      z-index: 1;
+      top: 100%;
+      left: 0;
+    }
 
-/* Panel izquierdo */
- .form-panel {
- background-color: white;
-flex: 2;
- padding: 30px;
- border-radius: 10px;
-box-shadow: 0 0 10px rgba(0,0,0,0.1);
- }
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-weight: 500;
+    }
 
-h2 {
-color: #002855;
- margin-bottom: 20px;
- }
+    .dropdown-content a:hover {
+      background-color: #ccc;
+    }
 
- label {
- font-weight: 600;
-display: block;
- margin-top: 15px;
- }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
 
- input, select, textarea {
- width: 100%;
-padding: 10px;
-margin-top: 5px;
- border: 1px solid #ccc;
-border-radius: 5px;
- font-size: 14px;
-}
+    /* Usuario */
+    .usuario {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
 
- textarea {
-height: 100px;
-resize: none;
-}
+    .usuario .circle {
+      width: 20px;
+      height: 20px;
+      background-color: #eee;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
 
- .row {
-display: flex;
-gap: 15px;
-}
+    /* Contenedor principal */
+    .container {
+      display: flex;
+      gap: 30px;
+      padding: 40px;
+    }
 
- .buttons {
-margin-top: 25px;
-display: flex;
-gap: 20px;
- }
+    /* Panel izquierdo */
+    .form-panel {
+      background-color: white;
+      flex: 2;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
 
-    /* Estilo Base para los botones de acción (Registrar, Actualizar, Eliminar) */
- .btn-action-small {
-flex: 1; 
-padding: 12px 15px;
-font-size: 1rem;
- font-weight: 600;
- border-radius: 4px;
-text-align: center;
- color: white;
-border: none;
- cursor: pointer;
- transition: background-color 0.3s ease;
- }
-    
-    /* Estilo para el botón de Registrar (ITS Blue) */
+    h2 {
+      color: #002855;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    textarea {
+      height: 100px;
+      resize: none;
+    }
+
+    .row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .buttons {
+      margin-top: 25px;
+      display: flex;
+      gap: 20px;
+    }
+
+    /* Botones */
+    .btn-action-small {
+      flex: 1;
+      padding: 12px 15px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      text-align: center;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
     .btn-primary-its {
       background-color: #002855;
     }
@@ -133,16 +174,13 @@ border: none;
       background-color: #004aad;
     }
 
-/* Estilo para el botón de Actualizar (Secondary/Blue) */
     .btn-secondary-its {
-  background-color: #1a73e8; 
+      background-color: #1a73e8;
     }
-
     .btn-secondary-its:hover {
-       background-color: #0d5ddf;
+      background-color: #0d5ddf;
     }
 
-    /* Estilo para el botón de Eliminar (Danger Red) */
     .btn-delete-its {
       background-color: #dc3545;
     }
@@ -150,174 +188,182 @@ border: none;
       background-color: #c82333;
     }
 
- /* Panel derecho */
-.right-panel {
- background-color: white;
-flex: 1;
-padding: 30px;
-border-radius: 10px;
-box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
+    /* Panel derecho */
+    .right-panel {
+      background-color: white;
+      flex: 1;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
 
- .search-box {
-display: flex;
-margin-bottom: 20px;
- }
+    .search-box {
+      display: flex;
+      margin-bottom: 20px;
+    }
 
-.search-box input {
- flex: 1;
-padding: 10px;
-border: 1px solid #ccc;
-border-radius: 5px 0 0 5px;
-outline: none;
- }
+    .search-box input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+    }
 
-/* ESTILO ESPECÍFICO para el botón "Buscar" */
     .search-box button {
-border-radius: 0 5px 5px 0;
-background-color: #002855;
-padding: 10px 20px;
+      border-radius: 0 5px 5px 0;
+      background-color: #002855;
+      padding: 10px 20px;
       color: white;
       border: none;
       cursor: pointer;
       font-size: 15px;
- }
+    }
+
     .search-box button:hover {
       background-color: #004aad;
     }
 
-.event-item {
-display: flex;
-align-items: flex-start;
-gap: 10px;
-margin-bottom: 15px;
- }
+    .event-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
 
-.event-icon {
-background-color: #e6f0ff;
- border-radius: 50%;
- padding: 8px;
- }
+    .event-icon {
+      background-color: #e6f0ff;
+      border-radius: 50%;
+      padding: 8px;
+    }
 
-.event-icon::before {
- content: "✔";
- color: #002855;
- font-size: 14px;
-}
+    .event-icon::before {
+      content: "✔";
+      color: #002855;
+      font-size: 14px;
+    }
 
- .event-info strong {
-color: #002855;
-display: block;
-}
+    .event-info strong {
+      color: #002855;
+      display: block;
+    }
 
- .event-info p {
-margin: 0;
-font-size: 14px;
-color: #555;
- }
+    .event-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
 
-</style>
+  </style>
 </head>
 <body>
 <header>
- <div class="Logo">
- <img src="C:\Users\reyes\OneDrive\Documentos\IncubadoraEnLinea\images\logoITS.png" alt="">
- Instituto Tecnológico de Saltillo
- </div>
-<nav>
- <a href="#">Home</a>
-<a href="#">Proyectos</a>
- <a href="#">Usuarios</a>
- <a href="#">Roles</a>
- <a href="#">Eventos</a>
- </nav>
- <div class="usuario">
- <div class="circle"></div>
- USUARIO
-</div>
- </header>
+  <div class="logo">
+    <img src="C:\Users\reyes\OneDrive\Documentos\IncubadoraEnLinea\images\logoITS.png" alt="">
+    Instituto Tecnológico de Saltillo
+  </div>
+  <nav>
+    <a href="http://127.0.0.1:5500/inicioC.html">Home</a>
+    <a href="http://127.0.0.1:5500/proyectos.html?rol=coordinador">Proyectos</a>
+    <a href="http://127.0.0.1:5500/gestionUsuarios.html">Usuarios</a>
+    <a href="http://127.0.0.1:5500/roles.html">Roles</a>
 
- <div class="container">
- <!-- Panel Izquierdo -->
- <div class="form-panel">
- <h2>Eventos</h2>
+    <!-- Dropdown de EVENTOS -->
+    <div class="dropdown">
+      <a href="#">Eventos ▾</a>
+      <div class="dropdown-content">
+        <a href="http://127.0.0.1:5500/gestioninscripcioneventos.html#">Inscritos a Eventos</a>
+        <a href="http://127.0.0.1:5500/crudtipodeventos.html">Administrar Tipo de Evento</a>
+      </div>
+    </div>
+  </nav>
 
-<label>Nombre del evento</label>
-<input type="text" placeholder="Ingrese el nombre del evento">
+  <div class="usuario">
+    <div class="circle"></div>
+    USUARIO
+  </div>
+</header>
 
-<div class="row">
-<div style="flex: 1;">
-<label>Encargado del evento</label>
- <select>
- <option>Seleccionar coordinador</option>
-</select>
- </div>
- <div style="flex: 1;">
- <label>Tipo evento</label>
- <select>
- <option>Tipo</option>
- </select>
- </div>
-</div>
+<div class="container">
+  <!-- Panel Izquierdo -->
+  <div class="form-panel">
+    <h2>Eventos</h2>
 
-<div class="row">
-<div style="flex: 1;">
-<label>Fecha del evento</label>
- <div class="row">
-<select><option>Día</option></select>
- <select><option>Mes</option></select>
- <select><option>Año</option></select>
-</div>
-</div>
-<div style="flex: 1;">
- <label>Cupo del evento</label>
- <input type="number" placeholder="Ingrese cupo">
- </div>
- </div>
+    <label>Nombre del evento</label>
+    <input type="text" placeholder="Ingrese el nombre del evento">
 
-<label>Descripción del evento</label>
-<textarea placeholder="Descripción del evento"></textarea>
+    <div class="row">
+      <div style="flex: 1;">
+        <label>Encargado del evento</label>
+        <select>
+          <option>Seleccionar coordinador</option>
+        </select>
+      </div>
+      <div style="flex: 1;">
+        <label>Tipo evento</label>
+        <select>
+          <option>Tipo</option>
+        </select>
+      </div>
+    </div>
 
- <div class="buttons">
-<!-- Botones de acción con el nuevo estilo (como en la imagen) -->
- <button class="btn-action-small btn-primary-its">Registrar</button>
-<button class="btn-action-small btn-secondary-its">Actualizar</button>
- <button class="btn-action-small btn-delete-its">Eliminar</button>
- </div>
-</div>
-
-<!-- Panel Derecho -->
-<div class="right-panel">
-  <h2>Eventos Próximos</h2>
- <div class="search-box">
-  <input type="text" placeholder="Buscar un evento por nombre">
-<button>Buscar</button>
-</div>
-
-<div class="event-item">
-  <div class="event-icon"></div>
-<div class="event-info">
-   <strong>Evento X</strong>
- <p>Descripción del evento</p>
-</div>
-</div>
-
-<div class="event-item">
-   <div class="event-icon"></div>
-     <div class="event-info">
-       <strong>Evento X</strong>
-       <p>Descripción del evento</p>
-   </div>
-</div>
-
-     <div class="event-item">
-       <div class="event-icon"></div>
-        <div class="event-info">
-         <strong>Evento X</strong>
-          <p>Descripción del evento</p>
+    <div class="row">
+      <div style="flex: 1;">
+        <label>Fecha del evento</label>
+        <div class="row">
+          <select><option>Día</option></select>
+          <select><option>Mes</option></select>
+          <select><option>Año</option></select>
         </div>
-     </div>
-   </div>
- </div>
+      </div>
+      <div style="flex: 1;">
+        <label>Cupo del evento</label>
+        <input type="number" placeholder="Ingrese cupo">
+      </div>
+    </div>
+
+    <label>Descripción del evento</label>
+    <textarea placeholder="Descripción del evento"></textarea>
+
+    <div class="buttons">
+      <button class="btn-action-small btn-primary-its">Registrar</button>
+      <button class="btn-action-small btn-secondary-its">Actualizar</button>
+      <button class="btn-action-small btn-delete-its">Eliminar</button>
+    </div>
+  </div>
+
+  <!-- Panel Derecho -->
+  <div class="right-panel">
+    <h2>Eventos Próximos</h2>
+    <div class="search-box">
+      <input type="text" placeholder="Buscar un evento por nombre">
+      <button>Buscar</button>
+    </div>
+
+    <div class="event-item">
+      <div class="event-icon"></div>
+      <div class="event-info">
+        <strong>Evento X</strong>
+        <p>Descripción del evento</p>
+      </div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-icon"></div>
+      <div class="event-info">
+        <strong>Evento Y</strong>
+        <p>Descripción del evento</p>
+      </div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-icon"></div>
+      <div class="event-info">
+        <strong>Evento Z</strong>
+        <p>Descripción del evento</p>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
