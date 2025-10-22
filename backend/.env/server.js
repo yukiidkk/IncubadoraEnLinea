@@ -1,0 +1,7 @@
+NODE_ENV=development
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=tu_password_mysql
+DB_NAME=Incubadora_bd
+JWT_SECRET=tu_jwt_secret_muy_seguro_aqui
