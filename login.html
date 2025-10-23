@@ -23,16 +23,67 @@
         <div class="login-card">
             <h2>Inicio de sesión</h2>
 
-            <form action="#" method="post">
-                <label for="usuario">Usuario</label>
-                <input type="text" id="usuario" name="usuario" placeholder="Ingrese su usuario" required>
+            <form class="login-form">
+                <label for="usuario">Correo o Usuario</label>
+                <input type="text" id="usuario" name="usuario" placeholder="Ingrese su correo electrónico" required>
 
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
 
                 <button type="submit" class="btn-login">Iniciar sesión</button>
             </form>
+
+            <p class="text-center">¿No tienes cuenta?  
+                <a href="registro.html">Regístrate aquí</a>
+            </p>
         </div>
     </section>
+
+    <!-- 🔽 SCRIPT para conectar con el backend -->
+    <script>
+document.querySelector(".login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const usuario = document.querySelector("#usuario").value;
+  const password = document.querySelector("#password").value;
+
+  try {
+    const response = await fetch("http://localhost:3001/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ correo: usuario, password })
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      alert("✅ Bienvenido " + result.usuario);
+
+      // Guardar datos básicos en localStorage (opcional)
+      localStorage.setItem("usuario", result.usuario);
+      localStorage.setItem("rol", result.rol);
+
+      // 🔹 Redirección según el rol
+      if (result.rol === 1) {
+        // Coordinador
+        window.location.href = "inicioC.html";
+      } else if (result.rol === 2) {
+        // Emprendedor
+        window.location.href = "inicioE.html";
+      } else {
+        alert("⚠️ Rol no reconocido. Contacte al administrador.");
+      }
+
+    } else {
+      alert("❌" + result.message);
+    }
+
+  } catch (err) {
+    console.error("Error al iniciar sesión:", err);
+    alert("Error de conexión con el servidor.");
+  }
+});
+</script>
+
 </body>
 </html>
