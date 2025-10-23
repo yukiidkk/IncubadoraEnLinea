@@ -34,7 +34,7 @@
             </form>
 
             <p class="text-center">¿No tienes cuenta?  
-                <a href="registro.html">Regístrate aquí</a>
+                <a href="registroE.html">Regístrate aquí</a>
             </p>
         </div>
     </section>
@@ -57,7 +57,7 @@ document.querySelector(".login-form").addEventListener("submit", async (e) => {
     const result = await response.json();
 
     if (result.success) {
-      alert("✅ Bienvenido " + result.usuario);
+      //alert("✅ Bienvenido " + result.usuario);
 
       // Guardar datos básicos en localStorage (opcional)
       localStorage.setItem("usuario", result.usuario);
