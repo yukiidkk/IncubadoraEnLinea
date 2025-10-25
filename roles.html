@@ -23,64 +23,247 @@
                 <div class="user-icon">👤</div>
             </div>
         </div>
+        <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #f3f4f6;
+      color: #001d3d;
+    }
+
+    /* NAVBAR */
+.navbar {
+    background: #003366;
+    color: #fff;
+    height: 50px; /* define altura fija */
+    display: flex;
+    align-items: center; /* centra verticalmente el contenido */
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 30px; /* tamaño del icono reducido */
+    height: 30px;
+    margin-right: 8px;
+}
+
+.nav-right {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+    /* Contenido */
+    .container {
+      padding: 40px;
+    }
+
+    .container h2 {
+      color: #001d3d;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .paneles {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .panel {
+      background-color: #dbe7ff;
+      flex: 1;
+      border-radius: 10px;
+      padding: 25px;
+      min-width: 300px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    /* Tabla */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #e0ebff;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f2f6ff;
+    }
+
+    /* Botones */
+    .botones {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      background-color: #003366;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .btn:hover {
+      background-color: #001f54;
+    }
+
+    /* Sección buscar */
+    .buscar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .paneles {
+        flex-direction: column;
+      }
+
+      .botones {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
     </header>
     
     <div class="main-content role-management-view">
         <div class="form-container">
             <header>
                 <h2>Gestión de Roles</h2>
-                <p>Llena los siguientes campos según corresponda:</p>
             </header>
             
-            <div class="search-bar search-bar-small">
-                <input type="text" placeholder="Buscar un usuario">
-                <button type="button" class="btn-search">Buscar</button>
-            </div>
-            
-            <form class="role-form">
-                
-                <div class="columns-wrapper two-fields-row">
-                    
-                    <div class="column">
-                        <div class="form-group">
-                            <label for="nombre-rol">Nombre del rol</label>
-                            <input type="text" id="nombre-rol" name="nombre-rol" placeholder="Ingrese nombre del rol">
-                        </div>
-                    </div>
-                    
-                    <div class="column">
-                        <div class="form-group">
-                            <label>Permisos del rol:</label>
-                            <div class="permissions-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="permisos[]" value="vista"> Vista
-                                </label>
-                                
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="permisos[]" value="actualizar"> Actualizar
-                                </label>
-                                
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="permisos[]" value="eliminar"> Eliminar
-                                </label>
-                                
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="permisos[]" value="crear"> Crear
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="paneles">
+      <!-- Panel izquierdo -->
+      <section class="panel">
+        <label>Nombre del rol</label>
+        <input type="text" placeholder="Nombre del rol">
 
-                <div class="form-actions form-actions-roles">
-                    <button type="submit" class="btn-primary-its btn-action-small" name="action" value="create">Crear rol</button>
-                    <button type="button" class="btn-secondary-its btn-action-small" name="action" value="update">Actualizar rol</button>
-                    <button type="button" class="btn-delete-its btn-action-small" name="action" value="delete">Eliminar rol</button>
-                </div>
+        <label>Permisos del rol:</label>
+        <select>
+          <option>Seleccione el permiso</option>
+          <option>Administrador</option>
+          <option>Usuario</option>
+        </select>
 
-            </form>
+        <h3>Roles creados</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre del Rol</th>
+              <th>Permiso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Administrador</td>
+              <td>Completo</td>
+            </tr>
+            <tr>
+              <td>Editor</td>
+              <td>Escritura</td>
+            </tr>
+            <tr>
+              <td>Invitado</td>
+              <td>Lectura</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="botones">
+          <button class="btn">Crear rol</button>
+          <button class="btn">Actualizar rol</button>
+          <button class="btn">Eliminar rol</button>
         </div>
-    </div>
+      </section>
 
+      <!-- Panel derecho -->
+      <section class="panel">
+        <div class="buscar">
+          <input type="text" placeholder="Buscar un usuario">
+          <button class="btn">Buscar</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Rol asignado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Usuario 1</td>
+              <td>Administrador</td>
+            </tr>
+            <tr>
+              <td>Usuario 2</td>
+              <td>Editor</td>
+            </tr>
+            <tr>
+              <td>Usuario 3</td>
+              <td>Invitado</td>
+            </tr>
+            <tr>
+              <td>Usuario 4</td>
+              <td>Editor</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
 </body>
 </html>
