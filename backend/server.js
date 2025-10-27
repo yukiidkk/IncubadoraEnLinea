@@ -10,9 +10,11 @@ app.use(express.json());
 
 const registroRoutes = require("./routes/registroRoutes");
 const loginRoutes = require("./routes/loginRoutes"); 
+const rolRoutes = require("./routes/rolRoutes");
 
 app.use("/api", registroRoutes);
 app.use("/api", loginRoutes); 
+app.use("/api", rolRoutes);
 
 
 // Prueba de conexión

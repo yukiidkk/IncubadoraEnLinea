@@ -194,8 +194,8 @@
         <label>Permisos del rol:</label>
         <select>
           <option>Seleccione el permiso</option>
-          <option>Administrador</option>
-          <option>Usuario</option>
+          <option>admin</option>
+          <option>user</option>
         </select>
 
         <h3>Roles creados</h3>
@@ -206,26 +206,14 @@
               <th>Permiso</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Administrador</td>
-              <td>Completo</td>
-            </tr>
-            <tr>
-              <td>Editor</td>
-              <td>Escritura</td>
-            </tr>
-            <tr>
-              <td>Invitado</td>
-              <td>Lectura</td>
-            </tr>
-          </tbody>
+          <tbody id="tablaRoles">
+            </tbody>
         </table>
 
         <div class="botones">
-          <button class="btn">Crear rol</button>
-          <button class="btn">Actualizar rol</button>
-          <button class="btn">Eliminar rol</button>
+          <button class="btn" id="btnCrear">Crear rol</button>
+          <button class="btn" id="btnActualizar">Actualizar rol</button>
+          <button class="btn" id="btnEliminar">Eliminar rol</button>
         </div>
       </section>
 
@@ -265,5 +253,125 @@
       </section>
     </div>
   </main>
+  <script>
+const API_URL = "http://localhost:3001/api"; // ¡Ruta corregida!
+const tablaRoles = document.querySelector("#tablaRoles"); 
+const inputNombre = document.querySelector("#nombreRolInput");
+const selectPermiso = document.querySelector("#selectPermiso");
+const btnCrear = document.querySelector("#btnCrear");
+const btnActualizar = document.querySelector("#btnActualizar");
+const btnEliminar = document.querySelector("#btnEliminar");
+let rolSeleccionadoId = null;
+
+// Función para inicializar el ComboBox de Permisos
+function cargarPermisos(permisos) {
+    selectPermiso.innerHTML = '<option value="">Seleccione el permiso</option>';
+    permisos.forEach(permiso => {
+        const option = document.createElement("option");
+        option.value = permiso;
+        option.textContent = permiso;
+        selectPermiso.appendChild(option);
+    });
+}
+
+// Función principal para cargar la tabla de roles
+async function cargarRoles() {
+    try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+        
+        const data = await res.json();
+        
+        if (!data.success) throw new Error("API devolvió éxito falso.");
+
+        // 1. Llenar el ComboBox de Permisos (solo en la primera carga)
+        if (data.permisosDisponibles && selectPermiso.options.length <= 1) {
+            cargarPermisos(data.permisosDisponibles);
+        }
+
+        // 2. Llenar la Tabla de Roles
+        tablaRoles.innerHTML = "";
+        data.roles.forEach(rol => {
+            const fila = document.createElement("tr");
+            
+            // Asegúrate que Nombre_Rol y Permisos coincidan con tu DB
+            fila.innerHTML = `<td>${rol.Nombre_Rol}</td><td>${rol.Permisos}</td>`;
+            
+            fila.addEventListener("click", () => {
+                // Al hacer clic, selecciona el rol para edición/eliminación
+                rolSeleccionadoId = rol.id_Rol;
+                inputNombre.value = rol.Nombre_Rol;
+                selectPermiso.value = rol.Permisos;
+                
+                // Efecto visual: deseleccionar todas y seleccionar la clicada
+                document.querySelectorAll("#tablaRoles tr").forEach(r => r.style.backgroundColor = 'white');
+                fila.style.backgroundColor = '#f2f6ff'; // Estilo de hover
+            });
+            tablaRoles.appendChild(fila);
+        });
+        
+    } catch (err) {
+        console.error("Fallo al cargar roles:", err);
+        alert("No se pudieron cargar los roles. Revisa la consola y el servidor.");
+    }
+}
+
+// Limpia el formulario después de una operación
+function limpiarFormulario() {
+    rolSeleccionadoId = null;
+    inputNombre.value = "";
+    selectPermiso.value = ""; // Vuelve al 'Seleccione el permiso'
+    document.querySelectorAll("#tablaRoles tr").forEach(r => r.style.backgroundColor = 'white');
+}
+
+// --- Event Listeners para el CRUD ---
+
+btnCrear.addEventListener("click", async () => {
+    const nombreRol = inputNombre.value;
+    const permisos = selectPermiso.value;
+
+    if (!nombreRol || !permisos) return alert("Completa el nombre y selecciona un permiso.");
+
+    await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombreRol, permisos })
+    });
+    limpiarFormulario();
+    cargarRoles();
+});
+
+btnActualizar.addEventListener("click", async () => {
+    if (!rolSeleccionadoId) return alert("Selecciona un rol primero.");
+    
+    const nombreRol = inputNombre.value;
+    const permisos = selectPermiso.value;
+
+    if (!nombreRol || !permisos) return alert("Completa el nombre y selecciona un permiso.");
+
+    await fetch(`${API_URL}/${rolSeleccionadoId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombreRol, permisos })
+    });
+    limpiarFormulario();
+    cargarRoles();
+});
+
+btnEliminar.addEventListener("click", async () => {
+    if (!rolSeleccionadoId) return alert("Selecciona un rol primero.");
+    
+    // Opcional: Confirmación de eliminación
+    if (!confirm("¿Estás seguro de que quieres eliminar este rol?")) return;
+
+    await fetch(`${API_URL}/${rolSeleccionadoId}`, { method: "DELETE" });
+    
+    limpiarFormulario();
+    cargarRoles();
+});
+
+// Carga inicial
+cargarRoles();
+</script>
 </body>
 </html>
