@@ -1,5 +1,3 @@
-
-
 const { query } = require("../config/database");
 
 // Función que simula la obtención de permisos disponibles para el select.
@@ -50,18 +48,18 @@ exports.eliminarRol = async (req, res) => {
     }
 };
 
-// ✅ Obtener lista de roles y permisos
+// Obtener lista de roles y permisos
 exports.obtenerRoles = async (req, res) => {
     try {
-        // 1. Obtener los roles. Usamos 'rows' y renombramos a 'roles'
-        const [roles] = await query("SELECT * FROM ROL"); 
+        // 1. Obtener la lista de roles (usamos 'rows' como el array de resultados)
+        const roles = await query("SELECT * FROM ROL"); 
         
-        // 2. Obtener la lista ÚNICA de permisos. 
-        //    Aquí, desestructuramos el primer elemento (el array de resultados)
-        const [permisosRows] = await query("SELECT DISTINCT Permisos FROM ROL WHERE Permisos IS NOT NULL AND Permisos != ''"); 
+        // 2. Obtener la lista ÚNICA de permisos. Renombramos a 'permisosRows'.
+        //    'permisosRows' será el array que contiene los objetos { Permisos: 'valor' }
+        const permisosRows = await query("SELECT DISTINCT Permisos FROM ROL WHERE Permisos IS NOT NULL AND Permisos != ''"); 
         
-        // 3. Mapear el array (permisosRows) para obtener un array simple de strings
-        const permisosDisponibles = permisosRows.map(row => row.Permisos); // Línea 63 (debería ser la línea 63 o similar)
+        // 3. Ahora usamos .map() en el array correcto: 'permisosRows'
+        const permisosDisponibles = permisosRows.map(row => row.Permisos);
 
         res.json({ 
             success: true, 

@@ -8,9 +8,9 @@ const {
 } = require("../controladores/rolControlador");
 
 // CRUD completo para la base /api/rol
-router.get("/", obtenerRoles); // GET /api/rol
-router.post("/", crearRol); // POST /api/rol
-router.put("/:id", actualizarRol); // PUT /api/rol/:id
-router.delete("/:id", eliminarRol);// DELETE /api/rol/:id
+router.get("/roles", obtenerRoles); // GET /api/rol
+router.post("/roles", crearRol); // POST /api/rol
+router.put("/roles/:id", actualizarRol); // PUT /api/rol/:id
+router.delete("/roles/:id", eliminarRol);// DELETE /api/rol/:id
 
 module.exports = router;

@@ -189,10 +189,10 @@
       <!-- Panel izquierdo -->
       <section class="panel">
         <label>Nombre del rol</label>
-        <input type="text" placeholder="Nombre del rol">
+        <input type="text" id="nombreRolInput" placeholder="Nombre del rol">
 
         <label>Permisos del rol:</label>
-        <select>
+        <select id="selectPermiso">
           <option>Seleccione el permiso</option>
           <option>admin</option>
           <option>user</option>
@@ -254,7 +254,7 @@
     </div>
   </main>
   <script>
-const API_URL = "http://localhost:3001/api"; // ¡Ruta corregida!
+const API_URL = "http://localhost:3001/api/roles"; // ¡Ruta corregida!
 const tablaRoles = document.querySelector("#tablaRoles"); 
 const inputNombre = document.querySelector("#nombreRolInput");
 const selectPermiso = document.querySelector("#selectPermiso");
