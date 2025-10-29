@@ -220,8 +220,8 @@
       <!-- Panel derecho -->
       <section class="panel">
         <div class="buscar">
-          <input type="text" placeholder="Buscar un usuario">
-          <button class="btn">Buscar</button>
+          <input type="text" id="inputBuscarUsuario" placeholder="Buscar un usuario">
+          <button class="btn" id="btnBuscarUsuario">Buscar</button>
         </div>
 
         <table>
@@ -322,6 +322,45 @@ async function cargarUsuariosConRol() {
         console.error("Fallo al cargar usuarios con rol:", err);
     }
 }
+
+const inputBuscarUsuario = document.querySelector("#inputBuscarUsuario");
+const btnBuscarUsuario = document.querySelector("#btnBuscarUsuario");
+
+btnBuscarUsuario.addEventListener("click", async () => {
+    const nombre = inputBuscarUsuario.value.trim();
+
+    // Si no se escribió nada, recarga toda la lista
+    if (!nombre) {
+        cargarUsuariosConRol();
+        return;
+    }
+
+    try {
+        const res = await fetch(`http://localhost:3001/api/buscar-usuario?nombre=${encodeURIComponent(nombre)}`);
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+
+        const data = await res.json();
+        if (!data.success) throw new Error("Error en la búsqueda.");
+
+        tablaUsuariosRol.innerHTML = "";
+
+        if (data.usuarios.length === 0) {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td colspan="2">No se encontraron resultados</td>`;
+            tablaUsuariosRol.appendChild(fila);
+            return;
+        }
+
+        data.usuarios.forEach(u => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td>${u.Usuario}</td><td>${u.Nombre_Rol}</td>`;
+            tablaUsuariosRol.appendChild(fila);
+        });
+    } catch (err) {
+        console.error("Fallo en búsqueda:", err);
+        alert("Ocurrió un error al buscar el usuario.");
+    }
+});
 
 // Limpia el formulario después de una operación
 function limpiarFormulario() {
