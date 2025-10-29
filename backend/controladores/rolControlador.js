@@ -86,3 +86,21 @@ exports.obtenerUsuariosConRol = async (req, res) => {
         res.status(500).json({ success: false, message: "Error al obtener usuarios con rol" });
     }
 };
+
+// Buscar usuarios por nombre
+exports.buscarUsuarioPorNombre = async (req, res) => {
+    try {
+        const { nombre } = req.query; // Se obtiene ?nombre=valor de la URL
+        const usuarios = await query(`
+            SELECT u.Usuario, r.Nombre_Rol 
+            FROM usuarios u 
+            INNER JOIN rol r ON u.id_Rol = r.id_Rol
+            WHERE u.Usuario LIKE ?
+        `, [`%${nombre}%`]); // Busca coincidencias parciales
+
+        res.json({ success: true, usuarios });
+    } catch (err) {
+        console.error("Error al buscar usuario:", err);
+        res.status(500).json({ success: false, message: "Error al buscar usuario" });
+    }
+};
