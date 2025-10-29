@@ -1,9 +1,9 @@
 const { query } = require("../config/database");
 
 // Obtener todos los proyectos
-export const obtenerProyectos = async (req, res) => {
+const obtenerProyectos = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM proyecto");
+    const rows = await query("SELECT * FROM proyecto");
     res.json(rows);
   } catch (error) {
     console.error(error);
@@ -12,12 +12,12 @@ export const obtenerProyectos = async (req, res) => {
 };
 
 // Crear nuevo proyecto
-export const crearProyecto = async (req, res) => {
+const crearProyecto = async (req, res) => {
   try {
-    const { titulo,responsable, fecha_inicio, estatus, progreso } = req.body;
-    const [result] = await pool.query(
-      "INSERT INTO proyectos (Nombre_Proyecto, Fecha_Inicio, Estatus, Progreso ,Descripcion,Formato_Registro) VALUES (?, ?, ?, ?, ?, ?)",
-      [titulo,responsable, fecha_inicio, estatus, progreso]
+    const { titulo, responsable, fecha_inicio, estatus, progreso } = req.body;
+    const result = await query(
+      "INSERT INTO proyectos (Nombre_Proyecto, Responsable, Fecha_Inicio, Estatus, Progreso) VALUES (?, ?, ?, ?, ?)",
+      [titulo, responsable, fecha_inicio, estatus, progreso]
     );
     res.json({ mensaje: "Proyecto creado", id: result.insertId });
   } catch (error) {
@@ -27,10 +27,10 @@ export const crearProyecto = async (req, res) => {
 };
 
 // Buscar proyectos por título
-export const buscarProyecto = async (req, res) => {
+const buscarProyecto = async (req, res) => {
   try {
     const { titulo } = req.query;
-    const [rows] = await pool.query(
+    const rows = await query(
       "SELECT * FROM proyecto WHERE Nombre_Proyecto LIKE ?",
       [`%${titulo}%`]
     );
@@ -41,12 +41,19 @@ export const buscarProyecto = async (req, res) => {
 };
 
 // Eliminar proyecto
-export const eliminarProyecto = async (req, res) => {
+const eliminarProyecto = async (req, res) => {
   try {
     const { id } = req.params;
-    await pool.query("DELETE FROM proyecto WHERE Id_Proyecto = ?", [id]);
+    await query("DELETE FROM proyecto WHERE Id_Proyecto = ?", [id]);
     res.json({ mensaje: "Proyecto eliminado" });
   } catch (error) {
     res.status(500).json({ mensaje: "Error al eliminar proyecto" });
   }
+};
+
+module.exports = {
+  obtenerProyectos,
+  crearProyecto,
+  buscarProyecto,
+  eliminarProyecto,
 };

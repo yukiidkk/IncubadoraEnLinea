@@ -1,17 +1,16 @@
 const express = require("express");
-
-import {
+const {
   obtenerProyectos,
   crearProyecto,
   buscarProyecto,
   eliminarProyecto,
-} from "../controladores/proyectoController.js";
+} = require("../controladores/proyectoController");
 
 const router = express.Router();
 
 router.get("/obtenerProyectos", obtenerProyectos);
-router.post("/crearProyectos", crearProyecto);
+router.post("/crearProyecto", crearProyecto);
 router.get("/buscarProyecto", buscarProyecto);
-router.delete("/:Id_Proyecto", eliminarProyecto);
+router.delete("/:id", eliminarProyecto);
 
 module.exports = router;
