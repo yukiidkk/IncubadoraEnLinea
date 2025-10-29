@@ -71,3 +71,18 @@ exports.obtenerRoles = async (req, res) => {
         res.status(500).json({ success: false, message: "Error al obtener roles" });
     }
 };
+
+// Obtener usuarios con su rol
+exports.obtenerUsuariosConRol = async (req, res) => {
+    try {
+        const usuarios = await query(`
+            SELECT u.Usuario, r.Nombre_Rol 
+            FROM usuarios u 
+            INNER JOIN rol r ON u.id_Rol = r.id_Rol
+        `);
+        res.json({ success: true, usuarios });
+    } catch (err) {
+        console.error("Error al obtener usuarios con rol:", err);
+        res.status(500).json({ success: false, message: "Error al obtener usuarios con rol" });
+    }
+};

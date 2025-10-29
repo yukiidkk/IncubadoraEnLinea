@@ -231,23 +231,7 @@
               <th>Rol asignado</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Usuario 1</td>
-              <td>Administrador</td>
-            </tr>
-            <tr>
-              <td>Usuario 2</td>
-              <td>Editor</td>
-            </tr>
-            <tr>
-              <td>Usuario 3</td>
-              <td>Invitado</td>
-            </tr>
-            <tr>
-              <td>Usuario 4</td>
-              <td>Editor</td>
-            </tr>
+          <tbody id="tablaUsuariosRol">
           </tbody>
         </table>
       </section>
@@ -316,6 +300,29 @@ async function cargarRoles() {
     }
 }
 
+const API_USUARIOS_ROL = "http://localhost:3001/api/usuarios-con-rol";
+const tablaUsuariosRol = document.querySelector("#tablaUsuariosRol");
+
+// Cargar usuarios con su rol
+async function cargarUsuariosConRol() {
+    try {
+        const res = await fetch(API_USUARIOS_ROL);
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+
+        const data = await res.json();
+        if (!data.success) throw new Error("La API devolvió un error.");
+
+        tablaUsuariosRol.innerHTML = "";
+        data.usuarios.forEach(u => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td>${u.Usuario}</td><td>${u.Nombre_Rol}</td>`;
+            tablaUsuariosRol.appendChild(fila);
+        });
+    } catch (err) {
+        console.error("Fallo al cargar usuarios con rol:", err);
+    }
+}
+
 // Limpia el formulario después de una operación
 function limpiarFormulario() {
     rolSeleccionadoId = null;
@@ -372,6 +379,7 @@ btnEliminar.addEventListener("click", async () => {
 
 // Carga inicial
 cargarRoles();
+cargarUsuariosConRol();
 </script>
 </body>
 </html>
