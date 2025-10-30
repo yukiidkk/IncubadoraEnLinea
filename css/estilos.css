@@ -624,3 +624,44 @@ input:focus {
         grid-template-columns: repeat(4, 1fr); 
     }
 }
+/* === BOTONES PERSONALIZADOS === */
+
+/* Crear cuenta (verde) */
+.btn-primary-its {
+  background-color: #4CAF50; /* Verde */
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.btn-primary-its:hover {
+  background-color: #45a049; /* Verde más oscuro */
+}
+
+/* Limpiar campos (rojo claro) */
+.btn-clear-its {
+  background-color: #f8b4b4; /* Rojo claro */
+  color: #611818;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.btn-clear-its:hover {
+  background-color: #f16c6c; /* Rojo más fuerte */
+  color: white;
+}
+
+/* Alinear bien los botones */
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+

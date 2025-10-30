@@ -8,6 +8,26 @@
     <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
     <link rel="stylesheet" href="./css/normalize.css">
     <link rel="stylesheet" href="./css/estilos.css">
+
+    <style>
+.suggestions {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 10;
+}
+.suggestion-item {
+  padding: 8px;
+  cursor: pointer;
+}
+.suggestion-item:hover {
+  background: #e3ecff;
+}
+</style>
+
    
 </head>
 <body>
@@ -169,6 +189,246 @@
             </form>
         </div>
     </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const userText = document.querySelector(".user-text");
+  const searchInput = document.querySelector(".search-bar input");
+  const searchBar = document.querySelector(".search-bar");
+
+  // Crear contenedor para sugerencias
+  const suggestionsContainer = document.createElement("div");
+  suggestionsContainer.classList.add("suggestions");
+  searchBar.style.position = "relative";
+  searchBar.appendChild(suggestionsContainer);
+
+  // Mostrar nombre del coordinador (desde login)
+  const nombreUsuario = localStorage.getItem("usuario") || "Coordinador";
+  userText.textContent = nombreUsuario;
+
+  // === FUNCIÓN PARA HACER PETICIONES AL BACKEND ===
+  const sendRequest = async (url, method = "GET", body = null) => {
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: body ? JSON.stringify(body) : null,
+      });
+      return await response.json();
+    } catch (error) {
+      console.error("Error en la petición:", error);
+      alert("❌ Error al conectar con el servidor");
+      return null;
+    }
+  };
+
+  // ===========================
+  // 🔹 Cargar catálogos dinámicos
+  // ===========================
+  const cargarCombos = async () => {
+    try {
+      const especialidades = await sendRequest("http://localhost:3001/api/usuarios/especialidades");
+      const especialidadSelect = document.querySelector("#especialidad");
+      especialidadSelect.innerHTML = '<option value="">Seleccione su especialidad</option>';
+      especialidades.forEach(esp => {
+        const opt = document.createElement("option");
+        opt.value = esp.Id_Especialidad;
+        opt.textContent = esp.Nombre_Especialidad;
+        especialidadSelect.appendChild(opt);
+      });
+
+      const jornadas = await sendRequest("http://localhost:3001/api/usuarios/jornadas");
+      const jornadaSelect = document.querySelector("#jornada");
+      jornadaSelect.innerHTML = '<option value="">Seleccione su jornada</option>';
+      jornadas.forEach(j => {
+        const opt = document.createElement("option");
+        opt.value = j;
+        opt.textContent = j;
+        jornadaSelect.appendChild(opt);
+      });
+
+      const estados = await sendRequest("http://localhost:3001/api/usuarios/estados-civiles");
+      const estadoSelect = document.querySelector("select[name='estado-civil']");
+      estadoSelect.innerHTML = '<option value="">Seleccione su estado civil</option>';
+      estados.forEach(e => {
+        const opt = document.createElement("option");
+        opt.value = e;
+        opt.textContent = e;
+        estadoSelect.appendChild(opt);
+      });
+
+      const generos = await sendRequest("http://localhost:3001/api/usuarios/generos");
+      const generoSelect = document.querySelector("select[name='genero']");
+      generoSelect.innerHTML = '<option value="">Seleccione su género</option>';
+      generos.forEach(g => {
+        const opt = document.createElement("option");
+        opt.value = g;
+        opt.textContent = g;
+        generoSelect.appendChild(opt);
+      });
+    } catch (error) {
+      console.error("❌ Error al cargar catálogos:", error);
+    }
+  };
+
+  cargarCombos();
+
+  // ===========================
+  // 🔍 Autocompletado de búsqueda
+  // ===========================
+  let typingTimer;
+  searchInput.addEventListener("input", async () => {
+    clearTimeout(typingTimer);
+    const nombre = searchInput.value.trim();
+
+    if (nombre.length < 2) {
+      suggestionsContainer.innerHTML = "";
+      return;
+    }
+
+    typingTimer = setTimeout(async () => {
+      const users = await sendRequest(`http://localhost:3001/api/usuarios/buscar?nombre=${nombre}`);
+      suggestionsContainer.innerHTML = "";
+
+      if (users && users.length > 0) {
+        users.forEach(user => {
+          const item = document.createElement("div");
+          item.classList.add("suggestion-item");
+          item.textContent = `${user.Nombre} ${user.Apellido}`;
+          item.addEventListener("click", () => {
+            fillUserForm(user);
+            suggestionsContainer.innerHTML = "";
+            searchInput.value = "";
+          });
+          suggestionsContainer.appendChild(item);
+        });
+      } else {
+        const empty = document.createElement("div");
+        empty.classList.add("suggestion-item");
+        empty.textContent = "No se encontraron usuarios";
+        suggestionsContainer.appendChild(empty);
+      }
+    }, 300);
+  });
+
+  // === RELLENAR EL FORMULARIO ===
+  const setSelectValue = (selector, value) => {
+    const select = document.querySelector(selector);
+    if (!select) return;
+    const normalizedValue = (value || "").toString().toLowerCase();
+    for (let option of select.options) {
+      if (option.value.toString().toLowerCase() === normalizedValue) {
+        select.value = option.value;
+        return;
+      }
+    }
+    select.value = "";
+  };
+
+  const fillUserForm = (user) => {
+    document.querySelector("#nombre").value = user.Nombre || "";
+    document.querySelector("#apellidos").value = user.Apellido || "";
+    document.querySelector("#telefono").value = user.Telefono || "";
+    document.querySelector("#email").value = user.Correo || "";
+    document.querySelector("#rfc").value = user.RFC || "";
+    document.querySelector("#curp").value = user.CURP || "";
+    document.querySelector("#ingresos").value = user.Ingresos || "";
+    document.querySelector("#dependientes").value = user.Dependientes_Eco || "";
+    document.querySelector("#control-number").value = user.No_Control || "";
+    setSelectValue("select[name='estado-civil']", user.Estado_Civil);
+    setSelectValue("select[name='genero']", user.Genero);
+    setSelectValue("#jornada", user.Jornada);
+    setSelectValue("#especialidad", user.ESPECIALIDAD_Id_Especialidad);
+    document.querySelector("input[name='colonia']").value = user.Colonia || "";
+    document.querySelector("input[name='cp']").value = user.CP || "";
+    document.querySelector("input[name='calle']").value = user.Calle || "";
+    searchInput.dataset.userId = user.Id_Emprendedor;
+  };
+
+  // === OBTENER DATOS DEL FORMULARIO ===
+  const getFormData = () => ({
+    Nombre: document.querySelector("#nombre").value.trim(),
+    Apellido: document.querySelector("#apellidos").value.trim(),
+    Telefono: document.querySelector("#telefono").value.trim(),
+    Fecha_Nacimiento: null,
+    Correo: document.querySelector("#email").value.trim(),
+    Ingresos: document.querySelector("#ingresos").value || null,
+    Dependientes_Eco: document.querySelector("#dependientes").value || null,
+    RFC: document.querySelector("#rfc").value.trim(),
+    CURP: document.querySelector("#curp").value.trim(),
+    Estado_Civil: document.querySelector("select[name='estado-civil']").value,
+    Genero: document.querySelector("select[name='genero']").value,
+    Colonia: document.querySelector("input[name='colonia']").value.trim(),
+    CP: document.querySelector("input[name='cp']").value || null,
+    Calle: document.querySelector("input[name='calle']").value.trim(),
+    Jornada: document.querySelector("#jornada").value.trim(),
+    No_Control: document.querySelector("#control-number").value || null,
+    Id_Especialidad: document.querySelector("#especialidad").value || null,
+    id_Rol: document.querySelector("#rol").value === "admin" ? 1 : 2,
+    Contrasena: document.querySelector("#password").value.trim()
+  });
+
+  // === LIMPIAR FORMULARIO ===
+  const clearForm = () => {
+    document.querySelectorAll(".user-management-form input").forEach(input => input.value = "");
+    document.querySelectorAll(".user-management-form select").forEach(select => select.value = "");
+    delete searchInput.dataset.userId;
+    searchInput.value = "";
+    suggestionsContainer.innerHTML = "";
+  };
+
+  // === CREAR USUARIO ===
+  document.querySelector("button[value='create']").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const data = getFormData();
+    const res = await sendRequest("http://localhost:3001/api/usuarios", "POST", data);
+    if (res?.message) {
+      alert(res.message);
+      clearForm(); // limpia al crear
+    }
+  });
+
+  // === ACTUALIZAR USUARIO ===
+  document.querySelector("button[value='update']").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const id = searchInput.dataset.userId;
+    if (!id) return alert("Selecciona un usuario primero");
+    const data = getFormData();
+    const res = await sendRequest(`http://localhost:3001/api/usuarios/${id}`, "PUT", data);
+    if (res?.message) alert(res.message);
+  });
+
+  // === ELIMINAR USUARIO ===
+  document.querySelector("button[value='delete']").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const id = searchInput.dataset.userId;
+    if (!id) return alert("Selecciona un usuario primero");
+    if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
+    const res = await sendRequest(`http://localhost:3001/api/usuarios/${id}`, "DELETE");
+    if (res?.message) {
+      alert(res.message);
+      clearForm(); // limpia al eliminar
+    }
+  });
+
+  // === NUEVO BOTÓN LIMPIAR CAMPOS ===
+  const limpiarBtn = document.createElement("button");
+  limpiarBtn.textContent = "Limpiar Campos";
+limpiarBtn.className = "btn-clear-its btn-action-small";
+  limpiarBtn.type = "button";
+  limpiarBtn.addEventListener("click", clearForm);
+  document.querySelector(".form-actions").appendChild(limpiarBtn);
+
+  // === Cerrar sugerencias al hacer clic fuera ===
+  document.addEventListener("click", (e) => {
+    if (!searchBar.contains(e.target)) {
+      suggestionsContainer.innerHTML = "";
+    }
+  });
+});
+</script>
+
+
+
 
 </body>
 </html>

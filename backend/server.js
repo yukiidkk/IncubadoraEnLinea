@@ -1,27 +1,30 @@
+// backend/server.js
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const { pool } = require("./config/database");
 
 const app = express();
 
-// Middlewares
+// Middleware
 app.use(cors());
 app.use(express.json());
 
+// Importar rutas
 const registroRoutes = require("./routes/registroRoutes");
-const loginRoutes = require("./routes/loginRoutes"); 
+const loginRoutes = require("./routes/loginRoutes");
 const rolRoutes = require("./routes/rolRoutes");
 const proyectoRoutes = require("./routes/proyectoRoutes");
+const gestionUsuariosRoutes = require("./routes/gestionUsuariosRoutes");
 
+// Usar rutas
 app.use("/api", registroRoutes);
-app.use("/api", loginRoutes); 
+app.use("/api", loginRoutes);
 app.use("/api", rolRoutes);
 app.use("/api", proyectoRoutes);
+app.use("/api", gestionUsuariosRoutes);
 
-
-// Prueba de conexión
-const { pool } = require("./config/database");
-
+// Probar conexión
 app.get("/test-db", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT NOW() AS fecha_actual");
