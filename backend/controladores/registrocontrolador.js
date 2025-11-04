@@ -5,12 +5,12 @@ exports.registro = async (req, res) => {
   const {
     nombre,
     apellido,
-    correo,
-    password,
     telefono,
     fecha_nacimiento,
+    correo,
+    password,
     ingresos,
-    dependientes,
+    dependientes_eco,
     rfc,
     curp,
     estado_civil,
@@ -24,41 +24,61 @@ exports.registro = async (req, res) => {
   } = req.body;
 
   try {
-    // Rol fijo = 2 (Emprendedor)
-    const rol = 2;
+  const rol = 2;
 
-    // Insertar en tabla EMPRENDEDOR
-    const sqlEmp = `
-      INSERT INTO EMPRENDEDOR (
-        ESPECIALIDAD_Id_Especialidad, Rol_id_Rol, Nombre, Apellido, Telefono,
-        Fecha_Nacimiento, Correo, Ingresos, Dependientes_Eco, RFC, CURP,
-        Estado_Civil, Genero, Colonia, CP, Calle, Jornada, No_Control
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-    const result = await query(sqlEmp, [
-      especialidad, rol, nombre, apellido, telefono, fecha_nacimiento, correo,
-      ingresos, dependientes, rfc, curp, estado_civil, genero, colonia,
-      cp, calle, jornada, no_control
-    ]);
+  // Validar correo repetido
+  const checkCorreo = await query(
+    "SELECT id_persona FROM persona WHERE correo = ?",
+    [correo]
+  );
 
-    const idEmprendedor = result.insertId;
-
-    // Crear usuario para login
-    const sqlUser = `
-      INSERT INTO USUARIOS (id_Rol, EMPRENDEDOR_Id_Emprendedor, Usuario, Contrasena)
-      VALUES (?, ?, ?, ?)
-    `;
-    await query(sqlUser, [rol, idEmprendedor, correo, password]);
-
-    res.status(201).json({
-      success: true,
-      message: "Registro exitoso. Usuario creado como emprendedor."
-    });
-  } catch (err) {
-    console.error("❌ Error en registro:", err);
-    res.status(500).json({
+  if (checkCorreo.length > 0) {
+    return res.status(400).json({
       success: false,
-      message: "Error al registrar usuario"
+      message: "El correo ya está registrado. Usa otro diferente."
     });
   }
+
+  // Asegurar valores nulos si vienen indefinidos
+  const safe = v => (v === undefined || v === '' ? null : v);
+
+  const sqlPersona = `
+    INSERT INTO persona (
+      id_especialidad, id_rol, nombre, apellido, telefono, fecha_nacimiento,
+      correo, ingresos, dependientes_eco, rfc, curp,
+      estado_civil, genero, colonia, cp, calle, jornada, no_control
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  const result = await query(sqlPersona, [
+    safe(especialidad), rol, safe(nombre), safe(apellido), safe(telefono),
+    safe(fecha_nacimiento), safe(correo), safe(ingresos), safe(dependientes_eco),
+    safe(rfc), safe(curp), safe(estado_civil), safe(genero), safe(colonia),
+    safe(cp), safe(calle), safe(jornada), safe(no_control)
+  ]);
+
+  const id_persona = result.insertId;
+
+  const sqlUsuario = `
+    INSERT INTO usuarios (id_persona, id_rol, id_especialidad, contrasena)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  await query(sqlUsuario, [id_persona, rol, safe(especialidad), safe(password)]);
+
+  res.status(201).json({
+    success: true,
+    message: "Registro exitoso. Usuario creado como emprendedor."
+  });
+
+} catch (err) {
+  console.error("Error en registro:", err);
+  res.status(500).json({
+    success: false,
+    message: "Error al registrar usuario",
+    error: err.message
+  });
+}
+
+  
 };
