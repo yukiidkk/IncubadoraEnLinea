@@ -397,22 +397,20 @@ input[type="file"]::-webkit-file-upload-button:hover {
       <div class="form-grid">
         <div>
           <label for="nombre">Nombre del proyecto</label>
-          <input type="text" id="nombre">
-
+          <input type="text" id="nombreProyecto">
           <label for="desc">Descripción</label>
-          <textarea id="desc"></textarea>
+          <textarea id="descripcion"></textarea>
         </div>
-
         <div>
-          <label for="archivo">Subir formato de registro:</label>
+          <label for="subirArchivo">Subir formato de registro:</label>
 <div class="subir-archivo">
   <input type="file" id="archivo" name="archivo" accept=".doc,.docx,.pdf">
 </div>
 
 
-          <label>Agregar socios:</label>
+<label>Agregar socios:</label>
 
-<div class="socios">
+<div class="agregarSocios" id="agregarSocios">
   <div class="socio-card">
     <div class="info">
       <img src="images/user-icon.png" alt="icono usuario">
@@ -469,6 +467,94 @@ input[type="file"]::-webkit-file-upload-button:hover {
 
     </div>
   </div>
+
+<script>
+ listaSocios = document.getElementById("listaSocios");
+ const sociosAgregados = [];
+
+// Al hacer clic en “Añadir” se agrega a la lista
+document.querySelectorAll(".btn-add").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const nombre = btn.getAttribute("data-nombre");
+    if (!sociosAgregados.includes(nombre)) {
+      sociosAgregados.push(nombre);
+      const li = document.createElement("li");
+      li.textContent = nombre;
+      listaSocios.appendChild(li);
+    } else {
+      alert("Este socio ya fue agregado.");
+    }
+  });
+});
+</script>
+<input type="file" id="archivo" accept=".pdf,doc,.docx">
+<button id="btnGuardar">Gurdar</button>
+<script>
+document.getElementById("btnGuardar").addEventListener("click", async () => {
+  const nombre_proyecto = document.getElementById("nombreProyecto").value.trim();
+  const descripcion = document.getElementById("descripcion").value.trim();
+  const archivoInput = document.getElementById("archivo");
+
+  if(!nombreProyecto || !descripcion || archivoInput.files.legth == 0){
+    alert("Por favor, complete todos los campos y selecciona un archivo.");
+    return;
+  }
+
+
+  const archivo = archivoInput.files[0]; 
+  const reader = new FileReader();
+  const socios = sociosAgregados; // arreglo global
+
+  reader.onload = async function(){
+    //convierte el archivo a base 64
+    const contenidoBase64 = reader.result.split(",")[1];
+    const formato_registro = archivo.name;
+
+
+   // Obtener id_usuario del usuario logueado
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const id_usuario = usuario?.id_usuario;
+
+  if (!id_usuario) {
+    alert("Error: no se encontró el usuario en sesión.");
+    return;
+  }
+
+
+
+  try {
+    // llamada a backend
+    const response = await fetch("http://localhost:3001/api/crearProyecto", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id_usuario,nombre_proyecto:nombreProyecto, descripcion, formato_registro,archivoBase64:contenidoBase64, socios }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("Proyecto guardado con éxito");
+      limpiarCampos();
+    } else {
+      alert("Error: " + data.mensaje);
+    }
+  } catch (error) {
+    console.error("Error al guardar:", error);
+    alert("Error de conexión con el servidor");
+  }
+};
+reader.readAsDataURL(archivo);
+});
+
+function limpiarCampos() {
+  document.getElementById("nombreProyecto").value = "";
+  document.getElementById("descripcion").value = "";
+  document.getElementById("archivo").value = "";
+  document.getElementById("listaSocios").innerHTML = "";
+  sociosAgregados.length = 0; // limpia el arreglo
+}
+</script>
+
 
 <script>
   // Botón limpiar
@@ -536,6 +622,37 @@ input[type="file"]::-webkit-file-upload-button:hover {
       e.target.parentElement.remove();
     }
   });
+</script>
+
+
+<script>
+  // 🔹 Función para cargar proyectos desde el backend
+  async function cargarProyectos() {
+    try {
+      const respuesta = await fetch("http://localhost:3001/api/proyectos");
+      const proyectos = await respuesta.json();
+
+      const tbody = document.querySelector("tbody");
+      tbody.innerHTML = ""; // limpiar contenido previo
+
+      proyectos.forEach(p => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${p.titulo}</td>
+          <td>${p.responsable || '—'}</td>
+          <td>${new Date(p.fecha_inicio).toLocaleDateString()}</td>
+          <td>${p.estatus}</td>
+          <td>${p.progreso}</td>
+        `;
+        tbody.appendChild(fila);
+      });
+    } catch (error) {
+      console.error("Error al cargar proyectos:", error);
+    }
+  }
+
+  // 🔹 Ejecutar al cargar la página
+  document.addEventListener("DOMContentLoaded", cargarProyectos);
 </script>
 
 </body>

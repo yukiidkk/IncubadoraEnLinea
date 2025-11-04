@@ -35,6 +35,10 @@ exports.login = async (req, res) => {
       tipo: user.Nombre_Rol
     });
 
+    //guardar el id del usuario
+    localStorage.setItem("usuario", JSON.stringify(data.usuario));
+    window.location.href = "proyectos.html"; // redirige a la página de proyectos
+
   } catch (err) {
     console.error("❌ Error en login:", err);
     res.status(500).json({ success: false, message: "Error en el servidor" });

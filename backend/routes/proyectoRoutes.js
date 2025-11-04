@@ -4,13 +4,14 @@ const {
   crearProyecto,
   buscarProyecto,
   eliminarProyecto,
+  obtenerArchivo
 } = require("../controladores/proyectoController");
 
 const router = express.Router();
 
-router.get("/obtenerProyectos", obtenerProyectos);
+router.get("/proyectos", obtenerProyectos);
 router.post("/crearProyecto", crearProyecto);
 router.get("/buscarProyecto", buscarProyecto);
-router.delete("/:id", eliminarProyecto);
+router.delete("/proyecto/:id", eliminarProyecto);
 
 module.exports = router;

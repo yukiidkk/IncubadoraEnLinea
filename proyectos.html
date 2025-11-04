@@ -60,22 +60,7 @@
         <th>Progreso</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>Proyecto A</td>
-        <td>Juan Pérez</td>
-        <td>01/09/25</td>
-        <td>En curso</td>
-        <td>En revisión</td>
-      </tr>
-      <tr>
-        <td>Proyecto B</td>
-        <td>María López</td>
-        <td>15/08/25</td>
-        <td>Aprobado</td>
-        <td>80%</td>
-      </tr>
-    </tbody>
+  
   </table>
 </div>
 
@@ -117,35 +102,7 @@
   }
 </script>
 
-<script>
-  // 🔹 Función para cargar proyectos desde el backend
-  async function cargarProyectos() {
-    try {
-      const respuesta = await fetch("http://localhost:3001/api/proyectos");
-      const proyectos = await respuesta.json();
 
-      const tbody = document.querySelector("tbody");
-      tbody.innerHTML = ""; // limpiar contenido previo
-
-      proyectos.forEach(p => {
-        const fila = document.createElement("tr");
-        fila.innerHTML = `
-          <td>${p.titulo}</td>
-          <td>${p.responsable || '—'}</td>
-          <td>${new Date(p.fecha_inicio).toLocaleDateString()}</td>
-          <td>${p.estatus}</td>
-          <td>${p.progreso}</td>
-        `;
-        tbody.appendChild(fila);
-      });
-    } catch (error) {
-      console.error("Error al cargar proyectos:", error);
-    }
-  }
-
-  // 🔹 Ejecutar al cargar la página
-  document.addEventListener("DOMContentLoaded", cargarProyectos);
-</script>
 
 
 </body>
