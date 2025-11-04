@@ -8,7 +8,7 @@ const { query } = require("../config/database");
 exports.crearRol = async (req, res) => {
     const { nombreRol, permisos } = req.body;
     try {
-        await query("INSERT INTO ROL (Nombre_Rol, Permisos) VALUES (?, ?)", [
+        await query("INSERT INTO ROL (nombre_rol, permisos) VALUES (?, ?)", [
             nombreRol,
             permisos
         ]);
@@ -24,7 +24,7 @@ exports.actualizarRol = async (req, res) => {
     const { id } = req.params;
     const { nombreRol, permisos } = req.body;
     try {
-        await query("UPDATE ROL SET Nombre_Rol=?, Permisos=? WHERE id_Rol=?", [
+        await query("UPDATE ROL SET nombre_rol=?, permisos=? WHERE id_rol=?", [
             nombreRol,
             permisos,
             id
@@ -40,7 +40,7 @@ exports.actualizarRol = async (req, res) => {
 exports.eliminarRol = async (req, res) => {
     const { id } = req.params;
     try {
-        await query("DELETE FROM ROL WHERE id_Rol=?", [id]);
+        await query("DELETE FROM ROL WHERE id_rol=?", [id]);
         res.json({ success: true, message: "Rol eliminado correctamente" });
     } catch (err) {
         console.error("Error al eliminar rol:", err);
@@ -52,14 +52,14 @@ exports.eliminarRol = async (req, res) => {
 exports.obtenerRoles = async (req, res) => {
     try {
         // 1. Obtener la lista de roles (usamos 'rows' como el array de resultados)
-        const roles = await query("SELECT * FROM ROL"); 
+        const roles = await query("SELECT * FROM rol"); 
         
         // 2. Obtener la lista ÚNICA de permisos. Renombramos a 'permisosRows'.
         //    'permisosRows' será el array que contiene los objetos { Permisos: 'valor' }
-        const permisosRows = await query("SELECT DISTINCT Permisos FROM ROL WHERE Permisos IS NOT NULL AND Permisos != ''"); 
+        const permisosRows = await query("SELECT DISTINCT permisos FROM ROL WHERE permisos IS NOT NULL AND permisos != ''"); 
         
         // 3. Ahora usamos .map() en el array correcto: 'permisosRows'
-        const permisosDisponibles = permisosRows.map(row => row.Permisos);
+        const permisosDisponibles = permisosRows.map(row => row.permisos);
 
         res.json({ 
             success: true, 
@@ -76,9 +76,10 @@ exports.obtenerRoles = async (req, res) => {
 exports.obtenerUsuariosConRol = async (req, res) => {
     try {
         const usuarios = await query(`
-            SELECT u.Usuario, r.Nombre_Rol 
+            SELECT p.nombre, r.nombre_Rol 
             FROM usuarios u 
             INNER JOIN rol r ON u.id_Rol = r.id_Rol
+            INNER JOIN persona p ON u.id_persona = p.id_persona
         `);
         res.json({ success: true, usuarios });
     } catch (err) {
@@ -92,10 +93,11 @@ exports.buscarUsuarioPorNombre = async (req, res) => {
     try {
         const { nombre } = req.query; // Se obtiene ?nombre=valor de la URL
         const usuarios = await query(`
-            SELECT u.Usuario, r.Nombre_Rol 
+            SELECT p.nombre, r.nombre_rol 
             FROM usuarios u 
-            INNER JOIN rol r ON u.id_Rol = r.id_Rol
-            WHERE u.Usuario LIKE ?
+            INNER JOIN rol r ON u.id_rol = r.id_rol
+            INNER JOIN persona p ON u.id_persona = p.id_persona
+            WHERE p.persona LIKE ?
         `, [`%${nombre}%`]); // Busca coincidencias parciales
 
         res.json({ success: true, usuarios });
