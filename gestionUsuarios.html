@@ -1,447 +1,528 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Emprendurismo ITS</title>
-    <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
-    <link rel="stylesheet" href="./css/normalize.css">
-    <link rel="stylesheet" href="./css/estilos.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Usuarios - Incubadora ITS</title>
+  <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" href="./css/normalize.css">
+  <link rel="stylesheet" href="./css/estilos.css">
 
-    <style>
-.suggestions {
-  position: absolute;
-  background: white;
-  border: 1px solid #ccc;
-  width: 100%;
-  max-height: 150px;
-  overflow-y: auto;
-  z-index: 10;
-}
-.suggestion-item {
-  padding: 8px;
-  cursor: pointer;
-}
-.suggestion-item:hover {
-  background: #e3ecff;
-}
-</style>
+  <style>
+    body {
+      background: #eaf2ff;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-   
+    .navbar {
+      background: #003366;
+      color: #fff;
+      padding: 10px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #0a2b57;
+      padding: 6px 10px;
+      border-radius: 10px;
+    }
+
+    .user-text {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .home-btn, .logout-btn {
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+      transition: background 0.2s;
+    }
+
+    .home-btn { background: #0066cc; }
+    .home-btn:hover { background: #0052a3; }
+
+    .logout-btn { background: #c0392b; }
+    .logout-btn:hover { background: #a83224; }
+
+    .form-container.user-management-container {
+      border: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 25px 30px;
+      border-radius: 10px;
+      background: #fff;
+      max-width: 1100px;
+      margin: 30px auto;
+    }
+
+    header h2 {
+      color: #003366;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #444;
+      margin-top: 0;
+      font-size: 14px;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 0;
+      margin: 20px 0;
+      border: none;
+      box-shadow: none;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px 0 0 6px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .search-bar .btn-search {
+      background: #003366;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s ease;
+    }
+
+    .search-bar .btn-search:hover {
+      background: #0055cc;
+    }
+
+    .suggestions {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      width: calc(100% - 2px);
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .suggestion-item {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .suggestion-item:hover {
+      background: #e3ecff;
+    }
+
+    .columns-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      gap: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #003366;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input, 
+    .form-group select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    .inline-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .form-actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn-primary-its, .btn-secondary-its, .btn-delete-its {
+      background: #003366;
+      color: #fff;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background 0.2s ease, transform 0.1s ease;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+
+    .btn-primary-its:hover, 
+    .btn-secondary-its:hover, 
+    .btn-delete-its:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-primary-its { background: #006400; }
+    .btn-primary-its:hover { background: #008000; }
+
+    .btn-secondary-its { background: #003366; }
+    .btn-secondary-its:hover { background: #004499; }
+
+    .btn-delete-its { background: #a30000; }
+    .btn-delete-its:hover { background: #cc0000; }
+
+  </style>
 </head>
+
 <body>
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="container nav-content"> 
-            
-            <div class="logo">
-                <img src="./images/logoITS.png" alt="ITS" />
-                <span>Instituto Tecnológico de Saltillo</span>
-            </div>
-            
-            <div class="user-info">
-                <span class="user-text">USUARIO</span>
-                <div class="user-icon">👤</div>
-            </div>
-            
-        </div>
-    </header>
-    
-    <div class="main-content">
-        <div class="form-container user-management-container">
-            <header>
-                <h2>Gestión de Usuarios</h2>
-                <p>Llena los siguientes campos según corresponda:</p>
-            </header>
-            
-            <div class="search-bar">
-                <input type="text" placeholder="Buscar un usuario con nombre y apellido">
-                <button type="button" class="btn-search">Buscar</button>
-            </div>
-            
-            <form class="account-form user-management-form">
-                <div class="columns-wrapper">
-                    
-                    <div class="column">
-                        <div class="form-group">
-                            <label for="nombre">Nombre(s):</label>
-                            <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre(s)">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="apellidos">Apellidos:</label>
-                            <input type="text" id="apellidos" name="apellidos" placeholder="Ingresa tus apellidos">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="telefono">Número de teléfono:</label>
-                            <input type="tel" id="telefono" name="telefono" placeholder="Ingrese su número de teléfono">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Ingrese su fecha de nacimiento</label>
-                            <div class="date-group">
-                                <select name="dia">
-                                    <option value="">Día</option>
-                                    </select>
-                                <select name="mes">
-                                    <option value="">Mes</option>
-                                    </select>
-                                <select name="anio">
-                                    <option value="">Año</option>
-                                    </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Correo electrónico</label>
-                            <input type="email" id="email" name="email" placeholder="Ingrese su correo electrónico">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="ingresos">Ingresos:</label>
-                            <input type="number" id="ingresos" name="ingresos" placeholder="Ingrese su ingreso mensual">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="dependientes">Dependientes económicos</label>
-                            <select id="dependientes" name="dependientes">
-                                <option value="">Seleccione la cantidad de dependientes económicos de ud</option>
-                                <option value="0">0</option>
-                                </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password">Ingrese su contraseña</label>
-                            <input type="password" id="password" name="password" placeholder="Ingrese su contraseña">
-                        </div>
-                    </div>
-
-                    <div class="column">
-                        <div class="form-group">
-                            <label for="rfc">RFC:</label>
-                            <input type="text" id="rfc" name="rfc" placeholder="Ingrese su RFC">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="curp">CURP:</label>
-                            <input type="text" id="curp" name="curp" placeholder="Ingrese su CURP">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Estado civil y Género:</label>
-                            <div class="inline-group">
-                                <select name="estado-civil">
-                                    <option value="">Seleccione su estado civil</option>
-                                    </select>
-                                <select name="genero">
-                                    <option value="">Seleccione su género</option>
-                                    </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Domicilio</label>
-                            <div class="inline-group">
-                                <input type="text" name="colonia" placeholder="Colonia">
-                                <input type="text" name="cp" placeholder="C.P.">
-                            </div>
-                            <input type="text" name="calle" placeholder="Calle">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="jornada">Jornada laboral</label>
-                            <select id="jornada" name="jornada">
-                                <option value="">Seleccione su jornada</option>
-                                </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="control-number">Número de control</label>
-                            <input type="text" id="control-number" name="control-number" placeholder="Ingrese su número de control">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="especialidad">Seleccione su especialidad</label>
-                            <select id="especialidad" name="especialidad">
-                                <option value="">Seleccione su especialidad</option>
-                                </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="rol">Rol</label>
-                            <select id="rol" name="rol">
-                                <option value="">Seleccione rol</option>
-                                </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn-primary-its btn-action-small" name="action" value="create">Crear cuenta</button>
-                    <button type="button" class="btn-secondary-its btn-action-small" name="action" value="update">Actualizar usuario</button>
-                    <button type="button" class="btn-delete-its btn-action-small" name="action" value="delete">Eliminar usuario</button>
-                </div>
-
-            </form>
-        </div>
+  <header class="navbar">
+    <div class="logo">
+      <img src="./images/logoITS.png" alt="ITS" />
+      <span>Instituto Tecnológico de Saltillo</span>
     </div>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const userText = document.querySelector(".user-text");
-  const searchInput = document.querySelector(".search-bar input");
-  const searchBar = document.querySelector(".search-bar");
+    <div class="user-info">
+      <button class="home-btn" id="homeBtn">Inicio</button>
+      <span class="user-text" id="userName">USUARIO</span>
+      <div class="user-icon">👤</div>
+      <button class="logout-btn" id="logoutBtn" style="display:none;">Cerrar sesión</button>
+    </div>
+  </header>
 
-  // Crear contenedor para sugerencias
-  const suggestionsContainer = document.createElement("div");
-  suggestionsContainer.classList.add("suggestions");
-  searchBar.style.position = "relative";
-  searchBar.appendChild(suggestionsContainer);
+  <div class="form-container user-management-container">
+    <header>
+      <h2>Gestión de Usuarios</h2>
+      <p>Busca, crea o actualiza usuarios registrados en el sistema.</p>
+    </header>
 
-  // Mostrar nombre del coordinador (desde login)
-  const nombreUsuario = localStorage.getItem("usuario") || "Coordinador";
-  userText.textContent = nombreUsuario;
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar usuario por nombre, apellido o correo">
+      <button type="button" class="btn-search">Buscar</button>
+    </div>
 
-  // === FUNCIÓN PARA HACER PETICIONES AL BACKEND ===
-  const sendRequest = async (url, method = "GET", body = null) => {
-    try {
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: body ? JSON.stringify(body) : null,
+    <form class="account-form user-management-form">
+      <div class="columns-wrapper">
+        <div class="column">
+          <div class="form-group"><label>Nombre(s):</label><input type="text" id="nombre"></div>
+          <div class="form-group"><label>Apellidos:</label><input type="text" id="apellido"></div>
+          <div class="form-group"><label>Teléfono:</label><input type="tel" id="telefono"></div>
+          <div class="form-group"><label>Fecha de nacimiento:</label><input type="date" id="fecha_nacimiento"></div>
+          <div class="form-group"><label>Correo electrónico:</label><input type="email" id="correo"></div>
+          <div class="form-group"><label>Ingresos mensuales:</label><input type="number" id="ingresos"></div>
+          <div class="form-group"><label>Dependientes económicos:</label>
+            <select id="dependientes_eco">
+              <option value="">Seleccione</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3 o más</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Contraseña:</label><input type="password" id="contrasena"></div>
+        </div>
+
+        <div class="column">
+          <div class="form-group"><label>RFC:</label><input type="text" id="rfc"></div>
+          <div class="form-group"><label>CURP:</label><input type="text" id="curp"></div>
+          <div class="form-group">
+            <label>Estado civil y género:</label>
+            <div class="inline-group">
+              <select id="estado_civil"></select>
+              <select id="genero"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Domicilio:</label>
+            <div class="inline-group">
+              <input type="text" id="colonia" placeholder="Colonia">
+              <input type="text" id="cp" placeholder="C.P.">
+            </div>
+            <input type="text" id="calle" placeholder="Calle">
+          </div>
+          <div class="form-group"><label>Jornada:</label><select id="jornada"></select></div>
+          <div class="form-group"><label>Número de control:</label><input type="text" id="no_control"></div>
+          <div class="form-group"><label>Especialidad:</label><select id="id_especialidad"></select></div>
+          <div class="form-group"><label>Rol:</label><select id="id_rol"></select></div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary-its" value="create">Crear usuario</button>
+        <button type="button" class="btn-secondary-its" value="update">Actualizar</button>
+        <button type="button" class="btn-delete-its" value="delete">Eliminar</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      const nombre = localStorage.getItem("nombre");
+      const apellido = localStorage.getItem("apellido");
+      const userNameSpan = document.getElementById("userName");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const homeBtn = document.getElementById("homeBtn");
+
+      if (nombre) {
+        userNameSpan.textContent = `${nombre} ${apellido || ""}`.trim();
+        logoutBtn.style.display = "inline-block";
+      } else {
+        userNameSpan.textContent = "Invitado";
+      }
+
+      logoutBtn.addEventListener("click", () => {
+        if (confirm("¿Deseas cerrar sesión?")) {
+          localStorage.clear();
+          alert("Sesión cerrada correctamente.");
+          window.location.href = "login.html";
+        }
       });
-      return await response.json();
-    } catch (error) {
-      console.error("Error en la petición:", error);
-      alert("❌ Error al conectar con el servidor");
-      return null;
-    }
-  };
 
-  // ===========================
-  // 🔹 Cargar catálogos dinámicos
-  // ===========================
-  const cargarCombos = async () => {
-    try {
-      const especialidades = await sendRequest("http://localhost:3001/api/usuarios/especialidades");
-      const especialidadSelect = document.querySelector("#especialidad");
-      especialidadSelect.innerHTML = '<option value="">Seleccione su especialidad</option>';
-      especialidades.forEach(esp => {
-        const opt = document.createElement("option");
-        opt.value = esp.Id_Especialidad;
-        opt.textContent = esp.Nombre_Especialidad;
-        especialidadSelect.appendChild(opt);
+      homeBtn.addEventListener("click", () => window.location.href = "inicioC.html");
+
+      const sendRequest = async (url, method = "GET", body = null) => {
+        try {
+          const res = await fetch(url, {
+            method,
+            headers: { "Content-Type": "application/json" },
+            body: body ? JSON.stringify(body) : null,
+          });
+          return await res.json();
+        } catch (err) {
+          console.error("Error:", err);
+          alert("Error de conexión con el servidor.");
+        }
+      };
+
+      const mapUser = (u) => ({
+        id_persona: u.id_persona ?? u.Id_Persona ?? null,
+        nombre: u.nombre ?? u.Nombre ?? "",
+        apellido: u.apellido ?? u.Apellido ?? "",
+        telefono: u.telefono ?? u.Telefono ?? "",
+        fecha_nacimiento: u.fecha_nacimiento ?? u.Fecha_Nacimiento ?? "",
+        correo: u.correo ?? u.Correo ?? "",
+        ingresos: u.ingresos ?? u.Ingresos ?? "",
+        dependientes_eco: u.dependientes_eco ?? u.Dependientes_Eco ?? "",
+        rfc: u.rfc ?? u.RFC ?? "",
+        curp: u.curp ?? u.CURP ?? "",
+        estado_civil: u.estado_civil ?? u.Estado_Civil ?? "",
+        genero: u.genero ?? u.Genero ?? "",
+        colonia: u.colonia ?? u.Colonia ?? "",
+        cp: (u.cp ?? u.CP ?? "").toString(),
+        calle: u.calle ?? u.Calle ?? "",
+        jornada: u.jornada ?? u.Jornada ?? "",
+        no_control: u.no_control ?? u.No_Control ?? "",
+        id_especialidad: u.id_especialidad ?? u.Id_Especialidad ?? "",
+        id_rol: u.id_rol ?? u.Id_Rol ?? ""
       });
 
-      const jornadas = await sendRequest("http://localhost:3001/api/usuarios/jornadas");
-      const jornadaSelect = document.querySelector("#jornada");
-      jornadaSelect.innerHTML = '<option value="">Seleccione su jornada</option>';
-      jornadas.forEach(j => {
-        const opt = document.createElement("option");
-        opt.value = j;
-        opt.textContent = j;
-        jornadaSelect.appendChild(opt);
-      });
+      const setSelectValue = (sel, val) => {
+        if (!sel || !val) return;
+        val = val.toString().trim().toLowerCase();
+        for (const opt of sel.options)
+          if (opt.value.toLowerCase() === val || opt.textContent.toLowerCase() === val) {
+            sel.value = opt.value;
+            return;
+          }
+        const o = document.createElement("option");
+        o.value = val;
+        o.textContent = val;
+        sel.appendChild(o);
+        sel.value = val;
+      };
 
-      const estados = await sendRequest("http://localhost:3001/api/usuarios/estados-civiles");
-      const estadoSelect = document.querySelector("select[name='estado-civil']");
-      estadoSelect.innerHTML = '<option value="">Seleccione su estado civil</option>';
-      estados.forEach(e => {
-        const opt = document.createElement("option");
-        opt.value = e;
-        opt.textContent = e;
-        estadoSelect.appendChild(opt);
-      });
+      const toISODate = (f) => {
+        if (!f) return "";
+        if (f.includes("T")) return f.split("T")[0];
+        if (f.includes("/")) {
+          const [mm, dd, yy] = f.split("/");
+          return `${yy}-${mm}-${dd}`;
+        }
+        return f;
+      };
 
-      const generos = await sendRequest("http://localhost:3001/api/usuarios/generos");
-      const generoSelect = document.querySelector("select[name='genero']");
-      generoSelect.innerHTML = '<option value="">Seleccione su género</option>';
-      generos.forEach(g => {
-        const opt = document.createElement("option");
-        opt.value = g;
-        opt.textContent = g;
-        generoSelect.appendChild(opt);
-      });
+      const cargarCombos = async () => {
+        try {
+          const esp = await sendRequest("http://localhost:3001/api/usuarios/especialidades");
+          const eSel = document.querySelector("#id_especialidad");
+          eSel.innerHTML = '<option value="">Seleccione</option>';
+          esp.forEach(e => {
+            const o = document.createElement("option");
+            o.value = e.id_especialidad;
+            o.textContent = e.nombre_especialidad;
+            eSel.appendChild(o);
+          });
 
-      // 🔹 Cargar roles desde la base de datos
-const respuesta = await sendRequest("http://localhost:3001/api/roles");
-const roles = respuesta.roles; // Accedemos al array dentro del objeto
-const rolSelect = document.querySelector("#rol");
+          const rolRes = await sendRequest("http://localhost:3001/api/roles");
+          const roles = rolRes.roles || rolRes;
+          const rSel = document.querySelector("#id_rol");
+          rSel.innerHTML = '<option value="">Seleccione rol</option>';
+          roles.forEach(r => {
+            const o = document.createElement("option");
+            o.value = r.id_rol;
+            o.textContent = r.nombre_rol;
+            rSel.appendChild(o);
+          });
 
-rolSelect.innerHTML = '<option value="">Seleccione rol</option>';
+          const gen = await sendRequest("http://localhost:3001/api/usuarios/generos");
+          const gSel = document.querySelector("#genero");
+          gSel.innerHTML = '<option value="">Seleccione género</option>';
+          gen.forEach(g => {
+            const o = document.createElement("option");
+            o.value = g;
+            o.textContent = g;
+            gSel.appendChild(o);
+          });
 
-roles.forEach(r => {
-  const opt = document.createElement("option");
-  opt.value = r.id_rol;
-  opt.textContent = r.nombre_rol;
-  rolSelect.appendChild(opt);
-});
+          const est = await sendRequest("http://localhost:3001/api/usuarios/estados-civiles");
+          const eCiv = document.querySelector("#estado_civil");
+          eCiv.innerHTML = '<option value="">Seleccione estado civil</option>';
+          est.forEach(e => {
+            const o = document.createElement("option");
+            o.value = e;
+            o.textContent = e;
+            eCiv.appendChild(o);
+          });
 
-    } catch (error) {
-      console.error("❌ Error al cargar catálogos:", error);
-    }
-  };
+          const jor = await sendRequest("http://localhost:3001/api/usuarios/jornadas");
+          const jSel = document.querySelector("#jornada");
+          jSel.innerHTML = '<option value="">Seleccione jornada</option>';
+          jor.forEach(j => {
+            const o = document.createElement("option");
+            o.value = j;
+            o.textContent = j;
+            jSel.appendChild(o);
+          });
+        } catch (e) { console.error(e); }
+      };
 
-  cargarCombos();
+      const combosReady = cargarCombos();
 
-  // ===========================
-  // 🔍 Autocompletado de búsqueda
-  // ===========================
-  let typingTimer;
-  searchInput.addEventListener("input", async () => {
-    clearTimeout(typingTimer);
-    const nombre = searchInput.value.trim();
+      const searchInput = document.querySelector(".search-bar input");
+      const suggestions = document.createElement("div");
+      suggestions.classList.add("suggestions");
+      document.querySelector(".search-bar").appendChild(suggestions);
 
-    if (nombre.length < 2) {
-      suggestionsContainer.innerHTML = "";
-      return;
-    }
-
-    typingTimer = setTimeout(async () => {
-      const users = await sendRequest(`http://localhost:3001/api/usuarios/buscar?nombre=${nombre}`);
-      suggestionsContainer.innerHTML = "";
-
-      if (users && users.length > 0) {
-        users.forEach(user => {
+      searchInput.addEventListener("input", async () => {
+        const q = searchInput.value.trim();
+        if (q.length < 2) { suggestions.innerHTML = ""; return; }
+        const raw = await sendRequest(`http://localhost:3001/api/usuarios/buscar?nombre=${q}`);
+        const users = (raw || []).map(mapUser);
+        suggestions.innerHTML = "";
+        if (!users.length) {
+          suggestions.innerHTML = "<div class='suggestion-item'>No se encontraron usuarios</div>";
+          return;
+        }
+        users.forEach(u => {
           const item = document.createElement("div");
           item.classList.add("suggestion-item");
-          item.textContent = `${user.Nombre} ${user.Apellido}`;
-          item.addEventListener("click", () => {
-            fillUserForm(user);
-            suggestionsContainer.innerHTML = "";
-            searchInput.value = "";
-          });
-          suggestionsContainer.appendChild(item);
+          item.textContent = `${u.nombre} ${u.apellido}`.trim();
+          item.onclick = () => { fillUserForm(u); suggestions.innerHTML = ""; searchInput.value = ""; };
+          suggestions.appendChild(item);
         });
-      } else {
-        const empty = document.createElement("div");
-        empty.classList.add("suggestion-item");
-        empty.textContent = "No se encontraron usuarios";
-        suggestionsContainer.appendChild(empty);
-      }
-    }, 300);
-  });
+      });
 
-  // === RELLENAR EL FORMULARIO ===
-  const setSelectValue = (selector, value) => {
-    const select = document.querySelector(selector);
-    if (!select) return;
-    const normalizedValue = (value || "").toString().toLowerCase();
-    for (let option of select.options) {
-      if (option.value.toString().toLowerCase() === normalizedValue) {
-        select.value = option.value;
-        return;
-      }
-    }
-    select.value = "";
-  };
+      const fillUserForm = (u) => {
+        const user = mapUser(u);
+        combosReady.then(() => {
+          document.querySelector("#nombre").value = user.nombre;
+          document.querySelector("#apellido").value = user.apellido;
+          document.querySelector("#telefono").value = user.telefono;
+          document.querySelector("#fecha_nacimiento").value = toISODate(user.fecha_nacimiento);
+          document.querySelector("#correo").value = user.correo;
+          document.querySelector("#ingresos").value = user.ingresos;
+          document.querySelector("#dependientes_eco").value = user.dependientes_eco;
+          document.querySelector("#rfc").value = user.rfc;
+          document.querySelector("#curp").value = user.curp;
+          document.querySelector("#colonia").value = user.colonia;
+          document.querySelector("#cp").value = user.cp;
+          document.querySelector("#calle").value = user.calle;
+          document.querySelector("#no_control").value = user.no_control;
+          setSelectValue(document.querySelector("#estado_civil"), user.estado_civil);
+          setSelectValue(document.querySelector("#genero"), user.genero);
+          setSelectValue(document.querySelector("#jornada"), user.jornada);
+          setSelectValue(document.querySelector("#id_especialidad"), user.id_especialidad);
+          setSelectValue(document.querySelector("#id_rol"), user.id_rol);
+          searchInput.dataset.userId = user.id_persona;
+        });
+      };
 
-  const fillUserForm = (user) => {
-    document.querySelector("#nombre").value = user.Nombre || "";
-    document.querySelector("#apellidos").value = user.Apellido || "";
-    document.querySelector("#telefono").value = user.Telefono || "";
-    document.querySelector("#email").value = user.Correo || "";
-    document.querySelector("#rfc").value = user.RFC || "";
-    document.querySelector("#curp").value = user.CURP || "";
-    document.querySelector("#ingresos").value = user.Ingresos || "";
-    document.querySelector("#dependientes").value = user.Dependientes_Eco || "";
-    document.querySelector("#control-number").value = user.No_Control || "";
-    setSelectValue("select[name='estado-civil']", user.Estado_Civil);
-    setSelectValue("select[name='genero']", user.Genero);
-    setSelectValue("#jornada", user.Jornada);
-    setSelectValue("#especialidad", user.ESPECIALIDAD_Id_Especialidad);
-    document.querySelector("input[name='colonia']").value = user.Colonia || "";
-    document.querySelector("input[name='cp']").value = user.CP || "";
-    document.querySelector("input[name='calle']").value = user.Calle || "";
-    searchInput.dataset.userId = user.Id_Emprendedor;
-  };
+      const getFormData = () => ({
+        nombre: document.querySelector("#nombre").value,
+        apellido: document.querySelector("#apellido").value,
+        telefono: document.querySelector("#telefono").value,
+        fecha_nacimiento: document.querySelector("#fecha_nacimiento").value,
+        correo: document.querySelector("#correo").value,
+        ingresos: document.querySelector("#ingresos").value,
+        dependientes_eco: document.querySelector("#dependientes_eco").value,
+        rfc: document.querySelector("#rfc").value,
+        curp: document.querySelector("#curp").value,
+        estado_civil: document.querySelector("#estado_civil").value,
+        genero: document.querySelector("#genero").value,
+        colonia: document.querySelector("#colonia").value,
+        cp: document.querySelector("#cp").value,
+        calle: document.querySelector("#calle").value,
+        jornada: document.querySelector("#jornada").value,
+        no_control: document.querySelector("#no_control").value,
+        id_especialidad: document.querySelector("#id_especialidad").value,
+        id_rol: document.querySelector("#id_rol").value,
+        contrasena: document.querySelector("#contrasena").value
+      });
 
-  // === OBTENER DATOS DEL FORMULARIO ===
-  const getFormData = () => ({
-    Nombre: document.querySelector("#nombre").value.trim(),
-    Apellido: document.querySelector("#apellidos").value.trim(),
-    Telefono: document.querySelector("#telefono").value.trim(),
-    Fecha_Nacimiento: null,
-    Correo: document.querySelector("#email").value.trim(),
-    Ingresos: document.querySelector("#ingresos").value || null,
-    Dependientes_Eco: document.querySelector("#dependientes").value || null,
-    RFC: document.querySelector("#rfc").value.trim(),
-    CURP: document.querySelector("#curp").value.trim(),
-    Estado_Civil: document.querySelector("select[name='estado-civil']").value,
-    Genero: document.querySelector("select[name='genero']").value,
-    Colonia: document.querySelector("input[name='colonia']").value.trim(),
-    CP: document.querySelector("input[name='cp']").value || null,
-    Calle: document.querySelector("input[name='calle']").value.trim(),
-    Jornada: document.querySelector("#jornada").value.trim(),
-    No_Control: document.querySelector("#control-number").value || null,
-    Id_Especialidad: document.querySelector("#especialidad").value || null,
-    id_Rol: document.querySelector("#rol").value || null,
-    Contrasena: document.querySelector("#password").value.trim()
-  });
+      document.querySelector("button[value='create']").addEventListener("click", async e => {
+        e.preventDefault();
+        const res = await sendRequest("http://localhost:3001/api/usuarios", "POST", getFormData());
+        if (res?.message) alert(res.message);
+      });
 
-  // === LIMPIAR FORMULARIO ===
-  const clearForm = () => {
-    document.querySelectorAll(".user-management-form input").forEach(input => input.value = "");
-    document.querySelectorAll(".user-management-form select").forEach(select => select.value = "");
-    delete searchInput.dataset.userId;
-    searchInput.value = "";
-    suggestionsContainer.innerHTML = "";
-  };
+      document.querySelector("button[value='update']").addEventListener("click", async e => {
+        e.preventDefault();
+        const id = searchInput.dataset.userId;
+        if (!id) return alert("Selecciona un usuario primero.");
+        const res = await sendRequest(`http://localhost:3001/api/usuarios/${id}`, "PUT", getFormData());
+        if (res?.message) alert(res.message);
+      });
 
-  // === CREAR USUARIO ===
-  document.querySelector("button[value='create']").addEventListener("click", async (e) => {
-    e.preventDefault();
-    const data = getFormData();
-    const res = await sendRequest("http://localhost:3001/api/usuarios", "POST", data);
-    if (res?.message) {
-      alert(res.message);
-      clearForm(); // limpia al crear
-    }
-  });
-
-  // === ACTUALIZAR USUARIO ===
-  document.querySelector("button[value='update']").addEventListener("click", async (e) => {
-    e.preventDefault();
-    const id = searchInput.dataset.userId;
-    if (!id) return alert("Selecciona un usuario primero");
-    const data = getFormData();
-    const res = await sendRequest(`http://localhost:3001/api/usuarios/${id}`, "PUT", data);
-    if (res?.message) alert(res.message);
-  });
-
-  // === ELIMINAR USUARIO ===
-  document.querySelector("button[value='delete']").addEventListener("click", async (e) => {
-    e.preventDefault();
-    const id = searchInput.dataset.userId;
-    if (!id) return alert("Selecciona un usuario primero");
-    if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
-    const res = await sendRequest(`http://localhost:3001/api/usuarios/${id}`, "DELETE");
-    if (res?.message) {
-      alert(res.message);
-      clearForm(); // limpia al eliminar
-    }
-  });
-
-  // === NUEVO BOTÓN LIMPIAR CAMPOS ===
-  const limpiarBtn = document.createElement("button");
-  limpiarBtn.textContent = "Limpiar Campos";
-limpiarBtn.className = "btn-clear-its btn-action-small";
-  limpiarBtn.type = "button";
-  limpiarBtn.addEventListener("click", clearForm);
-  document.querySelector(".form-actions").appendChild(limpiarBtn);
-
-  // === Cerrar sugerencias al hacer clic fuera ===
-  document.addEventListener("click", (e) => {
-    if (!searchBar.contains(e.target)) {
-      suggestionsContainer.innerHTML = "";
-    }
-  });
-});
-</script>
-
-
-
-
+      document.querySelector("button[value='delete']").addEventListener("click", async e => {
+        e.preventDefault();
+        const id = searchInput.dataset.userId;
+        if (!id) return alert("Selecciona un usuario primero.");
+        if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
+        const res = await sendRequest(`http://localhost:3001/api/usuarios/${id}`, "DELETE");
+        if (res?.message) alert(res.message);
+      });
+    });
+  </script>
 </body>
 </html>

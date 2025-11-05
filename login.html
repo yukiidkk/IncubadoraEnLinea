@@ -1,89 +1,97 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de Sesión | ITS</title>
-    <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
-    <link rel="stylesheet" href="./css/normalize.css">
-    <link rel="stylesheet" href="./css/estilos.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio de Sesión | ITS</title>
+  <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" href="./css/normalize.css">
+  <link rel="stylesheet" href="./css/estilos.css">
 </head>
 <body>
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="nav-container">
-            <img src="./images/logoITS.png" alt="Logo ITS">
-            <h1>Instituto Tecnológico de Saltillo</h1>
-        </div>
-    </header>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <img src="./images/logoITS.png" alt="Logo ITS">
+      <h1>Instituto Tecnológico de Saltillo</h1>
+    </div>
+  </header>
 
-    <!-- FORMULARIO LOGIN -->
-    <section class="login-section">
-        <div class="login-card">
-            <h2>Inicio de sesión</h2>
+  <!-- FORMULARIO LOGIN -->
+  <section class="login-section">
+    <div class="login-card">
+      <h2>Inicio de sesión</h2>
 
-            <form class="login-form">
-                <label for="usuario">Correo o Usuario</label>
-                <input type="text" id="usuario" name="usuario" placeholder="Ingrese su correo electrónico" required>
+      <form class="login-form">
+        <label for="usuario">Correo electrónico</label>
+        <input type="email" id="usuario" name="usuario" placeholder="Ingrese su correo electrónico" required>
 
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
 
-                <button type="submit" class="btn-login">Iniciar sesión</button>
-            </form>
+        <button type="submit" class="btn-login">Iniciar sesión</button>
+      </form>
 
-            <p class="text-center">¿No tienes cuenta?  
-                <a href="registroE.html">Regístrate aquí</a>
-            </p>
-        </div>
-    </section>
+      <p class="text-center">
+        ¿No tienes cuenta?
+        <a href="registroE.html">Regístrate aquí</a>
+      </p>
+    </div>
+  </section>
 
-    <!-- 🔽 SCRIPT para conectar con el backend -->
-    <script>
-document.querySelector(".login-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
+  <!-- SCRIPT para conectar con el backend -->
+  <script>
+  document.querySelector(".login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const usuario = document.querySelector("#usuario").value;
-  const password = document.querySelector("#password").value;
+    const correo = document.querySelector("#usuario").value.trim();
+    const password = document.querySelector("#password").value.trim();
 
-  try {
-    const response = await fetch("http://localhost:3001/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ correo: usuario, password })
-    });
+    try {
+      const response = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo, password })
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (result.success) {
-      //alert("✅ Bienvenido " + result.usuario);
+      if (result.success) {
+        // Guardar información del usuario en localStorage
+        localStorage.setItem("id_usuario", result.id_usuario);
+        localStorage.setItem("nombre", result.nombre);
+        localStorage.setItem("correo", result.correo);
+        localStorage.setItem("rol", result.rol);
+        localStorage.setItem("tipo", result.tipo);
 
-      // Guardar datos básicos en localStorage (opcional)
-      localStorage.setItem("usuario", result.usuario);
-      localStorage.setItem("rol", result.rol);
 
-      // 🔹 Redirección según el rol
-      if (result.rol === 1) {
-        // Coordinador
-        window.location.href = "inicioC.html";
-      } else if (result.rol === 2) {
-        // Emprendedor
-        window.location.href = "inicioE.html";
+        // Redirigir según el tipo de rol
+        switch (result.tipo.toLowerCase()) {
+          case "coordinador":
+            window.location.href = "inicioC.html";
+            break;
+          case "emprendedor":
+            window.location.href = "inicioE.html";
+            break;
+          case "administrador":
+            window.location.href = "inicioC.html";
+            break;
+          default:
+            alert("Rol no reconocido. Contacta al administrador.");
+            break;
+        }
+
       } else {
-        alert("⚠️ Rol no reconocido. Contacte al administrador.");
+        alert("❌ " + result.message);
       }
 
-    } else {
-      alert("❌" + result.message);
+    } catch (err) {
+      console.error("Error al iniciar sesión:", err);
+      alert("Error de conexión con el servidor. Verifica que el backend esté en ejecución.");
     }
-
-  } catch (err) {
-    console.error("Error al iniciar sesión:", err);
-    alert("Error de conexión con el servidor.");
-  }
-});
-</script>
+  });
+  </script>
 
 </body>
 </html>

@@ -9,15 +9,100 @@
   <link rel="stylesheet" href="./css/normalize.css" />
   <link rel="stylesheet" href="./css/estilos.css" />
   <style>
-    body { background:#eaf2ff; margin:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .navbar{background:#003366;color:#fff;padding:10px 40px;display:flex;justify-content:space-between;align-items:center}
-    .logo{display:flex;align-items:center;gap:10px}.logo img{height:40px}
-    .dashboard-container{max-width:1000px;margin:30px auto;background:#f7faff;border-radius:10px;padding:25px 30px}
-    .welcome-header{text-align:center;margin-bottom:20px}
-    .modules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:25px;justify-items:center}
-    .module-card{background:#fff;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1);padding:25px 20px;text-align:center;text-decoration:none;color:#000;width:180px;transition:.25s}
-    .module-card:hover{transform:scale(1.05);background:#e3ecff}
-    .icon-circle{width:60px;height:60px;border-radius:50%;background:#eaf2ff;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px}
+    body {
+      background: #eaf2ff;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .navbar {
+      background: #003366;
+      color: #fff;
+      padding: 10px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo img {
+      height: 40px;
+    }
+
+    /* 🔹 Panel usuario */
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #0a2b57;
+      padding: 6px 10px;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .user-text {
+      font-weight: bold;
+      color: #fff;
+    }
+    .logout-btn {
+      background: #c0392b;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s ease;
+    }
+    .logout-btn:hover {
+      background: #e74c3c;
+    }
+
+    .dashboard-container {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: #f7faff;
+      border-radius: 10px;
+      padding: 25px 30px;
+    }
+    .welcome-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 25px;
+      justify-items: center;
+    }
+    .module-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.1);
+      padding: 25px 20px;
+      text-align: center;
+      text-decoration: none;
+      color: #000;
+      width: 180px;
+      transition: .25s;
+    }
+    .module-card:hover {
+      transform: scale(1.05);
+      background: #e3ecff;
+    }
+    .icon-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #eaf2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      font-size: 26px;
+    }
   </style>
 </head>
 <body>
@@ -27,15 +112,17 @@
     <img src="./images/logoITS.png" alt="ITS" />
     <span>Instituto Tecnológico de Saltillo</span>
   </div>
+  <!-- 🔹 Panel usuario -->
   <div class="user-info">
-    <span class="user-text">USUARIO</span>
+    <span class="user-text" id="userName">USUARIO</span>
     <div class="user-icon">👤</div>
+    <button class="logout-btn" id="logoutBtn" style="display:none;">🔒 Cerrar sesión</button>
   </div>
 </header>
 
 <div class="dashboard-container">
   <div class="welcome-header">
-    <h1>Bienvenidos</h1>
+    <h1>Bienvenida Coordinadora</h1>
     <p>Centro de Incubación ITS</p>
   </div>
 
@@ -61,7 +148,7 @@
       <a href="crudtipodeventos.html" class="module-card">
         <div class="icon-circle">✅</div><span class="module-name">Tipo de Eventos</span>
       </a>
-      <a href="tutorias\tutorias.html" class="module-card">
+      <a href="tutorias/tutorias.html" class="module-card">
         <div class="icon-circle">✏️</div><span class="module-name">Tutorías</span>
       </a>
     </div>
@@ -69,6 +156,32 @@
 </div>
 
 <script>
+  // Mostrar nombre y rol del usuario logueado
+  document.addEventListener("DOMContentLoaded", () => {
+    const nombre = localStorage.getItem("nombre");
+    const apellido = localStorage.getItem("apellido");
+    const rol = localStorage.getItem("tipo") || localStorage.getItem("rol");
+    const userNameSpan = document.getElementById("userName");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (nombre) {
+      userNameSpan.textContent = `${nombre} ${apellido || ""}`.trim();
+      logoutBtn.style.display = "inline-block";
+    } else {
+      userNameSpan.textContent = "Invitado";
+      logoutBtn.style.display = "none";
+    }
+
+    // 🔴 Botón cerrar sesión
+    logoutBtn.addEventListener("click", () => {
+      if (confirm("¿Deseas cerrar sesión?")) {
+        localStorage.clear();
+        alert("👋 Sesión cerrada correctamente.");
+        window.location.href = "login.html";
+      }
+    });
+  });
+
   // Guarda el rol para las demás páginas
   localStorage.setItem('rolUsuario', 'coordinador');
 </script>
