@@ -16,6 +16,7 @@ const loginRoutes = require("./routes/loginRoutes");
 const rolRoutes = require("./routes/rolRoutes");
 const proyectoRoutes = require("./routes/proyectoRoutes");
 const gestionUsuariosRoutes = require("./routes/gestionUsuariosRoutes");
+const tipo_eventoRoutes = require("./routes/tipo_eventoRoutes");
 
 
 // Usar rutas
