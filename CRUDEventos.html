@@ -40,7 +40,6 @@
     header .logo img {
       height: 28px;
       margin-right: 10px;
-      /* Usando un placeholder de Placehold.co para el logo */
       border-radius: 4px;
     }
 
@@ -333,6 +332,11 @@
         background-color: #f8d7da;
         color: #721c24;
     }
+    /* Estilo para errores de conexión (permanente) */
+    .feedback-critical {
+        background-color: #b71c1c;
+        color: white;
+    }
 
 
     /* Responsive */
@@ -469,7 +473,7 @@
 
 <script>
   // URL base de tu API (Asegúrate de que coincida con tu servidor)
-  const API_URL = 'http://localhost:3000/api';
+  const API_URL = 'http://localhost:3001/api';
 
   // --- Elementos del DOM ---
   const form = document.getElementById('evento-form');
@@ -490,22 +494,64 @@
   // Botones
   const btnActualizar = document.getElementById('btn-actualizar');
   const btnEliminar = document.getElementById('btn-eliminar');
+  const btnBuscar = document.getElementById('search-button');
+  const inputBuscar = document.getElementById('search-input');
 
   /**
    * Muestra un mensaje de feedback (éxito o error)
    * @param {string} message - El mensaje a mostrar
-   * @param {boolean} isError - True si es error, false si es éxito
+   * @param {string} type - 'success', 'error' o 'critical'
    */
-  function showFeedback(message, isError = false) {
+  function showFeedback(message, type = 'success') {
     feedbackMessage.textContent = message;
-    feedbackMessage.className = isError ? 'feedback-error' : 'feedback-success';
+    feedbackMessage.className = `feedback-${type}`;
     feedbackMessage.style.display = 'block';
     
-    // Ocultar el mensaje después de 5 segundos
-    setTimeout(() => {
-      feedbackMessage.style.display = 'none';
-    }, 5000);
+    // Ocultar el mensaje después de 5 segundos, a menos que sea crítico
+    if (type !== 'critical') {
+        setTimeout(() => {
+            feedbackMessage.style.display = 'none';
+        }, 5000);
+    }
   }
+
+  /**
+   * Maneja errores de carga (fetch) y muestra un mensaje crítico
+   * @param {Error} error - El objeto de error
+   * @param {string} context - Descripción de lo que falló
+   */
+  function handleLoadError(error, context) {
+      console.error(`Error en ${context}:`, error);
+      // Si el error es 'Failed to fetch', es un error de conexión de red
+      if (error.message.includes('Failed to fetch')) {
+          showFeedback('CRÍTICO: No se pudo conectar con el servidor backend. Asegúrate de que esté corriendo en el puerto 3001.', 'critical');
+      } else {
+          showFeedback(`Error al cargar ${context}.`, 'error');
+      }
+  }
+
+  /**
+   * Extrae el array de datos de una respuesta JSON,
+   * independientemente de si viene como un array plano o un objeto.
+   * @param {object|Array} data - La respuesta JSON del servidor
+   * @returns {Array} - El array de datos
+   */
+  function extractArray(data) {
+      if (Array.isArray(data)) {
+          return data; // Ya es un array
+      }
+      // Si es un objeto, busca el array dentro de las claves comunes
+      if (typeof data === 'object' && data !== null) {
+          if (Array.isArray(data.eventos)) return data.eventos;
+          if (Array.isArray(data.coordinadores)) return data.coordinadores;
+          if (Array.isArray(data.tipos)) return data.tipos;
+          if (Array.isArray(data.tiposEventos)) return data.tiposEventos;
+      }
+      // Si no encuentra nada, devuelve un array vacío para evitar errores .forEach
+      console.warn("La respuesta del backend no era un array o un objeto esperado:", data);
+      return []; 
+  }
+
 
   /**
    * Carga los coordinadores (usuarios con rol=2) en el dropdown
@@ -513,11 +559,16 @@
   async function loadCoordinadores() {
     try {
       const response = await fetch(`${API_URL}/usuarios-coordinadores`);
-      if (!response.ok) throw new Error('Error al cargar coordinadores');
+      if (!response.ok) {
+        // Captura errores 500 (Error Interno del Servidor)
+        throw new Error('Error al obtener coordinadores');
+      }
       
-      const coordinadores = await response.json();
+      const data = await response.json();
+      const coordinadores = extractArray(data); // CORRECCIÓN: Extraer array
       
       encargadoSelect.innerHTML = '<option value="">Seleccionar coordinador</option>'; // Limpiar
+      
       coordinadores.forEach(user => {
         const option = document.createElement('option');
         option.value = user.id_usuario; // El ID se guarda en 'value'
@@ -525,7 +576,7 @@
         encargadoSelect.appendChild(option);
       });
     } catch (error) {
-      console.error(error);
+      handleLoadError(error, 'coordinadores');
       encargadoSelect.innerHTML = '<option value="">Error al cargar</option>';
     }
   }
@@ -535,38 +586,56 @@
    */
   async function loadTiposEvento() {
     try {
-      const response = await fetch(`${API_URL}/tipos-evento`);
+      const response = await fetch(`${API_URL}/tipos-eventos`);
       if (!response.ok) throw new Error('Error al cargar tipos de evento');
       
-      const tipos = await response.json();
+      const data = await response.json();
+      const tipos = extractArray(data); // CORRECCIÓN: Extraer array
       
+      if (!Array.isArray(tipos)) {
+          // Si extractArray falló o devolvió algo inesperado
+          throw new TypeError("La respuesta procesada no es un array");
+      }
+
       tipoSelect.innerHTML = '<option value="">Seleccionar tipo</option>'; // Limpiar
+      
       tipos.forEach(tipo => {
         const option = document.createElement('option');
         option.value = tipo.id_tipos_eve;
-        option.textContent = tipo.nombre_tipo;
+        option.textContent = tipo.nombre_tipo_eve;
         tipoSelect.appendChild(option);
       });
     } catch (error) {
-      console.error(error);
+      handleLoadError(error, 'tipos de evento');
       tipoSelect.innerHTML = '<option value="">Error al cargar</option>';
     }
   }
 
   /**
    * Carga la lista de eventos en la tabla del panel derecho
+   * @param {string} [searchQuery] - Término de búsqueda opcional
    */
-  async function loadEventos() {
+  async function loadEventos(searchQuery = '') {
+    let url = `${API_URL}/eventos`;
+    if (searchQuery) {
+        // Usamos la ruta de búsqueda si hay un término
+        url = `${API_URL}/eventos/buscar?nombre=${encodeURIComponent(searchQuery)}`;
+    }
+
     try {
-      const response = await fetch(`${API_URL}/eventos`);
-      if (!response.ok) throw new Error('Error al cargar eventos');
+      const response = await fetch(url);
+      if (!response.ok) {
+        // Captura errores 500 (Error Interno del Servidor)
+        throw new Error('Error interno del servidor.');
+      }
       
-      const eventos = await response.json();
+      const data = await response.json();
+      const eventos = extractArray(data); // CORRECCIÓN: Extraer array
       
       tableBody.innerHTML = ''; // Limpiar tabla
       
       if (eventos.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="3">No hay eventos próximos.</td></tr>';
+        tableBody.innerHTML = `<tr><td colspan="3">${searchQuery ? 'No se encontraron eventos.' : 'No hay eventos próximos.'}</td></tr>`;
         return;
       }
       
@@ -592,7 +661,7 @@
         tableBody.appendChild(tr);
       });
     } catch (error) {
-      console.error(error);
+      handleLoadError(error, 'eventos');
       tableBody.innerHTML = '<tr><td colspan="3">Error al cargar eventos.</td></tr>';
     }
   }
@@ -601,7 +670,7 @@
    * Rellena el formulario con los datos de un evento (para actualizar/eliminar)
    * @param {object} evento - El objeto del evento
    */
-   function populateForm(evento) {
+    function populateForm(evento) {
     // Scroll al topo y enfocar el formulario
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
@@ -632,14 +701,14 @@
    }
    
    /**
-    * Limpia el formulario y resetea los botones
-    */
-   function resetForm() {
+     * Limpia el formulario y resetea los botones
+     */
+    function resetForm() {
         form.reset(); // Resetea todos los campos del formulario
         idEventoInput.value = ''; // Asegurar que el ID oculto esté vacío
         btnActualizar.disabled = true; // Deshabilitar botones
         btnEliminar.disabled = true;
-   }
+    }
 
   /**
    * Pobla los dropdowns de fecha
@@ -668,7 +737,6 @@
     e.preventDefault(); // Evitar envío tradicional
     
     // Construir fecha en formato YYYY-MM-DD
-    // PadStart asegura dos dígitos (ej. 1 -> 01)
     const dia = String(diaSelect.value).padStart(2, '0');
     const mes = String(mesSelect.value).padStart(2, '0');
     const ano = anoSelect.value;
@@ -696,13 +764,13 @@
         throw new Error(result.message || 'Error al registrar el evento');
       }
       
-      showFeedback('Evento registrado con éxito');
+      showFeedback('Evento registrado con éxito', 'success');
       resetForm();
       loadEventos(); // Recargar la lista de eventos
       
     } catch (error) {
       console.error(error);
-      showFeedback(error.message, true);
+      showFeedback(error.message, 'error');
     }
   });
   
@@ -712,7 +780,7 @@
   btnActualizar.addEventListener('click', async () => {
     const id = idEventoInput.value;
     if (!id) {
-        showFeedback('Por favor, selecciona un evento de la lista para actualizar.', true);
+        showFeedback('Por favor, selecciona un evento de la lista para actualizar.', 'error');
         return;
     }
     
@@ -744,30 +812,32 @@
         throw new Error(result.message || 'Error al actualizar el evento');
       }
       
-      showFeedback('Evento actualizado con éxito');
+      showFeedback('Evento actualizado con éxito', 'success');
       resetForm();
       loadEventos(); // Recargar la lista de eventos
       
     } catch (error) {
       console.error(error);
-      showFeedback(error.message, true);
+      showFeedback(error.message, 'error');
     }
   });
 
   /**
    * Manejador del botón Eliminar
    */
-   btnEliminar.addEventListener('click', async () => {
+    btnEliminar.addEventListener('click', async () => {
     const id = idEventoInput.value;
     if (!id) {
-        showFeedback('Por favor, selecciona un evento de la lista para eliminar.', true);
+        showFeedback('Por favor, selecciona un evento de la lista para eliminar.', 'error');
         return;
     }
     
-    // Doble confirmación
-    if (!confirm(`¿Estás seguro de que deseas eliminar el evento "${nombreInput.value}"?`)) {
-        return;
-    }
+    // NOTA: window.confirm() está deshabilitado en este entorno de Vista Previa.
+    // En una aplicación real, usarías un modal personalizado.
+    // const confirmacion = confirm(`¿Estás seguro de que deseas eliminar el evento "${nombreInput.value}"?`);
+    // if (!confirmacion) {
+    //    return;
+    // }
 
     try {
       const response = await fetch(`${API_URL}/eventos/${id}`, {
@@ -780,22 +850,38 @@
         throw new Error(result.message || 'Error al eliminar el evento');
       }
       
-      showFeedback('Evento eliminado con éxito');
+      showFeedback('Evento eliminado con éxito', 'success');
       resetForm();
       loadEventos(); // Recargar la lista de eventos
       
     } catch (error) {
       console.error(error);
-      showFeedback(error.message, true);
+      showFeedback(error.message, 'error');
     }
+    });
+
+  /**
+   * Manejador del botón de Búsqueda
+   */
+   btnBuscar.addEventListener('click', () => {
+        loadEventos(inputBuscar.value);
+   });
+
+   // Opcional: Buscar también al presionar Enter en el input
+   inputBuscar.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            loadEventos(inputBuscar.value);
+        }
    });
 
 
   // --- Inicialización ---
   document.addEventListener('DOMContentLoaded', () => {
     populateDateDropdowns();
-    loadCoordinadores();
+    
+    // Cargar datos (Tipos de evento primero, como solicitaste)
     loadTiposEvento();
+    loadCoordinadores();
     loadEventos();
     
     // Deshabilitar botones de acción al inicio
@@ -805,3 +891,4 @@
 </script>
 </body>
 </html>
+

@@ -16,6 +16,20 @@ exports.crearTipoEvento = async (req, res) => {
     }
 };
 
+exports.obtenerTiposEventos = async (req, res) => {
+    try {
+        const sql = "SELECT id_tipos_eve, nombre_tipo_eve FROM tipos_eventos ORDER BY nombre_tipo_eve";
+        const tipos = await query(sql);
+        
+        // Devolvemos el array directamente para que el frontend lo consuma
+        res.json(tipos); 
+
+    } catch (error) {
+        console.error("Error al obtener tipos de evento:", error);
+        // Devolvemos una respuesta de error consistente
+        res.status(500).json({ success: false, message: "Error al obtener tipos de evento" });
+    }
+};
 // Actualizar tipo de evento
 exports.actualizarTipoEvento = async (req, res) => {
     const { id } = req.params; 

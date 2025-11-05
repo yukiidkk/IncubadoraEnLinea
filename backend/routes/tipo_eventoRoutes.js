@@ -36,4 +36,6 @@ router.get("/eventos-con-tipo", obtenerEventosConTipo);
 // GET /api/eventos-con-tipo/buscar?nombre=...
 router.get("/eventos-con-tipo/buscar", buscarEventoPorNombre); 
 
+// router.get("/tipos-eventos", obtenerTiposEventos);
+
 module.exports = router;
