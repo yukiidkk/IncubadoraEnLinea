@@ -27,26 +27,10 @@ app.use("/api", loginRoutes);
 app.use("/api", rolRoutes);
 app.use("/api", proyectoRoutes);
 app.use("/api", gestionUsuariosRoutes);
-<<<<<<< HEAD
 app.use("/api", tipo_eventoRoutes);
 app.use("/api", eventosRoutes);
-=======
-app.use("/api", tipo_eventoRoutes); 
 
-// Middleware de debug SEGURO (no consume el body)
-app.use((req, res, next) => {
-  console.log('🔍 Petición:', req.method, req.url);
-  if (req.body) {
-    const bodyCopy = { ...req.body };
-    if (bodyCopy.archivoBase64) {
-      bodyCopy.archivoBase64 = `[BASE64: ${bodyCopy.archivoBase64.length} chars]`;
-    }
-    console.log('   Body preview:', bodyCopy);
-  }
-  next();
-});
 
->>>>>>> 8681a0457ecf4ace13efdee08caaf23ebce66c77
 // Probar conexión
 app.get("/test-db", async (req, res) => {
   try {
