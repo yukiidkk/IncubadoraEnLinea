@@ -189,7 +189,7 @@
       <!-- Panel izquierdo -->
       <section class="panel">
         <label>Nombre del rol</label>
-        <input type="text" id="nombreRolInput" placeholder="Nombre del rol">
+        <input type="text" id="nombreRolInput" placeholder="Nombre del rol" maxlength="30">
 
         <label>Permisos del rol:</label>
         <select id="selectPermiso">
@@ -279,13 +279,13 @@ async function cargarRoles() {
             const fila = document.createElement("tr");
             
             // Asegúrate que Nombre_Rol y Permisos coincidan con tu DB
-            fila.innerHTML = `<td>${rol.Nombre_Rol}</td><td>${rol.Permisos}</td>`;
+            fila.innerHTML = `<td>${rol.nombre_rol}</td><td>${rol.permisos}</td>`;
             
             fila.addEventListener("click", () => {
                 // Al hacer clic, selecciona el rol para edición/eliminación
-                rolSeleccionadoId = rol.id_Rol;
-                inputNombre.value = rol.Nombre_Rol;
-                selectPermiso.value = rol.Permisos;
+                rolSeleccionadoId = rol.id_rol;
+                inputNombre.value = rol.nombre_rol;
+                selectPermiso.value = rol.permisos;
                 
                 // Efecto visual: deseleccionar todas y seleccionar la clicada
                 document.querySelectorAll("#tablaRoles tr").forEach(r => r.style.backgroundColor = 'white');
@@ -315,7 +315,7 @@ async function cargarUsuariosConRol() {
         tablaUsuariosRol.innerHTML = "";
         data.usuarios.forEach(u => {
             const fila = document.createElement("tr");
-            fila.innerHTML = `<td>${u.Usuario}</td><td>${u.Nombre_Rol}</td>`;
+            fila.innerHTML = `<td>${u.nombre}</td><td>${u.Nombre_Rol}</td>`;
             tablaUsuariosRol.appendChild(fila);
         });
     } catch (err) {
@@ -378,11 +378,18 @@ btnCrear.addEventListener("click", async () => {
 
     if (!nombreRol || !permisos) return alert("Completa el nombre y selecciona un permiso.");
 
-    await fetch(API_URL, {
+    const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombreRol, permisos })
     });
+    const data = await res.json();
+
+    if (!data.success) {
+    alert(data.message || "Error al crear el rol.");
+    return; // Salir sin recargar
+}
+
     limpiarFormulario();
     cargarRoles();
 });
