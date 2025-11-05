@@ -173,8 +173,6 @@
                             <label for="rol">Rol</label>
                             <select id="rol" name="rol">
                                 <option value="">Seleccione rol</option>
-                                <option value="admin">Administrador</option>
-                                <option value="user">Usuario</option>
                                 </select>
                         </div>
                     </div>
@@ -265,6 +263,21 @@ document.addEventListener("DOMContentLoaded", () => {
         opt.textContent = g;
         generoSelect.appendChild(opt);
       });
+
+      // 🔹 Cargar roles desde la base de datos
+const respuesta = await sendRequest("http://localhost:3001/api/roles");
+const roles = respuesta.roles; // Accedemos al array dentro del objeto
+const rolSelect = document.querySelector("#rol");
+
+rolSelect.innerHTML = '<option value="">Seleccione rol</option>';
+
+roles.forEach(r => {
+  const opt = document.createElement("option");
+  opt.value = r.id_rol;
+  opt.textContent = r.nombre_rol;
+  rolSelect.appendChild(opt);
+});
+
     } catch (error) {
       console.error("❌ Error al cargar catálogos:", error);
     }
@@ -363,7 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Jornada: document.querySelector("#jornada").value.trim(),
     No_Control: document.querySelector("#control-number").value || null,
     Id_Especialidad: document.querySelector("#especialidad").value || null,
-    id_Rol: document.querySelector("#rol").value === "admin" ? 1 : 2,
+    id_Rol: document.querySelector("#rol").value || null,
     Contrasena: document.querySelector("#password").value.trim()
   });
 
