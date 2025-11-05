@@ -101,9 +101,9 @@ exports.obtenerRoles = async (req, res) => {
 exports.obtenerUsuariosConRol = async (req, res) => {
     try {
         const usuarios = await query(`
-            SELECT p.nombre, r.nombre_Rol 
+            SELECT p.nombre, r.nombre_rol 
             FROM usuarios u 
-            INNER JOIN rol r ON u.id_Rol = r.id_Rol
+            INNER JOIN rol r ON u.id_rol = r.id_rol
             INNER JOIN persona p ON u.id_persona = p.id_persona
         `);
         res.json({ success: true, usuarios });
@@ -117,12 +117,12 @@ exports.buscarUsuarioPorNombre = async (req, res) => {
     try {
         const { nombre } = req.query; // Se obtiene ?nombre=valor de la URL
         const usuarios = await query(`
-            SELECT p.correo, r.nombre_rol 
+            SELECT p.nombre, r.nombre_rol 
             FROM usuarios u 
             INNER JOIN rol r ON u.id_rol = r.id_rol
             INNER JOIN persona p ON u.id_persona = p.id_persona
-            WHERE p.correo LIKE ?
-        `, [`%${nombre}%`]); // Busca coincidencias parciales en el correo
+            WHERE p.nombre LIKE ?
+        `, [`%${nombre}%`]); // Busca coincidencias parciales
 
         res.json({ success: true, usuarios });
     } catch (err) {
