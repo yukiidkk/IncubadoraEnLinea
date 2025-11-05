@@ -1,35 +1,63 @@
 const { query } = require("../config/database");
 
-// Función que simula la obtención de permisos disponibles para el select.
-// En un sistema real, esto podría venir de otra tabla de la DB.
-//const PERMISOS_DISPONIBLES = ['Administrador', 'Usuario'];
-
-//Crear nuevo rol
+// Crear nuevo rol
 exports.crearRol = async (req, res) => {
     const { nombreRol, permisos } = req.body;
+
     try {
-        await query("INSERT INTO ROL (nombre_rol, permisos) VALUES (?, ?)", [
-            nombreRol,
-            permisos
-        ]);
+        // Validar que el nombre no esté vacío
+        if (!nombreRol || nombreRol.trim() === "") {
+            return res.status(400).json({ success: false, message: "El nombre del rol no puede estar vacío" });
+        }
+
+        // Validar longitud máxima (30 caracteres)
+        if (nombreRol.length > 30) {
+            return res.status(400).json({ success: false, message: "El nombre del rol no debe exceder 30 caracteres" });
+        }
+
+        // Verificar si el nombre ya existe (ignora mayúsculas/minúsculas)
+        const rolExistente = await query("SELECT * FROM ROL WHERE LOWER(nombre_rol) = LOWER(?)", [nombreRol]);
+        if (rolExistente.length > 0) {
+            return res.status(400).json({ success: false, message: "Ya existe un rol con ese nombre" });
+        }
+
+        // Insertar nuevo rol si pasa las validaciones
+        await query("INSERT INTO ROL (nombre_rol, permisos) VALUES (?, ?)", [nombreRol, permisos]);
         res.status(201).json({ success: true, message: "Rol creado correctamente" });
+
     } catch (err) {
         console.error("Error al crear rol:", err);
         res.status(500).json({ success: false, message: "Error al crear rol" });
     }
 };
 
-//Actualizar rol
+
+// Actualizar rol (con validaciones)
 exports.actualizarRol = async (req, res) => {
     const { id } = req.params;
     const { nombreRol, permisos } = req.body;
+
     try {
-        await query("UPDATE ROL SET nombre_rol=?, permisos=? WHERE id_rol=?", [
-            nombreRol,
-            permisos,
-            id
-        ]);
+        if (!nombreRol || nombreRol.trim() === "") {
+            return res.status(400).json({ success: false, message: "El nombre del rol no puede estar vacío" });
+        }
+
+        if (nombreRol.length > 30) {
+            return res.status(400).json({ success: false, message: "El nombre del rol no debe exceder 30 caracteres" });
+        }
+
+        // Verificar si ya existe otro rol con ese nombre
+        const rolExistente = await query(
+            "SELECT * FROM ROL WHERE LOWER(nombre_rol) = LOWER(?) AND id_rol != ?",
+            [nombreRol, id]
+        );
+        if (rolExistente.length > 0) {
+            return res.status(400).json({ success: false, message: "Ya existe otro rol con ese nombre" });
+        }
+
+        await query("UPDATE ROL SET nombre_rol=?, permisos=? WHERE id_rol=?", [nombreRol, permisos, id]);
         res.json({ success: true, message: "Rol actualizado correctamente" });
+
     } catch (err) {
         console.error("Error al actualizar rol:", err);
         res.status(500).json({ success: false, message: "Error al actualizar rol" });
@@ -51,14 +79,11 @@ exports.eliminarRol = async (req, res) => {
 // Obtener lista de roles y permisos
 exports.obtenerRoles = async (req, res) => {
     try {
-        // 1. Obtener la lista de roles (usamos 'rows' como el array de resultados)
+        //Obtener la lista de roles (usamos 'rows' como el array de resultados)
         const roles = await query("SELECT * FROM rol"); 
         
-        // 2. Obtener la lista ÚNICA de permisos. Renombramos a 'permisosRows'.
-        //    'permisosRows' será el array que contiene los objetos { Permisos: 'valor' }
+        //Obtener la lista de permisos.
         const permisosRows = await query("SELECT DISTINCT permisos FROM ROL WHERE permisos IS NOT NULL AND permisos != ''"); 
-        
-        // 3. Ahora usamos .map() en el array correcto: 'permisosRows'
         const permisosDisponibles = permisosRows.map(row => row.permisos);
 
         res.json({ 
@@ -88,17 +113,16 @@ exports.obtenerUsuariosConRol = async (req, res) => {
     }
 };
 
-// Buscar usuarios por nombre
 exports.buscarUsuarioPorNombre = async (req, res) => {
     try {
         const { nombre } = req.query; // Se obtiene ?nombre=valor de la URL
         const usuarios = await query(`
-            SELECT p.nombre, r.nombre_rol 
+            SELECT p.correo, r.nombre_rol 
             FROM usuarios u 
             INNER JOIN rol r ON u.id_rol = r.id_rol
             INNER JOIN persona p ON u.id_persona = p.id_persona
-            WHERE p.persona LIKE ?
-        `, [`%${nombre}%`]); // Busca coincidencias parciales
+            WHERE p.correo LIKE ?
+        `, [`%${nombre}%`]); // Busca coincidencias parciales en el correo
 
         res.json({ success: true, usuarios });
     } catch (err) {
