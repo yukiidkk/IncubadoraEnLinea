@@ -362,7 +362,7 @@ input[type="file"]::-webkit-file-upload-button:hover {
 </head>
 <body>
 
-  <header>
+   <header>
     <div class="left">
       <img src="images/logoITS.png" alt="Logo ITS">
       <span>Instituto Tecnológico de Saltillo</span>
@@ -371,14 +371,14 @@ input[type="file"]::-webkit-file-upload-button:hover {
         <a href="proyectos.html">Proyectos</a>
       </nav>
     </div>
-    <div class="usuario">USUARIO</div>
+    <div class="usuario" id="nombreUsuario">USUARIO</div>
   </header>
 
   <div class="contenido">
     <h1>Página principal de proyectos</h1>
 
     <div class="subnav">
-      <a href="#">Inicio</a> |
+      <a href="proyectos.html">Inicio</a> |
       <a href="#">Seguimiento de proyectos</a>
     </div>
 
@@ -387,7 +387,7 @@ input[type="file"]::-webkit-file-upload-button:hover {
       <select>
         <option value="">Filtrar por...</option>
       </select>
-      <button>Crear nuevo proyecto ➕</button>
+      <button onclick="location.href='crearProyecto.html'">Crear nuevo proyecto ➕</button>
       <button class="descargar">Descargar formato de registro</button>
     </div>
 
@@ -396,264 +396,249 @@ input[type="file"]::-webkit-file-upload-button:hover {
 
       <div class="form-grid">
         <div>
-          <label for="nombre">Nombre del proyecto</label>
+          <label for="nombreProyecto">Nombre del proyecto</label>
           <input type="text" id="nombreProyecto">
-          <label for="desc">Descripción</label>
+          <label for="descripcion">Descripción</label>
           <textarea id="descripcion"></textarea>
         </div>
         <div>
-          <label for="subirArchivo">Subir formato de registro:</label>
-<div class="subir-archivo">
-  <input type="file" id="archivo" name="archivo" accept=".doc,.docx,.pdf">
-</div>
+          <label for="archivo">Subir formato de registro:</label>
+          <div class="subir-archivo">
+            <input type="file" id="archivo" name="archivo" accept=".doc,.docx,.pdf">
+          </div>
 
+          <label>Agregar socios:</label>
 
-<label>Agregar socios:</label>
+          <div class="agregarSocios" id="agregarSocios">
+            <div class="socio-card">
+              <div class="info">
+                <img src="images/user-icon.png" alt="icono usuario">
+                <span><strong>USUARIO 1</strong></span>
+              </div>
+              <div class="acciones-socio">
+                <button class="btn-add" data-nombre="USUARIO 1">Añadir</button>
+              </div>
+            </div>
 
-<div class="agregarSocios" id="agregarSocios">
-  <div class="socio-card">
-    <div class="info">
-      <img src="images/user-icon.png" alt="icono usuario">
-      <span><strong>USUARIO 1</strong></span>
-    </div>
-    <div class="acciones-socio">
-      <button class="btn-add" data-nombre="USUARIO 1">Añadir</button>
-    </div>
-  </div>
+            <div class="socio-card">
+              <div class="info">
+                <img src="images/user-icon.png" alt="icono usuario">
+                <span><strong>USUARIO 2</strong></span>
+              </div>
+              <div class="acciones-socio">
+                <button class="btn-add" data-nombre="USUARIO 2">Añadir</button>
+              </div>
+            </div>
 
-  <div class="socio-card">
-    <div class="info">
-      <img src="images/user-icon.png" alt="icono usuario">
-      <span><strong>USUARIO 2</strong></span>
-    </div>
-    <div class="acciones-socio">
-      <button class="btn-add" data-nombre="USUARIO 2">Añadir</button>
-    </div>
-  </div>
-
-  <div class="socio-card">
-    <div class="info">
-      <img src="images/user-icon.png" alt="icono usuario">
-      <span><strong>USUARIO 3</strong></span>
-    </div>
-    <div class="acciones-socio">
-      <button class="btn-add" data-nombre="USUARIO 3">Añadir</button>
-    </div>
-  </div>
-</div>
-
-<div class="buscar-socio">
-  <input type="text" placeholder="Buscar usuario por nombre...">
-  <button>Buscar</button>
-</div>
-
-<div class="socios-agregados">
-  <h4>Socios agregados al proyecto:</h4>
-  <ul id="listaSocios"></ul>
-</div>
+            <div class="socio-card">
+              <div class="info">
+                <img src="images/user-icon.png" alt="icono usuario">
+                <span><strong>USUARIO 3</strong></span>
+              </div>
+              <div class="acciones-socio">
+                <button class="btn-add" data-nombre="USUARIO 3">Añadir</button>
+              </div>
+            </div>
+          </div>
 
           <div class="buscar-socio">
-            <input type="text" placeholder="Nombre del usuario">
-            <button>Buscar</button>
+            <input type="text" id="buscarSocioInput" placeholder="Buscar usuario por nombre...">
+            <button id="btnBuscarSocio">Buscar</button>
+          </div>
+
+          <div class="socios-agregados">
+            <h4>Socios agregados al proyecto:</h4>
+            <ul id="listaSocios"></ul>
           </div>
         </div>
       </div>
 
       <div class="botones">
-  <button id="btnGuardar">Guardar</button>
-  <button id="btnLimpiar">Limpiar campos</button>
-  <a href="proyectos.html"><button type="button">Cerrar</button></a>
-</div>
-
+        <button id="btnGuardar">Guardar</button>
+        <button id="btnLimpiar">Limpiar campos</button>
+        <a href="proyectos.html"><button type="button">Cerrar</button></a>
+      </div>
     </div>
   </div>
 
-<script>
- listaSocios = document.getElementById("listaSocios");
- const sociosAgregados = [];
+ <script>
+    // ========== VARIABLES GLOBALES ==========
+    const sociosAgregados = [];
 
-// Al hacer clic en “Añadir” se agrega a la lista
-document.querySelectorAll(".btn-add").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const nombre = btn.getAttribute("data-nombre");
-    if (!sociosAgregados.includes(nombre)) {
-      sociosAgregados.push(nombre);
-      const li = document.createElement("li");
-      li.textContent = nombre;
-      listaSocios.appendChild(li);
-    } else {
-      alert("Este socio ya fue agregado.");
+    // ========== INICIALIZACIÓN ==========
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mostrar nombre de usuario
+      const usuario = localStorage.getItem('usuario');
+      if (usuario) {
+        document.getElementById('nombreUsuario').textContent = usuario;
+      }
+
+      // Verificar que el usuario esté logueado
+      const id_usuario = localStorage.getItem('id_usuario');
+      if (!id_usuario) {
+        alert('Debes iniciar sesión primero');
+        window.location.href = 'login.html';
+        return;
+      }
+    });
+
+    // ========== GESTIÓN DE SOCIOS ==========
+    document.addEventListener('click', (e) => {
+      // Añadir socio
+      if (e.target.classList.contains('btn-add')) {
+        const nombre = e.target.dataset.nombre;
+
+        // Verificar si ya está agregado
+        const existe = sociosAgregados.includes(nombre);
+        if (existe) {
+          alert(`${nombre} ya está agregado al proyecto.`);
+          return;
+        }
+
+        // Agregar a la lista
+        sociosAgregados.push(nombre);
+        actualizarListaSocios();
+        alert(`${nombre} ha sido agregado al proyecto`);
+      }
+
+      // Eliminar socio de la lista
+      if (e.target.classList.contains('btnEliminarSocio')) {
+        const li = e.target.parentElement;
+        const nombre = li.dataset.nombre;
+        
+        const index = sociosAgregados.indexOf(nombre);
+        if (index > -1) {
+          sociosAgregados.splice(index, 1);
+        }
+        li.remove();
+      }
+    });
+
+    function actualizarListaSocios() {
+      const listaSocios = document.getElementById('listaSocios');
+      listaSocios.innerHTML = '';
+      
+      sociosAgregados.forEach(nombre => {
+        const li = document.createElement('li');
+        li.dataset.nombre = nombre;
+        li.innerHTML = `
+          <span>${nombre}</span>
+          <button class="btnEliminarSocio">Quitar</button>
+        `;
+        listaSocios.appendChild(li);
+      });
     }
-  });
-});
-</script>
-<input type="file" id="archivo" accept=".pdf,doc,.docx">
-<button id="btnGuardar">Gurdar</button>
-<script>
-document.getElementById("btnGuardar").addEventListener("click", async () => {
-  const nombre_proyecto = document.getElementById("nombreProyecto").value.trim();
-  const descripcion = document.getElementById("descripcion").value.trim();
-  const archivoInput = document.getElementById("archivo");
 
-  if(!nombreProyecto || !descripcion || archivoInput.files.legth == 0){
-    alert("Por favor, complete todos los campos y selecciona un archivo.");
+    // ========== GUARDAR PROYECTO ==========
+   
+ document.getElementById('btnGuardar').addEventListener('click', async () => {
+  const nombreProyecto = document.getElementById('nombreProyecto').value.trim();
+  const descripcion = document.getElementById('descripcion').value.trim();
+  const archivoInput = document.querySelector('#archivo');
+
+  // 🔹 Aquí guardas los socios que el usuario haya agregado (puede ser un arreglo vacío)
+  const sociosAgregados = window.sociosAgregados || [];
+
+  // Validaciones
+  if (!nombreProyecto || !descripcion) {
+    alert('Por favor, completa todos los campos obligatorios.');
     return;
   }
 
-
-  const archivo = archivoInput.files[0]; 
-  const reader = new FileReader();
-  const socios = sociosAgregados; // arreglo global
-
-  reader.onload = async function(){
-    //convierte el archivo a base 64
-    const contenidoBase64 = reader.result.split(",")[1];
-    const formato_registro = archivo.name;
-
-
-   // Obtener id_usuario del usuario logueado
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const id_usuario = usuario?.id_usuario;
-
+  // Obtener id_usuario del localStorage
+  const id_usuario = localStorage.getItem('id_usuario');
   if (!id_usuario) {
-    alert("Error: no se encontró el usuario en sesión.");
+    alert('Error: no se encontró el usuario en sesión.');
     return;
   }
 
+  let archivoBase64 = "";
+
+  // 🔹 Si el usuario sube un archivo, convertirlo a Base64
+  if (archivoInput.files.length > 0) {
+    const archivo = archivoInput.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = async () => {
+      archivoBase64 = reader.result.split(",")[1]; // quitar el encabezado "data:application/pdf;base64,"
+
+      await guardarProyecto(id_usuario, nombreProyecto, descripcion, archivoBase64, sociosAgregados);
+    };
+
+    reader.readAsDataURL(archivo); // <-- inicia la lectura del archivo
+  } else {
+    // 🔹 Si no se sube archivo, enviar vacío
+    await guardarProyecto(id_usuario, nombreProyecto, descripcion, "", sociosAgregados);
+  }
+});
 
 
+// 🔹 Función separada para enviar los datos al backend
+async function guardarProyecto(id_usuario, nombreProyecto, descripcion, archivoBase64, socios) {
   try {
-    // llamada a backend
-    const response = await fetch("http://localhost:3001/api/crearProyecto", {
-      method: "POST",
+    console.log("📤 Enviando datos al servidor...");
+    console.log({ id_usuario, nombreProyecto, descripcion, socios });
+
+    const response = await fetch('http://localhost:3001/api/crearProyecto', {
+      method: 'POST',
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id_usuario,nombre_proyecto:nombreProyecto, descripcion, formato_registro,archivoBase64:contenidoBase64, socios }),
+      body: JSON.stringify({
+        id_usuario: parseInt(id_usuario),
+        nombre_proyecto: nombreProyecto,
+        descripcion,
+        archivoBase64,
+        socios
+      }),
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      alert("Proyecto guardado con éxito");
+      alert('✅ Proyecto creado con éxito');
       limpiarCampos();
+      window.location.href = 'proyectos.html';
     } else {
-      alert("Error: " + data.mensaje);
+      alert('❌ Error: ' + (data.mensaje || 'No se pudo guardar el proyecto.'));
     }
   } catch (error) {
-    console.error("Error al guardar:", error);
-    alert("Error de conexión con el servidor");
+    console.error('Error al guardar:', error);
+    alert('Error de conexión con el servidor');
   }
-};
-reader.readAsDataURL(archivo);
-});
-
-function limpiarCampos() {
-  document.getElementById("nombreProyecto").value = "";
-  document.getElementById("descripcion").value = "";
-  document.getElementById("archivo").value = "";
-  document.getElementById("listaSocios").innerHTML = "";
-  sociosAgregados.length = 0; // limpia el arreglo
 }
-</script>
 
 
-<script>
-  // Botón limpiar
-  document.getElementById('btnLimpiar').addEventListener('click', function() {
-    // Selecciona todos los campos dentro del formulario
-    const form = document.getElementById('formProyecto');
-    const inputs = form.querySelectorAll('input, textarea, select');
+// 🔹 Función auxiliar para limpiar los campos
+function limpiarCampos() {
+  document.getElementById('nombreProyecto').value = "";
+  document.getElementById('descripcion').value = "";
+  document.querySelector('#archivo').value = "";
+}
 
-    // Limpia cada uno
-    inputs.forEach(campo => {
-      if (campo.type === 'radio' || campo.type === 'checkbox') {
-        campo.checked = false;
-      } else {
-        campo.value = '';
-      }
+
+    // ========== LIMPIAR CAMPOS ==========
+    document.getElementById('btnLimpiar').addEventListener('click', function() {
+      limpiarCampos();
+      alert('Todos los campos han sido limpiados');
     });
 
-    alert('Todos los campos han sido limpiados');
-  });
-
-</script>
-
-<script>
-  const listaSocios = document.getElementById('listaSocios');
-
-  // Delegamos los clics en toda la página
-  document.addEventListener('click', (e) => {
-    // Añadir socio
-    if (e.target.classList.contains('btn-add')) {
-      const nombre = e.target.dataset.nombre;
-
-      // Verificar si ya está agregado
-      const existe = [...listaSocios.children].some(li => li.dataset.nombre === nombre);
-      if (existe) {
-        alert(`${nombre} ya está agregado al proyecto.`);
-        return;
-      }
-
-      // Crear un nuevo elemento <li>
-      const li = document.createElement('li');
-      li.dataset.nombre = nombre;
-      li.innerHTML = `
-        <span>${nombre}</span>
-        <button class="btnEliminarSocio">Quitar</button>
-      `;
-      listaSocios.appendChild(li);
-
-      alert(`${nombre} ha sido agregado al proyecto `);
+    function limpiarCampos() {
+      document.getElementById('nombreProyecto').value = '';
+      document.getElementById('descripcion').value = '';
+      document.getElementById('archivo').value = '';
+      document.getElementById('listaSocios').innerHTML = '';
+      sociosAgregados.length = 0;
     }
 
-    // Eliminar socio (desde las tarjetas originales)
-    if (e.target.classList.contains('btn-del')) {
-      const nombre = e.target.dataset.nombre;
-      const elemento = [...listaSocios.children].find(li => li.dataset.nombre === nombre);
-      if (elemento) {
-        elemento.remove();
-        alert(`${nombre} fue eliminado del proyecto `);
+    // ========== BUSCAR SOCIOS (placeholder) ==========
+    document.getElementById('btnBuscarSocio').addEventListener('click', function() {
+      const termino = document.getElementById('buscarSocioInput').value.trim();
+      if (termino) {
+        alert(`Funcionalidad de búsqueda para: ${termino} - Esta función está en desarrollo`);
       } else {
-        alert(`${nombre} no está en la lista de socios agregados.`);
+        alert('Por favor, ingresa un nombre para buscar');
       }
-    }
-
-    // Quitar socio desde la lista final
-    if (e.target.classList.contains('btnEliminarSocio')) {
-      e.target.parentElement.remove();
-    }
-  });
-</script>
-
-
-<script>
-  // 🔹 Función para cargar proyectos desde el backend
-  async function cargarProyectos() {
-    try {
-      const respuesta = await fetch("http://localhost:3001/api/proyectos");
-      const proyectos = await respuesta.json();
-
-      const tbody = document.querySelector("tbody");
-      tbody.innerHTML = ""; // limpiar contenido previo
-
-      proyectos.forEach(p => {
-        const fila = document.createElement("tr");
-        fila.innerHTML = `
-          <td>${p.titulo}</td>
-          <td>${p.responsable || '—'}</td>
-          <td>${new Date(p.fecha_inicio).toLocaleDateString()}</td>
-          <td>${p.estatus}</td>
-          <td>${p.progreso}</td>
-        `;
-        tbody.appendChild(fila);
-      });
-    } catch (error) {
-      console.error("Error al cargar proyectos:", error);
-    }
-  }
-
-  // 🔹 Ejecutar al cargar la página
-  document.addEventListener("DOMContentLoaded", cargarProyectos);
-</script>
+    });
+  </script>
 
 </body>
 </html>
