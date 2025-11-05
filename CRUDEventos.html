@@ -5,80 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Eventos - Instituto Tecnológico de Saltillo</title>
   <style>
-  body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
       margin: 0;
-      background-color: #f5f6fa;
+      padding: 0;
     }
 
-    /* Encabezado */
+    body {
+      background-color: #f3f4f6;
+      color: #001d3d;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* --- NAVBAR --- */
     header {
-      background-color: #002855;
+      background-color: #003366;
       color: white;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 40px;
+      height: 55px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     header .logo {
       display: flex;
       align-items: center;
-      font-weight: bold;
-      font-size: 18px;
+      font-weight: 600;
+      font-size: 16px;
     }
 
     header .logo img {
-      height: 25px;
+      height: 28px;
       margin-right: 10px;
+      /* Usando un placeholder de Placehold.co para el logo */
+      border-radius: 4px;
     }
 
     nav {
-      position: relative;
       display: flex;
       align-items: center;
+      gap: 15px;
     }
 
     nav a {
       color: white;
       text-decoration: none;
-      margin: 0 15px;
       font-weight: 500;
+      font-size: 14px;
       position: relative;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
     }
 
     nav a:hover {
-      text-decoration: underline;
+      background-color: rgba(255, 255, 255, 0.1);
+      text-decoration: none;
     }
 
-    /* ---- MENÚ DESPLEGABLE ---- */
+    /* --- Dropdown --- */
     .dropdown {
       position: relative;
-      display: inline-block;
     }
 
     .dropdown-content {
       display: none;
       position: absolute;
-      background-color: #ddd;
+      background-color: white;
       min-width: 220px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-      border-radius: 5px;
+      box-shadow: 0px 6px 10px rgba(0,0,0,0.15);
+      border-radius: 6px;
       z-index: 1;
       top: 100%;
       left: 0;
+      margin-top: 5px;
+      overflow: hidden;
     }
 
     .dropdown-content a {
-      color: black;
-      padding: 12px 16px;
+      color: #001d3d;
+      padding: 10px 15px;
       text-decoration: none;
       display: block;
+      font-size: 14px;
       font-weight: 500;
     }
 
     .dropdown-content a:hover {
-      background-color: #ccc;
+      background-color: #f0f4f8;
     }
 
     .dropdown:hover .dropdown-content {
@@ -90,42 +107,65 @@
       display: flex;
       align-items: center;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 14px;
     }
 
     .usuario .circle {
-      width: 20px;
-      height: 20px;
-      background-color: #eee;
+      width: 24px;
+      height: 24px;
+      background-color: #e0ebff;
       border-radius: 50%;
       margin-right: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #003366;
+      font-size: 12px;
     }
 
-    /* Contenedor principal */
+    /* --- CONTENIDO PRINCIPAL --- */
     .container {
       display: flex;
-      gap: 30px;
+      gap: 40px;
       padding: 40px;
+      flex-wrap: wrap;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
-    /* Panel izquierdo */
-    .form-panel {
+    .form-panel, .right-panel {
       background-color: white;
-      flex: 2;
-      padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #e0e0e0;
+    }
+
+    .form-panel {
+      flex: 2;
+      min-width: 320px;
+    }
+
+    .right-panel {
+      flex: 1;
+      min-width: 280px;
     }
 
     h2 {
-      color: #002855;
+      color: #001d3d;
       margin-bottom: 20px;
+      font-size: 22px;
+      border-bottom: 2px solid #dbe7ff;
+      padding-bottom: 10px;
     }
 
     label {
       font-weight: 600;
       display: block;
       margin-top: 15px;
+      font-size: 14px;
+      color: #333;
     }
 
     input, select, textarea {
@@ -133,50 +173,73 @@
       padding: 10px;
       margin-top: 5px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 6px;
       font-size: 14px;
+      background-color: #f9f9ff;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #003366;
+      box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.2);
+    }
+
 
     textarea {
       height: 100px;
-      resize: none;
+      resize: vertical;
     }
 
     .row {
       display: flex;
       gap: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .row > div {
+        flex: 1;
+        min-width: 150px;
     }
 
+    /* --- Botones --- */
     .buttons {
       margin-top: 25px;
       display: flex;
-      gap: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
-    /* Botones */
     .btn-action-small {
       flex: 1;
       padding: 12px 15px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      border-radius: 4px;
+      border-radius: 6px;
       text-align: center;
       color: white;
       border: none;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      min-width: 120px;
+    }
+    
+    .btn-action-small:hover {
+        transform: translateY(-2px);
     }
 
     .btn-primary-its {
-      background-color: #002855;
+      background-color: #003366;
     }
+
     .btn-primary-its:hover {
-      background-color: #004aad;
+      background-color: #001f54;
     }
 
     .btn-secondary-its {
       background-color: #1a73e8;
     }
+
     .btn-secondary-its:hover {
       background-color: #0d5ddf;
     }
@@ -184,19 +247,12 @@
     .btn-delete-its {
       background-color: #dc3545;
     }
+
     .btn-delete-its:hover {
-      background-color: #c82333;
+      background-color: #b71c1c;
     }
 
-    /* Panel derecho */
-    .right-panel {
-      background-color: white;
-      flex: 1;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
+    /* --- PANEL DERECHO --- */
     .search-box {
       display: flex;
       margin-bottom: 20px;
@@ -206,80 +262,124 @@
       flex: 1;
       padding: 10px;
       border: 1px solid #ccc;
-      border-radius: 5px 0 0 5px;
+      border-radius: 6px 0 0 6px;
       outline: none;
+      margin-top: 0;
     }
 
     .search-box button {
-      border-radius: 0 5px 5px 0;
-      background-color: #002855;
+      border-radius: 0 6px 6px 0;
+      background-color: #003366;
       padding: 10px 20px;
       color: white;
       border: none;
       cursor: pointer;
-      font-size: 15px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
     }
 
     .search-box button:hover {
-      background-color: #004aad;
+      background-color: #001f54;
     }
 
-    .event-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 15px;
+    /* Tabla de Eventos */
+    #eventos-list-container {
+        max-height: 400px;
+        overflow-y: auto;
     }
 
-    .event-icon {
-      background-color: #e6f0ff;
-      border-radius: 50%;
-      padding: 8px;
+    #eventos-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
     }
 
-    .event-icon::before {
-      content: "✔";
-      color: #002855;
-      font-size: 14px;
+    #eventos-table th, #eventos-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
     }
 
-    .event-info strong {
-      color: #002855;
-      display: block;
+    #eventos-table th {
+        background-color: #f9f9ff;
+        font-weight: 600;
+        color: #001d3d;
+        position: sticky;
+        top: 0;
+    }
+    
+    #eventos-table tbody tr:hover {
+        background-color: #f0f4f8;
+        cursor: pointer;
+    }
+    
+    #eventos-table td {
+        color: #333;
     }
 
-    .event-info p {
-      margin: 0;
-      font-size: 14px;
-      color: #555;
+    /* Mensaje de Feedback */
+    #feedback-message {
+        display: none;
+        padding: 12px;
+        margin-top: 20px;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+    .feedback-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .feedback-error {
+        background-color: #f8d7da;
+        color: #721c24;
     }
 
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+        padding: 20px;
+      }
+      .form-panel, .right-panel {
+        width: 100%;
+      }
+      header {
+        padding: 10px 20px;
+        flex-direction: column;
+        height: auto;
+      }
+      nav {
+        margin-top: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
 <header>
   <div class="logo">
-    <img src="C:\Users\reyes\OneDrive\Documentos\IncubadoraEnLinea\images\logoITS.png" alt="">
+    <img src="https://placehold.co/100x40/003366/FFFFFF?text=ITS" alt="Logo ITS" onerror="this.src='https://placehold.co/100x40/003366/FFFFFF?text=ITS'">
     Instituto Tecnológico de Saltillo
   </div>
   <nav>
-    <a href="http://127.0.0.1:5500/inicioC.html">Home</a>
-    <a href="http://127.0.0.1:5500/proyectos.html?rol=coordinador">Proyectos</a>
-    <a href="http://127.0.0.1:5500/gestionUsuarios.html">Usuarios</a>
-    <a href="http://127.0.0.1:5500/roles.html">Roles</a>
+    <a href="#">Home</a>
+    <a href="#">Proyectos</a>
+    <a href="#">Usuarios</a>
+    <a href="#">Roles</a>
 
-    <!-- Dropdown de EVENTOS -->
     <div class="dropdown">
       <a href="#">Eventos ▾</a>
       <div class="dropdown-content">
-        <a href="http://127.0.0.1:5500/gestioninscripcioneventos.html#">Inscritos a Eventos</a>
-        <a href="http://127.0.0.1:5500/crudtipodeventos.html">Administrar Tipo de Evento</a>
+        <a href="#">Inscritos a Eventos</a>
+        <a href="#">Administrar Tipo de Evento</a>
       </div>
     </div>
   </nav>
 
   <div class="usuario">
-    <div class="circle"></div>
+    <div class="circle">U</div>
     USUARIO
   </div>
 </header>
@@ -288,82 +388,420 @@
   <!-- Panel Izquierdo -->
   <div class="form-panel">
     <h2>Eventos</h2>
+    
+    <!-- Formulario de Eventos -->
+    <form id="evento-form">
+      <!-- Campo oculto para ID de evento (para actualizar) -->
+      <input type="hidden" id="id_evento" name="id_evento">
 
-    <label>Nombre del evento</label>
-    <input type="text" placeholder="Ingrese el nombre del evento">
+      <label for="nombre_evento">Nombre del evento</label>
+      <input type="text" id="nombre_evento" name="nombre_evento" placeholder="Ingrese el nombre del evento" required>
 
-    <div class="row">
-      <div style="flex: 1;">
-        <label>Encargado del evento</label>
-        <select>
-          <option>Seleccionar coordinador</option>
-        </select>
-      </div>
-      <div style="flex: 1;">
-        <label>Tipo evento</label>
-        <select>
-          <option>Tipo</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row">
-      <div style="flex: 1;">
-        <label>Fecha del evento</label>
-        <div class="row">
-          <select><option>Día</option></select>
-          <select><option>Mes</option></select>
-          <select><option>Año</option></select>
+      <div class="row">
+        <div style="flex: 1;">
+          <label for="encargado_evento">Encargado del evento</label>
+          <select id="encargado_evento" name="id_usuario" required>
+            <option value="">Cargando coordinadores...</option>
+          </select>
+        </div>
+        <div style="flex: 1;">
+          <label for="tipo_evento">Tipo de evento</label>
+          <select id="tipo_evento" name="id_tipos_eve" required>
+            <option value="">Cargando tipos...</option>
+          </select>
         </div>
       </div>
-      <div style="flex: 1;">
-        <label>Cupo del evento</label>
-        <input type="number" placeholder="Ingrese cupo">
+
+      <div class="row">
+        <div style="flex: 1;">
+          <label>Fecha del evento</label>
+          <div class="row">
+            <select id="fecha_dia" name="fecha_dia" required><option value="">Día</option></select>
+            <select id="fecha_mes" name="fecha_mes" required><option value="">Mes</option></select>
+            <select id="fecha_ano" name="fecha_ano" required><option value="">Año</option></select>
+          </div>
+        </div>
+        <div style="flex: 1;">
+          <label for="cupo_evento">Cupo del evento</label>
+          <input type="number" id="cupo_evento" name="cupo" placeholder="Ingrese el cupo" required>
+        </div>
       </div>
-    </div>
 
-    <label>Descripción del evento</label>
-    <textarea placeholder="Descripción del evento"></textarea>
+      <label for="descripcion_evento">Descripción del evento</label>
+      <textarea id="descripcion_evento" name="descripcion" placeholder="Descripción del evento"></textarea>
 
-    <div class="buttons">
-      <button class="btn-action-small btn-primary-its">Registrar</button>
-      <button class="btn-action-small btn-secondary-its">Actualizar</button>
-      <button class="btn-action-small btn-delete-its">Eliminar</button>
-    </div>
+      <div class="buttons">
+        <button type="submit" class="btn-action-small btn-primary-its">Registrar</button>
+        <button type="button" id="btn-actualizar" class="btn-action-small btn-secondary-its">Actualizar</button>
+        <button type="button" id="btn-eliminar" class="btn-action-small btn-delete-its">Eliminar</button>
+      </div>
+    </form>
+    
+    <!-- Mensaje de Feedback -->
+    <div id="feedback-message"></div>
+
   </div>
 
   <!-- Panel Derecho -->
   <div class="right-panel">
     <h2>Eventos Próximos</h2>
     <div class="search-box">
-      <input type="text" placeholder="Buscar un evento por nombre">
-      <button>Buscar</button>
+      <input type="text" id="search-input" placeholder="Buscar evento por nombre">
+      <button id="search-button">Buscar</button>
     </div>
 
-    <div class="event-item">
-      <div class="event-icon"></div>
-      <div class="event-info">
-        <strong>Evento X</strong>
-        <p>Descripción del evento</p>
-      </div>
-    </div>
-
-    <div class="event-item">
-      <div class="event-icon"></div>
-      <div class="event-info">
-        <strong>Evento Y</strong>
-        <p>Descripción del evento</p>
-      </div>
-    </div>
-
-    <div class="event-item">
-      <div class="event-icon"></div>
-      <div class="event-info">
-        <strong>Evento Z</strong>
-        <p>Descripción del evento</p>
-      </div>
+    <div id="eventos-list-container">
+      <table id="eventos-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Cupo</th>
+          </tr>
+        </thead>
+        <tbody id="eventos-table-body">
+          <!-- Las filas de eventos se cargarán aquí -->
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
+
+<script>
+  // URL base de tu API (Asegúrate de que coincida con tu servidor)
+  const API_URL = 'http://localhost:3000/api';
+
+  // --- Elementos del DOM ---
+  const form = document.getElementById('evento-form');
+  const feedbackMessage = document.getElementById('feedback-message');
+  const tableBody = document.getElementById('eventos-table-body');
+  
+  // Inputs del formulario
+  const idEventoInput = document.getElementById('id_evento');
+  const nombreInput = document.getElementById('nombre_evento');
+  const encargadoSelect = document.getElementById('encargado_evento');
+  const tipoSelect = document.getElementById('tipo_evento');
+  const diaSelect = document.getElementById('fecha_dia');
+  const mesSelect = document.getElementById('fecha_mes');
+  const anoSelect = document.getElementById('fecha_ano');
+  const cupoInput = document.getElementById('cupo_evento');
+  const descripcionInput = document.getElementById('descripcion_evento');
+
+  // Botones
+  const btnActualizar = document.getElementById('btn-actualizar');
+  const btnEliminar = document.getElementById('btn-eliminar');
+
+  /**
+   * Muestra un mensaje de feedback (éxito o error)
+   * @param {string} message - El mensaje a mostrar
+   * @param {boolean} isError - True si es error, false si es éxito
+   */
+  function showFeedback(message, isError = false) {
+    feedbackMessage.textContent = message;
+    feedbackMessage.className = isError ? 'feedback-error' : 'feedback-success';
+    feedbackMessage.style.display = 'block';
+    
+    // Ocultar el mensaje después de 5 segundos
+    setTimeout(() => {
+      feedbackMessage.style.display = 'none';
+    }, 5000);
+  }
+
+  /**
+   * Carga los coordinadores (usuarios con rol=2) en el dropdown
+   */
+  async function loadCoordinadores() {
+    try {
+      const response = await fetch(`${API_URL}/usuarios-coordinadores`);
+      if (!response.ok) throw new Error('Error al cargar coordinadores');
+      
+      const coordinadores = await response.json();
+      
+      encargadoSelect.innerHTML = '<option value="">Seleccionar coordinador</option>'; // Limpiar
+      coordinadores.forEach(user => {
+        const option = document.createElement('option');
+        option.value = user.id_usuario; // El ID se guarda en 'value'
+        option.textContent = user.nombre; // El nombre se muestra
+        encargadoSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error(error);
+      encargadoSelect.innerHTML = '<option value="">Error al cargar</option>';
+    }
+  }
+
+  /**
+   * Carga los tipos de evento en el dropdown
+   */
+  async function loadTiposEvento() {
+    try {
+      const response = await fetch(`${API_URL}/tipos-evento`);
+      if (!response.ok) throw new Error('Error al cargar tipos de evento');
+      
+      const tipos = await response.json();
+      
+      tipoSelect.innerHTML = '<option value="">Seleccionar tipo</option>'; // Limpiar
+      tipos.forEach(tipo => {
+        const option = document.createElement('option');
+        option.value = tipo.id_tipos_eve;
+        option.textContent = tipo.nombre_tipo;
+        tipoSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error(error);
+      tipoSelect.innerHTML = '<option value="">Error al cargar</option>';
+    }
+  }
+
+  /**
+   * Carga la lista de eventos en la tabla del panel derecho
+   */
+  async function loadEventos() {
+    try {
+      const response = await fetch(`${API_URL}/eventos`);
+      if (!response.ok) throw new Error('Error al cargar eventos');
+      
+      const eventos = await response.json();
+      
+      tableBody.innerHTML = ''; // Limpiar tabla
+      
+      if (eventos.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="3">No hay eventos próximos.</td></tr>';
+        return;
+      }
+      
+      eventos.forEach(evento => {
+        const tr = document.createElement('tr');
+        // Formatear fecha (asumiendo YYYY-MM-DD T...Z)
+        const fecha = new Date(evento.fecha_evento).toLocaleDateString('es-ES', {
+            day: '2-digit', month: '2-digit', year: 'numeric'
+        });
+        
+        tr.innerHTML = `
+          <td>${evento.nombre_evento}</td>
+          <td>${fecha}</td>
+          <td>${evento.cupo}</td>
+        `;
+        
+        // Guardar todos los datos del evento en el elemento <tr>
+        tr.dataset.evento = JSON.stringify(evento);
+        
+        // Añadir click listener para cargar datos en el formulario
+        tr.addEventListener('click', () => populateForm(evento));
+        
+        tableBody.appendChild(tr);
+      });
+    } catch (error) {
+      console.error(error);
+      tableBody.innerHTML = '<tr><td colspan="3">Error al cargar eventos.</td></tr>';
+    }
+  }
+  
+  /**
+   * Rellena el formulario con los datos de un evento (para actualizar/eliminar)
+   * @param {object} evento - El objeto del evento
+   */
+   function populateForm(evento) {
+    // Scroll al topo y enfocar el formulario
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    idEventoInput.value = evento.id_evento;
+    nombreInput.value = evento.nombre_evento;
+    encargadoSelect.value = evento.id_usuario;
+    tipoSelect.value = evento.id_tipos_eve;
+    cupoInput.value = evento.cupo;
+    descripcionInput.value = evento.descripcion;
+
+    // Deconstruir la fecha (YYYY-MM-DD)
+    try {
+        const fecha = new Date(evento.fecha_evento);
+        // Ajustar por zona horaria para evitar errores de un día
+        const userTimezoneOffset = fecha.getTimezoneOffset() * 60000;
+        const localDate = new Date(fecha.getTime() + userTimezoneOffset);
+        
+        diaSelect.value = localDate.getDate();
+        mesSelect.value = localDate.getMonth() + 1; // getMonth() es 0-11
+        anoSelect.value = localDate.getFullYear();
+    } catch(e) {
+        console.error("Error al parsear fecha: ", e);
+    }
+    
+    // Habilitar botones de actualizar/eliminar
+    btnActualizar.disabled = false;
+    btnEliminar.disabled = false;
+   }
+   
+   /**
+    * Limpia el formulario y resetea los botones
+    */
+   function resetForm() {
+        form.reset(); // Resetea todos los campos del formulario
+        idEventoInput.value = ''; // Asegurar que el ID oculto esté vacío
+        btnActualizar.disabled = true; // Deshabilitar botones
+        btnEliminar.disabled = true;
+   }
+
+  /**
+   * Pobla los dropdowns de fecha
+   */
+  function populateDateDropdowns() {
+    // Días (1-31)
+    for (let i = 1; i <= 31; i++) {
+      diaSelect.add(new Option(i, i));
+    }
+    // Meses (1-12)
+    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    meses.forEach((mes, index) => {
+      mesSelect.add(new Option(mes, index + 1));
+    });
+    // Años (2024-2030)
+    const currentYear = new Date().getFullYear();
+    for (let i = currentYear; i <= currentYear + 10; i++) {
+      anoSelect.add(new Option(i, i));
+    }
+  }
+
+  /**
+   * Manejador del envío del formulario (Registrar)
+   */
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault(); // Evitar envío tradicional
+    
+    // Construir fecha en formato YYYY-MM-DD
+    // PadStart asegura dos dígitos (ej. 1 -> 01)
+    const dia = String(diaSelect.value).padStart(2, '0');
+    const mes = String(mesSelect.value).padStart(2, '0');
+    const ano = anoSelect.value;
+    const fecha_evento = `${ano}-${mes}-${dia}`;
+    
+    const formData = {
+      id_usuario: encargadoSelect.value,
+      id_tipos_eve: tipoSelect.value,
+      nombre_evento: nombreInput.value,
+      fecha_evento: fecha_evento,
+      cupo: cupoInput.value,
+      descripcion: descripcionInput.value
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/eventos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Error al registrar el evento');
+      }
+      
+      showFeedback('Evento registrado con éxito');
+      resetForm();
+      loadEventos(); // Recargar la lista de eventos
+      
+    } catch (error) {
+      console.error(error);
+      showFeedback(error.message, true);
+    }
+  });
+  
+  /**
+   * Manejador del botón Actualizar
+   */
+  btnActualizar.addEventListener('click', async () => {
+    const id = idEventoInput.value;
+    if (!id) {
+        showFeedback('Por favor, selecciona un evento de la lista para actualizar.', true);
+        return;
+    }
+    
+    // Construir fecha en formato YYYY-MM-DD
+    const dia = String(diaSelect.value).padStart(2, '0');
+    const mes = String(mesSelect.value).padStart(2, '0');
+    const ano = anoSelect.value;
+    const fecha_evento = `${ano}-${mes}-${dia}`;
+    
+    const formData = {
+      id_usuario: encargadoSelect.value,
+      id_tipos_eve: tipoSelect.value,
+      nombre_evento: nombreInput.value,
+      fecha_evento: fecha_evento,
+      cupo: cupoInput.value,
+      descripcion: descripcionInput.value
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/eventos/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Error al actualizar el evento');
+      }
+      
+      showFeedback('Evento actualizado con éxito');
+      resetForm();
+      loadEventos(); // Recargar la lista de eventos
+      
+    } catch (error) {
+      console.error(error);
+      showFeedback(error.message, true);
+    }
+  });
+
+  /**
+   * Manejador del botón Eliminar
+   */
+   btnEliminar.addEventListener('click', async () => {
+    const id = idEventoInput.value;
+    if (!id) {
+        showFeedback('Por favor, selecciona un evento de la lista para eliminar.', true);
+        return;
+    }
+    
+    // Doble confirmación
+    if (!confirm(`¿Estás seguro de que deseas eliminar el evento "${nombreInput.value}"?`)) {
+        return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/eventos/${id}`, {
+        method: 'DELETE'
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Error al eliminar el evento');
+      }
+      
+      showFeedback('Evento eliminado con éxito');
+      resetForm();
+      loadEventos(); // Recargar la lista de eventos
+      
+    } catch (error) {
+      console.error(error);
+      showFeedback(error.message, true);
+    }
+   });
+
+
+  // --- Inicialización ---
+  document.addEventListener('DOMContentLoaded', () => {
+    populateDateDropdowns();
+    loadCoordinadores();
+    loadTiposEvento();
+    loadEventos();
+    
+    // Deshabilitar botones de acción al inicio
+    btnActualizar.disabled = true;
+    btnEliminar.disabled = true;
+  });
+</script>
 </body>
 </html>

@@ -1,290 +1,446 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tipos de Eventos - Instituto Tecnológico de Saltillo</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background-color: #f5f6fa;
-    }
-
-    /* Encabezado */
-    header {
-      background-color: #002855;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 40px;
-    }
-
-    header .logo {
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    header .logo img {
-      height: 25px;
-      margin-right: 10px;
-    }
-
-    nav {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: 500;
-      position: relative;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    /* Dropdown */
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #e0e0e0;
-      min-width: 220px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-      border-radius: 5px;
-      z-index: 1;
-      right: 0;
-    }
-
-    .dropdown-content a {
-      color: #000;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-      font-weight: 500;
-    }
-
-    .dropdown-content a:hover {
-      background-color: #ccc;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .usuario {
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    .usuario .circle {
-      width: 20px;
-      height: 20px;
-      background-color: #eee;
-      border-radius: 50%;
-      margin-right: 8px;
-    }
-
-    /* Contenido principal */
-    .content {
-      padding: 40px;
-      background-color: #f5f6fa;
-    }
-
-    h2 {
-      color: #002855;
-      margin-bottom: 10px;
-    }
-
-    p {
-      margin-bottom: 30px;
-      color: #333;
-    }
-
-    .form-section {
-      background-color: #cfe1ff;
-      padding: 40px;
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .search-box {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 40px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .search-box input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px 0 0 5px;
-      outline: none;
-      font-size: 15px;
-    }
-
-    .search-box button {
-      background-color: #002855;
-      color: white;
-      border: none;
-      padding: 10px 25px;
-      border-radius: 0 5px 5px 0;
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    .form-group {
-      margin: 0 auto;
-      text-align: left;
-      max-width: 500px;
-    }
-
-    label {
-      font-weight: 600;
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 15px;
-    }
-
-    /* Botones inferiores */
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 50px;
-      margin-top: 40px;
-    }
-
-    .btn-action-small {
-      flex: 1; 
-      padding: 12px 15px;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 4px;
-      text-align: center;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-primary-its {
-      background-color: #002855;
-    }
-    .btn-primary-its:hover {
-      background-color: #004aad;
-    }
-
-    .btn-secondary-its {
-      background-color: #1a73e8; 
-    }
-    .btn-secondary-its:hover {
-      background-color: #0d5ddf;
-    }
-
-    .btn-delete-its {
-      background-color: #dc3545;
-    }
-    .btn-delete-its:hover {
-      background-color: #c82333;
-    }
-
-    @media (max-width: 700px) {
-      .buttons {
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .search-box {
-        flex-direction: column;
-      }
-
-      .search-box input, .search-box button {
-        width: 100%;
-        border-radius: 5px;
-      }
-
-      .search-box button {
-        margin-top: 10px;
-      }
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Emprendurismo ITS</title>
+    <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/estilos.css">
 </head>
 <body>
 
-  <header>
-    <div class="logo">
-      <img src="C:\Users\reyes\OneDrive\Documentos\IncubadoraEnLinea\images\logoITS.png" alt="">
-      Instituto Tecnológico de Saltillo
-    </div>
-    <nav>
-    <a href="http://127.0.0.1:5500/inicioC.html">Home</a>
-    <a href="http://127.0.0.1:5500/proyectos.html?rol=coordinador">Proyectos</a>
-    <a href="http://127.0.0.1:5500/gestionUsuarios.html">Usuarios</a>
-    <a href="http://127.0.0.1:5500/roles.html">Roles</a>
+    <header class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <img src="./images/logoITS.png" alt="ITS" />
+                <span>Instituto Tecnológico de Saltillo</span>
+            </div>
 
-
-      <!-- 🔽 NUEVO MENÚ DESPLEGABLE -->
-      <div class="dropdown">
-        <a href="#">Eventos ▾</a>
-        <div class="dropdown-content">
-          <a href="http://127.0.0.1:5500/CRUDEventos.html#">Administrar Evento</a>
-          <a href="http://127.0.0.1:5500/gestioninscripcioneventos.html#">Inscripciones a Eventos</a>
+            <div class="user-info">
+                <span class="user-text">USUARIO</span>
+                <div class="user-icon">👤</div>
+            </div>
         </div>
-      </div>
-    </nav>
-    <div class="usuario">
-      <div class="circle"></div>
-      USUARIO
+        <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #f3f4f6;
+      color: #001d3d;
+    }
+
+    /* NAVBAR */
+.navbar {
+    background: #003366;
+    color: #fff;
+    height: 50px; /* define altura fija */
+    display: flex;
+    align-items: center; /* centra verticalmente el contenido */
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 30px; /* tamaño del icono reducido */
+    height: 30px;
+    margin-right: 8px;
+}
+
+.nav-right {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+    /* Contenido */
+    .container {
+      padding: 40px;
+    }
+
+    .container h2 {
+      color: #001d3d;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .paneles {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .panel {
+      background-color: #dbe7ff;
+      flex: 1;
+      border-radius: 10px;
+      padding: 25px;
+      min-width: 300px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    /* Tabla */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #e0ebff;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f2f6ff;
+    }
+
+    /* Botones */
+    .botones {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      background-color: #003366;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .btn:hover {
+      background-color: #001f54;
+    }
+
+    /* Sección buscar */
+    .buscar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .paneles {
+        flex-direction: column;
+      }
+
+      .botones {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+    </header>
+    
+    <div class="main-content role-management-view">
+        <div class="form-container">
+            <header>
+                <h2>Tipos de Eventos</h2>
+            </header>
+            
+            <div class="paneles">
+      <!-- Panel izquierdo -->
+      <section class="panel">
+        <label>Nombre del tipo de evento </label>
+        <input type="text" id="nombreTipoEInput" placeholder="Nombre del tipo de evento">
+
+        
+
+        <h3>Tipo de evento creados</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo de Evento</th>
+              
+            </tr>
+          </thead>
+          <tbody id="tablaTipoEvento">
+            </tbody>
+        </table>
+
+        <div class="botones">
+          <button class="btn" id="btnCrear">Crear</button>
+          <button class="btn" id="btnActualizar">Actualizar</button>
+          <button class="btn" id="btnEliminar">Eliminar</button>
+        </div>
+      </section>
+
+      <!-- Panel derecho -->
+      <section class="panel">
+        <div class="buscar">
+          <input type="text" placeholder="Buscar un evento">
+          <button class="btn">Buscar</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Evento</th>
+              <th>Tipo de evento asignado</th>
+            </tr>
+          </thead>
+          <tbody id="tablaTiposEventos">
+          </tbody>
+        </table>
+      </section>
     </div>
-  </header>
+  </main>
+  <script>
+// *** CONFIGURACIÓN DE ENDPOINTS DE LA API ***
+const API_TIPOS_EVENTOS = "http://localhost:3001/api/tipos-eventos"; 
+const API_EVENTOS_TIPO = "http://localhost:3001/api/eventos-con-tipo"; 
+const API_BUSCAR_EVENTO = "http://localhost:3001/api/eventos-con-tipo/buscar";
 
-  <div class="content">
-    <h2>Tipos de Eventos</h2>
-    <p>Llena los siguientes campos según corresponda:</p>
 
-    <div class="form-section">
-      <div class="search-box">
-        <input type="text" placeholder="Buscar un Tipo de Evento">
-        <button>Buscar</button>
-      </div>
+// *** REFERENCIAS DEL DOM ***
+const inputNombreTipoE = document.querySelector("#nombreTipoEInput"); 
+const tablaTiposEventos = document.querySelector("#tablaTipoEvento"); 
+const btnCrear = document.querySelector("#btnCrear");
+const btnActualizar = document.querySelector("#btnActualizar");
+const btnEliminar = document.querySelector("#btnEliminar");
+const inputBuscarEvento = document.querySelector(".buscar input[type='text']");
+const btnBuscarEvento = document.querySelector(".buscar .btn"); 
+const tablaEventosTipo = document.querySelector("#tablaUsuariosRol"); 
 
-      <div class="form-group">
-        <label>Nombre del tipo de evento</label>
-        <input type="text" placeholder="Ingrese nombre del evento">
-      </div>
-    </div>
+let tipoEventoSeleccionadoId = null; 
 
-    <div class="buttons">
-      <button class="btn-action-small btn-primary-its">Registrar</button>
-      <button class="btn-action-small btn-secondary-its">Actualizar</button>
-      <button class="btn-action-small btn-delete-its">Eliminar</button>
-    </div>
-  </div>
+// Inicialización de botones (desactivar Actualizar/Eliminar al inicio)
+btnActualizar.disabled = true;
+btnEliminar.disabled = true;
 
+// Función para actualizar los estados de los botones
+function actualizarEstadoBotones() {
+    if (tipoEventoSeleccionadoId) {
+        btnCrear.textContent = "Nuevo"; // Indica que el formulario está en modo "edición"
+        btnActualizar.disabled = false;
+        btnEliminar.disabled = false;
+    } else {
+        btnCrear.textContent = "Crear"; // Indica que el formulario está en modo "creación"
+        btnActualizar.disabled = true;
+        btnEliminar.disabled = true;
+    }
+}
+
+// Función para cargar la tabla de Tipos de Eventos
+async function cargarTiposEventos() {
+    try {
+        const res = await fetch(API_TIPOS_EVENTOS);
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+        
+        const data = await res.json();
+        if (!data.success) throw new Error("API devolvió éxito falso.");
+
+        tablaTiposEventos.innerHTML = "";
+        
+        data.tiposEventos.forEach(te => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td>${te.nombre_tipo_eve}</td>`;
+            
+            fila.addEventListener("click", () => {
+                // Al hacer clic, SELECCIONA el tipo de evento
+                tipoEventoSeleccionadoId = te.id_tipos_eve;
+                inputNombreTipoE.value = te.nombre_tipo_eve; 
+                
+                document.querySelectorAll("#tablaTipoEvento tr").forEach(r => r.style.backgroundColor = 'white');
+                fila.style.backgroundColor = '#f2f6ff'; 
+                
+                actualizarEstadoBotones(); // Actualiza el estado al seleccionar
+            });
+            tablaTiposEventos.appendChild(fila);
+        });
+        
+    } catch (err) {
+        console.error("Fallo al cargar tipos de eventos:", err);
+        alert("No se pudieron cargar los tipos de eventos. ¿Está el servidor activo?");
+    }
+}
+
+// Cargar Eventos con su Tipo (sin cambios)
+async function cargarEventosConTipo() {
+    try {
+        const res = await fetch(API_EVENTOS_TIPO);
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+
+        const data = await res.json();
+        if (!data.success) throw new Error("La API devolvió un error.");
+
+        tablaEventosTipo.innerHTML = "";
+        data.eventos.forEach(e => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td>${e.nombre_evento}</td><td>${e.nombre_tipo_eve}</td>`;
+            tablaEventosTipo.appendChild(fila);
+        });
+    } catch (err) {
+        console.error("Fallo al cargar eventos con tipo:", err);
+    }
+}
+
+// Buscar Eventos por nombre (sin cambios)
+async function buscarEvento() {
+    const nombre = inputBuscarEvento.value.trim();
+    if (!nombre) {
+        cargarEventosConTipo();
+        return;
+    }
+    
+    try {
+        const url = `${API_BUSCAR_EVENTO}?nombre=${encodeURIComponent(nombre)}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+
+        const data = await res.json();
+        if (!data.success) throw new Error("La API devolvió un error en la búsqueda.");
+
+        tablaEventosTipo.innerHTML = "";
+        data.eventos.forEach(e => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td>${e.nombre_evento}</td><td>${e.nombre_tipo_eve}</td>`;
+            tablaEventosTipo.appendChild(fila);
+        });
+    } catch (err) {
+        console.error("Fallo al buscar eventos:", err);
+    }
+}
+
+// Limpia el formulario y lo pone en modo "Creación"
+function limpiarFormulario() {
+    tipoEventoSeleccionadoId = null;
+    inputNombreTipoE.value = "";
+    document.querySelectorAll("#tablaTipoEvento tr").forEach(r => r.style.backgroundColor = 'white');
+    actualizarEstadoBotones(); // Vuelve al modo "Crear"
+}
+
+// --- Event Listeners para el CRUD ---
+
+btnCrear.addEventListener("click", async () => {
+    // Si el modo es "Nuevo", simplemente limpiamos el formulario para empezar a crear
+    if (tipoEventoSeleccionadoId) {
+        limpiarFormulario();
+        return;
+    }
+
+    // Lógica de CREACIÓN
+    const nombreTipoE = inputNombreTipoE.value.trim();
+    if (!nombreTipoE) return alert("Completa el nombre del tipo de evento.");
+
+    const res = await fetch(API_TIPOS_EVENTOS, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombreTipoE })
+    });
+    
+    if(res.ok) {
+        limpiarFormulario();
+        cargarTiposEventos();
+    } else {
+        alert("Error al crear el tipo de evento.");
+    }
+});
+
+btnActualizar.addEventListener("click", async () => {
+    if (!tipoEventoSeleccionadoId) return alert("Selecciona un tipo de evento primero.");
+    
+    const nombreTipoE = inputNombreTipoE.value.trim();
+
+    if (!nombreTipoE) return alert("Completa el nombre del tipo de evento.");
+
+    const res = await fetch(`${API_TIPOS_EVENTOS}/${tipoEventoSeleccionadoId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombreTipoE })
+    });
+    
+    if(res.ok) {
+        limpiarFormulario();
+        cargarTiposEventos();
+        cargarEventosConTipo(); 
+    } else {
+        alert("Error al actualizar el tipo de evento.");
+    }
+});
+
+btnEliminar.addEventListener("click", async () => {
+    if (!tipoEventoSeleccionadoId) return alert("Selecciona un tipo de evento primero.");
+    
+    if (!confirm(`¿Estás seguro de que quieres eliminar el tipo de evento "${inputNombreTipoE.value}"?`)) return;
+
+    const res = await fetch(`${API_TIPOS_EVENTOS}/${tipoEventoSeleccionadoId}`, { method: "DELETE" });
+    
+    // Mejorar el manejo de errores para detectar la clave foránea (Error 409 o 400)
+    if(res.ok) {
+        limpiarFormulario();
+        cargarTiposEventos();
+        cargarEventosConTipo();
+    } else {
+        const errorData = await res.json().catch(() => ({}));
+        
+        // Asumiendo que un error 500 puede ser la clave foránea si el backend no lo maneja
+        if (res.status === 500 || res.status === 409) {
+            alert("Error al eliminar el tipo de evento. Es probable que **uno o más eventos lo estén utilizando** (Error de Clave Foránea). Debes reasignar o eliminar esos eventos primero.");
+        } else {
+            alert(`Error al eliminar: ${errorData.message || 'Error desconocido'}`);
+        }
+    }
+});
+
+// Event Listener para el botón "Buscar"
+btnBuscarEvento.addEventListener("click", buscarEvento);
+inputBuscarEvento.addEventListener("keypress", (e) => {
+    if (e.key === 'Enter') buscarEvento();
+});
+
+
+// Carga inicial
+cargarTiposEventos();
+cargarEventosConTipo();
+actualizarEstadoBotones(); // Establece el estado inicial de los botones
+</script>
 </body>
 </html>
