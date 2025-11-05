@@ -15,43 +15,53 @@ const obtenerProyectos = async (req, res) => {
 // controlador para Crear nuevo proyecto
 const crearProyecto = async (req, res) => {
   try {
+
+     console.log('📥 Iniciando creación de proyecto...');
+
     const { id_usuario,nombre_proyecto, descripcion, formato_registro, archivoBase64, socios } = req.body;
-    const archivoBuffer =Buffer.from(archivoBase64,"base64");
-
-    const result = await query(
-      "INSERT INTO proyecto (id_usuario, nombre_proyecto, descripcion, formato_registro, fecha_inicio, estatus, progreso) VALUES (?, ?, ?,?,CURDATE(),'Pendiente','0%')",
-      [id_usuario,nombre_proyecto, descripcion, archivoBuffer]
-    );
-     const idProyecto = result.insertId;
-
-     //obtener el id_perona (creador del proyecto)
-     const [personaCreadora] = await query(
-      "SELECT id_persona FROM persona WHERE id_rol = (SELECT id_rol FROM usuarios WHERE id_usuario = ?) AND id_persona = (SELECT id_persona FROM usuarios WHERE id_usuario = ?)",
-      [id_usuario, id_usuario]
-    );
-    if (personaCreadora.length > 0) {
-      await query(
-        "INSERT INTO persona_has_proyecto (id_proyecto, id_persona) VALUES (?, ?)",
-        [idProyecto, personaCreadora[0].id_persona]
-      );
+    // Verificar si el body está completo
+    if (!req.body) {
+      console.log('❌ Body vacío o muy grande');
+      return res.status(413).json({ mensaje: "Payload too large" });
     }
 
-    // 2. Insertar los socios (en tabla intermedia persona_has_proyecto)
-  if (socios && socios.length > 0) {
-      for (const socio of socios) {
-         const [persona] = await query(
-          "SELECT id_persona FROM persona WHERE nombre = ?",
-          [socio]
-        );
+    console.log('📊 Tamaño del archivo base64:', archivoBase64 ? archivoBase64.length : 0);
 
-        if (persona.length > 0) {
+    let archivoBuffer = null;
+    if (archivoBase64 && archivoBase64.length > 0) {
+      // Verificar tamaño máximo (ej: 10MB)
+      if (archivoBase64.length > 10 * 1024 * 1024) {
+        return res.status(413).json({ mensaje: "Archivo demasiado grande. Máximo 10MB" });
+      }
+      
+      try {
+        archivoBuffer = Buffer.from(archivoBase64, "base64");
+        console.log('✅ Archivo convertido a buffer, tamaño:', archivoBuffer.length, 'bytes');
+      } catch (error) {
+        console.error('❌ Error convirtiendo archivo:', error);
+        return res.status(400).json({ mensaje: "Error en el formato del archivo" });
+      }
+    }
+    
+    console.log('💾 Insertando en base de datos...');
+    
+    const result = await query(
+      "INSERT INTO proyecto (id_usuario, nombre_proyecto, descripcion, formato_registro, fecha_inicio, estatus, progreso) VALUES (?, ?, ?, ?, CURDATE(), 'Pendiente', '0%')",
+      [id_usuario, nombre_proyecto, descripcion, archivoBuffer]
+    );
+     const idProyecto = result.insertId;
+    console.log('✅ Proyecto creado con ID:', idProyecto);
+    
+    // 2. Insertar los socios (en tabla intermedia persona_has_proyecto)
+  if (Array.isArray(socios) && socios.length > 0) {
+      console.log('👥 Insertando socios:', socios.length);
+      for (const socio of socios) {
         await query(
           "INSERT INTO persona_has_proyecto (id_proyecto, id_persona) VALUES (?, ?)",
-          [idProyecto, persona[0].id_persona]
+          [idProyecto, socio.id_persona]
         );
       }
     }
-  }
 
     res.json({ mensaje: "Proyecto creado con éxito", id_proyecto: idProyecto });
   } catch (error) {

@@ -44,32 +44,29 @@
 document.querySelector(".login-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const usuario = document.querySelector("#usuario").value;
+  const correo = document.querySelector("#usuario").value;
   const password = document.querySelector("#password").value;
 
   try {
     const response = await fetch("http://localhost:3001/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ correo: usuario, password })
+      body: JSON.stringify({ correo, password })
     });
 
     const result = await response.json();
 
     if (result.success) {
-      //alert("✅ Bienvenido " + result.usuario);
-
-      // Guardar datos básicos en localStorage (opcional)
-      localStorage.setItem("usuario", result.usuario);
-      localStorage.setItem("rol", result.rol);
-
-      // 🔹 Redirección según el rol
-      if (result.rol === 1) {
-        // Coordinador
-        window.location.href = "inicioC.html";
-      } else if (result.rol === 2) {
-        // Emprendedor
-        window.location.href = "inicioE.html";
+       // Guardar datos correctamente
+  localStorage.setItem("usuario", result.usuario || result.nombre); // Asegurar que tenga valor
+  localStorage.setItem("id_usuario", result.id_usuario);
+  localStorage.setItem("rol", result.rol);
+  
+  // 🔹 Redirección según el rol
+  if (result.rol === 1) {
+    window.location.href = "inicioC.html";
+  } else if (result.rol === 2) {
+    window.location.href = "inicioE.html";
       } else {
         alert("⚠️ Rol no reconocido. Contacte al administrador.");
       }

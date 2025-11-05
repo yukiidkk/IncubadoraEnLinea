@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
     }
 
     // Enviar respuesta exitosa
-    res.json({
+    return res.json({
       success: true,
       message: "Inicio de sesión correcto.",
       id_usuario: user.id_usuario,
@@ -57,6 +57,7 @@ exports.login = async (req, res) => {
     //guardar el id del usuario
     localStorage.setItem("usuario", JSON.stringify(data.usuario));
     window.location.href = "proyectos.html"; // redirige a la página de proyectos
+
 
   } catch (err) {
     console.error("Error en login:", err);

@@ -8,7 +8,9 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
 
 // Importar rutas
 const registroRoutes = require("./routes/registroRoutes");
@@ -25,7 +27,21 @@ app.use("/api", loginRoutes);
 app.use("/api", rolRoutes);
 app.use("/api", proyectoRoutes);
 app.use("/api", gestionUsuariosRoutes);
-app.use("/api", tipo_eventoRoutes); //
+app.use("/api", tipo_eventoRoutes); 
+
+// Middleware de debug SEGURO (no consume el body)
+app.use((req, res, next) => {
+  console.log('🔍 Petición:', req.method, req.url);
+  if (req.body) {
+    const bodyCopy = { ...req.body };
+    if (bodyCopy.archivoBase64) {
+      bodyCopy.archivoBase64 = `[BASE64: ${bodyCopy.archivoBase64.length} chars]`;
+    }
+    console.log('   Body preview:', bodyCopy);
+  }
+  next();
+});
+
 // Probar conexión
 app.get("/test-db", async (req, res) => {
   try {
@@ -37,6 +53,8 @@ app.get("/test-db", async (req, res) => {
   }
 });
 
+console.log('🎯 Rutas montadas en /api');
+console.log('   POST /api/crearProyecto debería estar disponible');
 // Puerto
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

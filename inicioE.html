@@ -68,18 +68,23 @@
   localStorage.setItem('rolUsuario', 'emprendedor');
 </script>
 
-<script>
-const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-if (!usuario) {
+<script>
+// Verificar que el usuario esté logueado
+const usuario = localStorage.getItem("usuario");
+const id_usuario = localStorage.getItem("id_usuario");
+
+if (!usuario || !id_usuario) {
   alert("Debes iniciar sesión primero");
   window.location.href = "login.html";
+} else {
+  // Mostrar nombre de usuario en la interfaz - CORREGIDO
+  const userElement = document.querySelector('.user-text');
+  if (userElement) {
+    userElement.textContent = usuario;
+  }
+  console.log("Usuario logueado:", usuario, "ID:", id_usuario);
 }
-
-// Ahora puedes usar esto:
-const id_usuario = usuario.id_usuario;
-console.log("Usuario logueado:", usuario.nombre, "ID:", id_usuario);
-
 </script>
 
 
