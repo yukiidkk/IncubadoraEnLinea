@@ -315,7 +315,7 @@ async function cargarUsuariosConRol() {
         tablaUsuariosRol.innerHTML = "";
         data.usuarios.forEach(u => {
             const fila = document.createElement("tr");
-            fila.innerHTML = `<td>${u.nombre}</td><td>${u.Nombre_Rol}</td>`;
+            fila.innerHTML = `<td>${u.nombre}</td><td>${u.nombre_rol}</td>`;
             tablaUsuariosRol.appendChild(fila);
         });
     } catch (err) {
@@ -353,7 +353,7 @@ btnBuscarUsuario.addEventListener("click", async () => {
 
         data.usuarios.forEach(u => {
             const fila = document.createElement("tr");
-            fila.innerHTML = `<td>${u.Usuario}</td><td>${u.Nombre_Rol}</td>`;
+            fila.innerHTML = `<td>${u.nombre}</td><td>${u.nombre_rol}</td>`;
             tablaUsuariosRol.appendChild(fila);
         });
     } catch (err) {
