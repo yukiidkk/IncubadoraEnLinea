@@ -1,12 +1,10 @@
 // backend/controladores/loginControlador.js
 const { query } = require("../config/database");
 
-// Controlador para iniciar sesión
 exports.login = async (req, res) => {
-  const { correo, password } = req.body; // datos que vienen del frontend
+  const { correo, password } = req.body;
 
   try {
-    // Buscar al usuario por el correo (desde persona)
     const sql = `
       SELECT 
         u.id_usuario,
@@ -34,7 +32,6 @@ exports.login = async (req, res) => {
 
     const user = users[0];
 
-    // Validar contraseña (sin encriptación)
     if (password !== user.contrasena) {
       return res.status(401).json({
         success: false,
@@ -42,8 +39,8 @@ exports.login = async (req, res) => {
       });
     }
 
-    // Enviar respuesta exitosa
-    res.json({
+    // Enviar respuesta exitosa al frontend
+    return res.json({
       success: true,
       message: "Inicio de sesión correcto.",
       id_usuario: user.id_usuario,
@@ -54,13 +51,9 @@ exports.login = async (req, res) => {
       tipo: user.nombre_rol
     });
 
-    //guardar el id del usuario
-    localStorage.setItem("usuario", JSON.stringify(data.usuario));
-    window.location.href = "proyectos.html"; // redirige a la página de proyectos
-
   } catch (err) {
     console.error("Error en login:", err);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Error en el servidor al iniciar sesión.",
       error: err.message

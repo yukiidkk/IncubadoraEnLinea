@@ -1,214 +1,237 @@
-// backend/controladores/gestionUsuariosController.js
 const { pool } = require("../config/database");
 
 // ====================
-// 🔍 BUSCAR USUARIOS
+// BUSCAR USUARIOS
 // ====================
 exports.buscarUsuarios = async (req, res) => {
   try {
     const { nombre } = req.query;
+
     if (!nombre || nombre.trim() === "") {
-      return res.status(400).json({ message: "Debe proporcionar un nombre para buscar" });
+      return res.status(400).json({ message: "Debe proporcionar un nombre para buscar." });
     }
 
     const [rows] = await pool.query(
       `
       SELECT 
-        e.Id_Emprendedor,
-        e.Nombre,
-        e.Apellido,
-        e.Telefono,
-        e.Fecha_Nacimiento,
-        e.Correo,
-        e.Ingresos,
-        e.Dependientes_Eco,
-        e.RFC,
-        e.CURP,
-        e.Estado_Civil,
-        e.Genero,
-        e.Colonia,
-        e.CP,
-        e.Calle,
-        e.Jornada,
-        e.No_Control,
-        e.ESPECIALIDAD_Id_Especialidad,
-        es.Nombre_Especialidad,
-        r.Nombre_Rol
-      FROM emprendedor e
-      LEFT JOIN usuarios u ON e.Id_Emprendedor = u.EMPRENDEDOR_Id_Emprendedor
-      LEFT JOIN rol r ON e.Rol_id_Rol = r.id_Rol
-      LEFT JOIN especialidad es ON e.ESPECIALIDAD_Id_Especialidad = es.Id_Especialidad
-      WHERE e.Nombre LIKE ? OR e.Apellido LIKE ? OR e.Correo LIKE ?
+        p.id_persona AS Id_Persona,
+        p.nombre AS Nombre,
+        p.apellido AS Apellido,
+        p.telefono AS Telefono,
+        p.fecha_nacimiento AS Fecha_Nacimiento,
+        p.correo AS Correo,
+        p.ingresos AS Ingresos,
+        p.dependientes_eco AS Dependientes_Eco,
+        p.rfc AS RFC,
+        p.curp AS CURP,
+        p.estado_civil AS Estado_Civil,
+        p.genero AS Genero,
+        p.colonia AS Colonia,
+        p.cp AS CP,
+        p.calle AS Calle,
+        p.jornada AS Jornada,
+        p.no_control AS No_Control,
+        p.id_especialidad AS Id_Especialidad,
+        e.nombre_especialidad AS Nombre_Especialidad,
+        u.id_rol AS Id_Rol,
+        r.nombre_rol AS Nombre_Rol
+      FROM persona p
+      LEFT JOIN usuarios u ON p.id_persona = u.id_persona
+      LEFT JOIN rol r ON u.id_rol = r.id_rol
+      LEFT JOIN especialidad e ON p.id_especialidad = e.id_especialidad
+      WHERE p.nombre LIKE ? OR p.apellido LIKE ? OR p.correo LIKE ?
       `,
       [`%${nombre}%`, `%${nombre}%`, `%${nombre}%`]
     );
 
     res.json(rows);
   } catch (error) {
-    console.error("❌ Error al buscar usuarios:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    console.error("Error al buscar usuarios:", error);
+    res.status(500).json({ message: "Error interno del servidor." });
   }
 };
 
 // ====================
-// 🧩 CREAR USUARIO
+// CREAR USUARIO
 // ====================
 exports.crearUsuario = async (req, res) => {
   try {
     const {
-      Nombre,
-      Apellido,
-      Telefono,
-      Fecha_Nacimiento,
-      Correo,
-      Ingresos,
-      Dependientes_Eco,
-      RFC,
-      CURP,
-      Estado_Civil,
-      Genero,
-      Colonia,
-      CP,
-      Calle,
-      Jornada,
-      No_Control,
-      id_Rol,
-      Id_Especialidad,
-      Contrasena
+      nombre,
+      apellido,
+      telefono,
+      fecha_nacimiento,
+      correo,
+      ingresos,
+      dependientes_eco,
+      rfc,
+      curp,
+      estado_civil,
+      genero,
+      colonia,
+      cp,
+      calle,
+      jornada,
+      no_control,
+      id_rol,
+      id_especialidad,
+      contrasena
     } = req.body;
 
-    // Insertar en EMPRENDEDOR
+    // Insertar en PERSONA
     const [result] = await pool.query(
-      `INSERT INTO emprendedor (
-        Nombre, Apellido, Telefono, Fecha_Nacimiento, Correo, Ingresos,
-        Dependientes_Eco, RFC, CURP, Estado_Civil, Genero, Colonia, CP, Calle,
-        Jornada, No_Control, Rol_id_Rol, ESPECIALIDAD_Id_Especialidad
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `
+      INSERT INTO persona (
+        id_especialidad, id_rol, nombre, apellido, telefono, fecha_nacimiento,
+        correo, ingresos, dependientes_eco, rfc, curp,
+        estado_civil, genero, colonia, cp, calle, jornada, no_control
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `,
       [
-        Nombre, Apellido, Telefono, Fecha_Nacimiento, Correo, Ingresos,
-        Dependientes_Eco, RFC, CURP, Estado_Civil, Genero, Colonia, CP, Calle,
-        Jornada, No_Control, id_Rol, Id_Especialidad
+        id_especialidad, id_rol, nombre, apellido, telefono, fecha_nacimiento,
+        correo, ingresos, dependientes_eco, rfc, curp,
+        estado_civil, genero, colonia, cp, calle, jornada, no_control
       ]
     );
 
-    const nuevoIdEmprendedor = result.insertId;
+    const id_persona = result.insertId;
 
     // Insertar en USUARIOS
     await pool.query(
-      `INSERT INTO usuarios (id_Rol, EMPRENDEDOR_Id_Emprendedor, Usuario, Contrasena)
-       VALUES (?, ?, ?, ?)`,
-      [id_Rol, nuevoIdEmprendedor, Correo, Contrasena]
+      `
+      INSERT INTO usuarios (id_persona, id_rol, id_especialidad, contrasena)
+      VALUES (?, ?, ?, ?)
+      `,
+      [id_persona, id_rol, id_especialidad, contrasena]
     );
 
-    res.json({ message: "✅ Usuario creado correctamente", id: nuevoIdEmprendedor });
+    res.json({ message: "Usuario creado correctamente.", id: id_persona });
   } catch (error) {
-    console.error("❌ Error al crear usuario:", error);
-    res.status(500).json({ message: "Error al crear usuario" });
+    console.error("Error al crear usuario:", error);
+    res.status(500).json({ message: "Error al crear usuario." });
   }
 };
 
 // ====================
-// 🔁 ACTUALIZAR USUARIO
+// ACTUALIZAR USUARIO
 // ====================
 exports.actualizarUsuario = async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      Nombre,
-      Apellido,
-      Telefono,
-      Fecha_Nacimiento,
-      Correo,
-      Ingresos,
-      Dependientes_Eco,
-      RFC,
-      CURP,
-      Estado_Civil,
-      Genero,
-      Colonia,
-      CP,
-      Calle,
-      Jornada,
-      No_Control,
-      Id_Especialidad
+      nombre,
+      apellido,
+      telefono,
+      fecha_nacimiento,
+      correo,
+      ingresos,
+      dependientes_eco,
+      rfc,
+      curp,
+      estado_civil,
+      genero,
+      colonia,
+      cp,
+      calle,
+      jornada,
+      no_control,
+      id_especialidad,
+      id_rol
     } = req.body;
 
+    // Actualizar datos en PERSONA
     await pool.query(
       `
-      UPDATE emprendedor
-      SET Nombre=?, Apellido=?, Telefono=?, Fecha_Nacimiento=?, Correo=?,
-          Ingresos=?, Dependientes_Eco=?, RFC=?, CURP=?, Estado_Civil=?, Genero=?,
-          Colonia=?, CP=?, Calle=?, Jornada=?, No_Control=?, ESPECIALIDAD_Id_Especialidad=?
-      WHERE Id_Emprendedor=?
+      UPDATE persona
+      SET nombre=?, apellido=?, telefono=?, fecha_nacimiento=?, correo=?,
+          ingresos=?, dependientes_eco=?, rfc=?, curp=?, estado_civil=?, genero=?,
+          colonia=?, cp=?, calle=?, jornada=?, no_control=?, id_especialidad=?, id_rol=?
+      WHERE id_persona=?
       `,
       [
-        Nombre, Apellido, Telefono, Fecha_Nacimiento, Correo,
-        Ingresos, Dependientes_Eco, RFC, CURP, Estado_Civil, Genero,
-        Colonia, CP, Calle, Jornada, No_Control, Id_Especialidad, id
+        nombre, apellido, telefono, fecha_nacimiento, correo,
+        ingresos, dependientes_eco, rfc, curp, estado_civil, genero,
+        colonia, cp, calle, jornada, no_control, id_especialidad, id_rol, id
       ]
     );
 
-    res.json({ message: "✅ Usuario actualizado correctamente" });
+    // Actualizar también el rol en USUARIOS
+    await pool.query(
+      `
+      UPDATE usuarios
+      SET id_rol=?, id_especialidad=?
+      WHERE id_persona=?
+      `,
+      [id_rol, id_especialidad, id]
+    );
+
+    res.json({ message: "Usuario actualizado correctamente (incluido el rol)." });
   } catch (error) {
-    console.error("❌ Error al actualizar usuario:", error);
-    res.status(500).json({ message: "Error al actualizar usuario" });
+    console.error("Error al actualizar usuario:", error);
+    res.status(500).json({ message: "Error al actualizar usuario." });
   }
 };
 
 // ====================
-// 🗑️ ELIMINAR USUARIO
+// ELIMINAR USUARIO
 // ====================
 exports.eliminarUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    await pool.query("DELETE FROM usuarios WHERE EMPRENDEDOR_Id_Emprendedor = ?", [id]);
-    await pool.query("DELETE FROM emprendedor WHERE Id_Emprendedor = ?", [id]);
-    res.json({ message: "🗑️ Usuario eliminado correctamente" });
+    await pool.query("DELETE FROM usuarios WHERE id_persona = ?", [id]);
+    await pool.query("DELETE FROM persona WHERE id_persona = ?", [id]);
+    res.json({ message: "Usuario eliminado correctamente." });
   } catch (error) {
-    console.error("❌ Error al eliminar usuario:", error);
-    res.status(500).json({ message: "Error al eliminar usuario" });
+    console.error("Error al eliminar usuario:", error);
+    res.status(500).json({ message: "Error al eliminar usuario." });
   }
 };
 
 // ====================
-// 📚 CATÁLOGOS
+// CATÁLOGOS
 // ====================
 exports.obtenerEspecialidades = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT Id_Especialidad, Nombre_Especialidad FROM especialidad");
+    const [rows] = await pool.query("SELECT id_especialidad, nombre_especialidad FROM especialidad");
     res.json(rows);
   } catch (error) {
-    console.error("❌ Error al obtener especialidades:", error);
-    res.status(500).json({ message: "Error al obtener especialidades" });
+    console.error("Error al obtener especialidades:", error);
+    res.status(500).json({ message: "Error al obtener especialidades." });
   }
 };
 
 exports.obtenerJornadas = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT DISTINCT Jornada FROM emprendedor WHERE Jornada IS NOT NULL AND Jornada != ''");
-    res.json(rows.map(r => r.Jornada));
+    const [rows] = await pool.query(
+      "SELECT DISTINCT jornada FROM persona WHERE jornada IS NOT NULL AND jornada != ''"
+    );
+    res.json(rows.map(r => r.jornada));
   } catch (error) {
-    console.error("❌ Error al obtener jornadas:", error);
-    res.status(500).json({ message: "Error al obtener jornadas" });
+    console.error("Error al obtener jornadas:", error);
+    res.status(500).json({ message: "Error al obtener jornadas." });
   }
 };
 
 exports.obtenerEstadosCiviles = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT DISTINCT Estado_Civil FROM emprendedor WHERE Estado_Civil IS NOT NULL AND Estado_Civil != ''");
-    res.json(rows.map(r => r.Estado_Civil));
+    const [rows] = await pool.query(
+      "SELECT DISTINCT estado_civil FROM persona WHERE estado_civil IS NOT NULL AND estado_civil != ''"
+    );
+    res.json(rows.map(r => r.estado_civil));
   } catch (error) {
-    console.error("❌ Error al obtener estados civiles:", error);
-    res.status(500).json({ message: "Error al obtener estados civiles" });
+    console.error("Error al obtener estados civiles:", error);
+    res.status(500).json({ message: "Error al obtener estados civiles." });
   }
 };
 
 exports.obtenerGeneros = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT DISTINCT Genero FROM emprendedor WHERE Genero IS NOT NULL AND Genero != ''");
-    res.json(rows.map(r => r.Genero));
+    const [rows] = await pool.query(
+      "SELECT DISTINCT genero FROM persona WHERE genero IS NOT NULL AND genero != ''"
+    );
+    res.json(rows.map(r => r.genero));
   } catch (error) {
-    console.error("❌ Error al obtener géneros:", error);
-    res.status(500).json({ message: "Error al obtener géneros" });
+    console.error("Error al obtener géneros:", error);
+    res.status(500).json({ message: "Error al obtener géneros." });
   }
 };
