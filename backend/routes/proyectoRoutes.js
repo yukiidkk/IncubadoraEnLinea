@@ -1,25 +1,16 @@
 const express = require("express");
-console.log('🔍 Cargando proyectoRoutes...');
+console.log("Cargando proyectoRoutes...");
 
-const {
-  obtenerProyectos,
-  crearProyecto,
-  buscarProyecto,
-  eliminarProyecto,
-  obtenerArchivo
-} = require("../controladores/proyectoController");
+const proyectoController = require("../controladores/proyectoController"); // IMPORTA TODO EL CONTROLADOR
 
 const router = express.Router();
 
-
-
-router.get('/proyectos',obtenerProyectos);
-router.post('/crearProyecto',crearProyecto); // ← ESTA ES LA IMPORTANTE
-router.get('/buscarProyecto',buscarProyecto);
-router.delete('/eliminarProyecto/:id', eliminarProyecto);
-router.get('/archivo/:id', obtenerArchivo);
-//router.delete("/proyecto/:id", eliminarProyecto);
+router.get("/usuarios", proyectoController.obtenerUsuarios);
+router.get("/proyectos", proyectoController.obtenerProyectos);
+router.post("/crearProyecto", proyectoController.crearProyecto);
+router.get("/buscarProyecto", proyectoController.buscarProyecto);
+router.delete("/eliminarProyecto/:id", proyectoController.eliminarProyecto);
+router.get("/archivo/:id", proyectoController.obtenerArchivo);
+router.get("/proyectos/:id_usuario", proyectoController.obtenerProyectosPorUsuario);
 
 module.exports = router;
-
-

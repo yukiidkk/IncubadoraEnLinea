@@ -42,8 +42,8 @@ app.get("/test-db", async (req, res) => {
   }
 });
 
-console.log('🎯 Rutas montadas en /api');
-console.log('   POST /api/crearProyecto debería estar disponible');
+console.log('Rutas montadas en /api');
+console.log('POST /api/crearProyecto debería estar disponible');
 // Puerto
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

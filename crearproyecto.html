@@ -462,183 +462,178 @@ input[type="file"]::-webkit-file-upload-button:hover {
   </div>
 
  <script>
-    // ========== VARIABLES GLOBALES ==========
-    const sociosAgregados = [];
+  // ========== VARIABLES GLOBALES ==========
+  const sociosAgregados = [];
 
-    // ========== INICIALIZACIÓN ==========
-    document.addEventListener('DOMContentLoaded', function() {
-      // Mostrar nombre de usuario
-      const usuario = localStorage.getItem('usuario');
-      if (usuario) {
-        document.getElementById('nombreUsuario').textContent = usuario;
-      }
+  // ========== INICIALIZACIÓN ==========
+  document.addEventListener('DOMContentLoaded', async () => {
+    await cargarSocios(); // carga todos los usuarios al inicio
+  });
 
-      // Verificar que el usuario esté logueado
-      const id_usuario = localStorage.getItem('id_usuario');
-      if (!id_usuario) {
-        alert('Debes iniciar sesión primero');
-        window.location.href = 'login.html';
+  // ================================
+  // 🔹 Cargar socios desde la BD
+  // ================================
+  async function cargarSocios(filtro = '') {
+    try {
+      const res = await fetch(`http://localhost:3001/api/usuarios?nombre=${filtro}`);
+      const data = await res.json();
+      const contenedor = document.getElementById('agregarSocios');
+      contenedor.innerHTML = '';
+
+      if (!data || data.length === 0) {
+        contenedor.innerHTML = '<p style="text-align:center;color:#555;">No se encontraron usuarios.</p>';
         return;
       }
-    });
 
-    // ========== GESTIÓN DE SOCIOS ==========
-    document.addEventListener('click', (e) => {
-      // Añadir socio
-      if (e.target.classList.contains('btn-add')) {
-        const nombre = e.target.dataset.nombre;
-
-        // Verificar si ya está agregado
-        const existe = sociosAgregados.includes(nombre);
-        if (existe) {
-          alert(`${nombre} ya está agregado al proyecto.`);
-          return;
-        }
-
-        // Agregar a la lista
-        sociosAgregados.push(nombre);
-        actualizarListaSocios();
-        alert(`${nombre} ha sido agregado al proyecto`);
-      }
-
-      // Eliminar socio de la lista
-      if (e.target.classList.contains('btnEliminarSocio')) {
-        const li = e.target.parentElement;
-        const nombre = li.dataset.nombre;
-        
-        const index = sociosAgregados.indexOf(nombre);
-        if (index > -1) {
-          sociosAgregados.splice(index, 1);
-        }
-        li.remove();
-      }
-    });
-
-    function actualizarListaSocios() {
-      const listaSocios = document.getElementById('listaSocios');
-      listaSocios.innerHTML = '';
-      
-      sociosAgregados.forEach(nombre => {
-        const li = document.createElement('li');
-        li.dataset.nombre = nombre;
-        li.innerHTML = `
-          <span>${nombre}</span>
-          <button class="btnEliminarSocio">Quitar</button>
+      data.forEach(u => {
+        const card = document.createElement('div');
+        card.classList.add('socio-card');
+        card.innerHTML = `
+          <div class="info">
+            <img src="images/user-icon.png" alt="icono usuario">
+            <span><strong>${u.Nombre || u.nombre} ${u.Apellido || u.apellido}</strong></span>
+          </div>
+          <div class="acciones-socio">
+            <button class="btn-add" data-id="${u.ID_Usuario || u.id_usuario}" data-nombre="${u.Nombre || u.nombre} ${u.Apellido || u.apellido}">Añadir</button>
+          </div>
         `;
-        listaSocios.appendChild(li);
+        contenedor.appendChild(card);
       });
+    } catch (error) {
+      console.error('Error al cargar socios:', error);
     }
-
-    // ========== GUARDAR PROYECTO ==========
-   
- document.getElementById('btnGuardar').addEventListener('click', async () => {
-  const nombreProyecto = document.getElementById('nombreProyecto').value.trim();
-  const descripcion = document.getElementById('descripcion').value.trim();
-  const archivoInput = document.querySelector('#archivo');
-
-  // 🔹 Aquí guardas los socios que el usuario haya agregado (puede ser un arreglo vacío)
-  const sociosAgregados = window.sociosAgregados || [];
-
-  // Validaciones
-  if (!nombreProyecto || !descripcion) {
-    alert('Por favor, completa todos los campos obligatorios.');
-    return;
   }
 
-  // Obtener id_usuario del localStorage
-  const id_usuario = localStorage.getItem('id_usuario');
-  if (!id_usuario) {
-    alert('Error: no se encontró el usuario en sesión.');
-    return;
-  }
+  // ================================
+  // 🔹 Buscar socios al hacer clic
+  // ================================
+  document.getElementById('btnBuscarSocio').addEventListener('click', async () => {
+    const filtro = document.getElementById('buscarSocioInput').value.trim();
+    await cargarSocios(filtro);
+  });
 
-  let archivoBase64 = "";
+  // ================================
+  // 🔹 Añadir o eliminar socios visualmente
+  // ================================
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-add')) {
+      const nombre = e.target.dataset.nombre;
 
-  // 🔹 Si el usuario sube un archivo, convertirlo a Base64
-  if (archivoInput.files.length > 0) {
-    const archivo = archivoInput.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = async () => {
-      archivoBase64 = reader.result.split(",")[1]; // quitar el encabezado "data:application/pdf;base64,"
-
-      await guardarProyecto(id_usuario, nombreProyecto, descripcion, archivoBase64, sociosAgregados);
-    };
-
-    reader.readAsDataURL(archivo); // <-- inicia la lectura del archivo
-  } else {
-    // 🔹 Si no se sube archivo, enviar vacío
-    await guardarProyecto(id_usuario, nombreProyecto, descripcion, "", sociosAgregados);
-  }
-});
-
-
-// 🔹 Función separada para enviar los datos al backend
-async function guardarProyecto(id_usuario, nombreProyecto, descripcion, archivoBase64, socios) {
-  try {
-    console.log("📤 Enviando datos al servidor...");
-    console.log({ id_usuario, nombreProyecto, descripcion, socios });
-
-    const response = await fetch('http://localhost:3001/api/crearProyecto', {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id_usuario: parseInt(id_usuario),
-        nombre_proyecto: nombreProyecto,
-        descripcion,
-        archivoBase64,
-        socios
-      }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      alert('✅ Proyecto creado con éxito');
-      limpiarCampos();
-      window.location.href = 'proyectos.html';
-    } else {
-      alert('❌ Error: ' + (data.mensaje || 'No se pudo guardar el proyecto.'));
-    }
-  } catch (error) {
-    console.error('Error al guardar:', error);
-    alert('Error de conexión con el servidor');
-  }
-}
-
-
-// 🔹 Función auxiliar para limpiar los campos
-function limpiarCampos() {
-  document.getElementById('nombreProyecto').value = "";
-  document.getElementById('descripcion').value = "";
-  document.querySelector('#archivo').value = "";
-}
-
-
-    // ========== LIMPIAR CAMPOS ==========
-    document.getElementById('btnLimpiar').addEventListener('click', function() {
-      limpiarCampos();
-      alert('Todos los campos han sido limpiados');
-    });
-
-    function limpiarCampos() {
-      document.getElementById('nombreProyecto').value = '';
-      document.getElementById('descripcion').value = '';
-      document.getElementById('archivo').value = '';
-      document.getElementById('listaSocios').innerHTML = '';
-      sociosAgregados.length = 0;
-    }
-
-    // ========== BUSCAR SOCIOS (placeholder) ==========
-    document.getElementById('btnBuscarSocio').addEventListener('click', function() {
-      const termino = document.getElementById('buscarSocioInput').value.trim();
-      if (termino) {
-        alert(`Funcionalidad de búsqueda para: ${termino} - Esta función está en desarrollo`);
-      } else {
-        alert('Por favor, ingresa un nombre para buscar');
+      if (sociosAgregados.includes(nombre)) {
+        alert(`${nombre} ya está agregado.`);
+        return;
       }
+
+      sociosAgregados.push(nombre);
+      actualizarListaSocios();
+    }
+
+    if (e.target.classList.contains('btnEliminarSocio')) {
+      const nombre = e.target.parentElement.dataset.nombre;
+      const index = sociosAgregados.indexOf(nombre);
+      if (index > -1) sociosAgregados.splice(index, 1);
+      actualizarListaSocios();
+    }
+  });
+
+  function actualizarListaSocios() {
+    const lista = document.getElementById('listaSocios');
+    lista.innerHTML = '';
+
+    sociosAgregados.forEach(nombre => {
+      const li = document.createElement('li');
+      li.dataset.nombre = nombre;
+      li.innerHTML = `
+        <span>${nombre}</span>
+        <button class="btnEliminarSocio">Quitar</button>
+      `;
+      lista.appendChild(li);
     });
-  </script>
+  }
+
+  // ================================
+  // 🔹 GUARDAR PROYECTO
+  // ================================
+  document.getElementById('btnGuardar').addEventListener('click', async () => {
+    const nombreProyecto = document.getElementById('nombreProyecto').value.trim();
+    const descripcion = document.getElementById('descripcion').value.trim();
+    const archivoInput = document.querySelector('#archivo');
+    const socios = sociosAgregados || [];
+
+    if (!nombreProyecto || !descripcion) {
+      alert('Por favor, completa todos los campos obligatorios.');
+      return;
+    }
+
+    const id_usuario = localStorage.getItem('id_usuario');
+    if (!id_usuario) {
+      alert('Error: no se encontró el usuario en sesión.');
+      return;
+    }
+
+    let archivoBase64 = "";
+
+    if (archivoInput.files.length > 0) {
+      const archivo = archivoInput.files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = async () => {
+        archivoBase64 = reader.result.split(",")[1];
+        await guardarProyecto(id_usuario, nombreProyecto, descripcion, archivoBase64, socios);
+      };
+
+      reader.readAsDataURL(archivo);
+    } else {
+      await guardarProyecto(id_usuario, nombreProyecto, descripcion, "", socios);
+    }
+  });
+
+  async function guardarProyecto(id_usuario, nombreProyecto, descripcion, archivoBase64, socios) {
+    try {
+      const response = await fetch('http://localhost:3001/api/crearProyecto', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_usuario: parseInt(id_usuario),
+          nombre_proyecto: nombreProyecto,
+          descripcion,
+          archivoBase64,
+          socios
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Proyecto creado con éxito');
+        limpiarCampos();
+        window.location.href = 'proyectos.html';
+      } else {
+        alert('Error: ' + (data.mensaje || 'No se pudo guardar el proyecto.'));
+      }
+    } catch (error) {
+      console.error('Error al guardar:', error);
+      alert('Error de conexión con el servidor');
+    }
+  }
+
+  // ================================
+  // 🔹 LIMPIAR CAMPOS
+  // ================================
+  document.getElementById('btnLimpiar').addEventListener('click', function() {
+    limpiarCampos();
+    alert('Todos los campos han sido limpiados');
+  });
+
+  function limpiarCampos() {
+    document.getElementById('nombreProyecto').value = '';
+    document.getElementById('descripcion').value = '';
+    document.getElementById('archivo').value = '';
+    document.getElementById('listaSocios').innerHTML = '';
+    sociosAgregados.length = 0;
+  }
+</script>
+
 
 </body>
 </html>
