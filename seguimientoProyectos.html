@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Seguimiento de avances de proyectos</title>
   <style>
     body {
@@ -12,7 +12,6 @@
       padding: 0;
     }
 
-    /* Encabezado institucional */
     header {
       background-color: #003366;
       color: white;
@@ -40,14 +39,34 @@
     }
 
     .usuario {
-      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .usuario span {
       background-color: white;
       color: #003366;
       padding: 6px 15px;
       border-radius: 20px;
+      font-weight: bold;
     }
 
-    /* Título principal */
+    .btnLogout {
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btnLogout:hover {
+      background-color: #96281b;
+    }
+
     h1 {
       text-align: center;
       color: #003366;
@@ -58,12 +77,18 @@
       text-align: center;
       color: #004c99;
       font-size: 0.9em;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
-    /* Botón Volver */
+    #proyectoActual {
+      text-align: center;
+      color: #222;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
     #btnVolver {
-      display: block;
+      display: none;
       margin: 0 auto 25px auto;
       background-color: #1e63b5;
       color: white;
@@ -79,7 +104,6 @@
       background-color: #004b9a;
     }
 
-    /* Tablero */
     .tablero {
       display: flex;
       justify-content: center;
@@ -111,7 +135,7 @@
     .contenido-columna {
       flex-grow: 1;
       padding: 10px;
-      min-height: 280px;
+      min-height: 250px;
       background-color: #f1f8f1;
     }
 
@@ -120,41 +144,22 @@
       border-radius: 5px;
       padding: 10px;
       margin-bottom: 10px;
-      background-color: #b8e7b8;
-      position: relative;
-    }
-
-    .tarjeta-proyecto.azul {
       background-color: #c9dcfa;
-    }
-
-    .tarjeta-proyecto strong {
-      display: block;
-      color: #003366;
-      font-weight: 600;
-    }
-
-    .arrow {
-      position: absolute;
-      top: 10px;
-      right: 10px;
       cursor: pointer;
-      font-weight: bold;
-      color: #003366;
-    }
-
-    .lista-tareas {
-      margin-top: 5px;
-      padding-left: 15px;
-      border-left: 2px solid #003366;
     }
 
     .tarea {
-      margin: 4px 0;
-      font-size: 0.9em;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      padding: 6px;
+      margin: 5px 0;
+      background-color: #eaf2ff;
+      cursor: pointer;
     }
 
-    /* Botones inferiores */
+    .tarea:hover { background-color: #d6e6ff; }
+    .seleccionada { background-color: #bcd9ff !important; }
+
     .botones-inferiores {
       text-align: center;
       margin: 20px;
@@ -175,7 +180,6 @@
       background-color: #004b9a;
     }
 
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -231,181 +235,235 @@
       font-weight: bold;
     }
 
-    .btn-guardar {
-      background-color: #1e63b5;
-      color: white;
-    }
-
-    .btn-cerrar {
-      background-color: #ccc;
-    }
+    .btn-guardar { background-color: #1e63b5; color: white; }
+    .btn-eliminar { background-color: #c0392b; color: white; }
+    .btn-cerrar { background-color: #ccc; }
   </style>
 </head>
-<body>
 
-  <!-- Encabezado -->
+<body>
   <header>
     <div class="left">
-      <img src="images/logoITS.png" alt="Logo ITS">
+      <img src="images/logoITS.png" alt="Logo ITS" />
       <span>Instituto Tecnológico de Saltillo</span>
       <nav>
         <a href="#">Home</a>
         <a href="#">Proyectos</a>
       </nav>
     </div>
-    <div class="usuario">USUARIO</div>
+    <div class="usuario">
+      <span id="usuarioNombre">USUARIO</span>
+      <button id="btnLogout" class="btnLogout">Cerrar sesión</button>
+    </div>
   </header>
 
-  <!-- Contenido -->
   <h1>Seguimiento de avances de proyectos</h1>
-  <div class="subtitulo">Inicio  |  Seguimiento de proyectos</div>
-
+  <div class="subtitulo">Inicio | Seguimiento de proyectos</div>
+  <p id="proyectoActual">Selecciona un proyecto</p>
   <button id="btnVolver">← Volver a proyectos</button>
 
   <div class="tablero">
-    <!-- Columna 1 -->
     <div class="columna">
-      <h3>Tareas por hacer</h3>
-      <div class="contenido-columna" id="colTareas">
-        <strong>Tareas pendientes</strong>
-        <div class="lista-tareas">
-          <div class="tarea">Tarea 1</div>
-          <div class="tarea">Tarea 2</div>
-          <div class="tarea">Tarea 3</div>
-        </div>
-      </div>
+      <h3>Pendientes</h3>
+      <div class="contenido-columna" id="colPendientes"></div>
     </div>
-
-    <!-- Columna 2 -->
     <div class="columna">
       <h3>En curso</h3>
-      <div class="contenido-columna" id="colEnCurso">
-        <div class="tarjeta-proyecto verde">
-          <strong>Proyecto 1</strong>
-          <div class="arrow">▲</div>
-          <div>Pendiente de aprobación</div>
-        </div>
-
-        <div class="tarjeta-proyecto azul">
-          <strong>Proyecto 2</strong>
-          <div class="arrow">▼</div>
-          <div>Pendiente de asesoría</div>
-        </div>
-      </div>
+      <div class="contenido-columna" id="colEnCurso"></div>
     </div>
-
-    <!-- Columna 3 -->
     <div class="columna">
       <h3>Completadas</h3>
-      <div class="contenido-columna" id="colCompletadas">
-        <div class="tarjeta-proyecto azul">
-          <strong>Proyecto 3</strong>
-          <div class="arrow">▼</div>
-          <div>Proyecto aprobado</div>
-        </div>
-      </div>
+      <div class="contenido-columna" id="colCompletadas"></div>
     </div>
   </div>
 
-  <!-- Botones inferiores -->
   <div class="botones-inferiores">
     <button id="btnAsignar">Asignar nueva tarea</button>
-    <button id="btnEditar" disabled>Editar tareas en curso</button>
+    <button id="btnEditar" disabled>Editar / Eliminar tarea</button>
   </div>
 
-  <!-- Modal -->
   <div id="modalTarea" class="modal">
     <div class="modal-content">
-      <h3 id="modalTitulo">Asignar nueva tarea</h3>
-      <label for="nombreTarea">Nombre de la tarea:</label>
-      <input type="text" id="nombreTarea" placeholder="Ej. Revisión técnica">
-      <label for="estadoTarea">Estado:</label>
+      <h3 id="modalTitulo">Tarea</h3>
+      <label for="nombreTarea">Nombre:</label>
+      <input type="text" id="nombreTarea" />
+      <label for="estadoTarea">Estatus:</label>
       <select id="estadoTarea">
-        <option>Por hacer</option>
+        <option>Pendiente</option>
         <option>En curso</option>
-        <option>Completada</option>
+        <option>Completado</option>
       </select>
       <div class="modal-buttons">
         <button class="btn-guardar" id="guardarTarea">Guardar</button>
+        <button class="btn-eliminar" id="eliminarTarea" style="display:none;">Eliminar</button>
         <button class="btn-cerrar" id="cerrarModal">Cancelar</button>
       </div>
     </div>
   </div>
 
-  <!-- JS funcional -->
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('modalTarea');
-    const cerrarModal = document.getElementById('cerrarModal');
-    const guardarTarea = document.getElementById('guardarTarea');
-    const btnAsignar = document.getElementById('btnAsignar');
-    const btnEditar = document.getElementById('btnEditar');
-    const tituloModal = document.getElementById('modalTitulo');
-    const nombreTarea = document.getElementById('nombreTarea');
-    const estadoTarea = document.getElementById('estadoTarea');
-    const colTareas = document.getElementById('colTareas');
-    const btnVolver = document.getElementById('btnVolver');
+  <script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", async function () {
+    const API_URL = "http://localhost:3001/api/seguimiento";
+    const colPendientes = document.getElementById("colPendientes");
+    const colEnCurso = document.getElementById("colEnCurso");
+    const colCompletadas = document.getElementById("colCompletadas");
+    const modal = document.getElementById("modalTarea");
+    const cerrarModal = document.getElementById("cerrarModal");
+    const guardarTarea = document.getElementById("guardarTarea");
+    const eliminarTareaBtn = document.getElementById("eliminarTarea");
+    const nombreTarea = document.getElementById("nombreTarea");
+    const estadoTarea = document.getElementById("estadoTarea");
+    const usuarioNombre = document.getElementById("usuarioNombre");
+    const btnLogout = document.getElementById("btnLogout");
+    const btnAsignar = document.getElementById("btnAsignar");
+    const btnEditar = document.getElementById("btnEditar");
+    const btnVolver = document.getElementById("btnVolver");
+    const proyectoActual = document.getElementById("proyectoActual");
 
-    let modoEdicion = false;
+    let proyectoSeleccionado = null;
     let tareaSeleccionada = null;
 
-    // Ir a vista de coordinador
-    btnVolver.addEventListener('click', () => {
-      window.location.href = "inicioC.html";
-    });
+    const id_usuario = localStorage.getItem("id_usuario");
+    const id_rol = localStorage.getItem("rol");
+    const nombreUsuario = localStorage.getItem("usuario");
 
-    // Mostrar modal (nueva tarea)
-    btnAsignar.addEventListener('click', () => {
-      modoEdicion = false;
-      tituloModal.textContent = "Asignar nueva tarea";
-      nombreTarea.value = "";
-      estadoTarea.value = "Por hacer";
-      modal.style.display = "flex";
-    });
+    usuarioNombre.textContent = nombreUsuario || "USUARIO";
 
-    // Editar tarea seleccionada
-    btnEditar.addEventListener('click', () => {
-      if (!tareaSeleccionada) return;
-      modoEdicion = true;
-      tituloModal.textContent = "Editar tarea";
-      nombreTarea.value = tareaSeleccionada.textContent.trim();
-      modal.style.display = "flex";
-    });
+    if (!id_usuario || !id_rol) {
+      alert("No se encontró información del usuario. Inicia sesión nuevamente.");
+      window.location.href = "login.html";
+      return;
+    }
 
-    // Cerrar modal
-    cerrarModal.addEventListener('click', () => modal.style.display = "none");
-    window.onclick = e => { if (e.target == modal) modal.style.display = "none"; };
+    if (id_rol != 1 && id_rol != 3) {
+      btnAsignar.style.display = "none";
+      btnEditar.style.display = "none";
+    }
 
-    // Guardar tarea
-    guardarTarea.addEventListener('click', () => {
-      if (nombreTarea.value.trim() === "") {
-        alert("Por favor ingresa un nombre de tarea");
-        return;
-      }
+    async function cargarProyectos() {
+      colPendientes.innerHTML = colEnCurso.innerHTML = colCompletadas.innerHTML = "";
+      proyectoActual.textContent = "Selecciona un proyecto";
+      btnVolver.style.display = "none";
 
-      if (modoEdicion && tareaSeleccionada) {
-        tareaSeleccionada.textContent = nombreTarea.value;
-      } else {
-        const nueva = document.createElement('div');
-        nueva.classList.add('tarea');
-        nueva.textContent = nombreTarea.value;
-        colTareas.querySelector('.lista-tareas').appendChild(nueva);
-        activarSeleccionTarea(nueva);
-      }
-      modal.style.display = "none";
-    });
+      const res = await fetch(`${API_URL}/proyectos?id_usuario=${id_usuario}&id_rol=${id_rol}`);
+      const proyectos = await res.json();
 
-    // Seleccionar tarea
-    function activarSeleccionTarea(tarea) {
-      tarea.addEventListener('click', () => {
-        document.querySelectorAll('.tarea').forEach(t => t.style.backgroundColor = '');
-        tarea.style.backgroundColor = '#bdf5bd';
-        tareaSeleccionada = tarea;
-        btnEditar.disabled = false;
+      colEnCurso.innerHTML = "";
+
+      proyectos.forEach((p) => {
+        const tarjeta = document.createElement("div");
+        tarjeta.classList.add("tarjeta-proyecto");
+        tarjeta.innerHTML = `<strong>${p.nombre_proyecto}</strong><div>${p.estatus || "Sin estatus"}</div>`;
+        tarjeta.addEventListener("click", async () => {
+          proyectoSeleccionado = p.id_proyecto;
+          proyectoActual.textContent = `Proyecto actual: ${p.nombre_proyecto}`;
+          btnVolver.style.display = "block";
+          await cargarTareas(p.id_proyecto);
+        });
+        colEnCurso.appendChild(tarjeta);
       });
     }
 
-    document.querySelectorAll('.tarea').forEach(activarSeleccionTarea);
+    async function cargarTareas(id_proyecto) {
+      colPendientes.innerHTML = colEnCurso.innerHTML = colCompletadas.innerHTML = "";
+
+      const res = await fetch(`${API_URL}/proyectos/${id_proyecto}/tareas`);
+      const tareas = await res.json();
+
+      tareas.forEach((t) => {
+        const div = document.createElement("div");
+        div.classList.add("tarea");
+        div.textContent = t.nombre_tarea;
+        div.addEventListener("click", () => {
+          document.querySelectorAll(".tarea").forEach(x => x.classList.remove("seleccionada"));
+          div.classList.add("seleccionada");
+          tareaSeleccionada = t;
+          btnEditar.disabled = false;
+        });
+
+        if (t.estatus === "Pendiente") colPendientes.appendChild(div);
+        else if (t.estatus === "En curso") colEnCurso.appendChild(div);
+        else colCompletadas.appendChild(div);
+      });
+    }
+
+    btnVolver.addEventListener("click", () => {
+      proyectoSeleccionado = null;
+      tareaSeleccionada = null;
+      btnEditar.disabled = true;
+      cargarProyectos();
+    });
+
+    btnAsignar.addEventListener("click", () => {
+      if (!proyectoSeleccionado) return alert("Selecciona primero un proyecto.");
+      tareaSeleccionada = null;
+      nombreTarea.value = "";
+      estadoTarea.value = "Pendiente";
+      eliminarTareaBtn.style.display = "none";
+      modal.style.display = "flex";
+      document.getElementById("modalTitulo").textContent = "Nueva tarea";
+    });
+
+    btnEditar.addEventListener("click", () => {
+      if (!tareaSeleccionada) return;
+      modal.style.display = "flex";
+      nombreTarea.value = tareaSeleccionada.nombre_tarea;
+      estadoTarea.value = tareaSeleccionada.estatus;
+      eliminarTareaBtn.style.display = "inline-block";
+      document.getElementById("modalTitulo").textContent = "Editar tarea";
+    });
+
+    cerrarModal.addEventListener("click", () => modal.style.display = "none");
+    window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
+
+    guardarTarea.addEventListener("click", async () => {
+      if (!nombreTarea.value.trim()) return alert("Escribe un nombre para la tarea.");
+
+      const datos = {
+        id_proyecto: proyectoSeleccionado,
+        nombre_tarea: nombreTarea.value.trim(),
+        descripcion_tarea: "",
+        estatus: estadoTarea.value,
+      };
+
+      let url = `${API_URL}/tareas`;
+      let method = "POST";
+
+      if (tareaSeleccionada) {
+        datos.id_tarea = tareaSeleccionada.id_tarea;
+        method = "PUT";
+      }
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
+      });
+
+      const result = await res.json();
+      alert(result.mensaje);
+      modal.style.display = "none";
+      await cargarTareas(proyectoSeleccionado);
+    });
+
+    eliminarTareaBtn.addEventListener("click", async () => {
+      if (!tareaSeleccionada) return;
+      if (!confirm("¿Seguro que deseas eliminar esta tarea?")) return;
+
+      const res = await fetch(`${API_URL}/tareas/${tareaSeleccionada.id_tarea}`, { method: "DELETE" });
+      const result = await res.json();
+      alert(result.mensaje);
+      modal.style.display = "none";
+      await cargarTareas(proyectoSeleccionado);
+    });
+
+    btnLogout.addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "login.html";
+    });
+
+    // Inicializar vista
+    cargarProyectos();
   });
   </script>
 </body>

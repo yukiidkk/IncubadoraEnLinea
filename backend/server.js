@@ -8,9 +8,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 // Importar rutas
 const registroRoutes = require("./routes/registroRoutes");
@@ -20,6 +19,7 @@ const proyectoRoutes = require("./routes/proyectoRoutes");
 const gestionUsuariosRoutes = require("./routes/gestionUsuariosRoutes");
 const tipo_eventoRoutes = require("./routes/tipo_eventoRoutes");
 const eventosRoutes = require("./routes/eventosRoutes");
+const seguimientoRoutes = require("./routes/seguimientoRoutes");
 
 // Usar rutas
 app.use("/api", registroRoutes);
@@ -29,7 +29,7 @@ app.use("/api", proyectoRoutes);
 app.use("/api", gestionUsuariosRoutes);
 app.use("/api", tipo_eventoRoutes);
 app.use("/api", eventosRoutes);
-
+app.use("/api/seguimiento", seguimientoRoutes);
 
 // Probar conexión
 app.get("/test-db", async (req, res) => {
@@ -38,13 +38,14 @@ app.get("/test-db", async (req, res) => {
     res.json({ success: true, fecha_actual: rows[0].fecha_actual });
   } catch (err) {
     console.error("Error en la conexión a MySQL:", err);
-    res.status(500).json({ success: false, message: "Error de conexión a MySQL" });
+    res
+      .status(500)
+      .json({ success: false, message: "Error de conexión a MySQL" });
   }
 });
 
-console.log('Rutas montadas en /api');
-console.log('POST /api/crearProyecto debería estar disponible');
-// Puerto
+console.log("Rutas montadas en /api y /api/seguimiento");
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
