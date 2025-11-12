@@ -378,18 +378,26 @@
 
       colEnCurso.innerHTML = "";
 
-      proyectos.forEach((p) => {
-        const tarjeta = document.createElement("div");
-        tarjeta.classList.add("tarjeta-proyecto");
-        tarjeta.innerHTML = `<strong>${p.nombre_proyecto}</strong><div>${p.estatus || "Sin estatus"}</div>`;
-        tarjeta.addEventListener("click", async () => {
-          proyectoSeleccionado = p.id_proyecto;
-          proyectoActual.textContent = `Proyecto actual: ${p.nombre_proyecto}`;
-          btnVolver.style.display = "block";
-          await cargarTareas(p.id_proyecto);
-        });
-        colEnCurso.appendChild(tarjeta);
-      });
+      const aprobados = proyectos.filter(p => p.estatus && p.estatus.toLowerCase() === "aprobado");
+
+if (aprobados.length === 0) {
+  colEnCurso.innerHTML = `<p style="text-align:center;color:#555;">No tienes proyectos aprobados.</p>`;
+  return;
+}
+
+aprobados.forEach((p) => {
+  const tarjeta = document.createElement("div");
+  tarjeta.classList.add("tarjeta-proyecto");
+  tarjeta.innerHTML = `<strong>${p.nombre_proyecto}</strong><div>${p.estatus}</div>`;
+  tarjeta.addEventListener("click", async () => {
+    proyectoSeleccionado = p.id_proyecto;
+    proyectoActual.textContent = `Proyecto actual: ${p.nombre_proyecto}`;
+    btnVolver.style.display = "block";
+    await cargarTareas(p.id_proyecto);
+  });
+  colEnCurso.appendChild(tarjeta);
+});
+
     }
 
     async function cargarTareas(id_proyecto) {
