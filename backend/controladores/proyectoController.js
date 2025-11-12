@@ -235,10 +235,12 @@ const obtenerProyectosPorUsuario = async (req, res) => {
   console.log("Proyectos encontrados:", proyectos.length);
   res.json(proyectos);
 
-} else {
-  console.log("Cargando proyectos del usuario:", id_usuario);
+} // Si no es coordinador (es emprendedor o socio)
+else {
+  console.log("Cargando proyectos del usuario o donde es socio:", id_usuario);
+
   const proyectos = await query(`
-    SELECT 
+    SELECT DISTINCT 
       p.id_proyecto,
       p.nombre_proyecto,
       p.descripcion,
@@ -246,9 +248,14 @@ const obtenerProyectosPorUsuario = async (req, res) => {
       p.estatus,
       p.progreso
     FROM proyecto p
-    WHERE p.id_usuario = ?
+    INNER JOIN usuarios u ON p.id_usuario = u.id_usuario
+    INNER JOIN persona per ON u.id_persona = per.id_persona
+    LEFT JOIN persona_has_proyecto php ON php.id_proyecto = p.id_proyecto
+    LEFT JOIN persona ps ON ps.id_persona = php.id_persona
+    WHERE u.id_usuario = ? 
+       OR ps.id_persona = (SELECT id_persona FROM usuarios WHERE id_usuario = ?)
     ORDER BY p.fecha_inicio DESC;
-  `, [id_usuario]);
+  `, [id_usuario, id_usuario]);
 
   console.log("Proyectos encontrados:", proyectos.length);
   res.json(proyectos);

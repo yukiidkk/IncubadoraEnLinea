@@ -409,47 +409,23 @@ input[type="file"]::-webkit-file-upload-button:hover {
 
           <label>Agregar socios:</label>
 
-          <div class="agregarSocios" id="agregarSocios">
-            <div class="socio-card">
-              <div class="info">
-                <img src="images/user-icon.png" alt="icono usuario">
-                <span><strong>USUARIO 1</strong></span>
-              </div>
-              <div class="acciones-socio">
-                <button class="btn-add" data-nombre="USUARIO 1">Añadir</button>
-              </div>
-            </div>
+<!-- 🔹 Contenedor vacío hasta que el usuario escriba -->
+<div class="agregarSocios" id="agregarSocios">
+  <p style="text-align:center;color:#777;">Escribe un nombre para buscar usuarios...</p>
+</div>
 
-            <div class="socio-card">
-              <div class="info">
-                <img src="images/user-icon.png" alt="icono usuario">
-                <span><strong>USUARIO 2</strong></span>
-              </div>
-              <div class="acciones-socio">
-                <button class="btn-add" data-nombre="USUARIO 2">Añadir</button>
-              </div>
-            </div>
+<!-- 🔹 Campo de búsqueda -->
+<div class="buscar-socio">
+  <input type="text" id="buscarSocioInput" placeholder="Buscar usuario por nombre...">
+  <button id="btnBuscarSocio">Buscar</button>
+</div>
 
-            <div class="socio-card">
-              <div class="info">
-                <img src="images/user-icon.png" alt="icono usuario">
-                <span><strong>USUARIO 3</strong></span>
-              </div>
-              <div class="acciones-socio">
-                <button class="btn-add" data-nombre="USUARIO 3">Añadir</button>
-              </div>
-            </div>
-          </div>
+<!-- 🔹 Lista de socios agregados -->
+<div class="socios-agregados">
+  <h4>Socios agregados al proyecto:</h4>
+  <ul id="listaSocios"></ul>
+</div>
 
-          <div class="buscar-socio">
-            <input type="text" id="buscarSocioInput" placeholder="Buscar usuario por nombre...">
-            <button id="btnBuscarSocio">Buscar</button>
-          </div>
-
-          <div class="socios-agregados">
-            <h4>Socios agregados al proyecto:</h4>
-            <ul id="listaSocios"></ul>
-          </div>
         </div>
       </div>
 
@@ -467,8 +443,9 @@ input[type="file"]::-webkit-file-upload-button:hover {
 
   // ========== INICIALIZACIÓN ==========
   document.addEventListener('DOMContentLoaded', async () => {
-    await cargarSocios(); // carga todos los usuarios al inicio
-  });
+  console.log("Página lista. Esperando búsqueda...");
+});
+
 
   // ================================
   // 🔹 Cargar socios desde la BD
@@ -494,7 +471,11 @@ input[type="file"]::-webkit-file-upload-button:hover {
             <span><strong>${u.Nombre || u.nombre} ${u.Apellido || u.apellido}</strong></span>
           </div>
           <div class="acciones-socio">
-            <button class="btn-add" data-id="${u.ID_Usuario || u.id_usuario}" data-nombre="${u.Nombre || u.nombre} ${u.Apellido || u.apellido}">Añadir</button>
+<button class="btn-add" 
+        data-id="${u.Id_Persona || u.id_persona}" 
+        data-nombre="${u.Nombre || u.nombre} ${u.Apellido || u.apellido}">
+  Añadir
+</button>
           </div>
         `;
         contenedor.appendChild(card);
@@ -511,45 +492,58 @@ input[type="file"]::-webkit-file-upload-button:hover {
     const filtro = document.getElementById('buscarSocioInput').value.trim();
     await cargarSocios(filtro);
   });
-
-  // ================================
-  // 🔹 Añadir o eliminar socios visualmente
-  // ================================
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('btn-add')) {
-      const nombre = e.target.dataset.nombre;
-
-      if (sociosAgregados.includes(nombre)) {
-        alert(`${nombre} ya está agregado.`);
-        return;
-      }
-
-      sociosAgregados.push(nombre);
-      actualizarListaSocios();
-    }
-
-    if (e.target.classList.contains('btnEliminarSocio')) {
-      const nombre = e.target.parentElement.dataset.nombre;
-      const index = sociosAgregados.indexOf(nombre);
-      if (index > -1) sociosAgregados.splice(index, 1);
-      actualizarListaSocios();
-    }
-  });
-
-  function actualizarListaSocios() {
-    const lista = document.getElementById('listaSocios');
-    lista.innerHTML = '';
-
-    sociosAgregados.forEach(nombre => {
-      const li = document.createElement('li');
-      li.dataset.nombre = nombre;
-      li.innerHTML = `
-        <span>${nombre}</span>
-        <button class="btnEliminarSocio">Quitar</button>
-      `;
-      lista.appendChild(li);
-    });
+  
+  document.getElementById('buscarSocioInput').addEventListener('input', async (e) => {
+  const filtro = e.target.value.trim();
+  if (filtro.length >= 2) {
+    await cargarSocios(filtro); // Solo buscar si hay al menos 2 letras
+  } else {
+    document.getElementById('agregarSocios').innerHTML = ''; // limpiar resultados
   }
+});
+
+// ================================
+// 🔹 Añadir o eliminar socios visualmente (con ID y nombre)
+// ================================
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('btn-add')) {
+    const id_persona = e.target.dataset.id;
+    const nombre = e.target.dataset.nombre;
+
+    // Evitar duplicados
+    if (sociosAgregados.some(s => s.id_persona === id_persona)) {
+      alert(`${nombre} ya está agregado.`);
+      return;
+    }
+
+    // Agregar socio al arreglo
+    sociosAgregados.push({ id_persona, nombre });
+    actualizarListaSocios();
+  }
+
+  if (e.target.classList.contains('btnEliminarSocio')) {
+    const id_persona = e.target.parentElement.dataset.id;
+    const index = sociosAgregados.findIndex(s => s.id_persona === id_persona);
+    if (index > -1) sociosAgregados.splice(index, 1);
+    actualizarListaSocios();
+  }
+});
+
+function actualizarListaSocios() {
+  const lista = document.getElementById('listaSocios');
+  lista.innerHTML = '';
+
+  sociosAgregados.forEach(socio => {
+    const li = document.createElement('li');
+    li.dataset.id = socio.id_persona;
+    li.innerHTML = `
+      <span>${socio.nombre}</span>
+      <button class="btnEliminarSocio">Quitar</button>
+    `;
+    lista.appendChild(li);
+  });
+}
+
 
   // ================================
   // 🔹 GUARDAR PROYECTO
