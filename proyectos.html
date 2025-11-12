@@ -291,25 +291,33 @@
       tbody.appendChild(fila);
     } else {
       data.forEach(p => {
-        const responsable = p.responsable
-          ? `${p.responsable} ${p.responsable_apellido || ""}`.trim()
-          : (nombre + " " + apellido).trim() || "Tú";
+  const responsable = p.responsable
+    ? `${p.responsable} ${p.responsable_apellido || ""}`.trim()
+    : (nombre + " " + apellido).trim() || "Tú";
 
-        let claseEstatus = "estatus-pendiente";
-        if (p.estatus === "Aprobado") claseEstatus = "estatus-aprobado";
-        else if (p.estatus === "Rechazado") claseEstatus = "estatus-rechazado";
+  const fila = document.createElement("tr");
 
-        const fila = document.createElement("tr");
-        fila.innerHTML = `
-          <td>${p.nombre_proyecto}</td>
-          <td>${responsable}</td>
-          <td>${p.fecha_inicio ? new Date(p.fecha_inicio).toLocaleDateString() : "-"}</td>
-          <td class="${claseEstatus}">${p.estatus}</td>
-          <td>${p.progreso}</td>
-          <td><button class="gestionar-btn" data-id="${p.id_proyecto}">Gestionar</button></td>
-        `;
-        tbody.appendChild(fila);
-      });
+  // Determinar si el usuario puede gestionar el proyecto
+  const puedeGestionar = (tipo === "coordinador" || tipo === "administrador");
+
+  fila.innerHTML = `
+    <td>${p.nombre_proyecto}</td>
+    <td>${responsable}</td>
+    <td>${p.fecha_inicio ? new Date(p.fecha_inicio).toLocaleDateString() : "-"}</td>
+    <td>${p.estatus}</td>
+    <td>${p.progreso}</td>
+    <td>
+      ${
+        puedeGestionar
+          ? `<button class="gestionar-btn" data-id="${p.id_proyecto}">Gestionar</button>`
+          : `<span style="color:#888;">Sin permisos</span>`
+      }
+    </td>
+  `;
+
+  tbody.appendChild(fila);
+});
+
     }
     tabla.appendChild(tbody);
 
