@@ -12,5 +12,7 @@ router.get("/buscarProyecto", proyectoController.buscarProyecto);
 router.delete("/eliminarProyecto/:id", proyectoController.eliminarProyecto);
 router.get("/archivo/:id", proyectoController.obtenerArchivo);
 router.get("/proyectos/:id_usuario", proyectoController.obtenerProyectosPorUsuario);
+router.put("/proyectos/estatus", proyectoController.actualizarEstatusProyecto);
+
 
 module.exports = router;

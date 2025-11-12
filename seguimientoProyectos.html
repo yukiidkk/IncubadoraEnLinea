@@ -238,6 +238,26 @@
     .btn-guardar { background-color: #1e63b5; color: white; }
     .btn-eliminar { background-color: #c0392b; color: white; }
     .btn-cerrar { background-color: #ccc; }
+
+    /* 🔹 NUEVO: botón regresar abajo a la izquierda */
+    #btnRegresar {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: #1e63b5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      z-index: 1000;
+    }
+
+    #btnRegresar:hover {
+      background-color: #004b9a;
+    }
   </style>
 </head>
 
@@ -258,9 +278,8 @@
   </header>
 
   <h1>Seguimiento de avances de proyectos</h1>
-  <div class="subtitulo">Inicio | Seguimiento de proyectos</div>
   <p id="proyectoActual">Selecciona un proyecto</p>
-  <button id="btnVolver">← Volver a proyectos</button>
+  <button id="btnVolver">Volver a proyectos</button>
 
   <div class="tablero">
     <div class="columna">
@@ -301,9 +320,18 @@
     </div>
   </div>
 
+  <!-- 🔹 NUEVO BOTÓN FIJO ABAJO -->
+  <button id="btnRegresar">← Regresar</button>
+
   <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", async function () {
     const API_URL = "http://localhost:3001/api/seguimiento";
+
+    // 🔹 Botón que regresa a proyectos.html
+    document.getElementById("btnRegresar").addEventListener("click", () => {
+      window.location.href = "proyectos.html";
+    });
+
     const colPendientes = document.getElementById("colPendientes");
     const colEnCurso = document.getElementById("colEnCurso");
     const colCompletadas = document.getElementById("colCompletadas");

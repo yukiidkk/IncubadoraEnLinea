@@ -1,20 +1,44 @@
 // backend/controllers/seguimientoController.js
 const { pool } = require("../config/database");
 
-// 🔹 Obtener todos los proyectos
+// 🔹 Obtener proyectos según el rol del usuario
 const obtenerProyectos = async (req, res) => {
   try {
-    const [rows] = await pool.query(`
-      SELECT id_proyecto, nombre_proyecto, descripcion, estatus, progreso
-      FROM proyecto
-      ORDER BY id_proyecto DESC
-    `);
+    const { id_usuario, id_rol } = req.query; // viene desde el frontend
+
+    let sql = `
+      SELECT 
+        p.id_proyecto, 
+        p.nombre_proyecto, 
+        p.descripcion, 
+        p.estatus, 
+        p.progreso,
+        per.nombre AS responsable,
+        per.apellido AS responsable_apellido
+      FROM proyecto p
+      INNER JOIN usuarios u ON p.id_usuario = u.id_usuario
+      INNER JOIN persona per ON u.id_persona = per.id_persona
+    `;
+
+    // 👇 Si el rol es emprendedor (2), solo muestra sus proyectos
+    if (id_rol == 2) {
+      sql += " WHERE p.id_usuario = ?";
+    }
+
+    sql += " ORDER BY p.id_proyecto DESC";
+
+    const [rows] =
+      id_rol == 2
+        ? await pool.query(sql, [id_usuario])
+        : await pool.query(sql);
+
     res.json(rows);
   } catch (error) {
     console.error("Error al obtener proyectos:", error);
     res.status(500).json({ mensaje: "Error al obtener proyectos" });
   }
 };
+
 
 // 🔹 Obtener tareas de un proyecto
 const obtenerTareasPorProyecto = async (req, res) => {

@@ -68,20 +68,58 @@ const crearProyecto = async (req, res) => {
   }
 };
 
-// Ver archivo asociado
 const obtenerArchivo = async (req, res) => {
   try {
     const { id } = req.params;
-    const [rows] = await query("SELECT Formato_Registro FROM proyecto WHERE id_Proyecto = ?", [id]);
-    if (rows.length === 0) return res.status(404).send("Archivo no encontrado");
+    console.log("Solicitando archivo del proyecto ID:", id);
 
-    const archivo = rows[0].Formato_Registro;
-    res.setHeader("Content-Type", "application/pdf");
+    // Ejecutar consulta sin destructuring
+    const result = await query(
+      "SELECT formato_registro, nombre_proyecto FROM proyecto WHERE id_proyecto = ?",
+      [id]
+    );
+
+    // Verificar si el resultado es un arreglo con filas
+    const rows = Array.isArray(result) ? result : (result[0] ? result[0] : []);
+    console.log(" Resultado SQL:", rows);
+
+    if (!rows || rows.length === 0) {
+      console.warn("No se encontró el proyecto con ese ID");
+      return res.status(404).send("Proyecto no encontrado");
+    }
+
+    const archivo = rows[0].formato_registro;
+    const nombreProyecto = rows[0].nombre_proyecto || `proyecto_${id}`;
+
+    if (!archivo) {
+      console.warn("El proyecto no tiene archivo adjunto");
+      return res.status(404).send("No hay archivo adjunto para este proyecto");
+    }
+
+    // Detectar tipo MIME
+    let tipoMime = "application/octet-stream";
+    const encabezado = archivo.slice(0, 4).toString("hex");
+
+    if (encabezado.startsWith("25504446")) tipoMime = "application/pdf";
+    else if (encabezado === "504b0304") tipoMime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    else if (encabezado.startsWith("d0cf")) tipoMime = "application/msword";
+
+    const extension = tipoMime.includes("pdf") ? "pdf" :
+                      tipoMime.includes("wordprocessingml") ? "docx" :
+                      "doc";
+
+    console.log(`Enviando archivo (${tipoMime}) del proyecto "${nombreProyecto}"`);
+
+    res.setHeader("Content-Type", tipoMime);
+    res.setHeader("Content-Disposition", `attachment; filename="${nombreProyecto}.${extension}"`);
     res.send(archivo);
+
   } catch (error) {
-    res.status(500).send("Error al obtener archivo");
+    console.error("Error al obtener archivo:", error);
+    res.status(500).send("Error interno al obtener el archivo");
   }
 };
+
 
 // Buscar proyectos por nombre
 const buscarProyecto = async (req, res) => {
@@ -223,6 +261,38 @@ const obtenerProyectosPorUsuario = async (req, res) => {
   }
 };
 
+// ================================
+// Actualizar estatus de un proyecto
+// ================================
+const actualizarEstatusProyecto = async (req, res) => {
+  try {
+    const { id_proyecto, estatus } = req.body;
+
+    console.log("Datos recibidos en PUT /proyectos/estatus:", { id_proyecto, estatus });
+
+    if (!id_proyecto || !estatus) {
+      return res.status(400).json({ mensaje: "Faltan datos para actualizar el estatus" });
+    }
+
+    const result = await query(
+      "UPDATE proyecto SET estatus = ? WHERE id_proyecto = ?",
+      [estatus, id_proyecto]
+    );
+
+    console.log("Resultado del UPDATE:", result);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, mensaje: "No se encontró el proyecto con ese ID" });
+    }
+
+    res.json({ success: true, mensaje: `Estatus actualizado a "${estatus}"` });
+  } catch (error) {
+    console.error("Error al actualizar estatus:", error);
+    res.status(500).json({ success: false, mensaje: "Error al actualizar estatus del proyecto" });
+  }
+};
+
+
 
 
 // Exportar controladores
@@ -233,5 +303,6 @@ module.exports = {
   eliminarProyecto,
   obtenerArchivo,
   obtenerUsuarios,
-  obtenerProyectosPorUsuario
+  obtenerProyectosPorUsuario,
+  actualizarEstatusProyecto
 };
