@@ -165,6 +165,33 @@
       margin-bottom: 15px;
     }
 
+    /* Mensajes visuales */
+    .mensaje {
+      width: 90%;
+      margin: 15px auto;
+      padding: 12px 18px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .mensaje.error {
+      background-color: #ffdddd;
+      color: #a00000;
+      border: 1px solid #ff7a7a;
+    }
+
+    .mensaje.exito {
+      background-color: #ddffdd;
+      color: #006600;
+      border: 1px solid #7aff7a;
+    }
+
+    .oculto {
+      display: none;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .paneles {
@@ -178,6 +205,9 @@
     }
   </style>
     </header>
+
+    <!-- Contenedor para mensajes visuales -->
+    <div id="mensajeError" class="mensaje oculto"></div>
     
     <div class="main-content role-management-view">
         <div class="form-container">
@@ -238,7 +268,7 @@
     </div>
   </main>
   <script>
-const API_URL = "http://localhost:3001/api/roles"; // ¡Ruta corregida!
+const API_URL = "http://localhost:3001/api/roles"; 
 const tablaRoles = document.querySelector("#tablaRoles"); 
 const inputNombre = document.querySelector("#nombreRolInput");
 const selectPermiso = document.querySelector("#selectPermiso");
@@ -246,6 +276,19 @@ const btnCrear = document.querySelector("#btnCrear");
 const btnActualizar = document.querySelector("#btnActualizar");
 const btnEliminar = document.querySelector("#btnEliminar");
 let rolSeleccionadoId = null;
+
+// Función para mostrar mensajes en pantalla
+function mostrarMensaje(texto, tipo = "error") {
+  const mensajeDiv = document.getElementById("mensajeError");
+  mensajeDiv.textContent = texto;
+  mensajeDiv.className = `mensaje ${tipo}`;
+  mensajeDiv.classList.remove("oculto");
+
+  // Ocultar automáticamente después de 4 segundos
+  setTimeout(() => {
+    mensajeDiv.classList.add("oculto");
+  }, 4000);
+}
 
 // Función para inicializar el ComboBox de Permisos
 function cargarPermisos(permisos) {
@@ -265,45 +308,36 @@ async function cargarRoles() {
         if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
         
         const data = await res.json();
-        
         if (!data.success) throw new Error("API devolvió éxito falso.");
 
-        // 1. Llenar el ComboBox de Permisos (solo en la primera carga)
         if (data.permisosDisponibles && selectPermiso.options.length <= 1) {
             cargarPermisos(data.permisosDisponibles);
         }
 
-        // 2. Llenar la Tabla de Roles
         tablaRoles.innerHTML = "";
         data.roles.forEach(rol => {
             const fila = document.createElement("tr");
-            
-            // Asegúrate que Nombre_Rol y Permisos coincidan con tu DB
             fila.innerHTML = `<td>${rol.nombre_rol}</td><td>${rol.permisos}</td>`;
             
             fila.addEventListener("click", () => {
-                // Al hacer clic, selecciona el rol para edición/eliminación
                 rolSeleccionadoId = rol.id_rol;
                 inputNombre.value = rol.nombre_rol;
                 selectPermiso.value = rol.permisos;
-                
-                // Efecto visual: deseleccionar todas y seleccionar la clicada
                 document.querySelectorAll("#tablaRoles tr").forEach(r => r.style.backgroundColor = 'white');
-                fila.style.backgroundColor = '#f2f6ff'; // Estilo de hover
+                fila.style.backgroundColor = '#f2f6ff';
             });
             tablaRoles.appendChild(fila);
         });
         
     } catch (err) {
         console.error("Fallo al cargar roles:", err);
-        alert("No se pudieron cargar los roles. Revisa la consola y el servidor.");
+        mostrarMensaje("No se pudieron cargar los roles. Revisa el servidor.", "error");
     }
 }
 
 const API_USUARIOS_ROL = "http://localhost:3001/api/usuarios-con-rol";
 const tablaUsuariosRol = document.querySelector("#tablaUsuariosRol");
 
-// Cargar usuarios con su rol
 async function cargarUsuariosConRol() {
     try {
         const res = await fetch(API_USUARIOS_ROL);
@@ -320,6 +354,7 @@ async function cargarUsuariosConRol() {
         });
     } catch (err) {
         console.error("Fallo al cargar usuarios con rol:", err);
+        mostrarMensaje("Error al cargar usuarios con rol.", "error");
     }
 }
 
@@ -328,8 +363,6 @@ const btnBuscarUsuario = document.querySelector("#btnBuscarUsuario");
 
 btnBuscarUsuario.addEventListener("click", async () => {
     const nombre = inputBuscarUsuario.value.trim();
-
-    // Si no se escribió nada, recarga toda la lista
     if (!nombre) {
         cargarUsuariosConRol();
         return;
@@ -358,25 +391,23 @@ btnBuscarUsuario.addEventListener("click", async () => {
         });
     } catch (err) {
         console.error("Fallo en búsqueda:", err);
-        alert("Ocurrió un error al buscar el usuario.");
+        mostrarMensaje("Ocurrió un error al buscar el usuario.", "error");
     }
 });
 
-// Limpia el formulario después de una operación
 function limpiarFormulario() {
     rolSeleccionadoId = null;
     inputNombre.value = "";
-    selectPermiso.value = ""; // Vuelve al 'Seleccione el permiso'
+    selectPermiso.value = "";
     document.querySelectorAll("#tablaRoles tr").forEach(r => r.style.backgroundColor = 'white');
 }
-
-// --- Event Listeners para el CRUD ---
 
 btnCrear.addEventListener("click", async () => {
     const nombreRol = inputNombre.value;
     const permisos = selectPermiso.value;
 
-    if (!nombreRol || !permisos) return alert("Completa el nombre y selecciona un permiso.");
+    if (!nombreRol || !permisos)
+        return mostrarMensaje("Completa el nombre y selecciona un permiso.", "error");
 
     const res = await fetch(API_URL, {
         method: "POST",
@@ -386,44 +417,47 @@ btnCrear.addEventListener("click", async () => {
     const data = await res.json();
 
     if (!data.success) {
-    alert(data.message || "Error al crear el rol.");
-    return; // Salir sin recargar
-}
+        mostrarMensaje(data.message || "Error al crear el rol.", "error");
+        return;
+    }
 
+    mostrarMensaje("Rol creado correctamente.", "exito");
     limpiarFormulario();
     cargarRoles();
 });
 
 btnActualizar.addEventListener("click", async () => {
-    if (!rolSeleccionadoId) return alert("Selecciona un rol primero.");
+    if (!rolSeleccionadoId)
+        return mostrarMensaje("Selecciona un rol primero.", "error");
     
     const nombreRol = inputNombre.value;
     const permisos = selectPermiso.value;
 
-    if (!nombreRol || !permisos) return alert("Completa el nombre y selecciona un permiso.");
+    if (!nombreRol || !permisos)
+        return mostrarMensaje("Completa el nombre y selecciona un permiso.", "error");
 
     await fetch(`${API_URL}/${rolSeleccionadoId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombreRol, permisos })
     });
+    mostrarMensaje("Rol actualizado correctamente.", "exito");
     limpiarFormulario();
     cargarRoles();
 });
 
 btnEliminar.addEventListener("click", async () => {
-    if (!rolSeleccionadoId) return alert("Selecciona un rol primero.");
+    if (!rolSeleccionadoId)
+        return mostrarMensaje("Selecciona un rol primero.", "error");
     
-    // Opcional: Confirmación de eliminación
     if (!confirm("¿Estás seguro de que quieres eliminar este rol?")) return;
 
     await fetch(`${API_URL}/${rolSeleccionadoId}`, { method: "DELETE" });
-    
+    mostrarMensaje("Rol eliminado correctamente.", "exito");
     limpiarFormulario();
     cargarRoles();
 });
 
-// Carga inicial
 cargarRoles();
 cargarUsuariosConRol();
 </script>
