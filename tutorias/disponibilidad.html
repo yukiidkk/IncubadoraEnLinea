@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="css/disponibilidad.css">
 </head>
 <body>
+<!-- ALERTA -->
+    <div id="alerta"></div>
+
     <!-- ENCABEZADO -->
     <header class="header">
         <div class="logo">
@@ -88,9 +91,6 @@
                         <label>Tutor</label>
                         <select id="tutor">
                             <option value="">Seleccione un tutor</option>
-                            <option value="Tutor 1">Tutor 1</option>
-                            <option value="Tutor 2">Tutor 2</option>
-                            <option value="Tutor 3">Tutor 3</option>
                         </select>
                     </div>
 
@@ -120,76 +120,184 @@
         </main>
     </div>
 <script>
-        const API_URL = "http://localhost:3001/api/tutorias";
+        let disponibilidades = [];
+const API_URL = "http://localhost:3001/api/tutorias";
 
-        //Cargar tutores
-        async function cargarTutores() {
-            const comboTutor = document.getElementById("tutor");
-            comboTutor.innerHTML = `<option value="">Seleccione un tutor</option>`;
+/* ========== ALERTAS ========== */
+function mostrarAlerta(msg, tipo="ok") {
+    const alerta = document.getElementById("alerta");
+    alerta.innerText = msg;
+    alerta.className = tipo === "ok" ? "alerta-ok" : "alerta-error";
+    alerta.style.display = "block";
 
-            try {
-                const res = await fetch(`${API_URL}/tutores`);
-                const tutores = await res.json();
+    setTimeout(() => alerta.style.display = "none", 2500);
+}
 
-                tutores.forEach(t => {
-                    const option = document.createElement("option");
-                    option.value = t.id_usuario;
-                    option.textContent = t.nombre_completo;
-                    comboTutor.appendChild(option);
-                });
+/* ========== CARGAR TUTORES ========== */
+async function cargarTutores() {
+    const combo = document.getElementById("tutor");
+    combo.innerHTML = `<option value="">Seleccione un tutor</option>`;
 
-            } catch (error) {
-                console.error("Error al cargar tutores:", error);
-            }
-        }
+    try {
+        const res = await fetch(`${API_URL}/tutores`);
+        const data = await res.json();
 
-        cargarTutores();
-
-
-
-        //Calendario
-        const monthInput = document.getElementById("mes");
-        const calendarBody = document.getElementById("calendar-body");
-
-        function generarCalendario(year, month) {
-            calendarBody.innerHTML = "";
-            const firstDay = new Date(year, month, 1).getDay();
-            const lastDate = new Date(year, month + 1, 0).getDate();
-            let date = 1;
-
-            for (let i = 0; i < 6; i++) {
-                const row = document.createElement("tr");
-                for (let j = 0; j < 7; j++) {
-                    const cell = document.createElement("td");
-                    if (i === 0 && j < firstDay) {
-                        cell.classList.add("empty");
-                        row.appendChild(cell);
-                    } else if (date > lastDate) {
-                        cell.classList.add("empty");
-                        row.appendChild(cell);
-                    } else {
-                        cell.textContent = date;
-                        cell.addEventListener("click", () => seleccionarFecha(cell));
-                        row.appendChild(cell);
-                        date++;
-                    }
-                }
-                calendarBody.appendChild(row);
-            }
-        }
-
-        function seleccionarFecha(cell) {
-            document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
-            cell.classList.add("selected");
-        }
-
-        monthInput.addEventListener("change", () => {
-            const [year, month] = monthInput.value.split("-").map(Number);
-            generarCalendario(year, month - 1);
+        data.forEach(t => {
+            const op = document.createElement("option");
+            op.value = t.id_usuario;
+            op.textContent = t.nombre_completo;
+            combo.appendChild(op);
         });
+    } catch (err) { console.log(err); }
+}
 
-        const [initYear, initMonth] = monthInput.value.split("-").map(Number);
-        generarCalendario(initYear, initMonth - 1);
+/* ========== CARGAR DISPONIBILIDAD ========== */
+async function cargarDisponibilidades() {
+    try {
+        const res = await fetch(`${API_URL}/disponibilidad`);
+        disponibilidades = await res.json();
+
+        // REGENERAR CALENDARIO CON DATOS
+        const [year, month] = monthInput.value.split("-").map(Number);
+        generarCalendario(year, month - 1);
+
+    } catch (err) { console.log(err); }
+}
+
+/* ========== CALENDARIO ========== */
+const monthInput = document.getElementById("mes");
+const calendarBody = document.getElementById("calendar-body");
+
+function generarCalendario(year, month) {
+    calendarBody.innerHTML = "";
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+    let date = 1;
+
+    for (let i = 0; i < 6; i++) {
+        const row = document.createElement("tr");
+
+        for (let j = 0; j < 7; j++) {
+            const cell = document.createElement("td");
+
+            if (i === 0 && j < firstDay || date > lastDate) {
+                cell.classList.add("empty");
+            } else {
+
+                const currentDate = new Date(year, month, date);
+                const nombreDia = currentDate.toLocaleDateString("es-ES", { weekday: "long" });
+
+                cell.textContent = date;
+
+                // MARCAR DISPONIBILIDAD
+                if (disponibilidades.some(d => d.dia.toLowerCase() === nombreDia.toLowerCase())) {
+                    cell.classList.add("con-disponibilidad");
+                }
+
+                // CLIC PARA CARGAR FORMULARIO
+                cell.addEventListener("click", () => seleccionarDiaConDatos(nombreDia, cell));
+
+                date++;
+            }
+
+            row.appendChild(cell);
+        }
+
+        calendarBody.appendChild(row);
+    }
+}
+
+function seleccionarDiaConDatos(nombreDia, cell) {
+    document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
+    cell.classList.add("selected");
+
+    document.getElementById("dia").value =
+        nombreDia.charAt(0).toUpperCase() + nombreDia.slice(1);
+
+    const lista = disponibilidades.filter(d =>
+        d.dia.toLowerCase() === nombreDia.toLowerCase()
+    );
+
+    if (lista.length > 0) {
+        document.getElementById("tutor").value = lista[0].id_usuario;
+        document.getElementById("hora").value = lista[0].hora.substring(0, 5);
+    } else {
+        document.getElementById("tutor").value = "";
+        document.getElementById("hora").value = "";
+    }
+}
+
+monthInput.addEventListener("change", () => {
+    const [y, m] = monthInput.value.split("-").map(Number);
+    generarCalendario(y, m - 1);
+});
+
+/* ========== BOTÓN REGISTRAR ========== */
+document.querySelector(".registrar").addEventListener("click", async () => {
+    const id_usuario = document.getElementById("tutor").value;
+    const dia = document.getElementById("dia").value;
+    const hora = document.getElementById("hora").value;
+
+    if (!id_usuario || !dia || !hora) return mostrarAlerta("Todos los campos son obligatorios", "error");
+
+    const res = await fetch(`${API_URL}/disponibilidad`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_usuario, dia, hora: hora + ":00" })
+    });
+
+    const data = await res.json();
+    mostrarAlerta(data.mensaje, res.ok ? "ok" : "error");
+
+    cargarDisponibilidades();
+});
+
+/* ========== BOTÓN ACTUALIZAR ========== */
+document.querySelector(".actualizar").addEventListener("click", async () => {
+    const id_usuario = document.getElementById("tutor").value;
+    const dia = document.getElementById("dia").value;
+    const hora = document.getElementById("hora").value;
+
+    if (!id_usuario || !dia || !hora)
+        return mostrarAlerta("Debe seleccionar un registro para actualizar", "error");
+
+    const res = await fetch(`${API_URL}/disponibilidad`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_usuario, dia, hora: hora + ":00" })
+    });
+
+    const data = await res.json();
+    mostrarAlerta(data.mensaje, res.ok ? "ok" : "error");
+
+    cargarDisponibilidades();
+});
+
+/* ========== BOTÓN ELIMINAR ========== */
+document.querySelector(".eliminar").addEventListener("click", async () => {
+    const id_usuario = document.getElementById("tutor").value;
+    const dia = document.getElementById("dia").value;
+
+    if (!id_usuario || !dia)
+        return mostrarAlerta("Debe seleccionar un registro para eliminar", "error");
+
+    const res = await fetch(`${API_URL}/disponibilidad`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_usuario, dia })
+    });
+
+    const data = await res.json();
+    mostrarAlerta(data.mensaje, res.ok ? "ok" : "error");
+
+    cargarDisponibilidades();
+});
+
+/* ========== INICIALIZAR ========== */
+(async () => {
+    await cargarTutores();
+    await cargarDisponibilidades();
+})();
     </script>
 </body>
 </html>

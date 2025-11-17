@@ -195,3 +195,34 @@ textarea {
 .btn:hover {
     opacity: 0.85;
 }
+
+/* ===== MARCAR DISPONIBILIDAD ===== */
+.con-disponibilidad {
+    background-color: #c8ffd4 !important;
+    border: 2px solid #00b46b;
+    border-radius: 6px;
+}
+
+.calendar-box td.selected {
+    background-color: #ffd4a3 !important;
+    border: 2px solid #ff8800;
+    border-radius: 50%;
+}
+.calendar {
+    background-color: #4e4e4e;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* ALERTAS INTERNAS */
+        #alerta {
+            width: 100%;
+            padding: 12px;
+            display: none;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .alerta-ok { background: #c8f7c5; border: 1px solid #27ae60; color:#27ae60; }
+        .alerta-error { background: #f7c5c5; border: 1px solid #e74c3c; color:#e74c3c; }
