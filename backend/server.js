@@ -20,6 +20,7 @@ const gestionUsuariosRoutes = require("./routes/gestionUsuariosRoutes");
 const tipo_eventoRoutes = require("./routes/tipo_eventoRoutes");
 const eventosRoutes = require("./routes/eventosRoutes");
 const seguimientoRoutes = require("./routes/seguimientoRoutes");
+const tutoriasRoutes = require("./routes/tutoriasRoutes");
 
 // Usar rutas
 app.use("/api", registroRoutes);
@@ -30,6 +31,7 @@ app.use("/api", gestionUsuariosRoutes);
 app.use("/api", tipo_eventoRoutes);
 app.use("/api", eventosRoutes);
 app.use("/api/seguimiento", seguimientoRoutes);
+app.use("/api/tutorias", tutoriasRoutes);
 
 // Probar conexión
 app.get("/test-db", async (req, res) => {

@@ -23,10 +23,8 @@
             <a href="tutorias.html">Tutorias</a>
         </nav>
         <div class="usuario">
-             
             <span>Coordinador</span>
-
-            <img src="../images/user-icon.png" alt="usuario" class="usuario-img"  width="25" height="25">
+            <img src="../images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
         </div>
     </header>
 
@@ -47,7 +45,7 @@
             <h2>Tutorías</h2>
             <h3>Disponibilidad</h3>
 
-    <!-- CONTENEDOR DE CALENDARIO Y FORMULARIO -->
+            <!-- CONTENEDOR DE CALENDARIO Y FORMULARIO -->
             <div class="content-wrapper">
                 <!-- CALENDARIO -->
                 <div class="calendario-container">
@@ -72,30 +70,44 @@
                     </div>
                 </div>
 
-                <!-- FORMULARIO -->
+                <!-- FORMULARIO MODIFICADO -->
                 <div class="form-section">
                     <div class="form-group">
-                        <label>Fecha de tutoría</label>
-                        <div class="row">
-                            <select><option>Día</option></select>
-                            <select><option>Mes</option></select>
-                            <select><option>Año</option></select>
-                        </div>
+                        <label>Día</label>
+                        <select id="dia">
+                            <option value="">Seleccione un día</option>
+                            <option value="Lunes">Lunes</option>
+                            <option value="Martes">Martes</option>
+                            <option value="Miércoles">Miércoles</option>
+                            <option value="Jueves">Jueves</option>
+                            <option value="Viernes">Viernes</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Seleccionar Tutor</label>
-                        <select><option>Tutor</option></select>
+                        <label>Tutor</label>
+                        <select id="tutor">
+                            <option value="">Seleccione un tutor</option>
+                            <option value="Tutor 1">Tutor 1</option>
+                            <option value="Tutor 2">Tutor 2</option>
+                            <option value="Tutor 3">Tutor 3</option>
+                        </select>
                     </div>
-                    <!-- 
+
                     <div class="form-group">
-                        <label>Seleccionar hora disponible</label>
-                        <select><option>Hora</option></select>
-                    </div>
-                    -->
-                    <div class="form-group">
-                        <label>Horas Disponibles</label>
-                        <textarea placeholder="Horas para agenda"></textarea>
+                        <label>Hora</label>
+                        <select id="hora">
+                            <option value="">Seleccione una hora</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                        </select>
                     </div>
 
                     <div class="buttons">
@@ -107,8 +119,35 @@
             </div>
         </main>
     </div>
+<script>
+        const API_URL = "http://localhost:3001/api/tutorias";
 
-    <script>
+        //Cargar tutores
+        async function cargarTutores() {
+            const comboTutor = document.getElementById("tutor");
+            comboTutor.innerHTML = `<option value="">Seleccione un tutor</option>`;
+
+            try {
+                const res = await fetch(`${API_URL}/tutores`);
+                const tutores = await res.json();
+
+                tutores.forEach(t => {
+                    const option = document.createElement("option");
+                    option.value = t.id_usuario;
+                    option.textContent = t.nombre_completo;
+                    comboTutor.appendChild(option);
+                });
+
+            } catch (error) {
+                console.error("Error al cargar tutores:", error);
+            }
+        }
+
+        cargarTutores();
+
+
+
+        //Calendario
         const monthInput = document.getElementById("mes");
         const calendarBody = document.getElementById("calendar-body");
 
@@ -149,11 +188,8 @@
             generarCalendario(year, month - 1);
         });
 
-        // Inicializar calendario al cargar
         const [initYear, initMonth] = monthInput.value.split("-").map(Number);
         generarCalendario(initYear, initMonth - 1);
     </script>
-   
-
 </body>
 </html>
