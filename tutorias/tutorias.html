@@ -75,14 +75,14 @@
                 <div class="form-section">
                     <div class="form-group">
                         <label>Nombre del emprendedor</label>
-                        <select>
-                            <option>Emprendedor</option>
+                        <select id="emprendedor">
+                            <option value="">Emprendedor</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Nombre del proyecto</label>
-                        <select>
-                            <option>Proyecto</option>
+                       <select id="proyecto">
+                         <option value="">Proyecto</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -118,6 +118,8 @@
     <script>
         const monthInput = document.getElementById("mes");
         const calendarBody = document.getElementById("calendar-body");
+        const emprendedorSelect = document.getElementById("emprendedor");
+        const proyectoSelect = document.getElementById("proyecto");
 
         function generarCalendario(year, month) {
             calendarBody.innerHTML = "";
@@ -159,6 +161,51 @@
         // Inicializar calendario al cargar
         const [initYear, initMonth] = monthInput.value.split("-").map(Number);
         generarCalendario(initYear, initMonth - 1);
+
+//cargar emprendedores
+async function cargarEmprendedores() {
+    const combo = document.getElementById("emprendedor");
+    combo.innerHTML = `<option value="">Seleccione un emprendedor</option>`;
+
+    try {
+        const res = await fetch("http://localhost:3001/api/tutorias/emprendedores");
+        const data = await res.json();
+
+        data.forEach(e => {
+            const op = document.createElement("option");
+            op.value = e.id_usuario;       // id del usuario
+            op.textContent = e.nombre_completo; // nombre completo
+            combo.appendChild(op);
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+//Cargar proyectos
+emprendedorSelect.addEventListener("change", async () => {
+    const id = emprendedorSelect.value;
+    proyectoSelect.innerHTML = `<option value="">Proyecto</option>`; // limpiar
+
+    if (!id) return;
+
+    try {
+        const res = await fetch(`http://localhost:3001/api/tutorias/proyectos/${id}`);
+        const data = await res.json();
+
+        data.forEach(p => {
+            const op = document.createElement("option");
+            op.value = p.id_proyecto;
+            op.textContent = p.nombre_proyecto;
+            proyectoSelect.appendChild(op);
+        });
+    } catch (err) { console.log(err); }
+});
+
+// Llamar al cargar la página
+cargarEmprendedores();
+
+
     </script>
 </body>
 

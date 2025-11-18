@@ -131,13 +131,54 @@ const eliminarDisponibilidad = async (req, res) => {
     }
 };
 
+
+const obtenerEmprendedores = async (req, res) => {
+    try {
+        const sql = `
+            SELECT 
+                u.id_usuario,
+                CONCAT(p.nombre, ' ', p.apellido) AS nombre_completo
+            FROM usuarios u
+            JOIN persona p ON u.id_persona = p.id_persona
+            JOIN rol r ON u.id_rol = r.id_rol
+            WHERE r.nombre_rol = 'Emprendedor';
+        `;
+        const data = await query(sql);
+        res.json(data);
+    } catch (error) {
+        console.error("Error al obtener emprendedores:", error);
+        res.status(500).json({ mensaje: "Error en el servidor" });
+    }
+};
+
+// Obtener proyectos de un emprendedor
+const obtenerProyectos = async (req, res) => {
+    try {
+        const { id_emprendedor } = req.params;
+        const sql = `
+            SELECT id_proyecto, nombre_proyecto
+            FROM proyecto
+            WHERE id_usuario = ?
+        `;
+        const data = await query(sql, [id_emprendedor]);
+        res.json(data);
+    } catch (error) {
+        console.error("Error al obtener proyectos:", error);
+        res.status(500).json({ mensaje: "Error en el servidor" });
+    }
+};
+
+
+
 //Exportar todo 
 module.exports = { 
     obtenerTutores,
     obtenerDisponibilidad,
     insertarDisponibilidad,
     actualizarDisponibilidad,
-    eliminarDisponibilidad
+    eliminarDisponibilidad,
+    obtenerEmprendedores,
+    obtenerProyectos
 };
 
 
