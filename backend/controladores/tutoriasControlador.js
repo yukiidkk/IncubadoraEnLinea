@@ -305,13 +305,13 @@ const obtenerTodasTutorias = async (req, res) => {
 };
 
 /* =========================
-   OBTENER TUTORÍAS DE UN USUARIO
+   OBTENER TUTORÍAS DE UN USUARIO (Usado por Emprendedor)
 ========================= */
 const obtenerTutoriasPorUsuario = async (req, res) => {
-    try {
-        const { id_usuario } = req.params;
+        try {
+             const { id_usuario } = req.params;
 
-        if (!id_usuario) {
+         if (!id_usuario) {
             return res.status(400).json({ mensaje: "Falta el ID del usuario" });
         }
 
@@ -324,14 +324,17 @@ const obtenerTutoriasPorUsuario = async (req, res) => {
                 t.fecha,
                 t.hora,
                 CONCAT(pe.nombre, ' ', pe.apellido) AS nombre_emprendedor,
+                CONCAT(pt.nombre, ' ', pt.apellido) AS nombre_tutor, 
                 p.nombre_proyecto
             FROM tutoria t
             JOIN usuarios u ON t.id_usuario = u.id_usuario
             JOIN persona pe ON u.id_persona = pe.id_persona
+            JOIN usuarios ut ON t.id_tutor = ut.id_usuario
+            JOIN persona pt ON ut.id_persona = pt.id_persona
             JOIN proyecto p ON t.id_proyecto = p.id_proyecto
             WHERE t.id_usuario = ?
             ORDER BY t.fecha DESC, t.hora DESC;
-        `;
+            `;
 
         const data = await query(sql, [id_usuario]);
         res.json(data);
