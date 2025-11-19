@@ -12,26 +12,46 @@
     <!-- ALERTA -->
     <div id="alerta"></div>
 
-    <!-- ENCABEZADO -->
     <header class="header">
-        <div class="logo">
-            <img src="../images/logoITS.png" alt="Logo" class="logo-img">
-            <span>Instituto Tecnológico de Saltillo</span>
-        </div>
-        <nav class="nav">
-            <a href="..\inicioC.html">Inicio</a>
-            <a href="..\gestionUsuarios.html">Usuarios</a>
-            <a href="..\roles.html">Roles</a>
-            <a href="..\proyectos.html">Proyectos</a>
-            <a href="">Reportes</a>
-            <a href="#">Eventos</a>
-            <a href="tutorias.html">Tutorias</a>
-        </nav>
-        <div class="usuario">
-            <span>Coordinador</span>
-            <img src="../images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
-        </div>
-    </header>
+    <div class="logo">
+        <img src="../images/logoITS.png" alt="Logo" class="logo-img">
+        <span>Instituto Tecnológico de Saltillo</span>
+    </div>
+
+    <nav class="nav">
+        <a href="..\inicioC.html">Inicio</a>
+        <a href="..\gestionUsuarios.html">Usuarios</a>
+        <a href="..\roles.html">Roles</a>
+        <a href="..\proyectos.html">Proyectos</a>
+        <a href="">Reportes</a>
+        <a href="#">Eventos</a>
+        <a href="tutorias.html">Tutorias</a>
+    </nav>
+
+    <div class="usuario">
+    <span id="nombre-usuario">Coordinador</span>
+        <img src="../images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
+
+        <button id="btn-logout" class="logout-btn">Cerrar sesión</button>
+    </div>
+</header>
+
+<style>
+.logout-btn {
+    margin-left: 10px;
+    background-color: #c62828;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.logout-btn:hover {
+    background-color: #a31414;
+}
+</style>
+
 
     <!-- CONTENEDOR PRINCIPAL -->
     <div class="container">
@@ -41,7 +61,7 @@
             <ul>
                 <li><a href="#" class="active">Agenda</a></li>
                 <li><a href="disponibilidad.html">Disponibilidad</a></li>
-                <!--<li><a href="historial.html">Historial</a></li> -->
+                <!-- <li><a href="historial.html">Historial</a></li> -->
             </ul>
         </aside>
 
@@ -140,6 +160,16 @@
     </div>
 
     <script>
+        // Cargar nombre desde localStorage
+const nombre_usuario_logueado = localStorage.getItem("usuario");
+
+if (!nombre_usuario_logueado) {
+    alert("Error: No se encontró nombre de usuario. Inicie sesión nuevamente.");
+    window.location.href = "../login.html";
+} else {
+    document.getElementById("nombre-usuario").textContent = nombre_usuario_logueado;
+}
+
 /* ========== ALERTAS ========== */
 function mostrarAlerta(msg, tipo="ok") {
     const alerta = document.getElementById("alerta");
@@ -661,6 +691,12 @@ function mostrarAlerta(msg, tipo="ok") {
         anioSelect.value = String(y);
         actualizarDias();
     })();
+    // Botón cerrar sesión
+document.getElementById("btn-logout").addEventListener("click", () => {
+    localStorage.clear();
+    window.location.href = "../login.html";  // salir de la carpeta tutorias
+});
+
 
     </script>
 </body>
