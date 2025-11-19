@@ -36,7 +36,7 @@
             <ul>
 
                 <li><a href="tutorias_E.html" class="active">Agenda</a></li>
-                <li><a href="historial_E.html">Historial</a></li>
+                <!-- <li><a href="historial_E.html">Historial</a></li> -->
             </ul>
         </aside>
 
@@ -47,6 +47,24 @@
             
             <!-- CONTENEDOR DE CALENDARIO Y FORMULARIO -->
             <div class="content-wrapper">
+<div class="tutoria-listado">
+        <h4>Tutorías Programadas</h4>
+        <table class="tutorias-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Emprendedor</th>
+                    <th>Proyecto</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                </tr>
+            </thead>
+            <tbody id="tutorias-body">
+                </tbody>
+        </table>
+    </div>
+
+
                 <div class="calendario-container">
                     <div class="calendar">
                         <input type="month" id="mes" value="2023-01">
@@ -112,49 +130,186 @@
         </main>
     </div>
     <script>
-        const monthInput = document.getElementById("mes");
-        const calendarBody = document.getElementById("calendar-body");
 
-        function generarCalendario(year, month) {
-            calendarBody.innerHTML = "";
-            const firstDay = new Date(year, month, 1).getDay();
-            const lastDate = new Date(year, month + 1, 0).getDate();
-            let date = 1;
+        // Leer id guardado
+const id_usuario = localStorage.getItem("id_usuario");
 
-            for (let i = 0; i < 6; i++) {
-                const row = document.createElement("tr");
-                for (let j = 0; j < 7; j++) {
-                    const cell = document.createElement("td");
-                    if (i === 0 && j < firstDay) {
-                        cell.classList.add("empty");
-                        row.appendChild(cell);
-                    } else if (date > lastDate) {
-                        cell.classList.add("empty");
-                        row.appendChild(cell);
-                    } else {
-                        cell.textContent = date;
-                        cell.addEventListener("click", () => seleccionarFecha(cell));
-                        row.appendChild(cell);
-                        date++;
-                    }
+// debug rápido: mostrar en consola
+console.log("DEBUG: id_usuario desde storage =", id_usuario);
+
+if (!id_usuario) {
+    // No hay id -> no logeado o no se guardó
+    alert("No se detectó sesión activa. Por favor inicia sesión.");
+    // opcional: redirigir a login
+    // window.location.href = "/login.html";
+}
+
+        
+    const idUsuarioLogeado = localStorage.getItem("id_usuario"); // <---- IMPORTANTE
+
+    const emprendedorSelect = document.getElementById("emprendedorSelect");
+    const proyectoSelect = document.getElementById("proyectoSelect");
+    const diaSelect = document.getElementById("diaSelect");
+    const mesSelect = document.getElementById("mesSelect");
+    const anioSelect = document.getElementById("anioSelect");
+    const horaSelect = document.getElementById("horaSelect");
+    const tablaBody = document.getElementById("tabla-tutorias");
+
+    const monthInput = document.getElementById("mes");
+    const calendarBody = document.getElementById("calendar-body");
+
+    /* ===============================
+       1. GENERAR CALENDARIO
+    =============================== */
+    function generarCalendario(year, month) {
+        calendarBody.innerHTML = "";
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+        let date = 1;
+
+        for (let i = 0; i < 6; i++) {
+            const row = document.createElement("tr");
+            for (let j = 0; j < 7; j++) {
+                const cell = document.createElement("td");
+                if (i === 0 && j < firstDay) {
+                    cell.classList.add("empty");
+                } else if (date > lastDate) {
+                    cell.classList.add("empty");
+                } else {
+                    cell.textContent = date;
+                    cell.addEventListener("click", () => seleccionarFecha(cell));
+                    date++;
                 }
-                calendarBody.appendChild(row);
+                row.appendChild(cell);
             }
+            calendarBody.appendChild(row);
         }
+    }
 
-        function seleccionarFecha(cell) {
-            document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
-            cell.classList.add("selected");
-        }
+    function seleccionarFecha(cell) {
+        document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
+        cell.classList.add("selected");
+    }
 
-        monthInput.addEventListener("change", () => {
-            const [year, month] = monthInput.value.split("-").map(Number);
-            generarCalendario(year, month - 1);
+    const [initYear, initMonth] = monthInput.value.split("-").map(Number);
+    generarCalendario(initYear, initMonth - 1);
+
+    monthInput.addEventListener("change", () => {
+        const [year, month] = monthInput.value.split("-").map(Number);
+        generarCalendario(year, month - 1);
+    });
+
+    /* ===================================
+       2. CARGAR PROYECTOS DEL EMPRENDEDOR
+    =================================== */
+    async function cargarProyectos() {
+        const res = await fetch(`http://localhost:3001/tutorias/proyectos/${idUsuarioLogeado}`);
+        const data = await res.json();
+
+        proyectoSelect.innerHTML = `<option value="">Selecciona proyecto</option>`;
+
+        data.forEach(proyecto => {
+            proyectoSelect.innerHTML += `
+                <option value="${proyecto.id_proyecto}">
+                    ${proyecto.nombre_proyecto}
+                </option>`;
+        });
+    }
+
+    /* ===================================
+       3. CARGAR HORAS DISPONIBLES DEL TUTOR
+    =================================== */
+    async function cargarDisponibilidad() {
+        const res = await fetch("http://localhost:3001/tutorias/disponibilidad");
+        const data = await res.json();
+
+        horaSelect.innerHTML = `<option value="">Selecciona hora</option>`;
+
+        data.forEach(item => {
+            horaSelect.innerHTML += `<option value="${item.hora}">${item.hora}</option>`;
+        });
+    }
+
+    /* ===================================
+       4. LLENAR SELECTS DE FECHA
+    =================================== */
+    function llenarFechas() {
+        // Días 1–31
+        diaSelect.innerHTML = `<option value="">Día</option>`;
+        for (let i = 1; i <= 31; i++) diaSelect.innerHTML += `<option>${i}</option>`;
+
+        // Meses 1–12
+        mesSelect.innerHTML = `<option value="">Mes</option>`;
+        for (let i = 1; i <= 12; i++) mesSelect.innerHTML += `<option>${i}</option>`;
+
+        // Años (2024–2030)
+        anioSelect.innerHTML = `<option value="">Año</option>`;
+        for (let i = 2024; i <= 2030; i++) anioSelect.innerHTML += `<option>${i}</option>`;
+    }
+
+    /* ===================================
+       5. REGISTRAR TUTORÍA
+    =================================== */
+    document.querySelector(".registrar").addEventListener("click", async () => {
+        const id_usuario = idUsuarioLogeado; // El emprendedor logeado
+        const id_tutor = 1; // TEMPORAL — luego aquí pones el select de tutor
+        const id_proyecto = proyectoSelect.value;
+        const dia = diaSelect.value;
+        const mes = mesSelect.value.padStart(2, "0");
+        const anio = anioSelect.value;
+        const hora = horaSelect.value;
+
+        const fecha = `${anio}-${mes}-${dia.padStart(2, "0")}`;
+
+        const body = {
+            id_usuario,
+            id_tutor,
+            id_proyecto,
+            fecha,
+            hora
+        };
+
+        const res = await fetch("http://localhost:3001/tutorias/registrar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
         });
 
-        // Inicializar calendario al cargar
-        const [initYear, initMonth] = monthInput.value.split("-").map(Number);
-        generarCalendario(initYear, initMonth - 1);
+        const data = await res.json();
+
+        alert(data.mensaje);
+        cargarTutoriasUsuario();
+    });
+
+    /* ===================================
+       6. TRAER TUTORÍAS DEL USUARIO LOGEADO
+    =================================== */
+    async function cargarTutoriasUsuario() {
+        const res = await fetch(`http://localhost:3001/tutorias/usuario/${idUsuarioLogeado}`);
+        const data = await res.json();
+
+        tablaBody.innerHTML = "";
+
+        data.forEach(t => {
+            tablaBody.innerHTML += `
+                <tr>
+                    <td>${t.id_tutoria}</td>
+                    <td>${t.nombre_proyecto}</td>
+                    <td>${t.fecha}</td>
+                    <td>${t.hora}</td>
+                </tr>
+            `;
+        });
+    }
+
+    /* ===================================
+       7. INICIALIZACIONES
+    =================================== */
+    llenarFechas();
+    cargarProyectos();
+    cargarDisponibilidad();
+    cargarTutoriasUsuario();
+
     </script>
     </div>
 

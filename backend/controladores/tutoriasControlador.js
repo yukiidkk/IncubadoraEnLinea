@@ -304,6 +304,45 @@ const obtenerTodasTutorias = async (req, res) => {
     }
 };
 
+/* =========================
+   OBTENER TUTORÍAS DE UN USUARIO
+========================= */
+const obtenerTutoriasPorUsuario = async (req, res) => {
+    try {
+        const { id_usuario } = req.params;
+
+        if (!id_usuario) {
+            return res.status(400).json({ mensaje: "Falta el ID del usuario" });
+        }
+
+        const sql = `
+            SELECT 
+                t.id_tutoria,
+                t.id_usuario,
+                t.id_tutor,
+                t.id_proyecto,
+                t.fecha,
+                t.hora,
+                CONCAT(pe.nombre, ' ', pe.apellido) AS nombre_emprendedor,
+                p.nombre_proyecto
+            FROM tutoria t
+            JOIN usuarios u ON t.id_usuario = u.id_usuario
+            JOIN persona pe ON u.id_persona = pe.id_persona
+            JOIN proyecto p ON t.id_proyecto = p.id_proyecto
+            WHERE t.id_usuario = ?
+            ORDER BY t.fecha DESC, t.hora DESC;
+        `;
+
+        const data = await query(sql, [id_usuario]);
+        res.json(data);
+
+    } catch (error) {
+        console.error("Error al obtener tutorías del usuario:", error);
+        res.status(500).json({ mensaje: "Error en el servidor" });
+    }
+};
+
+
 //Exportar todo 
 module.exports = { 
     obtenerTutores,
@@ -316,7 +355,8 @@ module.exports = {
     registrarTutoria,
     actualizarTutoria,
     eliminarTutoria,
-    obtenerTodasTutorias
+    obtenerTodasTutorias,
+    obtenerTutoriasPorUsuario
 };
 
 

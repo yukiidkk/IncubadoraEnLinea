@@ -12,7 +12,8 @@ const {
     registrarTutoria,
     actualizarTutoria,
     eliminarTutoria,
-    obtenerTodasTutorias
+    obtenerTodasTutorias,
+    obtenerTutoriasPorUsuario
 } = require("../controladores/tutoriasControlador");
 
 Router.get("/tutores", obtenerTutores);
@@ -26,6 +27,6 @@ Router.post("/registrar", registrarTutoria);
 Router.put("/registrar", actualizarTutoria);     
 Router.delete("/registrar", eliminarTutoria);   
 Router.get("/tutorias-listado", obtenerTodasTutorias);
-
+Router.get("/tutorias/usuario/:id_usuario", obtenerTutoriasPorUsuario);
 
 module.exports = Router;
