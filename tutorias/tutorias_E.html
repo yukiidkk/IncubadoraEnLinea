@@ -47,10 +47,11 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Tutor</th> <th>Proyecto</th>
+                                <th>Tutor</th>
+                                <th>Proyecto</th>
                                 <th>Fecha</th>
                                 <th>Hora</th>
-                                <th>Acción</th> </tr>
+                                </tr>
                         </thead>
                         <tbody id="tutorias-body">
                         </tbody>
@@ -157,17 +158,16 @@ const btnRegistrar = document.querySelector(".registrar");
 let disponibilidades = []; // Tutorías disponibles por día/hora de los tutores.
 
 /* ========================================================= */
-/* ========== 2. FUNCIONES DE CARGA Y LISTADO DE MIS TUTORÍAS ========== */
+/* ========== 2. FUNCIONES DE CARGA Y LISTADO DE MIS TUTORÍAS (MODIFICADO) ========== */
 /* ========================================================= */
 
 async function cargarMisTutorias() {
     try {
-        // Enviar el ID del usuario logueado al backend
-        const res = await fetch(`${API_URL}/tutorias-emprendedor/${id_usuario_logueado}`); 
+        const res = await fetch(`${API_URL}/tutorias/usuario/${id_usuario_logueado}`);
         
         if (!res.ok) {
             console.error("Error al obtener mis tutorías. Status:", res.status);
-            tutoriasBody.innerHTML = `<tr><td colspan='6'>Error al cargar las tutorías.</td></tr>`;
+            tutoriasBody.innerHTML = `<tr><td colspan='5'>Error al cargar las tutorías.</td></tr>`; // Colspan ahora es 5
             return; 
         }
 
@@ -176,7 +176,7 @@ async function cargarMisTutorias() {
         tutoriasBody.innerHTML = ''; // Limpiar tabla
         
         if (misTutorias.length === 0) {
-            tutoriasBody.innerHTML = `<tr><td colspan='6'>Aún no tienes tutorías programadas.</td></tr>`;
+            tutoriasBody.innerHTML = `<tr><td colspan='5'>Aún no tienes tutorías programadas.</td></tr>`; // Colspan ahora es 5
             return;
         }
 
@@ -194,22 +194,17 @@ async function cargarMisTutorias() {
                 <td>${t.nombre_tutor}</td> <td>${t.nombre_proyecto}</td>
                 <td>${fechaFormato}</td>
                 <td>${horaFormato}</td>
-                <td><button class="btn btn-cancelar" data-id="${t.id_tutoria}">Cancelar</button></td>
-            `;
+            `; // ¡Eliminamos la columna del botón de Cancelar!
 
-            // Añadir evento click para seleccionar y cancelar
+            // Añadir evento click para seleccionar la tutoría
             tr.addEventListener("click", () => seleccionarTutoria(t));
-            tr.querySelector(".btn-cancelar").addEventListener("click", (e) => {
-                e.stopPropagation(); // Evitar que el click propague a la fila
-                confirmarYCancelarTutoria(t.id_tutoria);
-            });
             
             tutoriasBody.appendChild(tr);
         });
 
     } catch (err) {
         console.error("Error al cargar mis tutorías:", err);
-        tutoriasBody.innerHTML = `<tr><td colspan='6'>Error de conexión.</td></tr>`;
+        tutoriasBody.innerHTML = `<tr><td colspan='5'>Error de conexión.</td></tr>`; // Colspan ahora es 5
     }
 }
 
@@ -226,19 +221,46 @@ function seleccionarTutoria(tutoria) {
     btnEliminar.disabled = false;
     btnEliminar.textContent = `Cancelar Tutoría #${tutoria.id_tutoria}`;
     
-    // 4. Limpiar formulario de Registro
-    limpiarFormularioRegistro();
+    // 4. Deshabilitar los inputs del formulario de REGISTRO si hay una tutoría seleccionada
+    proyectoSelect.disabled = true;
+    horaSelect.disabled = true;
+
+    // 5. Opcional: Deseleccionar cualquier día en el calendario para evitar confusión
+    document.querySelectorAll("td").forEach(td => td.classList.remove("selected")); 
+    
+    // 6. Opcional: Llenar los campos de fecha en el formulario para mostrar la tutoría seleccionada (aunque están deshabilitados)
+    const fechaObj = new Date(tutoria.fecha);
+    const day = fechaObj.getDate();
+    const month = fechaObj.getMonth() + 1; // getMonth es 0-index
+    const year = fechaObj.getFullYear();
+    
+    // Usamos la función de autocompletar para llenar los selects y la hora
+    autocompletarFecha(year, month, day); 
+    horaSelect.value = tutoria.hora.substring(0,5); // Seleccionar la hora de la tutoría
+
+    // Asegurarse de que el botón de registro esté deshabilitado si se seleccionó una tutoría
+    btnRegistrar.disabled = true;
 }
 
 function limpiarFormularioRegistro() {
+    // Limpiar campos de fecha/hora/proyecto
     proyectoSelect.value = "";
     diaSelect.value = "";
     mesSelect.value = "";
     anioSelect.value = "";
     horaSelect.innerHTML = "<option>Hora</option>";
+    
+    // Habilitar campos de registro
+    proyectoSelect.disabled = false;
+    horaSelect.disabled = false;
+    btnRegistrar.disabled = false; // Habilitar registro
+    
+    // Deshabilitar botón de Cancelar y limpiar ID
     btnEliminar.disabled = true;
     btnEliminar.textContent = "Cancelar Tutoría Seleccionada";
     idTutoriaInput.value = "";
+    
+    // Limpiar estilos
     document.querySelectorAll(".tutorias-table tr").forEach(row => row.classList.remove("selected"));
     document.querySelectorAll("td").forEach(td => td.classList.remove("selected")); // Deseleccionar calendario
 }
@@ -247,15 +269,6 @@ function limpiarFormularioRegistro() {
 /* ========== 3. INICIALIZACIÓN, FECHAS y CALENDARIO ========== */
 /* ========================================================= */
 
-// ... (Las funciones initFechaSelects, actualizarDias, generarCalendario, 
-// seleccionarFecha, autocompletarFecha, y obtenerNombreDiaNormalizado se mantienen 
-// IGUALES a las del coordinador, ya que la lógica del calendario es la misma:
-// mostrar días disponibles (🟢) y llenar selects de fecha/hora.)
-
-// <INSERTA LAS FUNCIONES: initFechaSelects, actualizarDias, generarCalendario, seleccionarFecha, autocompletarFecha, obtenerNombreDiaNormalizado AQUÍ>
-// NOTA: Para no repetir código, estas funciones se copian sin cambios desde el script del coordinador
-// (se omiten aquí para ahorrar espacio, pero se deben incluir en el archivo real: tutoriasE.js)
-// ...
 
 /* ========== INICIALIZACIÓN: meses/años/día por defecto (COPIADO) ========== */
 (function initFechaSelects() {
@@ -344,7 +357,7 @@ function seleccionarFecha(cell) {
     // estilo seleccionado
     document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
     cell.classList.add("selected");
-
+    
     // Limpiar selección de tutoría para pasar a registro
     limpiarFormularioRegistro();
     btnEliminar.disabled = true;

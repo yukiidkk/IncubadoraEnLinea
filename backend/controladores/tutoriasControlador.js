@@ -317,23 +317,24 @@ const obtenerTutoriasPorUsuario = async (req, res) => {
 
         const sql = `
             SELECT 
-                t.id_tutoria,
-                t.id_usuario,
-                t.id_tutor,
-                t.id_proyecto,
-                t.fecha,
-                t.hora,
-                CONCAT(pe.nombre, ' ', pe.apellido) AS nombre_emprendedor,
-                CONCAT(pt.nombre, ' ', pt.apellido) AS nombre_tutor, 
-                p.nombre_proyecto
-            FROM tutoria t
-            JOIN usuarios u ON t.id_usuario = u.id_usuario
-            JOIN persona pe ON u.id_persona = pe.id_persona
-            JOIN usuarios ut ON t.id_tutor = ut.id_usuario
-            JOIN persona pt ON ut.id_persona = pt.id_persona
-            JOIN proyecto p ON t.id_proyecto = p.id_proyecto
-            WHERE t.id_usuario = ?
-            ORDER BY t.fecha DESC, t.hora DESC;
+    t.id_tutoria,
+    t.id_usuario,
+    t.id_tutor,
+    t.id_proyecto,
+    t.fecha,
+    t.hora,
+    CONCAT(pe.nombre, ' ', pe.apellido) AS nombre_emprendedor,
+    CONCAT(pt.nombre, ' ', pt.apellido) AS nombre_tutor,
+    p.nombre_proyecto
+FROM tutoria t
+JOIN usuarios u ON t.id_usuario = u.id_usuario
+JOIN persona pe ON u.id_persona = pe.id_persona
+JOIN usuarios tu ON t.id_tutor = tu.id_usuario
+JOIN persona pt ON tu.id_persona = pt.id_persona
+JOIN proyecto p ON t.id_proyecto = p.id_proyecto
+WHERE t.id_usuario = ?
+ORDER BY t.fecha DESC, t.hora DESC;
+
             `;
 
         const data = await query(sql, [id_usuario]);
