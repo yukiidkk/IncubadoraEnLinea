@@ -312,3 +312,16 @@ textarea {
     width: 60px;
 }
 
+/* ALERTAS INTERNAS */
+        #alerta {
+            width: 100%;
+            padding: 12px;
+            display: none;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .alerta-ok { background: #c8f7c5; border: 1px solid #27ae60; color:#27ae60; }
+        .alerta-error { background: #f7c5c5; border: 1px solid #e74c3c; color:#e74c3c; }
+

@@ -9,6 +9,9 @@
 </head>
 
 <body>
+    <!-- ALERTA -->
+    <div id="alerta"></div>
+
     <!-- ENCABEZADO -->
     <header class="header">
         <div class="logo">
@@ -137,6 +140,16 @@
     </div>
 
     <script>
+/* ========== ALERTAS ========== */
+function mostrarAlerta(msg, tipo="ok") {
+    const alerta = document.getElementById("alerta");
+    alerta.innerText = msg;
+    alerta.className = tipo === "ok" ? "alerta-ok" : "alerta-error";
+    alerta.style.display = "block";
+
+    setTimeout(() => alerta.style.display = "none", 2500);
+}
+
     /* ========================================================= */
     /* ========== 1. CONFIGURACIÓN Y DECLARACIÓN DE ELEMENTOS ========== */
     /* ========================================================= */
@@ -492,14 +505,14 @@
         const hora = document.getElementById("hora").value; 
 
         if (!id_usuario || !id_proyecto || !dia || !mes || !anio || !hora) {
-            return alert("Faltan datos: completa emprendedor, proyecto, fecha y hora.");
+            return mostrarAlerta("Faltan datos: completa emprendedor, proyecto, fecha y hora.", "error");
         }
 
         const fecha = `${anio}-${mes}-${dia}`;
         const id_tutor = await obtenerTutorSegunHorario(fecha, hora);
         
         if (!id_tutor) {
-            return alert("No hay tutor disponible en ese horario (verifica disponibilidad).");
+            return mostrarAlerta("No hay tutor disponible en ese horario (verifica disponibilidad).", "error");
         }
 
         const horaEnviar = `${hora}:00`;
@@ -520,15 +533,15 @@
             const data = await res.json();
 
             if (res.ok) {
-                alert("Tutoría registrada con éxito.");
+                mostrarAlerta("Tutoría registrada con éxito.");
                 await cargarTutoriasListado(); // Recargar la tabla
             } else {
-                alert(data.mensaje || "Error al registrar tutoría");
+                mostrarAlerta(data.mensaje || "Error al registrar tutoría", "error");
             }
 
         } catch (err) {
-            console.error("Error registrar tutoría:", err);
-            alert("Error al conectar con el servidor.");
+            console.error("Error registrar tutoría:", "error", err);
+            mostrarAlerta("Error al conectar con el servidor.", "error");
         }
     });
 
@@ -538,7 +551,7 @@
         const id_tutoria_seleccionada = idTutoriaInput.value; 
 
         if (!id_tutoria_seleccionada) {
-            return alert("Primero debe seleccionar una tutoría para actualizar.");
+            return mostrarAlerta("Primero debe seleccionar una tutoría para actualizar.", "error");
         }
 
         const id_usuario = emprendedorSelect.value;
@@ -549,7 +562,7 @@
         const hora = horaSelect.value; 
 
         if (!id_usuario || !id_proyecto || !dia || !mes || !anio || !hora) {
-            return alert("Faltan datos: completa emprendedor, proyecto, fecha y hora para la actualización.");
+            return mostrarAlerta("Faltan datos: completa emprendedor, proyecto, fecha y hora para la actualización.", "error");
         }
         
         // Obtener tutor disponible para el nuevo horario
@@ -557,7 +570,7 @@
         const id_tutor = await obtenerTutorSegunHorario(fecha, hora);
 
         if (!id_tutor) {
-            return alert("No hay tutor disponible en el nuevo horario seleccionado (verifica disponibilidad).");
+            return mostrarAlerta("No hay tutor disponible en el nuevo horario seleccionado (verifica disponibilidad).", "error");
         }
 
         const horaEnviar = `${hora}:00`;
@@ -579,15 +592,15 @@
             const data = await res.json();
 
             if (res.ok) {
-                alert("Tutoría actualizada con éxito.");
+                mostrarAlerta("Tutoría actualizada con éxito.");
                 await cargarTutoriasListado(); // Recargar la tabla
             } else {
-                alert(data.mensaje || "Error al actualizar tutoría");
+                mostrarAlerta(data.mensaje || "Error al actualizar tutoría");
             }
 
         } catch (err) {
-            console.error("Error actualizar tutoría:", err);
-            alert("Error al conectar con el servidor.");
+            console.error("Error actualizar tutoría:", "error", err);
+            mostrarAlerta("Error al conectar con el servidor.", "error");
         }
     });
 
@@ -596,7 +609,7 @@
         const id_tutoria_seleccionada = idTutoriaInput.value; 
 
         if (!id_tutoria_seleccionada) {
-            return alert("Primero debe seleccionar una tutoría para eliminar.");
+            return mostrarAlerta("Primero debe seleccionar una tutoría para eliminar.", "error");
         }
 
         if (!confirm(`¿Estás seguro de que quieres eliminar la tutoría seleccionada (ID: ${id_tutoria_seleccionada})?`)) {
@@ -615,15 +628,15 @@
             const data = await res.json();
 
             if (res.ok) {
-                alert(data.mensaje || "Tutoría eliminada con éxito.");
+                mostrarAlerta(data.mensaje || "Tutoría eliminada con éxito.");
                 await cargarTutoriasListado(); // Recargar la tabla
             } else {
-                alert(data.mensaje || "Error al eliminar tutoría");
+                mostrarAlerta(data.mensaje || "Error al eliminar tutoría", "error");
             }
 
         } catch (err) {
-            console.error("Error eliminar tutoría:", err);
-            alert("Error al conectar con el servidor.");
+            console.error("Error eliminar tutoría:", "error", err);
+            mostrarAlerta("Error al conectar con el servidor.", "error");
         }
     });
 
