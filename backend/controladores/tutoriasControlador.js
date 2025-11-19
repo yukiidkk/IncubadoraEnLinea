@@ -168,7 +168,141 @@ const obtenerProyectos = async (req, res) => {
     }
 };
 
+/* =========================
+   REGISTRAR TUTORÍA
+========================= */
+const registrarTutoria = async (req, res) => {
+    try {
+        const { id_usuario, id_tutor, id_proyecto, fecha, hora } = req.body;
 
+        if (!id_usuario || !id_tutor || !id_proyecto || !fecha || !hora) {
+            return res.status(400).json({ mensaje: "Faltan datos" });
+        }
+
+        // Validar choque de horario
+        const existe = await query(
+            `SELECT * FROM tutoria WHERE id_tutor = ? AND fecha = ? AND hora = ?`,
+            [id_tutor, fecha, hora]
+        );
+
+        if (existe.length > 0) {
+            return res.status(400).json({ mensaje: "El tutor ya tiene una tutoría en ese horario" });
+        }
+
+        // Insertar
+        const sql = `
+            INSERT INTO tutoria (id_usuario, id_tutor, id_proyecto, fecha, hora)
+            VALUES (?, ?, ?, ?, ?)
+        `;
+
+        await query(sql, [id_usuario, id_tutor, id_proyecto, fecha, hora]);
+
+        res.json({ mensaje: "Tutoría registrada correctamente" });
+
+    } catch (error) {
+        console.error("Error al registrar tutoría:", error);
+        res.status(500).json({ mensaje: "Error en el servidor" });
+    }
+};
+
+
+/* =========================
+    ACTUALIZAR TUTORÍA
+========================= */
+const actualizarTutoria = async (req, res) => {
+    try {
+        // Asumo que el id_tutoria será enviado para saber qué registro modificar
+        const { id_tutoria, id_usuario, id_tutor, id_proyecto, fecha, hora } = req.body;
+
+        if (!id_tutoria || !id_usuario || !id_tutor || !id_proyecto || !fecha || !hora) {
+            return res.status(400).json({ mensaje: "Faltan datos requeridos para la actualización" });
+        }
+        
+        // Opcional: Validar que el nuevo horario no choque con otra tutoría del mismo tutor (excluyendo la tutoría actual)
+        const choque = await query(
+            `SELECT * FROM tutoria WHERE id_tutor = ? AND fecha = ? AND hora = ? AND id_tutoria != ?`,
+            [id_tutor, fecha, hora, id_tutoria]
+        );
+        
+        if (choque.length > 0) {
+            return res.status(400).json({ mensaje: "El tutor ya tiene otra tutoría programada en ese nuevo horario" });
+        }
+
+
+        const sql = `
+            UPDATE tutoria
+            SET id_usuario = ?, id_tutor = ?, id_proyecto = ?, fecha = ?, hora = ?
+            WHERE id_tutoria = ?
+        `;
+
+        const result = await query(sql, [id_usuario, id_tutor, id_proyecto, fecha, hora, id_tutoria]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ mensaje: "No se encontró la tutoría para actualizar" });
+        }
+
+        res.json({ mensaje: "Tutoría actualizada correctamente" });
+
+    } catch (error) {
+        console.error("Error al actualizar tutoría:", error);
+        res.status(500).json({ mensaje: "Error en el servidor al actualizar" });
+    }
+};
+
+/* =========================
+    ELIMINAR TUTORÍA
+========================= */
+const eliminarTutoria = async (req, res) => {
+    try {
+        const { id_tutoria } = req.body;
+
+        if (!id_tutoria) {
+            // Se puede eliminar por params si es DELETE, pero usamos body para consistencia con tu código
+            return res.status(400).json({ mensaje: "Falta el ID de la tutoría a eliminar" });
+        }
+
+        const sql = `DELETE FROM tutoria WHERE id_tutoria = ?`;
+        const result = await query(sql, [id_tutoria]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ mensaje: "No se encontró la tutoría para eliminar" });
+        }
+
+        res.json({ mensaje: "Tutoría eliminada correctamente" });
+    } catch (error) {
+        console.error("Error al eliminar tutoría:", error);
+        res.status(500).json({ mensaje: "Error en el servidor al eliminar" });
+    }
+};
+
+/* =========================
+    OBTENER TODAS LAS TUTORÍAS
+========================= */
+const obtenerTodasTutorias = async (req, res) => {
+    try {
+        const sql = `
+            SELECT 
+                t.id_tutoria,
+                t.id_usuario,
+                t.id_tutor,
+                t.id_proyecto,
+                t.fecha,
+                t.hora,
+                CONCAT(pe.nombre, ' ', pe.apellido) AS nombre_emprendedor,
+                p.nombre_proyecto
+            FROM tutoria t
+            JOIN usuarios u ON t.id_usuario = u.id_usuario
+            JOIN persona pe ON u.id_persona = pe.id_persona
+            JOIN proyecto p ON t.id_proyecto = p.id_proyecto
+            ORDER BY t.fecha DESC, t.hora DESC;
+        `;
+        const data = await query(sql);
+        res.json(data);
+    } catch (error) {
+        console.error("Error al obtener tutorías:", error);
+        res.status(500).json({ mensaje: "Error en el servidor" });
+    }
+};
 
 //Exportar todo 
 module.exports = { 
@@ -178,7 +312,11 @@ module.exports = {
     actualizarDisponibilidad,
     eliminarDisponibilidad,
     obtenerEmprendedores,
-    obtenerProyectos
+    obtenerProyectos,
+    registrarTutoria,
+    actualizarTutoria,
+    eliminarTutoria,
+    obtenerTodasTutorias
 };
 
 

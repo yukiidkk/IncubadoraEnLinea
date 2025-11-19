@@ -196,3 +196,119 @@ textarea {
     opacity: 0.85;
 }
 
+/* ===== MARCAR DISPONIBILIDAD ===== */
+.con-disponibilidad {
+    background-color: #c8ffd4 !important;
+    border: 2px solid #00b46b;
+    border-radius: 6px;
+}
+
+.calendar-box td.selected {
+    background-color: #ffd4a3 !important;
+    border: 2px solid #ff8800;
+    border-radius: 50%;
+}
+.calendar {
+    background-color: #4e4e4e;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+
+/* ======================================================== */
+/* ===== ESTILOS PARA LISTADO DE TUTORÍAS Y LAYOUT DE 3 COLUMNAS ===== */
+/* ======================================================== */
+
+/* 1. Ajustar el contenedor principal para 3 columnas (Tabla + Calendario + Formulario) */
+.content-wrapper {
+    display: flex;
+    gap: 20px; /* Reducir un poco el gap para que quepan 3 elementos */
+    align-items: flex-start;
+    flex-wrap: wrap; /* Permite que los elementos bajen en pantallas pequeñas */
+}
+
+/* 2. Definir anchos para que los 3 elementos quepan */
+
+/* Tabla de Tutorías */
+.tutoria-listado {
+    /* Permitir que tome espacio y definir un ancho máximo */
+    flex: 1; 
+    min-width: 300px; /* Ancho mínimo para que la tabla sea legible */
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    height: fit-content; /* Se ajusta al contenido */
+}
+
+/* Calendario */
+.calendario-container {
+    flex: 0 0 300px; /* Ancho fijo para que no se estire */
+    max-width: 300px;
+    padding: 20px;
+}
+
+/* Formulario */
+.form-section {
+    flex: 1; /* Permite que el formulario crezca si hay espacio */
+    min-width: 250px; /* Ancho mínimo */
+    max-width: 350px;
+    padding: 20px;
+}
+
+.tutoria-listado h4 {
+    color: #004aad;
+    margin-top: 0;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Estilos de la tabla */
+.tutorias-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tutorias-table th, 
+.tutorias-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.tutorias-table th {
+    background-color: #f2f2f2;
+    color: #002b5c;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+/* Estilo para las filas de la tabla */
+.tutorias-table tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tutorias-table tbody tr:hover {
+    background-color: #e0f0ff; /* Resaltar al pasar el ratón */
+}
+
+/* Estilo para la fila seleccionada (autocompletado) */
+.tutorias-table tbody tr.selected {
+    background-color: #0073e6;
+    color: white;
+    font-weight: 600;
+}
+
+/* Asegurar que el ID y la hora sean más compactos */
+.tutorias-table td:nth-child(1) { /* ID */
+    width: 30px;
+    text-align: center;
+}
+.tutorias-table td:nth-child(5) { /* Hora */
+    width: 60px;
+}
+

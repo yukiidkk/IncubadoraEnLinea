@@ -8,7 +8,11 @@ const {
     actualizarDisponibilidad,
     eliminarDisponibilidad,
     obtenerEmprendedores,
-    obtenerProyectos
+    obtenerProyectos,
+    registrarTutoria,
+    actualizarTutoria,
+    eliminarTutoria,
+    obtenerTodasTutorias
 } = require("../controladores/tutoriasControlador");
 
 Router.get("/tutores", obtenerTutores);
@@ -18,6 +22,10 @@ Router.put("/disponibilidad", actualizarDisponibilidad);
 Router.delete("/disponibilidad", eliminarDisponibilidad);
 Router.get("/emprendedores", obtenerEmprendedores);
 Router.get("/proyectos/:id_emprendedor", obtenerProyectos);
+Router.post("/registrar", registrarTutoria);
+Router.put("/registrar", actualizarTutoria);     
+Router.delete("/registrar", eliminarTutoria);   
+Router.get("/tutorias-listado", obtenerTodasTutorias);
 
 
 module.exports = Router;
