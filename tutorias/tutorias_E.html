@@ -11,21 +11,42 @@
 <body>
     <div id="alerta"></div>
 
-    <header class="header">
-        <div class="logo">
-            <img src="../images/logoITS.png" alt="Logo" class="logo-img">
-            <span>Instituto Tecnológico de Saltillo</span>
-        </div>
-        <nav class="nav">
-            <a href="..\inicioE.html">Inicio</a>
-            <a href="..\proyectosE.html">Mi Proyecto</a>
-            <a href="tutoriasE.html">Tutorias</a>
-        </nav>
-        <div class="usuario">
-            <span id="nombre-usuario">Emprendedor</span> 
-            <img src="../images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
-        </div>
-    </header>
+   <header class="header">
+    <div class="logo">
+        <img src="../images/logoITS.png" alt="Logo" class="logo-img">
+        <span>Instituto Tecnológico de Saltillo</span>
+    </div>
+
+    <nav class="nav">
+        <a href="..\inicioE.html">Inicio</a>
+        <a href="..\proyectos.html">Mi Proyecto</a>
+        <a href="tutorias_E.html">Tutorias</a>
+    </nav>
+
+    <div class="usuario">
+        <span id="nombre-usuario">Emprendedor</span>
+        <img src="../images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
+
+        <button id="btn-logout" class="logout-btn">Cerrar sesión</button>
+    </div>
+</header>
+
+<style>
+.logout-btn {
+    margin-left: 10px;
+    background-color: #c62828;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.logout-btn:hover {
+    background-color: #a31414;
+}
+</style>
+
 
     <div class="container">
         <aside class="sidebar">
@@ -591,6 +612,13 @@ monthInput.addEventListener("change", () => {
     anioSelect.value = String(y);
     actualizarDias();
 })();
+// Botón cerrar sesión
+document.getElementById("btn-logout").addEventListener("click", () => {
+    localStorage.clear();
+    window.location.href = "../login.html";  
+});
+
+
     </script>
     </div>
 
