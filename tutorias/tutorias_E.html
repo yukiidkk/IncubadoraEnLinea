@@ -103,7 +103,7 @@
 
                     <div class="buttons">
                         <button class="btn registrar">Solicitar Tutoría</button>
-                        <button class="btn eliminar" disabled>Cancelar Tutoría Seleccionada</button> 
+                        <button class="btn eliminar" disabled>Cancelar Tutoría </button> 
                     </div>
                 </div>
             </div>
@@ -539,9 +539,9 @@ async function confirmarYCancelarTutoria(id_tutoria) {
         return mostrarAlerta("Debe seleccionar una tutoría de su lista para cancelar.", "error");
     }
 
-    if (!confirm(`¿Estás seguro de que quieres CANCELAR la tutoría seleccionada (ID: ${id_tutoria})?`)) {
-        return;
-    }
+    //if (!confirm(`¿Estás seguro de que quieres CANCELAR la tutoría seleccionada (ID: ${id_tutoria})?`)) {
+       // return;
+    //}
     
     try {
         // Usar la misma ruta DELETE que el coordinador
