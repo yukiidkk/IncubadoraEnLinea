@@ -15,4 +15,5 @@ router.get("/proyectos/:id_usuario", proyectoController.obtenerProyectosPorUsuar
 router.put("/proyectos/estatus", proyectoController.actualizarEstatusProyecto);
 
 
+
 module.exports = router;

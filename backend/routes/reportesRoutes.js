@@ -10,5 +10,5 @@ router.get('/reportes/proyectos-coordinador', reportesController.getProyectosCoo
 router.post('/reportes/comentario', reportesController.agregarComentarioAvance);
 router.put('/reportes/actualizar-progreso', reportesController.actualizarProgresoProyecto);
 router.get('/reportes/exportar-excel/:id_proyecto', reportesController.generarReporteExcel);
-
+router.get('/reportes/emprendedores', reportesController.getReporteEmprendedores);
 module.exports = router;

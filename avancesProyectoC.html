@@ -10,85 +10,189 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    body {
-      background-color: #f8fafc;
-      color: #2d3748;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     :root {
+      --primary: #002f6c;
+      --primary-light: #4a82e2;
+      --secondary: #f8fafc;
+      --accent: #48bb78;
+      --text: #2d3748;
+      --text-light: #718096;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    .main-container {
-      display: flex;
-      min-height: calc(100vh - 70px);
+    body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
     }
 
-    /* ===== SIDEBAR ===== */
-    .sidebar {
-      width: 260px;
-      background: linear-gradient(180deg, #002f6c 0%, #001f47 100%);
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: linear-gradient(135deg, var(--primary) 0%, #001f47 100%);
       color: white;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      padding: 15px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .sidebar h2 {
-      padding: 25px 20px;
-      margin: 0;
-      font-size: 18px;
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .logo span {
       font-weight: 600;
-      background-color: rgba(0,0,0,0.2);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 18px;
     }
 
-    .sidebar a {
-      color: #e2e8f0;
-      padding: 14px 20px;
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
       text-decoration: none;
-      font-size: 15px;
-      display: block;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 6px;
       transition: all 0.3s ease;
-      border-left: 4px solid transparent;
     }
 
-    .sidebar a:hover {
-      background-color: rgba(255,255,255,0.1);
-      color: white;
-      border-left-color: #4a82e2;
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
     }
 
-    .sidebar a.active {
-      background-color: rgba(255,255,255,0.15);
-      color: white;
-      border-left-color: #4a82e2;
+    .nav-links a.active {
+      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-text {
       font-weight: 500;
     }
 
-    /* ===== CONTENIDO ===== */
+    .user-icon {
+      background-color: var(--primary-light);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ===== CONTENEDOR PRINCIPAL ===== */
+    .main-container {
+      display: flex;
+      max-width: 1200px;
+      margin: 30px auto;
+      gap: 25px;
+      padding: 0 20px;
+    }
+
+    /* ===== SIDEBAR MEJORADO ===== */
+    .sidebar {
+      width: 260px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 25px 0;
+      flex-shrink: 0;
+    }
+
+    .sidebar h2 {
+      color: var(--primary);
+      padding: 0 20px 15px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--border);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      background-color: #f7fafc;
+      color: var(--primary);
+      border-left-color: var(--primary-light);
+    }
+
+    .sidebar a.active {
+      background-color: #edf2f7;
+      color: var(--primary);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+
+        /* ===== CONTENIDO PRINCIPAL ===== */
     .content {
       flex: 1;
-      padding: 30px 40px;
-      overflow-y: auto;
-      background-color: #f8fafc;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .content:hover {
+      box-shadow: var(--shadow-hover);
     }
 
     .header-section {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       padding-bottom: 20px;
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px solid var(--border);
     }
 
     .header-section h1 {
-      color: #002f6c;
+      color: var(--primary);
       font-size: 28px;
       font-weight: 700;
-      margin: 0;
     }
 
+    /* ===== BÚSQUEDA ===== */
     .busqueda {
       display: flex;
       align-items: center;
@@ -98,7 +202,7 @@
     .busqueda input {
       padding: 12px 16px;
       width: 320px;
-      border: 2px solid #e2e8f0;
+      border: 2px solid var(--border);
       border-radius: 8px;
       font-size: 14px;
       transition: all 0.3s ease;
@@ -106,12 +210,12 @@
 
     .busqueda input:focus {
       outline: none;
-      border-color: #4a82e2;
+      border-color: var(--primary-light);
       box-shadow: 0 0 0 3px rgba(74, 130, 226, 0.1);
     }
 
     .btn {
-      background: linear-gradient(135deg, #4a82e2 0%, #002f6c 100%);
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
       color: white;
       border: none;
       padding: 12px 24px;
@@ -145,7 +249,7 @@
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-      border: 1px solid #e2e8f0;
+      border: 1px solid var(--border);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -155,16 +259,16 @@
     }
 
     .panel-avances h3 {
-      color: #002f6c;
+      color: var(--primary);
       margin-bottom: 20px;
       font-size: 20px;
       font-weight: 600;
-      border-bottom: 2px solid #4a82e2;
+      border-bottom: 2px solid var(--primary-light);
       padding-bottom: 10px;
     }
 
     .panel-avances h4 {
-      color: #002f6c;
+      color: var(--primary);
       margin: 25px 0 15px 0;
       font-size: 16px;
       font-weight: 600;
@@ -175,7 +279,7 @@
       text-align: center;
       margin: 20px 0;
       padding: 20px;
-      background: #f8fafc;
+      background: var(--secondary);
       border-radius: 8px;
     }
 
@@ -186,7 +290,7 @@
 
     /* ===== INFORMACIÓN DEL PROYECTO ===== */
     .info-proyecto {
-      background: #f8fafc;
+      background: var(--secondary);
       padding: 20px;
       border-radius: 8px;
       margin: 20px 0;
@@ -199,7 +303,7 @@
     }
 
     .info-proyecto strong {
-      color: #002f6c;
+      color: var(--primary);
     }
 
     /* ===== HITOS ===== */
@@ -211,7 +315,7 @@
       padding: 16px;
       margin: 10px 0;
       background: white;
-      border-left: 4px solid #4a82e2;
+      border-left: 4px solid var(--primary-light);
       border-radius: 6px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       transition: all 0.3s ease;
@@ -223,26 +327,26 @@
     }
 
     .hito-completado {
-      border-left-color: #48bb78;
+      border-left-color: var(--accent);
       background: #f0fff4;
     }
 
     .hito-item strong {
-      color: #002f6c;
+      color: var(--primary);
       font-size: 14px;
       display: block;
       margin-bottom: 5px;
     }
 
     .hito-item p {
-      color: #4a5568;
+      color: var(--text);
       font-size: 13px;
       margin: 5px 0;
       line-height: 1.4;
     }
 
     .hito-item small {
-      color: #718096;
+      color: var(--text-light);
       font-size: 12px;
     }
 
@@ -250,7 +354,7 @@
     textarea {
       width: 100%;
       height: 120px;
-      border: 2px solid #e2e8f0;
+      border: 2px solid var(--border);
       border-radius: 8px;
       resize: none;
       padding: 12px;
@@ -262,7 +366,7 @@
 
     textarea:focus {
       outline: none;
-      border-color: #4a82e2;
+      border-color: var(--primary-light);
       box-shadow: 0 0 0 3px rgba(74, 130, 226, 0.1);
     }
 
@@ -276,7 +380,7 @@
     .avance-item {
       padding: 12px 15px;
       margin: 8px 0;
-      background: #f8fafc;
+      background: var(--secondary);
       border-radius: 6px;
       border-left: 3px solid #cbd5e0;
     }
@@ -288,11 +392,11 @@
     }
 
     .avance-item strong {
-      color: #002f6c;
+      color: var(--primary);
     }
 
     .avance-item small {
-      color: #718096;
+      color: var(--text-light);
       font-size: 11px;
     }
 
@@ -316,7 +420,7 @@
       gap: 20px;
       margin-top: 40px;
       padding-top: 30px;
-      border-top: 1px solid #e2e8f0;
+      border-top: 1px solid var(--border);
     }
 
     .acciones-footer .btn {
@@ -422,14 +526,13 @@
 
   <div class="main-container">
     <!-- ===== SIDEBAR ===== -->
-    <aside class="sidebar">
+     <aside class="sidebar">
       <h2>Reportes</h2>
       <a href="reporteEmprendedoresC.html">Reporte de Emprendedores</a>
       <a href="reporteProyectosC.html">Reporte de Proyectos</a>
       <a href="avancesProyectoC.html" class="active">Avances por Proyecto</a>
       <a href="estadisticasC.html">Estadísticas</a>
     </aside>
-
     <!-- ===== CONTENIDO PRINCIPAL ===== -->
     <section class="content">
       <div class="header-section">
@@ -445,14 +548,7 @@
           🔍 Ingrese el nombre de un proyecto para consultar sus avances y progreso
         </div>
       </div>
-
-      <div class="acciones-footer">
-        <button class="btn" onclick="exportarExcel()">📊 Exportar a Excel</button>
-        <button class="btn" onclick="enviarComentarioGeneral()">✉️ Enviar Comentario</button>
-      </div>
-    </section>
-  </div>
-
+  </div>  
   <script>
     // Tu código JavaScript permanece igual...
     const API_BASE = 'http://localhost:3001/api/reportes'; 
@@ -516,7 +612,7 @@
                     <div class="info-proyecto">
                         <p><strong>👤 Emprendedor:</strong> ${proyecto.nombre_emprendedor} ${proyecto.apellido}</p>
                         <p><strong>📈 Estado:</strong> ${proyecto.estatus}</p>
-                        <p><strong>🎯 Progreso:</strong> ${proyecto.progreso}%</p>
+                        <p><strong>🎯 Progreso:</strong> ${proyecto.progreso}</p>
                         <p><strong>📅 Fecha inicio:</strong> ${formatearFecha(proyecto.fecha_inicio)}</p>
                         <p><strong>📝 Descripción:</strong> ${proyecto.descripcion}</p>
                     </div>
@@ -663,25 +759,38 @@
     }
 
     async function exportarExcel(idProyecto) {
-        if (!idProyecto) {
-            alert('Primero busque un proyecto para exportar');
+      idProyecto = idProyecto || proyectoActualId;
+      alert("Primero busque un proyecto");
+    if (!idProyecto) {
+        alert("Primero busque un proyecto");
+        return;
+    }
+    try {
+        const response = await fetch(`${ENDPOINTS.EXPORTAR_EXCEL}/${idProyecto}`);
+
+        if (!response.ok) {
+            alert("❌ Error al generar el Excel");
             return;
         }
-        
-        try {
-            const response = await fetch(`${ENDPOINTS.EXPORTAR_EXCEL}/${idProyecto}`);
-            const data = await response.json();
-            
-            if (data.success) {
-                alert('📊 Reporte generado correctamente');
-            } else {
-                alert('❌ Error al generar reporte: ' + data.message);
-            }
-        } catch (error) {
-            console.error('Error al exportar:', error);
-            alert('❌ Error al conectar con el servidor');
-        }
+
+        // Convertir a blob
+        const blob = await response.blob();
+
+        // Crear descarga
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `reporte_proyecto_${idProyecto}.xlsx`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        alert("📊 Reporte generado correctamente");
+
+    } catch (error) {
+        console.error("Error al exportar:", error);
+        alert("❌ Error al conectar con el servidor");
     }
+}
 
     async function actualizarProgreso(idProyecto, progresoActual = 0) {
         const nuevoProgreso = prompt(

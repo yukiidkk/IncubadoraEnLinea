@@ -1,3 +1,4 @@
+const ExcelJS = require("exceljs");
 const { query } = require("../config/database");
 
 // Obtener avances por proyecto específico
@@ -162,42 +163,127 @@ const actualizarProgresoProyecto = async (req, res) => {
     }
 };
 
+
+
 // Generar reporte Excel
 const generarReporteExcel = async (req, res) => {
     try {
-        const { id_proyecto } = req.params;
+        const idProyecto = req.params.id_proyecto;
 
-        const proyectoQuery = `
-            SELECT p.*, per.nombre, per.apellido, per.correo
-            FROM proyecto p
-            INNER JOIN usuarios u ON p.id_usuario = u.id_usuario
-            INNER JOIN persona per ON u.id_persona = per.id_persona
-            WHERE p.id_proyecto = ?
+        // 1. Traer datos del proyecto
+        const proyecto = await query(
+            `SELECT nombre_proyecto, estatus, progreso, fecha_inicio, descripcion
+             FROM proyecto
+             WHERE id_proyecto = ?`,
+            [idProyecto]
+        );
+
+        if (!proyecto.length) {
+            return res.status(404).json({ success: false, message: "Proyecto no encontrado" });
+        }
+
+        // 2. Traer avances
+        const avances = await query(
+            `SELECT hitos, notas, fecha_creacion
+             FROM avances
+             WHERE id_proyecto = ?
+             ORDER BY fecha_creacion DESC`,
+            [idProyecto]
+        );
+
+        // 3. Crear libro de Excel
+        const workbook = new ExcelJS.Workbook();
+        const sheet = workbook.addWorksheet("Reporte del Proyecto");
+
+        // TÍTULO
+        sheet.addRow([`Reporte del proyecto: ${proyecto[0].nombre_proyecto}`]);
+        sheet.addRow([]);
+        
+        // DATOS DEL PROYECTO
+        sheet.addRow(["Estado", proyecto[0].estatus]);
+        sheet.addRow(["Progreso", proyecto[0].progreso + "%"]);
+        sheet.addRow(["Fecha inicio", proyecto[0].fecha_inicio]);
+        sheet.addRow(["Descripción", proyecto[0].descripcion]);
+        sheet.addRow([]);
+
+        // TABLA DE AVANCES
+        sheet.addRow(["Hito", "Notas", "Fecha"]);
+        avances.forEach(a => {
+            sheet.addRow([a.hitos, a.notas, a.fecha_creacion]);
+        });
+
+        // 4. Enviar Excel como descarga
+        res.setHeader(
+            "Content-Type",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
+
+        res.setHeader(
+            "Content-Disposition",
+            `attachment; filename=reporte_proyecto_${idProyecto}.xlsx`
+        );
+
+        await workbook.xlsx.write(res);
+        res.end();
+
+    } catch (error) {
+        console.error("Error al generar Excel:", error);
+        res.status(500).json({ success: false, message: "Error interno al generar el reporte" });
+    }
+};
+
+const getReporteEmprendedores = async (req, res) => {
+    try {
+        const sql = `
+            SELECT 
+        per.id_persona,
+    per.nombre,
+    per.apellido,
+    per.telefono,
+    per.fecha_nacimiento,
+    per.correo,
+    per.ingresos,
+    per.dependientes_eco,
+    per.rfc,
+    per.curp,
+    per.estado_civil,
+    per.genero,
+    per.colonia,
+    per.cp,
+    per.calle,
+    per.jornada,
+    per.no_control,
+    per.fecha_registro,
+    e.nombre_especialidad AS especialidad,
+
+    u.id_usuario,
+
+    (
+        SELECT COUNT(*)
+        FROM proyecto p
+        WHERE p.id_usuario = u.id_usuario
+    ) AS total_proyectos
+
+FROM persona per
+INNER JOIN usuarios u ON per.id_persona = u.id_persona
+LEFT JOIN especialidad e ON u.id_especialidad = e.id_especialidad
+WHERE u.id_rol = 2  
+ORDER BY per.fecha_registro DESC
+
         `;
 
-        const avancesQuery = `
-            SELECT hitos, notas, fecha_creacion
-            FROM avances
-            WHERE id_proyecto = ?
-            ORDER BY fecha_creacion DESC
-        `;
-
-        const [proyecto] = await query.execute(proyectoQuery, [id_proyecto]);
-        const [avances] = await query.execute(avancesQuery, [id_proyecto]);
+        const emprendedores = await query(sql);
 
         res.json({
             success: true,
-            data: {
-                proyecto: proyecto[0],
-                avances: avances
-            }
+            data: emprendedores
         });
 
     } catch (error) {
-        console.error('Error en generarReporteExcel:', error);
+        console.error("Error en getReporteEmprendedores:", error);
         res.status(500).json({
             success: false,
-            message: 'Error al generar reporte'
+            message: "Error interno del servidor"
         });
     }
 };
@@ -207,7 +293,8 @@ module.exports = {
     getProyectosCoordinador,
     agregarComentarioAvance,
     actualizarProgresoProyecto,
-    generarReporteExcel
+    generarReporteExcel,
+    getReporteEmprendedores
 };
 
 
