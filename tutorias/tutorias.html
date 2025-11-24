@@ -67,14 +67,14 @@
 
         <!-- CONTENIDO PRINCIPAL -->
         <main class="main">
-            <h2>Tutorías</h2>
+            <h2>Asesorías</h2>
             <h3>Agenda</h3>
             
             <!-- CONTENEDOR DE CALENDARIO Y FORMULARIO -->
             <div class="content-wrapper">
     
     <div class="tutoria-listado">
-        <h4>Tutorías Programadas</h4>
+        <h4>Asesorías Programadas</h4>
         <table class="tutorias-table">
             <thead>
                 <tr>
@@ -128,7 +128,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label>Fecha de tutoría</label>
+            <label>Fecha de asesoría</label>
             <div class="row">
                 <select id="dia"><option>Día</option></select>
                 <select id="mesSelect"><option>Mes</option></select>
@@ -217,7 +217,7 @@ function mostrarAlerta(msg, tipo="ok") {
             
             if (!res.ok) {
                 // Si ves un 500 aquí, es un error de la consulta SQL en el backend
-                console.error("Error al obtener tutorías. Status:", res.status);
+                console.error("Error al obtener aseosrías. Status:", res.status);
                 return; 
             }
 
@@ -249,7 +249,7 @@ function mostrarAlerta(msg, tipo="ok") {
             });
 
         } catch (err) {
-            console.error("Error al cargar listado de tutorías:", err);
+            console.error("Error al cargar listado de asesorías:", err);
         }
     }
 
@@ -285,7 +285,7 @@ function mostrarAlerta(msg, tipo="ok") {
         diaSelect.value = day;
         horaSelect.value = hora; 
 
-        console.log(`Tutoría #${tutoria.id_tutoria} seleccionada. Formulario autocompletado.`);
+        console.log(`Asesoría #${tutoria.id_tutoria} seleccionada. Formulario autocompletado.`);
     }
 
     /* ========================================================= */
@@ -542,7 +542,7 @@ function mostrarAlerta(msg, tipo="ok") {
         const id_tutor = await obtenerTutorSegunHorario(fecha, hora);
         
         if (!id_tutor) {
-            return mostrarAlerta("No hay tutor disponible en ese horario (verifica disponibilidad).", "error");
+            return mostrarAlerta("No hay asesor disponible en ese horario (verifica disponibilidad).", "error");
         }
 
         const horaEnviar = `${hora}:00`;
@@ -563,14 +563,14 @@ function mostrarAlerta(msg, tipo="ok") {
             const data = await res.json();
 
             if (res.ok) {
-                mostrarAlerta("Tutoría registrada con éxito.");
+                mostrarAlerta("Asesoría registrada con éxito.");
                 await cargarTutoriasListado(); // Recargar la tabla
             } else {
-                mostrarAlerta(data.mensaje || "Error al registrar tutoría", "error");
+                mostrarAlerta(data.mensaje || "Error al registrar asesoría", "error");
             }
 
         } catch (err) {
-            console.error("Error registrar tutoría:", "error", err);
+            console.error("Error registrar asesoría:", "error", err);
             mostrarAlerta("Error al conectar con el servidor.", "error");
         }
     });
@@ -581,7 +581,7 @@ function mostrarAlerta(msg, tipo="ok") {
         const id_tutoria_seleccionada = idTutoriaInput.value; 
 
         if (!id_tutoria_seleccionada) {
-            return mostrarAlerta("Primero debe seleccionar una tutoría para actualizar.", "error");
+            return mostrarAlerta("Primero debe seleccionar una asesoría para actualizar.", "error");
         }
 
         const id_usuario = emprendedorSelect.value;
@@ -600,7 +600,7 @@ function mostrarAlerta(msg, tipo="ok") {
         const id_tutor = await obtenerTutorSegunHorario(fecha, hora);
 
         if (!id_tutor) {
-            return mostrarAlerta("No hay tutor disponible en el nuevo horario seleccionado (verifica disponibilidad).", "error");
+            return mostrarAlerta("No hay asesor disponible en el nuevo horario seleccionado (verifica disponibilidad).", "error");
         }
 
         const horaEnviar = `${hora}:00`;
@@ -622,14 +622,14 @@ function mostrarAlerta(msg, tipo="ok") {
             const data = await res.json();
 
             if (res.ok) {
-                mostrarAlerta("Tutoría actualizada con éxito.");
+                mostrarAlerta("Asesoría actualizada con éxito.");
                 await cargarTutoriasListado(); // Recargar la tabla
             } else {
-                mostrarAlerta(data.mensaje || "Error al actualizar tutoría");
+                mostrarAlerta(data.mensaje || "Error al actualizar asesoría");
             }
 
         } catch (err) {
-            console.error("Error actualizar tutoría:", "error", err);
+            console.error("Error actualizar asesoría:", "error", err);
             mostrarAlerta("Error al conectar con el servidor.", "error");
         }
     });
@@ -639,10 +639,10 @@ function mostrarAlerta(msg, tipo="ok") {
         const id_tutoria_seleccionada = idTutoriaInput.value; 
 
         if (!id_tutoria_seleccionada) {
-            return mostrarAlerta("Primero debe seleccionar una tutoría para eliminar.", "error");
+            return mostrarAlerta("Primero debe seleccionar una asesoría para eliminar.", "error");
         }
 
-        if (!confirm(`¿Estás seguro de que quieres eliminar la tutoría seleccionada (ID: ${id_tutoria_seleccionada})?`)) {
+        if (!confirm(`¿Estás seguro de que quieres eliminar la asesoría seleccionada (ID: ${id_tutoria_seleccionada})?`)) {
             return;
         }
         
@@ -658,14 +658,14 @@ function mostrarAlerta(msg, tipo="ok") {
             const data = await res.json();
 
             if (res.ok) {
-                mostrarAlerta(data.mensaje || "Tutoría eliminada con éxito.");
+                mostrarAlerta(data.mensaje || "Asesoría eliminada con éxito.");
                 await cargarTutoriasListado(); // Recargar la tabla
             } else {
-                mostrarAlerta(data.mensaje || "Error al eliminar tutoría", "error");
+                mostrarAlerta(data.mensaje || "Error al eliminar asesoría", "error");
             }
 
         } catch (err) {
-            console.error("Error eliminar tutoría:", "error", err);
+            console.error("Error eliminar asesoría:", "error", err);
             mostrarAlerta("Error al conectar con el servidor.", "error");
         }
     });
@@ -676,13 +676,13 @@ function mostrarAlerta(msg, tipo="ok") {
         generarCalendario(y, m - 1);
     });
 
-    /* ========== INICIO: cargar datos y generar calendario ========== */
+    // Cargar datos y generar calendario
     (async function startup() {
         // Ejecución en paralelo
         await Promise.all([
             cargarEmprendedores(),
             cargarDisponibilidad(),
-            cargarTutoriasListado() // <-- ¡Ahora se llama y tiene acceso a sus variables!
+            cargarTutoriasListado() 
         ]);
         
         // Inicialización de la fecha de los selects
