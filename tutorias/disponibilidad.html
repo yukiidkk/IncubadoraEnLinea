@@ -130,6 +130,23 @@
                         </select>
                     </div>
 
+                    <div class="form-group">
+                         <label>Hora fin</label>
+                         <select id="hora_fin">
+                            <option value="">Seleccione hora fin</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                        </select>
+                    </div>
+
+
                     <div class="buttons">
                         <button class="btn registrar">Registrar</button>
                         <button class="btn actualizar">Actualizar</button>
@@ -140,7 +157,7 @@
         </main>
     </div>
 <script>
-        let disponibilidades = [];
+let disponibilidades = [];
 const API_URL = "http://localhost:3001/api/tutorias";
 
 /* ========== ALERTAS ========== */
@@ -177,10 +194,8 @@ async function cargarDisponibilidades() {
         const res = await fetch(`${API_URL}/disponibilidad`);
         disponibilidades = await res.json();
 
-        // REGENERAR CALENDARIO CON DATOS
         const [year, month] = monthInput.value.split("-").map(Number);
         generarCalendario(year, month - 1);
-
     } catch (err) { console.log(err); }
 }
 
@@ -209,12 +224,10 @@ function generarCalendario(year, month) {
 
                 cell.textContent = date;
 
-                // MARCAR DISPONIBILIDAD
                 if (disponibilidades.some(d => d.dia.toLowerCase() === nombreDia.toLowerCase())) {
                     cell.classList.add("con-disponibilidad");
                 }
 
-                // CLIC PARA CARGAR FORMULARIO
                 cell.addEventListener("click", () => seleccionarDiaConDatos(nombreDia, cell));
 
                 date++;
@@ -240,10 +253,12 @@ function seleccionarDiaConDatos(nombreDia, cell) {
 
     if (lista.length > 0) {
         document.getElementById("tutor").value = lista[0].id_usuario;
-        document.getElementById("hora").value = lista[0].hora.substring(0, 5);
+        document.getElementById("hora").value = lista[0].hora_inicio.substring(0, 5);
+        document.getElementById("hora_fin").value = lista[0].hora_fin.substring(0, 5);
     } else {
         document.getElementById("tutor").value = "";
         document.getElementById("hora").value = "";
+        document.getElementById("hora_fin").value = "";
     }
 }
 
@@ -257,13 +272,20 @@ document.querySelector(".registrar").addEventListener("click", async () => {
     const id_usuario = document.getElementById("tutor").value;
     const dia = document.getElementById("dia").value;
     const hora = document.getElementById("hora").value;
+    const hora_fin = document.getElementById("hora_fin").value;
 
-    if (!id_usuario || !dia || !hora) return mostrarAlerta("Todos los campos son obligatorios", "error");
+    if (!id_usuario || !dia || !hora || !hora_fin)
+        return mostrarAlerta("Todos los campos son obligatorios", "error");
 
     const res = await fetch(`${API_URL}/disponibilidad`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id_usuario, dia, hora: hora + ":00" })
+        body: JSON.stringify({ 
+            id_usuario, 
+            dia, 
+            hora_inicio: hora + ":00", 
+            hora_fin: hora_fin + ":00" 
+        })
     });
 
     const data = await res.json();
@@ -277,14 +299,20 @@ document.querySelector(".actualizar").addEventListener("click", async () => {
     const id_usuario = document.getElementById("tutor").value;
     const dia = document.getElementById("dia").value;
     const hora = document.getElementById("hora").value;
+    const hora_fin = document.getElementById("hora_fin").value;
 
-    if (!id_usuario || !dia || !hora)
+    if (!id_usuario || !dia || !hora || !hora_fin)
         return mostrarAlerta("Debe seleccionar un registro para actualizar", "error");
 
     const res = await fetch(`${API_URL}/disponibilidad`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id_usuario, dia, hora: hora + ":00" })
+        body: JSON.stringify({ 
+            id_usuario, 
+            dia, 
+            hora_inicio: hora + ":00", 
+            hora_fin: hora_fin + ":00" 
+        })
     });
 
     const data = await res.json();
@@ -318,7 +346,8 @@ document.querySelector(".eliminar").addEventListener("click", async () => {
     await cargarTutores();
     await cargarDisponibilidades();
 })();
-// ---- Mostrar nombre del usuario ----
+
+/* ========== MOSTRAR NOMBRE USUARIO ========== */
 const nombre_usuario_logueado = localStorage.getItem("usuario");
 
 if (!nombre_usuario_logueado) {
@@ -328,12 +357,12 @@ if (!nombre_usuario_logueado) {
     document.getElementById("nombre-usuario").textContent = nombre_usuario_logueado;
 }
 
-// ---- Cerrar sesión ----
+/* ========== CERRAR SESIÓN ========== */
 document.getElementById("btn-logout").addEventListener("click", () => {
     localStorage.clear();
-    window.location.href = "../login.html"; // salir de /tutorias
+    window.location.href = "../login.html";
 });
+</script>
 
-    </script>
 </body>
 </html>
