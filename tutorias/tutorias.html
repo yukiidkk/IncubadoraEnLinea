@@ -6,699 +6,758 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutorías - Coordinador</title>
     <link rel="stylesheet" href="css/tutorias.css">
+    <style>
+        .logout-btn {
+            margin-left: 10px;
+            background-color: #c62828;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #a31414;
+        }
+
+    </style>
 </head>
 
 <body>
-    <!-- ALERTA -->
     <div id="alerta"></div>
 
     <header class="header">
-    <div class="logo">
-        <img src="../images/logoITS.png" alt="Logo" class="logo-img">
-        <span>Instituto Tecnológico de Saltillo</span>
-    </div>
+        <div class="logo">
+            <img src="../images/logoITS.png" alt="Logo" class="logo-img">
+            <span>Instituto Tecnológico de Saltillo</span>
+        </div>
 
-    <nav class="nav">
-        <a href="..\inicioC.html">Inicio</a>
-        <a href="..\gestionUsuarios.html">Usuarios</a>
-        <a href="..\roles.html">Roles</a>
-        <a href="..\proyectos.html">Proyectos</a>
-        <a href="">Reportes</a>
-        <a href="#">Eventos</a>
-        <a href="tutorias.html">Tutorias</a>
-    </nav>
+        <nav class="nav">
+            <a href="..\inicioC.html">Inicio</a>
+            <a href="..\gestionUsuarios.html">Usuarios</a>
+            <a href="..\roles.html">Roles</a>
+            <a href="..\proyectos.html">Proyectos</a>
+            <a href="">Reportes</a>
+            <a href="#">Eventos</a>
+            <a href="tutorias.html">Tutorias</a>
+        </nav>
 
-    <div class="usuario">
-    <span id="nombre-usuario">Coordinador</span>
-        <img src="../images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
+        <div class="usuario">
+            <span id="nombre-usuario">Coordinador</span>
+            <img src="../images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
+            <button id="btn-logout" class="logout-btn">Cerrar sesión</button>
+        </div>
+    </header>
 
-        <button id="btn-logout" class="logout-btn">Cerrar sesión</button>
-    </div>
-</header>
-
-<style>
-.logout-btn {
-    margin-left: 10px;
-    background-color: #c62828;
-    border: none;
-    color: white;
-    padding: 6px 12px;
-    font-size: 14px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-.logout-btn:hover {
-    background-color: #a31414;
-}
-</style>
-
-
-    <!-- CONTENEDOR PRINCIPAL -->
     <div class="container">
-        <!-- MENÚ LATERAL -->
         <aside class="sidebar">
             <h3>Menú</h3>
             <ul>
                 <li><a href="#" class="active">Agenda</a></li>
                 <li><a href="disponibilidad.html">Disponibilidad</a></li>
-                <!-- <li><a href="historial.html">Historial</a></li> -->
             </ul>
         </aside>
 
-        <!-- CONTENIDO PRINCIPAL -->
         <main class="main">
             <h2>Asesorías</h2>
             <h3>Agenda</h3>
-            
-            <!-- CONTENEDOR DE CALENDARIO Y FORMULARIO -->
-            <div class="content-wrapper">
-    
-    <div class="tutoria-listado">
-        <h4>Asesorías Programadas</h4>
-        <table class="tutorias-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Emprendedor</th>
-                    <th>Proyecto</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                </tr>
-            </thead>
-            <tbody id="tutorias-body">
-                </tbody>
-        </table>
-    </div>
-    
-    <div class="calendario-container">
-        <div class="calendar">
-            <input type="month" id="mes" value="2023-01">
-            <div class="calendar-box">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Dom</th>
-                            <th>Lun</th>
-                            <th>Mar</th>
-                            <th>Mie</th>
-                            <th>Jue</th>
-                            <th>Vie</th>
-                            <th>Sab</th>
-                        </tr>
-                    </thead>
-                    <tbody id="calendar-body"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
-    <div class="form-section">
-        <input type="hidden" id="idTutoriaSeleccionada" value=""> 
-        
-        <div class="form-group">
-            <label>Nombre del emprendedor</label>
-            <select id="emprendedor">
-                <option value="">Emprendedor</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Nombre del proyecto</label>
-            <select id="proyecto">
-               <option value="">Proyecto</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Fecha de asesoría</label>
-            <div class="row">
-                <select id="dia"><option>Día</option></select>
-                <select id="mesSelect"><option>Mes</option></select>
-                <select id="anio"><option>Año</option></select>
+            <div class="content-wrapper">
+
+                <div class="tutoria-listado">
+                    <h4>Asesorías Programadas</h4>
+                    <table class="tutorias-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Emprendedor</th>
+                                <th>Proyecto</th>
+                                <th>Fecha</th>
+                                <th>Hora Inicio</th>
+                                <th>Hora Fin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tutorias-body"></tbody>
+                    </table>
+                </div>
+
+                <div class="calendario-container">
+                    <div class="calendar">
+                        <input type="month" id="mes" value="2023-01">
+                        <div class="calendar-box">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Dom</th>
+                                        <th>Lun</th>
+                                        <th>Mar</th>
+                                        <th>Mie</th>
+                                        <th>Jue</th>
+                                        <th>Vie</th>
+                                        <th>Sab</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="calendar-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <input type="hidden" id="idTutoriaSeleccionada" value="">
+
+                    <div class="form-group">
+                        <label>Nombre del emprendedor</label>
+                        <select id="emprendedor">
+                            <option value="">Emprendedor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nombre del proyecto</label>
+                        <select id="proyecto">
+                            <option value="">Proyecto</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seleccionar tutor</label>
+                        <select id="tutor">
+                            <option value="">Tutor</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Fecha de asesoría</label>
+                        <div class="row">
+                            <select id="diaSelect"><option value="">Día</option></select>
+                            <select id="mesSelect"><option value="">Mes</option></select>
+                            <select id="anioSelect"><option value="">Año</option></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hora Inicio</label>
+                        <select id="hora_inicio">
+                            <option value="">Seleccionar Hora Inicio</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hora Fin</label>
+                        <select id="hora_fin">
+                            <option value="">Seleccionar Hora Fin</option>
+                        </select>
+                    </div>
+
+                    <div class="buttons">
+                        <button class="btn registrar">Registrar</button>
+                        <button class="btn actualizar">Actualizar</button>
+                        <button class="btn eliminar">Eliminar</button>
+                    </div>
+                </div>
+
             </div>
-        </div>
-        <div class="form-group">
-            <label>Seleccionar hora </label>
-            <select id="hora"><option>Hora</option>
-                <option value="08:00">08:00</option>
-                <option value="09:00">09:00</option>
-                <option value="10:00">10:00</option>
-                <option value="11:00">11:00</option>
-                <option value="12:00">12:00</option>
-                <option value="13:00">13:00</option>
-                <option value="14:00">14:00</option>
-                <option value="15:00">15:00</option>
-                <option value="16:00">16:00</option>
-            </select>
-        </div>
-        <div class="buttons">
-            <button class="btn registrar">Registrar</button>
-            <button class="btn actualizar">Actualizar</button>
-            <button class="btn eliminar">Eliminar</button>
-        </div>
-    </div>
-</div>
         </main>
     </div>
 
     <script>
-        // Cargar nombre desde localStorage
-const nombre_usuario_logueado = localStorage.getItem("usuario");
 
-if (!nombre_usuario_logueado) {
-    alert("Error: No se encontró nombre de usuario. Inicie sesión nuevamente.");
-    window.location.href = "../login.html";
-} else {
-    document.getElementById("nombre-usuario").textContent = nombre_usuario_logueado;
+        // Carga de usuarios y alertas
+        const nombre_usuario_logueado = localStorage.getItem("usuario");
+        if (!nombre_usuario_logueado) {
+            alert("Error: No se encontró nombre de usuario. Inicie sesión nuevamente.");
+            window.location.href = "../login.html";
+        } else {
+            document.getElementById("nombre-usuario").textContent = nombre_usuario_logueado;
+        }
+
+        document.getElementById("btn-logout").addEventListener("click", () => {
+            localStorage.clear();
+            window.location.href = "../login.html";
+        });
+
+        function mostrarAlerta(msg, tipo = "ok") {
+            const alerta = document.getElementById("alerta");
+            alerta.innerText = msg;
+            alerta.className = tipo === "ok" ? "alerta-ok" : "alerta-error";
+            alerta.style.display = "block";
+            setTimeout(() => alerta.style.display = "none", 2500);
+        }
+
+
+        // Variables principales
+
+        const API_URL = "http://localhost:3001/api/tutorias";
+
+        const monthInput = document.getElementById("mes");
+        const calendarBody = document.getElementById("calendar-body");
+
+        const emprendedorSelect = document.getElementById("emprendedor");
+        const proyectoSelect = document.getElementById("proyecto");
+        const tutorSelect = document.getElementById("tutor");
+        const diaSelect = document.getElementById("diaSelect");
+        const mesSelect = document.getElementById("mesSelect");
+        const anioSelect = document.getElementById("anioSelect");
+        const horaInicioSelect = document.getElementById("hora_inicio");
+        const horaFinSelect = document.getElementById("hora_fin"); // Nuevo
+        const tutoriasBody = document.getElementById("tutorias-body");
+        const idTutoriaInput = document.getElementById("idTutoriaSeleccionada");
+
+        let listaTutorias = [];
+        let disponibilidades = [];
+
+
+        // Carga de datos iniciales (tutores, emprendedores, disponibilidad)
+
+        async function cargarEmprendedores() {
+            emprendedorSelect.innerHTML = `<option value="">Seleccione Emprendedor</option>`;
+            try {
+                const res = await fetch(`${API_URL}/emprendedores`);
+                const data = await res.json();
+                data.forEach(e => {
+                    const op = document.createElement("option");
+                    op.value = e.id_usuario;
+                    op.textContent = e.nombre_completo;
+                    emprendedorSelect.appendChild(op);
+                });
+            } catch (err) { console.error("Error al cargar emprendedores:", err); }
+        }
+
+        async function cargarProyectos(id_emprendedor) {
+            proyectoSelect.innerHTML = `<option value="">Seleccione Proyecto</option>`;
+            if (!id_emprendedor) return;
+
+            try {
+                const res = await fetch(`${API_URL}/proyectos/${id_emprendedor}`);
+                const data = await res.json();
+                data.forEach(p => {
+                    const op = document.createElement("option");
+                    op.value = p.id_proyecto;
+                    op.textContent = p.nombre_proyecto;
+                    proyectoSelect.appendChild(op);
+                });
+            } catch (err) { console.error("Error al cargar proyectos:", err); }
+        }
+
+        async function cargarTutores() {
+            tutorSelect.innerHTML = `<option value="">Seleccione Tutor</option>`;
+            try {
+                const res = await fetch(`${API_URL}/tutores`);
+                const data = await res.json();
+                data.forEach(t => {
+                    const op = document.createElement("option");
+                    op.value = t.id_usuario;
+                    op.textContent = t.nombre_completo;
+                    tutorSelect.appendChild(op);
+                });
+            } catch (err) { console.error("Error al cargar tutores:", err); }
+        }
+
+        async function cargarDisponibilidades() {
+            try {
+                const res = await fetch(`${API_URL}/disponibilidad`);
+                disponibilidades = await res.json();
+            } catch (err) { console.error("Error al cargar disponibilidad:", err); }
+        }
+
+        // Logica de fecha y hora adaptada para los rangos
+
+        // Convertir día de la semana a su nombre en español
+        function getNombreDia(fechaStr) {
+            const [year, month, day] = fechaStr.split('-').map(Number);
+            const date = new Date(year, month - 1, day);
+            const dayOfWeek = date.getDay(); // 0=Dom, 1=Lun...
+            const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+            return days[dayOfWeek];
+        }
+
+        // Genera opciones de hora dentro de un rango de 1 hora
+        function generarOpcionesHora(minHour, maxHour, currentStart) {
+            const options = [];
+             for (let h = 8; h <= 17; h++) {
+                const hourStr = String(h).padStart(2, '0') + ':00';
+        
+        // Lógica para generar opciones de HORA INICIO
+        if (!currentStart) {
+            if (hourStr >= minHour && hourStr < maxHour) {
+                options.push(hourStr);
+            }
+        }
+
+        // Lógica para generar opciones de HORA FIN
+        else {
+            if (hourStr > currentStart && hourStr <= maxHour) {
+                options.push(hourStr);
+            }
+        }
+    }
+    return options;
 }
 
-/* ========== ALERTAS ========== */
-function mostrarAlerta(msg, tipo="ok") {
-    const alerta = document.getElementById("alerta");
-    alerta.innerText = msg;
-    alerta.className = tipo === "ok" ? "alerta-ok" : "alerta-error";
-    alerta.style.display = "block";
+function cargarHorasDisponibles() {
+    horaInicioSelect.innerHTML = `<option value="">Seleccionar Hora Inicio</option>`;
+    horaFinSelect.innerHTML = `<option value="">Seleccionar Hora Fin</option>`;
 
-    setTimeout(() => alerta.style.display = "none", 2500);
+    const id_tutor = tutorSelect.value;
+    const dia_num = diaSelect.value;
+    const mes_num = mesSelect.value;
+    const anio_num = anioSelect.value;
+
+    if (!id_tutor || !dia_num || !mes_num || !anio_num) return;
+
+    // Formato de fecha para obtener el nombre del día
+    const fechaStr = `${anio_num}-${mes_num}-${dia_num}`;
+    const nombreDia = getNombreDia(fechaStr);
+
+    // Encontrar la disponibilidad del tutor para ese día
+    const dispDia = disponibilidades.filter(d =>
+        d.id_usuario == id_tutor && d.dia.toLowerCase() === nombreDia.toLowerCase()
+    );
+
+    if (dispDia.length === 0) {
+        // Limpiar las horas si no hay disponibilidad
+        horaInicioSelect.innerHTML = `<option value="">Tutor sin disponibilidad</option>`;
+        horaFinSelect.innerHTML = `<option value="">Tutor sin disponibilidad</option>`;
+        return mostrarAlerta(`El tutor no tiene disponibilidad el ${nombreDia}.`, "error");
+    }
+
+    // Usar la primera disponibilidad
+    const disponibilidad = dispDia[0];
+    const hora_min = disponibilidad.hora_inicio.substring(0, 5);
+    const hora_max = disponibilidad.hora_fin.substring(0, 5);
+    
+    // Generar horas de inicio basadas en el rango del tutor
+    const horasInicio = generarOpcionesHora(hora_min, hora_max, null);
+    
+    // Rellenar Hora Inicio
+    horasInicio.forEach(h => {
+        const op = document.createElement("option");
+        op.value = h;
+        op.textContent = h;
+        horaInicioSelect.appendChild(op);
+    });
+    
+    // Evento para actualizar Hora Fin cuando se selecciona Hora Inicio
+    horaInicioSelect.onchange = () => {
+        horaFinSelect.innerHTML = `<option value="">Seleccionar Hora Fin</option>`;
+        const start = horaInicioSelect.value;
+        if (!start) return;
+
+        // Generar horas de fin que sean mayores a la hora de inicio seleccionada y dentro del rango máximo
+        const horasFin = generarOpcionesHora(hora_min, hora_max, start);
+        
+        // Rellenar Hora Fin
+        horasFin.forEach(h => {
+            const op = document.createElement("option");
+            op.value = h;
+            op.textContent = h;
+            horaFinSelect.appendChild(op);
+        });
+        
+        // Si hay una hora de fin preseleccionada, intenta seleccionarla
+        if (horaFinSelect.dataset.preselect) {
+            horaFinSelect.value = horaFinSelect.dataset.preselect;
+            delete horaFinSelect.dataset.preselect;
+        }
+    };
+
+    // Si hay una hora de inicio preseleccionada, intenta seleccionarla
+    if (horaInicioSelect.dataset.preselect) {
+        horaInicioSelect.value = horaInicioSelect.dataset.preselect;
+        horaInicioSelect.dispatchEvent(new Event("change"));
+        delete horaInicioSelect.dataset.preselect;
+    }
 }
 
-    /* ========================================================= */
-    /* ========== 1. CONFIGURACIÓN Y DECLARACIÓN DE ELEMENTOS ========== */
-    /* ========================================================= */
 
-    // ¡CRÍTICO! Verifica que esta URL sea la base correcta para tus rutas
-    const API_URL = "http://localhost:3001/api/tutorias"; 
+        // Calendario y fechas
 
-    // Elementos de Fecha/Calendario
-    const monthInput = document.getElementById("mes");
-    const calendarBody = document.getElementById("calendar-body");
-    
-    // Elementos del Formulario
-    const emprendedorSelect = document.getElementById("emprendedor");
-    const proyectoSelect = document.getElementById("proyecto");
-    const diaSelect = document.getElementById("dia");
-    const mesSelect = document.getElementById("mesSelect");
-    const anioSelect = document.getElementById("anio");
-    const horaSelect = document.getElementById("hora");
+        (function initFecha() {
+            const now = new Date();
+            const isoMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            monthInput.value = isoMonth;
 
-    // Elementos y Data para el Listado de Tutorías (MOVIDOS AL INICIO)
-    const tutoriasBody = document.getElementById("tutorias-body");
-    const idTutoriaInput = document.getElementById("idTutoriaSeleccionada"); 
-    let listaTutorias = []; // Almacenar las tutorías cargadas
-    
-    // Data compartida
-    let disponibilidades = []; // se llenará desde el backend
+            const nombresMes = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-    /* ========================================================= */
-    /* ========== 2. FUNCIONES DE CARGA Y LISTADO DE TUTORÍAS ========== */
-    /* ========================================================= */
-
-    async function cargarTutoriasListado() {
-        try {
-            const res = await fetch(`${API_URL}/tutorias-listado`);
-            
-            if (!res.ok) {
-                // Si ves un 500 aquí, es un error de la consulta SQL en el backend
-                console.error("Error al obtener aseosrías. Status:", res.status);
-                return; 
+            mesSelect.innerHTML = "<option value=''>Mes</option>";
+            for (let m = 1; m <= 12; m++) {
+                const op = document.createElement("option");
+                op.value = String(m).padStart(2, "0");
+                op.textContent = nombresMes[m - 1];
+                mesSelect.appendChild(op);
             }
 
-            listaTutorias = await res.json(); 
-            
-            tutoriasBody.innerHTML = ''; // Limpiar tabla
-            
-            listaTutorias.forEach(t => {
-                const tr = document.createElement("tr");
-                tr.setAttribute("data-id", t.id_tutoria);
-                
-                // Formatear fecha y hora
-                const fechaObj = new Date(t.fecha);
-                const fechaFormato = fechaObj.toLocaleDateString("es-ES", { year: 'numeric', month: '2-digit', day: '2-digit' });
-                const horaFormato = t.hora ? t.hora.substring(0, 5) : 'N/A'; // HH:MM
+            const currentYear = now.getFullYear();
+            anioSelect.innerHTML = "<option value=''>Año</option>";
+            for (let y = currentYear; y <= currentYear + 5; y++) {
+                const op = document.createElement("option");
+                op.value = y;
+                op.textContent = y;
+                anioSelect.appendChild(op);
+            }
 
-                tr.innerHTML = `
-                    <td>${t.id_tutoria}</td>
-                    <td>${t.nombre_emprendedor}</td>
-                    <td>${t.nombre_proyecto}</td>
-                    <td>${fechaFormato}</td>
-                    <td>${horaFormato}</td>
-                `;
-
-                // Añadir el evento click para autocompletar
-                tr.addEventListener("click", () => autocompletarFormulario(t));
-                
-                tutoriasBody.appendChild(tr);
+            mesSelect.addEventListener("change", () => {
+                actualizarDias();
+                cargarHorasDisponibles();
             });
+            anioSelect.addEventListener("change", () => {
+                actualizarDias();
+                cargarHorasDisponibles();
+            });
+            diaSelect.addEventListener("change", cargarHorasDisponibles);
+            tutorSelect.addEventListener("change", cargarHorasDisponibles);
 
-        } catch (err) {
-            console.error("Error al cargar listado de asesorías:", err);
-        }
-    }
+        })();
 
-    function autocompletarFormulario(tutoria) {
-        // 1. Guardar el ID de la tutoría en el campo oculto
-        idTutoriaInput.value = tutoria.id_tutoria; 
-        
-        // 2. Resaltar la fila seleccionada
-        document.querySelectorAll(".tutorias-table tr").forEach(row => row.classList.remove("selected"));
-        const filaSeleccionada = document.querySelector(`[data-id="${tutoria.id_tutoria}"]`);
-        if (filaSeleccionada) filaSeleccionada.classList.add("selected");
 
-        // 3. Rellenar los Selects de Emprendedor y Proyecto
-        emprendedorSelect.value = tutoria.id_usuario;
-        emprendedorSelect.dispatchEvent(new Event('change')); // Cargar proyectos
-        
-        // Simular espera para que los proyectos se carguen antes de seleccionar el proyecto
-        setTimeout(() => {
-            proyectoSelect.value = tutoria.id_proyecto;
-        }, 150); // Aumentado ligeramente para mayor fiabilidad
+        function actualizarDias() {
+            const year = parseInt(anioSelect.value);
+            const month = parseInt(mesSelect.value);
+            diaSelect.innerHTML = "<option value=''>Día</option>";
 
-        // 4. Rellenar Fecha y Hora
-        const fechaObj = new Date(tutoria.fecha);
-        const day = String(fechaObj.getDate()).padStart(2, '0');
-        const month = String(fechaObj.getMonth() + 1).padStart(2, '0');
-        const year = String(fechaObj.getFullYear());
-        const hora = tutoria.hora.substring(0, 5);
-        
-        // Asignar valores
-        anioSelect.value = year;
-        mesSelect.value = month;
-        actualizarDias(); 
-        diaSelect.value = day;
-        horaSelect.value = hora; 
+            if (!year || !month) return;
 
-        console.log(`Asesoría #${tutoria.id_tutoria} seleccionada. Formulario autocompletado.`);
-    }
+            const dias = new Date(year, month, 0).getDate();
 
-    /* ========================================================= */
-    /* ========== 3. INICIALIZACIÓN, FECHAS y CALENDARIO (Originales del Usuario) ========== */
-    /* ========================================================= */
-
-    /* ========== INICIALIZACIÓN: meses/años/día por defecto ========== */
-    (function initFechaSelects() {
-        // Mes input (mes actual)
-        const now = new Date();
-        const isoMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-        monthInput.value = isoMonth;
-
-        // llenar mesSelect (1..12)
-        mesSelect.innerHTML = "<option value=''>Mes</option>";
-        const nombresMes = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-        for (let m = 1; m <= 12; m++) {
-            const op = document.createElement("option");
-            op.value = String(m).padStart(2,'0');
-            op.textContent = nombresMes[m-1];
-            mesSelect.appendChild(op);
-        }
-
-        // años: actual .. actual+5
-        const currentYear = now.getFullYear();
-        anioSelect.innerHTML = "<option value=''>Año</option>";
-        for (let y = currentYear; y <= currentYear + 5; y++) {
-            const op = document.createElement("option");
-            op.value = String(y);
-            op.textContent = String(y);
-            anioSelect.appendChild(op);
-        }
-
-        // actualizar días cuando cambien mes o año
-        mesSelect.addEventListener("change", actualizarDias);
-        anioSelect.addEventListener("change", actualizarDias);
-    })();
-
-    /* ========== FUNCIONES FECHAS/DÍAS ========== */
-    function actualizarDias() {
-        const year = parseInt(anioSelect.value);
-        const month = parseInt(mesSelect.value);
-        diaSelect.innerHTML = "<option value=''>Día</option>";
-        if (!year || !month) return;
-        // monthSelect value is '01'.. so Number works
-        const dias = new Date(year, month, 0).getDate();
-        for (let d = 1; d <= dias; d++) {
-            const op = document.createElement("option");
-            op.value = String(d).padStart(2,'0');
-            op.textContent = d;
-            diaSelect.appendChild(op);
-        }
-    }
-
-    /* ========== CALENDARIO ========== */
-    function generarCalendario(year, monthIndex) {
-        calendarBody.innerHTML = "";
-        const firstDay = new Date(year, monthIndex, 1).getDay();
-        const lastDate = new Date(year, monthIndex + 1, 0).getDate();
-        let date = 1;
-        for (let r = 0; r < 6; r++) {
-            const tr = document.createElement("tr");
-            for (let c = 0; c < 7; c++) {
-                const td = document.createElement("td");
-                if (r === 0 && c < firstDay || date > lastDate) {
-                    td.classList.add("empty");
-                    td.textContent = "";
-                } else {
-                    td.textContent = date;
-                    // calcular nombre día (ej. 'Lunes') para comparaciones
-                    const cur = new Date(year, monthIndex, date);
-                    const nombreDia = cur.toLocaleDateString("es-ES", { weekday: "long" });
-
-                    // si hay alguna disponibilidad cuyo día (Lunes/...) coincide -> marcar
-                    if (disponibilidades.some(d => d.dia && d.dia.toLowerCase() === nombreDia.toLowerCase())) {
-                        td.classList.add("con-disponibilidad");
-                        td.setAttribute("data-disponible","true");
-                    }
-
-                    // click para seleccionar
-                    td.addEventListener("click", () => seleccionarFecha(td));
-                    date++;
-                }
-                tr.appendChild(td);
+            for (let d = 1; d <= dias; d++) {
+                const op = document.createElement("option");
+                op.value = String(d).padStart(2, '0');
+                op.textContent = d;
+                diaSelect.appendChild(op);
             }
-            calendarBody.appendChild(tr);
-            if (date > lastDate) break;
         }
+
+        function generarCalendario(year, month) {
+    calendarBody.innerHTML = "";
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+    let date = 1;
+
+    // Obtener tutor seleccionado
+    const id_tutor = tutorSelect.value;
+
+    for (let i = 0; i < 6; i++) {
+        const row = document.createElement("tr");
+
+        for (let j = 0; j < 7; j++) {
+            const cell = document.createElement("td");
+
+            if (i === 0 && j < firstDay || date > lastDate) {
+                cell.classList.add("empty");
+
+            } else {
+                const dia = String(date).padStart(2, '0');
+                const mes = String(month + 1).padStart(2, '0');
+                const fechaStr = `${year}-${mes}-${dia}`;
+
+                cell.textContent = date;
+
+                // Marcar fechas disponibles
+                if (id_tutor) {
+                    const nombreDia = getNombreDia(fechaStr).toLowerCase();
+
+                    const tieneDisponibilidad = disponibilidades.some(d =>
+                        d.id_usuario == id_tutor &&
+                        d.dia.toLowerCase() === nombreDia
+                    );
+
+                    if (tieneDisponibilidad) {
+                        cell.classList.add("dia-disponible");
+                    }
+                }
+
+                // click para seleccionar día
+                cell.addEventListener("click", () => seleccionarDia(date, cell));
+                date++;
+            }
+            row.appendChild(cell);
+        }
+        calendarBody.appendChild(row);
+    }
+}
+
+
+        function seleccionarDia(day, cell) {
+    // Asegurar que day es número limpio
+    const diaNumero = Number(String(day).trim());
+
+    console.log("Día recibido:", diaNumero);
+
+    if (isNaN(diaNumero)) {
+        console.error("El día seleccionado NO es un número válido:", day);
+        return;
     }
 
-    /* ========== SELECCIÓN Y AUTOCOMPLETADO ======== */
-    function seleccionarFecha(cell) {
-        // estilo seleccionado
-        document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
-        cell.classList.add("selected");
+    // Limpia selección visual
+    document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
+    cell.classList.add("selected");
 
-        // si no tiene disponibilidad, igualmente rellenamos fecha (útil)
-        const year = parseInt(monthInput.value.split("-")[0]);
-        const month = parseInt(monthInput.value.split("-")[1]);
-        const day = parseInt(cell.textContent.trim());
-
-        if (isNaN(day)) return;
-
-        // autocompletar fecha selects
-        autocompletarFecha(year, month, day);
-
-        // si no tiene disponibilidad, limpiar horas
-        if (!cell.classList.contains("con-disponibilidad")) {
-            horaSelect.innerHTML = "<option value=''>Hora</option>";
+    // Si no hay mes/año se sincronizan desde monthInput
+    if (!mesSelect.value || !anioSelect.value) {
+        if (monthInput.value) {
+            const [yy, mm] = monthInput.value.split("-").map(Number);
+            anioSelect.value = yy;
+            mesSelect.value = String(mm).padStart(2, '0');
+        } else {
+            mostrarAlerta("Seleccione Año y Mes primero.", "error");
             return;
         }
     }
 
-    function autocompletarFecha(year, month, day) {
-        // set en selects (value con ceros)
-        diaSelect.value = String(day).padStart(2,'0');
-        mesSelect.value = String(month).padStart(2,'0');
-        anioSelect.value = String(year);
+    // Recargar el select de días
+    actualizarDias();
 
-        // buscar disponibilidades para ese día de la semana
-        const fechaObj = new Date(year, month - 1, day);
-        const nombreDia = fechaObj.toLocaleDateString("es-ES", { weekday: "long" });
+    // Intentar seleccionar el día 
+    const diaFormateado = String(diaNumero).padStart(2, '0');
+    diaSelect.value = diaFormateado;
 
-        // rellenar horas disponibles para ese día
-        horaSelect.innerHTML = "<option value=''>Hora</option>";
+    console.log("Intentando seleccionar:", diaFormateado);
 
-        // puede haber múltiples disponibilidades (diferentes tutores/hours) -> listar todas
-        const horas = disponibilidades
-            .filter(d => d.dia && d.dia.toLowerCase() === nombreDia.toLowerCase())
-            .map(d => d.hora ? d.hora.substring(0,5) : null)
-            .filter(Boolean);
-
-        // eliminar duplicados y ordenar
-        const horasUnicas = [...new Set(horas)].sort();
-
-        horasUnicas.forEach(h => {
-            const op = document.createElement("option");
-            op.value = h;
-            op.textContent = h;
-            horaSelect.appendChild(op);
-        });
-
-        // si no hay horas se notifica (opcional)
-        if (horasUnicas.length === 0) {
-            // no hay horas para ese día
-            // dejamos el select con solo la opción por defecto
-        }
+    // Verificar si se selecciono
+    if (diaSelect.value !== diaFormateado) {
+        console.error("No se pudo asignar el día al select.");
     }
 
-    /* ========== CARGAR DATOS DEL BACKEND (Disponibilidad y Emprendedores) ========== */
-    async function cargarDisponibilidad() {
-        try {
-            const res = await fetch(`${API_URL}/disponibilidad`);
-            disponibilidades = await res.json(); // espera [{id_usuario,dia,hora}, ...]
-            // Regenerar calendario con el mes actual seleccionado
+    // Cargar horas
+    cargarHorasDisponibles();
+}
+
+
+        
+        monthInput.addEventListener("change", () => {
             const [y, m] = monthInput.value.split("-").map(Number);
             generarCalendario(y, m - 1);
-        } catch (err) {
-            console.error("Error cargar disponibilidad:", err);
-        }
-    }
+        });
+        
+        // Carga de listado de tutorias
+        async function cargarTutoriasListado() {
+            try {
+                const res = await fetch(`${API_URL}/tutorias-listado`);
+                if (!res.ok) return;
 
-    async function cargarEmprendedores() {
-        try {
-            const res = await fetch(`${API_URL}/emprendedores`);
-            const data = await res.json(); // [{ id_usuario, nombre_completo }, ...]
-            emprendedorSelect.innerHTML = `<option value="">Seleccione un emprendedor</option>`;
-            data.forEach(e => {
-                const op = document.createElement("option");
-                op.value = e.id_usuario;
-                op.textContent = e.nombre_completo;
-                emprendedorSelect.appendChild(op);
+                listaTutorias = await res.json();
+                tutoriasBody.innerHTML = "";
+
+                listaTutorias.forEach(t => {
+                    const tr = document.createElement("tr");
+                    tr.setAttribute("data-id", t.id_tutoria);
+
+                    const fechaObj = new Date(t.fecha);
+                    const fechaFormato = fechaObj.toLocaleDateString("es-ES", {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    });
+
+                    // Mostrar rango de horas
+                    const horaInicioFormato = t.hora_inicio ? t.hora_inicio.substring(0, 5) : "N/A";
+                    const horaFinFormato = t.hora_fin ? t.hora_fin.substring(0, 5) : "N/A";
+
+                    tr.innerHTML = `
+                        <td>${t.id_tutoria}</td>
+                        <td>${t.nombre_emprendedor}</td>
+                        <td>${t.nombre_proyecto}</td>
+                        <td>${fechaFormato}</td>
+                        <td>${horaInicioFormato}</td>
+                        <td>${horaFinFormato}</td>
+                    `;
+
+                    tr.addEventListener("click", () => autocompletarFormulario(t));
+                    tutoriasBody.appendChild(tr);
+                });
+
+            } catch (err) {
+                console.error("Error al cargar listado:", err);
+            }
+        }
+
+        // Autocompletar formulario
+        async function autocompletarFormulario(t) {
+    idTutoriaInput.value = t.id_tutoria;
+
+    document.querySelectorAll(".tutorias-table tr")
+        .forEach(row => row.classList.remove("selected"));
+
+    const fila = document.querySelector(`[data-id="${t.id_tutoria}"]`);
+    if (fila) fila.classList.add("selected");
+
+    // Cargar Emprendedor y Proyectos
+    emprendedorSelect.value = t.id_usuario;
+    await cargarProyectos(t.id_usuario);
+    proyectoSelect.value = t.id_proyecto;
+
+    // Cargar Tutor
+    tutorSelect.value = t.id_tutor;
+
+    // Cargar Fecha
+    const fechaObj = new Date(t.fecha);
+    const day = String(fechaObj.getUTCDate()).padStart(2, '0');
+    const month = String(fechaObj.getUTCMonth() + 1).padStart(2, '0');
+    const year = fechaObj.getUTCFullYear();
+
+    anioSelect.value = year;
+    mesSelect.value = month;
+    actualizarDias();
+    diaSelect.value = day;
+
+    const hora_inicio_pre = t.hora_inicio.substring(0, 5);
+    const hora_fin_pre = t.hora_fin.substring(0, 5);
+
+    // Guardar las horas en los dataset para que cargarHorasDisponibles las recoja
+    horaInicioSelect.dataset.preselect = hora_inicio_pre;
+    horaFinSelect.dataset.preselect = hora_fin_pre;
+
+    cargarHorasDisponibles(); 
+}
+
+        //Botones de accion
+
+        // Evento para deseleccionar la fila al cambiar cualquier campo
+        [emprendedorSelect, proyectoSelect, tutorSelect, diaSelect, mesSelect, anioSelect, horaInicioSelect, horaFinSelect].forEach(element => {
+            element.addEventListener('change', () => {
+                idTutoriaInput.value = "";
+                document.querySelectorAll(".tutorias-table tr")
+                    .forEach(row => row.classList.remove("selected"));
             });
-        } catch (err) {
-            console.error("Error cargar emprendedores:", err);
-            emprendedorSelect.innerHTML = `<option value="">Error al cargar</option>`;
-        }
-    }
-
-    // cuando cambia emprendedor cargar proyectos
-    emprendedorSelect.addEventListener("change", async () => {
-        const id = emprendedorSelect.value;
-        proyectoSelect.innerHTML = `<option value="">Proyecto</option>`;
-        if (!id) return;
-        try {
-            const res = await fetch(`${API_URL}/proyectos/${id}`);
-            const data = await res.json(); // [{id_proyecto, nombre_proyecto}, ...]
-            data.forEach(p => {
-                const op = document.createElement("option");
-                op.value = p.id_proyecto;
-                op.textContent = p.nombre_proyecto;
-                proyectoSelect.appendChild(op);
-            });
-        } catch (err) {
-            console.error("Error cargar proyectos:", err);
-        }
-    });
-
-    /* ========== FUNCIONES AUXILIARES PARA HORARIO ========== */
-    /* Obtener nombre de día en español, minúsculas y sin tilde */
-    function obtenerNombreDiaNormalizado(fechaISO) {
-        // fechaISO es "YYYY-MM-DD"
-        const partes = fechaISO.split('-');
-        // Crea el objeto Date con los valores locales (año, mes-1, día) para evitar desbordamiento por UTC.
-        const fecha = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
-
-        // Obtener el nombre del día de la semana en español (ej: "martes", "jueves", "miércoles")
-        const nombreDia = fecha.toLocaleDateString("es-ES", { weekday: "long" });
-
-        // Normalizar: minúsculas y quitar tildes
-        return nombreDia
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, ""); 
-    }
-
-    /* ========== OBTENER TUTOR SEGÚN FECHA/HORA ========== */
-    async function obtenerTutorSegunHorario(fechaISO, horaHHMM) {
-        const nombreDiaNormalizado = obtenerNombreDiaNormalizado(fechaISO); 
-        const horaCorta = horaHHMM.substring(0, 5);
-
-        const encontrado = disponibilidades.find(d => {
-            const diaDBNormalizado = d.dia 
-                ? d.dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
-                : null;
-                
-            return diaDBNormalizado === nombreDiaNormalizado &&
-                    d.hora &&
-                    d.hora.substring(0, 5) === horaCorta;
         });
 
-        return encontrado ? encontrado.id_usuario : null;
-    }
+        emprendedorSelect.addEventListener("change", () => cargarProyectos(emprendedorSelect.value));
 
-    /* ========================================================= */
-    /* ========== 4. MANEJO DE BOTONES (CRUD) ========== */
-    /* ========================================================= */
 
-    /* ========== BOTÓN REGISTRAR ======== */
-    document.querySelector(".registrar").addEventListener("click", async () => {
+        // REGISTRAR
+        document.querySelector(".registrar").addEventListener("click", async () => {
+            const id_usuario = emprendedorSelect.value;
+            const id_tutor = tutorSelect.value;
+            const id_proyecto = proyectoSelect.value;
+            const fecha = `${anioSelect.value}-${mesSelect.value}-${diaSelect.value}`;
+            const hora_inicio = horaInicioSelect.value;
+            const hora_fin = horaFinSelect.value;
 
-        const id_usuario = emprendedorSelect.value;
-        const id_proyecto = proyectoSelect.value;
-        const dia = diaSelect.value;
-        const mes = mesSelect.value;
-        const anio = anioSelect.value;
-        const hora = document.getElementById("hora").value; 
+            if (!id_usuario || !id_tutor || !id_proyecto || !anioSelect.value || !mesSelect.value || !diaSelect.value || !hora_inicio || !hora_fin)
+                return mostrarAlerta("Todos los campos son obligatorios", "error");
 
-        if (!id_usuario || !id_proyecto || !dia || !mes || !anio || !hora) {
-            return mostrarAlerta("Faltan datos: completa emprendedor, proyecto, fecha y hora.", "error");
-        }
-
-        const fecha = `${anio}-${mes}-${dia}`;
-        const id_tutor = await obtenerTutorSegunHorario(fecha, hora);
-        
-        if (!id_tutor) {
-            return mostrarAlerta("No hay asesor disponible en ese horario (verifica disponibilidad).", "error");
-        }
-
-        const horaEnviar = `${hora}:00`;
-
-        try {
             const res = await fetch(`${API_URL}/registrar`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    id_usuario: Number(id_usuario),
-                    id_tutor: Number(id_tutor),
-                    id_proyecto: Number(id_proyecto),
+                    id_usuario,
+                    id_tutor,
+                    id_proyecto,
                     fecha,
-                    hora: horaEnviar
+                    hora_inicio: hora_inicio + ":00",
+                    hora_fin: hora_fin + ":00"
                 })
             });
 
             const data = await res.json();
+            mostrarAlerta(data.mensaje, res.ok ? "ok" : "error");
 
-            if (res.ok) {
-                mostrarAlerta("Asesoría registrada con éxito.");
-                await cargarTutoriasListado(); // Recargar la tabla
-            } else {
-                mostrarAlerta(data.mensaje || "Error al registrar asesoría", "error");
-            }
+            if (res.ok) cargarTutoriasListado();
+        });
 
-        } catch (err) {
-            console.error("Error registrar asesoría:", "error", err);
-            mostrarAlerta("Error al conectar con el servidor.", "error");
-        }
-    });
+        // ACTUALIZAR
+        document.querySelector(".actualizar").addEventListener("click", async () => {
+            const id_tutoria = idTutoriaInput.value;
+            const id_usuario = emprendedorSelect.value;
+            const id_tutor = tutorSelect.value;
+            const id_proyecto = proyectoSelect.value;
+            const fecha = `${anioSelect.value}-${mesSelect.value}-${diaSelect.value}`;
+            const hora_inicio = horaInicioSelect.value;
+            const hora_fin = horaFinSelect.value;
 
-    /* ========== BOTÓN ACTUALIZAR TUTORÍA (Frontend) ======== */
-    document.querySelector(".actualizar").addEventListener("click", async () => {
+            if (!id_tutoria)
+                return mostrarAlerta("Debe seleccionar una tutoría para actualizar", "error");
 
-        const id_tutoria_seleccionada = idTutoriaInput.value; 
+            if (!id_usuario || !id_tutor || !id_proyecto || !anioSelect.value || !mesSelect.value || !diaSelect.value || !hora_inicio || !hora_fin)
+                return mostrarAlerta("Todos los campos son obligatorios", "error");
 
-        if (!id_tutoria_seleccionada) {
-            return mostrarAlerta("Primero debe seleccionar una asesoría para actualizar.", "error");
-        }
 
-        const id_usuario = emprendedorSelect.value;
-        const id_proyecto = proyectoSelect.value;
-        const dia = diaSelect.value;
-        const mes = mesSelect.value;
-        const anio = anioSelect.value;
-        const hora = horaSelect.value; 
-
-        if (!id_usuario || !id_proyecto || !dia || !mes || !anio || !hora) {
-            return mostrarAlerta("Faltan datos: completa emprendedor, proyecto, fecha y hora para la actualización.", "error");
-        }
-        
-        // Obtener tutor disponible para el nuevo horario
-        const fecha = `${anio}-${mes}-${dia}`;
-        const id_tutor = await obtenerTutorSegunHorario(fecha, hora);
-
-        if (!id_tutor) {
-            return mostrarAlerta("No hay asesor disponible en el nuevo horario seleccionado (verifica disponibilidad).", "error");
-        }
-
-        const horaEnviar = `${hora}:00`;
-
-        try {
-            const res = await fetch(`${API_URL}/registrar`, {
+            const res = await fetch(`${API_URL}/registrar`, { // Usando el PUT de /registrar
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    id_tutoria: id_tutoria_seleccionada,
-                    id_usuario: Number(id_usuario),
-                    id_tutor: Number(id_tutor),
-                    id_proyecto: Number(id_proyecto),
-                    fecha,
-                    hora: horaEnviar
+                    id_tutoria,
+            id_usuario: emprendedorSelect.value,
+            id_tutor: tutorSelect.value,
+            id_proyecto: proyectoSelect.value,
+            fecha: `${anioSelect.value}-${mesSelect.value}-${diaSelect.value}`,
+            hora_inicio: horaInicioSelect.value + ":00",
+            hora_fin: horaFinSelect.value + ":00"
                 })
             });
 
             const data = await res.json();
+            mostrarAlerta(data.mensaje, res.ok ? "ok" : "error");
 
-            if (res.ok) {
-                mostrarAlerta("Asesoría actualizada con éxito.");
-                await cargarTutoriasListado(); // Recargar la tabla
-            } else {
-                mostrarAlerta(data.mensaje || "Error al actualizar asesoría");
-            }
+            if (res.ok) cargarTutoriasListado();
+        });
 
-        } catch (err) {
-            console.error("Error actualizar asesoría:", "error", err);
-            mostrarAlerta("Error al conectar con el servidor.", "error");
-        }
-    });
 
-    /* ========== BOTÓN ELIMINAR TUTORÍA (Frontend) ======== */
-    document.querySelector(".eliminar").addEventListener("click", async () => {
-        const id_tutoria_seleccionada = idTutoriaInput.value; 
+        // ELIMINAR
+        document.querySelector(".eliminar").addEventListener("click", async () => {
+            const id_tutoria = idTutoriaInput.value;
 
-        if (!id_tutoria_seleccionada) {
-            return mostrarAlerta("Primero debe seleccionar una asesoría para eliminar.", "error");
-        }
+            if (!id_tutoria)
+                return mostrarAlerta("Debe seleccionar una tutoría para eliminar", "error");
 
-        if (!confirm(`¿Estás seguro de que quieres eliminar la asesoría seleccionada (ID: ${id_tutoria_seleccionada})?`)) {
-            return;
-        }
-        
-        try {
-            const res = await fetch(`${API_URL}/registrar`, {
+            if (!confirm("¿Está seguro de que desea eliminar esta tutoría?")) return;
+
+            const res = await fetch(`${API_URL}/registrar`, { // Usando el DELETE de /registrar
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    id_tutoria: id_tutoria_seleccionada
-                })
+                body: JSON.stringify({ id_tutoria })
             });
 
             const data = await res.json();
+            mostrarAlerta(data.mensaje, res.ok ? "ok" : "error");
 
             if (res.ok) {
-                mostrarAlerta(data.mensaje || "Asesoría eliminada con éxito.");
-                await cargarTutoriasListado(); // Recargar la tabla
-            } else {
-                mostrarAlerta(data.mensaje || "Error al eliminar asesoría", "error");
+                idTutoriaInput.value = "";
+                cargarTutoriasListado();
             }
+        });
 
-        } catch (err) {
-            console.error("Error eliminar asesoría:", "error", err);
-            mostrarAlerta("Error al conectar con el servidor.", "error");
-        }
-    });
 
-    /* ========== 5. EVENTOS FINALES E INICIO ========== */
-    monthInput.addEventListener("change", () => {
-        const [y, m] = monthInput.value.split("-").map(Number);
-        generarCalendario(y, m - 1);
-    });
+        // INICIALIZAR TODO
+        (async () => {
+            await cargarEmprendedores();
+            await cargarTutores();
+            await cargarDisponibilidades();
+            await cargarTutoriasListado();
 
-    // Cargar datos y generar calendario
-    (async function startup() {
-        // Ejecución en paralelo
-        await Promise.all([
-            cargarEmprendedores(),
-            cargarDisponibilidad(),
-            cargarTutoriasListado() 
-        ]);
-        
-        // Inicialización de la fecha de los selects
-        const [y, m] = monthInput.value.split("-").map(Number);
-        mesSelect.value = String(m).padStart(2,'0');
-        anioSelect.value = String(y);
-        actualizarDias();
-    })();
-    // Botón cerrar sesión
-document.getElementById("btn-logout").addEventListener("click", () => {
-    localStorage.clear();
-    window.location.href = "../login.html";  // salir de la carpeta tutorias
+            tutorSelect.addEventListener("change", () => {
+                if (!monthInput.value) {
+                 alert("Seleccione un mes y año primero");
+                return;
+             }
+
+            const [y, m] = monthInput.value.split("-").map(Number);
+             generarCalendario(y, m - 1);
+            });
+
+monthInput.addEventListener("change", () => {
+    if (!monthInput.value) return;
+    const [yy, mm] = monthInput.value.split("-").map(Number);
+    anioSelect.value = yy;
+    mesSelect.value = String(mm).padStart(2, '0');
+    actualizarDias();
+    const [y, m] = [yy, mm];
+    generarCalendario(y, m - 1);
 });
 
 
+
+            // Cargar el calendario para el mes actual
+            const [y, m] = monthInput.value.split("-").map(Number);
+            generarCalendario(y, m - 1);
+        })();
+
     </script>
+
 </body>
 
 </html>

@@ -325,3 +325,9 @@ textarea {
         .alerta-ok { background: #c8f7c5; border: 1px solid #27ae60; color:#27ae60; }
         .alerta-error { background: #f7c5c5; border: 1px solid #e74c3c; color:#e74c3c; }
 
+        .dia-disponible {
+    background-color: #b2ffb2 !important;
+    border-radius: 5px;
+    font-weight: bold;
+}
+

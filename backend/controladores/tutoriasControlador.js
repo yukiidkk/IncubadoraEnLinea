@@ -263,15 +263,18 @@ const actualizarTutoria = async (req, res) => {
         }
 
         const choque = await query(
-            `SELECT * FROM tutoria
-             WHERE id_tutor = ? AND fecha = ? AND id_tutoria != ?
-               AND NOT (hora_fin <= ? OR hora_inicio >= ?)`,
-            [id_tutor, fecha, id_tutoria, hora_inicio, hora_fin]
-        );
+    // La consulta es correcta si la tabla es 'tutoria'
+    `SELECT * FROM tutoria
+     WHERE id_tutor = ? AND fecha = ? AND id_tutoria != ? // <-- 'id_tutoria != ?' es el tercer signo
+       AND NOT (hora_fin <= ? OR hora_inicio >= ?)`,
+    // El orden de los parámetros DEBE coincidir con los '?' en la consulta.
+    [id_tutor, fecha, id_tutoria, hora_inicio, hora_fin] // <-- 'id_tutoria' es el tercer parámetro
+);
 
-        if (choque.length > 0) {
-            return res.status(400).json({ mensaje: "El tutor ya tiene otra tutoría en ese nuevo rango horario" });
-        }
+if (choque.length > 0) {
+    // Si esta línea se ejecuta y falla la actualización, aquí está el problema.
+    return res.status(400).json({ mensaje: "El tutor ya tiene otra tutoría en ese nuevo rango horario" });
+}
 
         const sql = `
             UPDATE tutoria
