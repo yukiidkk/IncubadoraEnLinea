@@ -194,7 +194,7 @@ const obtenerProyectosPorUsuario = async (req, res) => {
       WHERE u.id_usuario = ?;
     `, [id_usuario]);
 
-    console.log("Resultado de la consulta del rol:", resultRol);
+      console.log("Resultado de la consulta del rol:", resultRol);
 
     // 🔸 Soporta tanto arreglo como objeto
     let rol = null;

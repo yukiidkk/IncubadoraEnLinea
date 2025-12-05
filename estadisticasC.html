@@ -10,75 +10,423 @@
   <link rel="stylesheet" href="css/estilos.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    :root {
+      --primary: #002f6c;
+      --primary-light: #4a82e2;
+      --secondary: #f8fafc;
+      --accent: #48bb78;
+      --warning: #ed8936;
+      --danger: #f56565;
+      --text: #2d3748;
+      --text-light: #718096;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      background-color: #f5f7fb;
-      color: #003366;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: var(--text);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
     }
 
-    .stats-container {
-      max-width: 1100px;
-      margin: 30px auto;
-      background-color: #e9f1ff;
-      padding: 25px 30px;
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: linear-gradient(135deg, var(--primary) 0%, #001f47 100%);
+      color: white;
+      padding: 15px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .logo span {
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 16px;
       border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
     }
 
-    h1 {
-      text-align: center;
-      color: #003366;
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-links a.active {
+      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-text {
+      font-weight: 500;
+    }
+
+    .user-icon {
+      background-color: var(--primary-light);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ===== CONTENEDOR PRINCIPAL ===== */
+    .main-container {
+      display: flex;
+      max-width: 1200px;
+      margin: 30px auto;
+      gap: 25px;
+      padding: 0 20px;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 260px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 25px 0;
+      flex-shrink: 0;
+    }
+
+    .sidebar h2 {
+      color: var(--primary);
+      padding: 0 20px 15px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--border);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      background-color: #f7fafc;
+      color: var(--primary);
+      border-left-color: var(--primary-light);
+    }
+
+    .sidebar a.active {
+      background-color: #edf2f7;
+      color: var(--primary);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ===== CONTENIDO PRINCIPAL ===== */
+    .content {
+      flex: 1;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .content:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-section h1 {
+      color: var(--primary);
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    /* ===== ESTADÍSTICAS RÁPIDAS ===== */
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
       margin-bottom: 30px;
     }
 
-    .chart-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--primary);
+      transition: all 0.3s ease;
     }
 
-    canvas {
-      max-width: 600px;
-      background-color: white;
-      border-radius: 8px;
-      padding: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
     }
 
-    .btn {
-      background-color: #2a62b8;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 14px;
+    .stat-card.warning {
+      border-left-color: var(--warning);
+    }
+
+    .stat-card.success {
+      border-left-color: var(--accent);
+    }
+
+    .stat-card.danger {
+      border-left-color: var(--danger);
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-light);
       font-weight: 500;
-      cursor: pointer;
-      transition: background 0.3s;
     }
 
-    .btn:hover {
-      background-color: #003366;
+    .stat-change {
+      font-size: 12px;
+      margin-top: 5px;
     }
 
-    .btn-container {
+    .positive {
+      color: var(--accent);
+    }
+
+    .negative {
+      color: var(--danger);
+    }
+
+    /* ===== GRÁFICAS ===== */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .chart-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .chart-container:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    .chart-header {
       display: flex;
-      justify-content: center;
-      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 20px;
     }
 
-    .mensaje-vacio {
-      background-color: #dfe9f9;
-      border: 1px solid #999;
-      border-radius: 5px;
-      padding: 15px;
+    .chart-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .chart-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      height: 300px;
+    }
+
+    /* ===== BOTONES ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+      color: white;
+      box-shadow: 0 2px 5px rgba(74, 130, 226, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(74, 130, 226, 0.4);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #f7fafc;
+      border-color: var(--primary-light);
+    }
+
+    .btn-sm {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+
+    .btn-icon {
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    /* ===== MENSAJE VACÍO ===== */
+    .empty-state {
       text-align: center;
-      font-size: 16px;
-      font-weight: bold;
-      color: #333;
-      width: 60%;
-      margin: 20px auto;
+      padding: 60px 30px;
+      background: var(--secondary);
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      color: var(--text-light);
+    }
+
+    .empty-state h3 {
+      color: var(--text);
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    .empty-state p {
+      color: var(--text-light);
+      max-width: 400px;
+      margin: 0 auto 20px;
+    }
+
+    /* ===== ACCIONES ===== */
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .main-container {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+      }
+      
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .stats-overview {
+        grid-template-columns: 1fr;
+      }
+      
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .chart-wrapper {
+        height: 250px;
+      }
+      
+      .actions {
+        flex-direction: column;
+      }
+      
+      .btn {
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -94,7 +442,7 @@
       <nav class="nav-links">
         <a href="#" id="btnHome">Home</a>
         <a href="#" id="btnProyectos">Proyectos</a>
-        <a href="reportes.html" class="active">Reportes</a>
+        <a href="reportesC.html" class="active">Reportes</a>
         <a href="#">Eventos</a>
       </nav>
 
@@ -106,136 +454,406 @@
   </header>
 
   <!-- ====== CONTENIDO PRINCIPAL ====== -->
-  <div class="stats-container">
-    <h1>Estadísticas</h1>
+  <div class="main-container">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <h2>Reportes</h2>
+      <a href="reporteEmprendedoresC.html">Reporte de Emprendedores</a>
+      <a href="reporteProyectosC.html">Reporte de Proyectos</a>
+      <a href="avancesProyectoC.html">Avances por Proyecto</a>
+      <a href="estadisticasC.html" class="active">Estadísticas</a>
+    </aside>
 
-    <div class="chart-section" id="contenedorGraficas">
-      <div>
-        <canvas id="barChart"></canvas>
-        <div class="btn-container"><button class="btn" id="btnActualizar1">Actualizar</button></div>
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <section class="content">
+      <div class="header-section">
+        <h1>📊 Dashboard de Estadísticas</h1>
+        <div class="header-actions">
+          <button class="btn btn-primary" onclick="cargarEstadisticas()">
+            🔄 Actualizar Todo
+          </button>
+        </div>
       </div>
 
-      <div>
-        <canvas id="pieChart"></canvas>
-        <div class="btn-container"><button class="btn" id="btnActualizar2">Actualizar</button></div>
+      <!-- Estadísticas rápidas -->
+      <div class="stats-overview" id="statsOverview">
+        <div class="stat-card">
+          <div class="stat-value" id="totalProyectos">0</div>
+          <div class="stat-label">Total de Proyectos</div>
+          <div class="stat-change positive">+12% vs último mes</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-value" id="proyectosActivos">0</div>
+          <div class="stat-label">Proyectos Activos</div>
+          <div class="stat-change positive">+5% vs último mes</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-value" id="proyectosPendientes">0</div>
+          <div class="stat-label">Proyectos Pendientes</div>
+          <div class="stat-change negative">-3% vs último mes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="totalEmprendedores">0</div>
+          <div class="stat-label">Emprendedores Registrados</div>
+          <div class="stat-change positive">+8% vs último mes</div>
+        </div>
       </div>
 
-      <div>
-        <canvas id="horizontalChart"></canvas>
-        <div class="btn-container"><button class="btn" id="btnActualizar3">Actualizar</button></div>
+      <!-- Gráficas -->
+      <div class="charts-grid" id="contenedorGraficas">
+        <!-- Gráfica de Barras - Proyectos Activos -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <div class="chart-title">📈 Proyectos Activos por Mes</div>
+            <div class="chart-actions">
+              <button class="btn btn-secondary btn-sm" onclick="actualizarGrafica('bar')">
+                🔄
+              </button>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Gráfica de Pie - Estado de Proyectos -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <div class="chart-title">🥧 Estado de Proyectos</div>
+            <div class="chart-actions">
+              <button class="btn btn-secondary btn-sm" onclick="actualizarGrafica('pie')">
+                🔄
+              </button>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Gráfica Horizontal - Proyectos por Carrera -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <div class="chart-title">📊 Proyectos por Carrera</div>
+            <div class="chart-actions">
+              <button class="btn btn-secondary btn-sm" onclick="actualizarGrafica('horizontal')">
+                🔄
+              </button>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="horizontalChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Gráfica de Línea - Tendencia -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <div class="chart-title">📈 Tendencia de Registros</div>
+            <div class="chart-actions">
+              <button class="btn btn-secondary btn-sm" onclick="actualizarGrafica('line')">
+                🔄
+              </button>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="lineChart"></canvas>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Mensaje cuando no hay datos -->
-    <div id="mensajeVacio" class="mensaje-vacio" style="display:none;">
-      No hay información para mostrar en “Proyectos”
-    </div>
+      <!-- Mensaje cuando no hay datos -->
+      <div id="mensajeVacio" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">📊</div>
+        <h3>No hay datos disponibles</h3>
+        <p>Actualmente no hay información estadística para mostrar.</p>
+        <button class="btn btn-primary" onclick="cargarEstadisticas()">
+          Intentar nuevamente
+        </button>
+      </div>
 
-    <div class="btn-container">
-      <button class="btn" id="btnRegresar">Regresar ←</button>
-    </div>
+      <div class="actions">
+        <button class="btn btn-secondary" id="btnRegresar">
+          ← Volver a Reportes
+        </button>
+        <button class="btn btn-primary" onclick="exportarReporte()">
+          📄 Exportar Reporte
+        </button>
+      </div>
+    </section>
   </div>
 
   <script>
-    // Variable para simular si hay datos
-    const hayDatos = true; // Cambia a false para probar el mensaje vacío
-
     const contenedorGraficas = document.getElementById('contenedorGraficas');
     const mensajeVacio = document.getElementById('mensajeVacio');
+    const statsOverview = document.getElementById('statsOverview');
 
-    if (!hayDatos) {
-      contenedorGraficas.style.display = 'none';
-      mensajeVacio.style.display = 'block';
+    let barChart, pieChart, horizontalChart, lineChart;
+
+    // Colores para las gráficas
+    const chartColors = {
+      primary: '#4a82e2',
+      secondary: '#48bb78',
+      warning: '#ed8936',
+      danger: '#f56565',
+      lightBlue: '#a0bfff',
+      lightGreen: '#9ae6b4',
+      lightOrange: '#fbd38d'
+    };
+
+    // =========================
+    //   Cargar datos reales
+    // =========================
+    async function cargarEstadisticas() {
+      try {
+        mostrarCargando();
+        
+        const API_URL = "http://localhost:3001/api/reportes/estadisticas";
+        const res = await fetch(API_URL);
+        const data = await res.json();
+
+        console.log("Datos recibidos:", data);
+
+        const sinDatos = !data || (
+          (!data.barras || data.barras.length === 0) &&
+          (!data.pie || data.pie.length === 0) &&
+          (!data.horizontal || data.horizontal.length === 0)
+        );
+
+        if (sinDatos) {
+          contenedorGraficas.style.display = "none";
+          statsOverview.style.display = "none";
+          mensajeVacio.style.display = "block";
+          return;
+        }
+
+        mensajeVacio.style.display = "none";
+        contenedorGraficas.style.display = "grid";
+        statsOverview.style.display = "grid";
+
+        // Actualizar estadísticas rápidas
+        actualizarStatsRapidas(data);
+        
+        // Actualizar gráficas
+        actualizarGraficas(data);
+
+      } catch (err) {
+        console.error("Error obteniendo estadísticas:", err);
+        contenedorGraficas.style.display = "none";
+        statsOverview.style.display = "none";
+        mensajeVacio.innerHTML = `
+          <div class="empty-state-icon">⚠️</div>
+          <h3>Error de conexión</h3>
+          <p>No se pudieron cargar las estadísticas. Verifique su conexión.</p>
+          <button class="btn btn-primary" onclick="cargarEstadisticas()">
+            Reintentar
+          </button>
+        `;
+        mensajeVacio.style.display = "block";
+      }
     }
 
-    // === Gráfica de barras ===
-    const ctx1 = document.getElementById('barChart').getContext('2d');
-    const barChart = new Chart(ctx1, {
-      type: 'bar',
-      data: {
-        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
-        datasets: [{
-          label: 'Proyectos activos',
-          data: [5, 8, 6, 10, 12, 9],
-          backgroundColor: '#2a62b8'
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { beginAtZero: true, ticks: { color: '#003366' } },
-          x: { ticks: { color: '#003366' } }
+    // =========================
+    //   Actualizar estadísticas rápidas
+    // =========================
+    function actualizarStatsRapidas(data) {
+      // Estos valores deberían venir de tu API
+      // Por ahora usamos valores calculados de las gráficas
+      const totalProyectos = data.barras ? data.barras.reduce((a, b) => a + b, 0) : 0;
+      const proyectosActivos = data.pie ? data.pie[1] || 0 : 0;
+      const proyectosPendientes = data.pie ? data.pie[2] || 0 : 0;
+      const totalEmprendedores = data.horizontal ? data.horizontal.reduce((a, b) => a + b, 0) : 0;
+
+      document.getElementById('totalProyectos').textContent = totalProyectos;
+      document.getElementById('proyectosActivos').textContent = proyectosActivos;
+      document.getElementById('proyectosPendientes').textContent = proyectosPendientes;
+      document.getElementById('totalEmprendedores').textContent = totalEmprendedores;
+    }
+
+    // =========================
+    //   Actualizar gráficas
+    // =========================
+    function actualizarGraficas(data) {
+      // Gráfica de BARRAS - Proyectos por Mes
+      const ctx1 = document.getElementById('barChart').getContext('2d');
+      if (barChart) barChart.destroy();
+      barChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: data.horizontalLabels || ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Proyectos Activos',
+            data: data.barras || [12, 19, 8, 15, 12, 10],
+            backgroundColor: chartColors.primary,
+            borderRadius: 6,
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              titleFont: { size: 12 },
+              bodyFont: { size: 12 }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: 'rgba(0, 0, 0, 0.1)' }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
         }
-      }
-    });
+      });
 
-    // === Gráfica circular ===
-    const ctx2 = document.getElementById('pieChart').getContext('2d');
-    const pieChart = new Chart(ctx2, {
-      type: 'pie',
-      data: {
-        labels: ['Finalizados', 'En curso', 'Pendientes'],
-        datasets: [{
-          data: [30, 50, 20],
-          backgroundColor: ['#003366', '#2a62b8', '#a0bfff']
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'bottom', labels: { color: '#003366' } }
+      // Gráfica de PIE - Estado de Proyectos
+      const ctx2 = document.getElementById('pieChart').getContext('2d');
+      if (pieChart) pieChart.destroy();
+      pieChart = new Chart(ctx2, {
+        type: 'pie',
+        data: {
+          labels: ['Finalizados', 'Aprobado', 'Pendientes'],
+          datasets: [{
+            data: data.pie || [8, 15, 5],
+            backgroundColor: [
+              chartColors.secondary,
+              chartColors.primary,
+              chartColors.warning
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 15,
+                usePointStyle: true
+              }
+            }
+          }
         }
-      }
-    });
+      });
 
-    // === Gráfica horizontal ===
-    const ctx3 = document.getElementById('horizontalChart').getContext('2d');
-    const horizontalChart = new Chart(ctx3, {
-      type: 'bar',
-      data: {
-        labels: ['Sistemas', 'Industrial', 'Mecatrónica', 'Gestión', 'Química'],
-        datasets: [{
-          label: 'Proyectos por carrera',
-          data: [12, 7, 9, 5, 6],
-          backgroundColor: '#a0bfff'
-        }]
-      },
-      options: {
-        responsive: true,
-        indexAxis: 'y',
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { ticks: { color: '#003366' } },
-          x: { ticks: { color: '#003366' } }
+      // Gráfica HORIZONTAL - Proyectos por Carrera
+      const ctx3 = document.getElementById('horizontalChart').getContext('2d');
+      if (horizontalChart) horizontalChart.destroy();
+      horizontalChart = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+          labels: data.carreras || ['Sistemas', 'Industrial', 'Mecatrónica', 'Gestión', 'Química'],
+          datasets: [{
+            label: 'Proyectos por carrera',
+            data: data.horizontal || [8, 12, 6, 9, 4],
+            backgroundColor: chartColors.lightBlue,
+            borderRadius: 6,
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              grid: { color: 'rgba(0, 0, 0, 0.1)' }
+            },
+            y: {
+              grid: { display: false }
+            }
+          }
         }
-      }
-    });
+      });
 
-    // === Botones de actualización (simulados) ===
-    document.querySelectorAll('.btn').forEach(btn => {
-      if (btn.id.includes('Actualizar')) {
-        btn.addEventListener('click', () => {
-          alert('Simulación: Se actualizarían los datos de la gráfica.');
-        });
-      }
-    });
+      // Gráfica de LÍNEA - Tendencia
+      const ctx4 = document.getElementById('lineChart').getContext('2d');
+      if (lineChart) lineChart.destroy();
+      lineChart = new Chart(ctx4, {
+        type: 'line',
+        data: {
+          labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Nuevos Emprendedores',
+            data: [5, 8, 12, 6, 15, 10],
+            borderColor: chartColors.secondary,
+            backgroundColor: 'rgba(72, 187, 120, 0.1)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: 'rgba(0, 0, 0, 0.1)' }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
 
-    // === Botón regresar ===
-    document.getElementById('btnRegresar').addEventListener('click', () => {
-      window.location.href = 'reportesC.html';
-    });
+    // =========================
+    //   Funciones auxiliares
+    // =========================
+    function actualizarGrafica(tipo) {
+      // En una implementación real, aquí harías una llamada específica para actualizar esa gráfica
+      cargarEstadisticas();
+    }
 
-    // === Navegación por rol ===
+    function exportarReporte() {
+      alert('📊 Función de exportación de reporte estadístico.\nEn una implementación real, esto generaría un PDF con todas las estadísticas.');
+    }
+
+    function mostrarCargando() {
+      // Podrías agregar un indicador de carga aquí
+    }
+
+    // =========================
+    //   Event Listeners
+    // =========================
+    //document.getElementById('btnRegresar').addEventListener('click', () => {
+      //window.location.href = 'reporteEmprendedoresC.html';
+    //});
+
+    // Navegación
     const rol = localStorage.getItem('rolUsuario') || 'coordinador';
-    document.getElementById('btnHome').addEventListener('click', e => {
+    document.getElementById('btnHome').addEventListener('click', (e) => {
       e.preventDefault();
       window.location.href = rol === 'emprendedor' ? 'inicioE.html' : 'inicioC.html';
     });
-    document.getElementById('btnProyectos').addEventListener('click', e => {
+    
+    document.getElementById('btnProyectos').addEventListener('click', (e) => {
       e.preventDefault();
       window.location.href = `proyectos.html?rol=${rol}`;
     });
+
+    // Cargar estadísticas al iniciar
+    document.addEventListener('DOMContentLoaded', cargarEstadisticas);
   </script>
 </body>
 </html>
