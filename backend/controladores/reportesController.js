@@ -1,7 +1,7 @@
 const ExcelJS = require("exceljs");
-const { query } = require("../config/database");
+const { query, pool } = require("../config/database");
 
-// Obtener avances por proyecto específico
+// Obtener avances por proyecto específico 
 const getAvancesPorProyecto = async (req, res) => {
     try {
         const { nombreProyecto } = req.query;
@@ -64,6 +64,8 @@ const getAvancesPorProyecto = async (req, res) => {
     }
 };
 
+
+
 // Obtener lista de proyectos para el coordinador
 const getProyectosCoordinador = async (req, res) => {
     try {
@@ -122,7 +124,9 @@ const agregarComentarioAvance = async (req, res) => {
 // Actualizar progreso del proyecto
 const actualizarProgresoProyecto = async (req, res) => {
     try {
-        const { id_proyecto, progreso } = req.body;
+        const { id_proyecto } = req.params;
+        const { progreso } = req.body;
+
 
         if (progreso < 0 || progreso > 100) {
             return res.status(400).json({
@@ -323,92 +327,9 @@ ORDER BY per.nombre_proyecto DESC
 
 
 
-
-const getProyectosDeUsuario = async (req, res) => {
-  try {
-    const { idUsuario } = req.params;
-
-    const sql = `
-      SELECT id_proyecto, nombre_proyecto, estatus, progreso
-      FROM proyecto
-      WHERE id_usuario = ?
-    `;
-
-    const rows = await query(sql, [idUsuario]);
-
-    res.json({ success: true, data: rows });
-
-  } catch (e) {
-    res.status(500).json({ success: false, message: "Error interno" });
-  }
-};
-
-const getProyecto = async (req, res) => {
-  try {
-    const { idProyecto } = req.params;
-
-    const sql = `
-      SELECT *
-      FROM proyecto
-      WHERE id_proyecto = ?
-    `;
-
-    const rows = await query(sql, [idProyecto]);
-
-    res.json({ success: true, data: rows[0] });
-
-  } catch (e) {
-    res.status(500).json({ success: false, message: "Error interno" });
-  }
-};
-
-
-const getAvancesProyecto = async (req, res) => {
-  try {
-    const { idProyecto } = req.params;
-
-    const sql = `
-      SELECT id_avances, hitos, notas, fecha_creacion
-      FROM avances
-      WHERE id_proyecto = ?
-      ORDER BY fecha_creacion DESC
-    `;
-
-    const rows = await query(sql, [idProyecto]);
-
-    res.json({ success: true, data: rows });
-
-  } catch (e) {
-    res.status(500).json({ success: false, message: "Error interno" });
-  }
-};
-
-
-const crearAvance = async (req, res) => {
-  try {
-    const { idProyecto } = req.params;
-    const { hitos, notas } = req.body;
-
-    const sql = `
-      INSERT INTO avances (id_proyecto, hitos, notas, fecha_creacion)
-      VALUES (?, ?, ?, CURDATE())
-    `;
-
-    await query(sql, [idProyecto, hitos, notas || ""]);
-
-    res.json({ success: true, message: "Avance registrado" });
-
-  } catch (e) {
-    res.status(500).json({ success: false, message: "Error interno" });
-  }
-};
-
-
-
-
 const getEstadisticas = async (req, res) => {
   try {
-    const barras = await query(`
+    const barrasQuery = `
       SELECT 
         MONTH(fecha_inicio) AS mes,
         COUNT(*) AS total
@@ -416,17 +337,17 @@ const getEstadisticas = async (req, res) => {
       WHERE YEAR(fecha_inicio) = YEAR(CURDATE())
       GROUP BY MONTH(fecha_inicio)
       ORDER BY mes;
-    `);
-     
-    const pie = await query(`
+    `;
+
+    const pieQuery = `
       SELECT 
         estatus,
         COUNT(*) AS total
       FROM proyecto
       GROUP BY estatus;
-    `);
+    `;
 
-    const horizontal = await query(`
+    const horizontalQuery = `
       SELECT 
         e.nombre_especialidad AS especialidad,
         COUNT(p.id_proyecto) AS total
@@ -436,33 +357,272 @@ const getEstadisticas = async (req, res) => {
       JOIN especialidad e ON pe.id_especialidad = e.id_especialidad
       GROUP BY e.nombre_especialidad
       ORDER BY total DESC;
-    `);
+    `;
+    
+    const totalEmprendedoresQuery = `
+        SELECT COUNT(*) AS total
+        FROM usuarios u
+         INNER JOIN rol r ON u.id_rol = r.id_rol
+         WHERE r.nombre_rol = 'Emprendedor';
+    `;
 
-    // Transformar formatos a los que consume Chart.js
+    // === CONSULTAS ===
+    const barras = await query(barrasQuery);
+    const pie = await query(pieQuery);
+    const horizontal = await query(horizontalQuery);
+    const totalEmprendedores = await query(totalEmprendedoresQuery);
+
+    console.log("DEBUG PIE ===>", pie);
+    console.log("DEBUG horizontal ===>", horizontal);
+
+    // === FORZAR A ARREGLO SI ES OBJETO ÚNICO ===
+    const barrasArray = Array.isArray(barras) ? barras : [barras];
+    const pieArray = Array.isArray(pie) ? pie : [pie];
+    const horizontalArray = Array.isArray(horizontal) ? horizontal : [horizontal];
+
+    // === FORMATEO PARA CHART.JS ===
+
+    // BARRAS
     const barrasData = new Array(12).fill(0);
-    barras.forEach(f => barrasData[f.mes - 1] = f.total);
+    barrasArray.forEach(f => barrasData[f.mes - 1] = f.total);
 
+    // PIE
     const pieData = [
-      pie.find(x => x.estatus === "Finalizado")?.total || 0,
-      pie.find(x => x.estatus === "Aprobado")?.total || 0,
-      pie.find(x => x.estatus === "Pendiente")?.total || 0
+      pieArray.find(x => x.estatus === "Finalizado")?.total || 0,
+      pieArray.find(x => x.estatus === "Aprobado" || x.estatus === "En curso")?.total || 0,
+      pieArray.find(x => x.estatus === "Pendiente")?.total || 0
     ];
 
-    const horizontalLabels = horizontal.map(x => x.especialidad);
-    const horizontalData = horizontal.map(x => x.total);
+    // HORIZONTAL
+    const horizontalLabels = horizontalArray.map(x => x.especialidad);
+    const horizontalData = horizontalArray.map(x => x.total);
+ 
+
+    //const totalEmprendedores = totalEmprendedoresResult.total || 0;
+
 
     res.json({
-      barras: barrasData.slice(0, 6), // Ene-Jun (tu diseño actual)
+      barras: barrasData.slice(0, 6),
       pie: pieData,
       horizontal: horizontalData,
-      horizontalLabels
+      horizontalLabels,
+      totalEmprendedores: totalEmprendedores[0].total
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("ERROR en estadísticas:", err);
     res.status(500).json({ error: "Error obteniendo estadísticas" });
   }
 };
+
+
+
+
+//EMPRENDEDOOOOOOR
+
+const buscarProyectoPorNombre = async (req, res) => {
+  try {
+    const { nombre } = req.params;
+    const id_usuario = req.query.id_usuario || null; // opcional
+
+    let sql = `
+      SELECT id_proyecto, id_usuario, nombre_proyecto, fecha_inicio, estatus, progreso, descripcion
+      FROM proyecto
+      WHERE nombre_proyecto LIKE ?
+    `;
+    const params = [`%${nombre}%`];
+
+    if (id_usuario-usuario) {
+      sql += ' AND id_usuario = ?';
+      params.push(id_usuario);
+    }
+
+    const proyectos = await query(sql, params);
+
+    if (proyectos.length === 0) {
+      return res.json({ success: false, message: "No se encontraron proyectos con ese nombre" });
+    }
+
+    res.json({ success: true, data: proyectos });
+  } catch (error) {
+    console.error("Error al buscar proyecto:", error);
+    res.status(500).json({ success: false, message: "Error en el servidor" });
+  }
+};
+
+
+const crearComentario = async (req, res) => {
+  try {
+    const { id_proyecto } = req.params;
+    const { comentario, id_usuario_emisor } = req.body; // opcional id del que envía
+
+    if (!comentario || comentario.trim() === '') {
+      return res.status(400).json({ success: false, message: "Comentario vacío" });
+    }
+
+    const sql = `
+      INSERT INTO avances (id_proyecto, hitos, notas, fecha_creacion)
+      VALUES (?, 'Comentario Emprendedor', ?, CURDATE())
+    `;
+    await query(sql, [id_proyecto, comentario]);
+
+    res.json( { success: true, message: "Comentario enviado al coordinador" });
+  } catch (err) {
+    console.error("Error en crearComentario:", err);
+    res.status(500).json({ success: false, message: "Error interno" });
+  }
+};
+
+const getProyectosFiltrados = async (req, res) => {
+    try {
+        const { nombre } = req.query;
+
+        let sql = "SELECT * FROM proyecto";
+
+        if (nombre) {
+            sql += " WHERE nombre_proyecto LIKE ?";
+        }
+
+        const [rows] = await query(sql, [`%${nombre}%`]);
+
+        res.json({ success: true, data: rows });
+
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+const getProyectoPorId = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const sql = `
+            SELECT p.id_proyecto, p.nombre_proyecto, p.fecha_inicio,
+                   p.estatus, p.progreso, p.descripcion,
+                   per.nombre AS nombre_emprendedor, per.apellido
+            FROM proyecto p
+            INNER JOIN usuarios u ON p.id_usuario = u.id_usuario
+            INNER JOIN persona per ON u.id_persona = per.id_persona
+            WHERE p.id_proyecto = ?
+        `;
+
+        const rows = await query(sql, [id]);
+
+        if (rows.length === 0) {
+            return res.json({
+                success: false,
+                message: "Proyecto no encontrado"
+            });
+        }
+
+        res.json({
+            success: true,
+            data: rows[0]
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Error interno del servidor"
+        });
+    }
+};
+
+const crearAvance = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { hitos, notas } = req.body;
+
+        const sql = `
+            INSERT INTO avances(id_proyecto, hitos, notas)
+            VALUES (?, ?, ?)
+        `;
+
+        await query(sql, [id, hitos, notas]);
+
+        res.json({ success: true, message: "Avance creado" });
+
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ success: false, message: "Error interno" });
+    }
+};
+
+
+const getProyectosDeUsuario = async (req, res) => {
+    try {
+        const { id_usuario } = req.params;
+
+        const sql = `
+            SELECT 
+                p.id_proyecto,
+                p.nombre_proyecto,
+                p.fecha_inicio,
+                p.estatus,
+                p.progreso,
+                p.descripcion,
+                per.nombre,
+                per.apellido,
+                u.id_usuario
+            FROM proyecto p
+            INNER JOIN usuarios u ON p.id_usuario = u.id_usuario
+            INNER JOIN persona per ON u.id_persona = per.id_persona
+            WHERE p.id_usuario = ?
+            ORDER BY p.fecha_inicio DESC
+        `;
+
+        const proyectos = await query(sql, [id_usuario]);
+
+        if (!proyectos || proyectos.length === 0) {
+            return res.json({
+                success: false,
+                message: "Este usuario no tiene proyectos registrados"
+            });
+        }
+
+        res.json({
+            success: true,
+            data: proyectos
+        });
+
+    } catch (error) {
+        console.error("Error en getProyectosDeUsuario:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error interno del servidor"
+        });
+    }
+};
+
+//para el emprendedor
+const getAvancesProyectoEmprendedor = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const query = `
+            SELECT a.*, u.nombre_usuario
+            FROM avances a
+            INNER JOIN usuarios u ON u.id_usuario = a.id_usuario
+            WHERE a.id_proyecto = ?
+        `;
+
+       // const [rows] = await query(query, [id]);
+       const [rows] = await query(sql, [id]);
+        res.json({
+            success: true,
+            data: rows
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Error interno del servidor"
+        });
+    }
+};
+
+
 
 
 module.exports = {
@@ -473,11 +633,14 @@ module.exports = {
     generarReporteExcel,
     getReporteEmprendedores,
     getReporteProyectos,
-    getProyectosDeUsuario,
-    getProyecto,
     getEstadisticas,
-    getAvancesProyecto,
-    crearAvance
+    getProyectosFiltrados,
+    crearComentario,
+    getProyectoPorId,
+    buscarProyectoPorNombre,
+    crearAvance,
+    getProyectosDeUsuario,
+    getAvancesProyectoEmprendedor
     
 };
 

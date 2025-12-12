@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Avances por Proyecto — Centro de Emprendurismo ITS</title>
+  <title>Mis Proyectos — Centro de Emprendurismo ITS</title>
   <link rel="shortcut icon" href="images/logoITS.png" type="image/x-icon">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/estilos.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-     :root {
+    :root {
       --primary: #002f6c;
       --primary-light: #4a82e2;
       --secondary: #f8fafc;
       --accent: #48bb78;
+      --accent-light: #9ae6b4;
+      --warning: #ed8936;
       --text: #2d3748;
       --text-light: #718096;
       --border: #e2e8f0;
@@ -102,7 +104,7 @@
     }
 
     .user-icon {
-      background-color: var(--primary-light);
+      background-color: var(--accent);
       width: 36px;
       height: 36px;
       border-radius: 50%;
@@ -163,7 +165,7 @@
       font-weight: 600;
     }
 
-        /* ===== CONTENIDO PRINCIPAL ===== */
+    /* ===== CONTENIDO PRINCIPAL ===== */
     .content {
       flex: 1;
       background: white;
@@ -181,251 +183,376 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
       padding-bottom: 20px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
     }
 
     .header-section h1 {
       color: var(--primary);
       font-size: 28px;
       font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     /* ===== BÚSQUEDA ===== */
-    .busqueda {
+    .search-container {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 15px;
+      margin-bottom: 25px;
+      background: var(--secondary);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
     }
 
-    .busqueda input {
-      padding: 12px 16px;
-      width: 320px;
+    .search-input {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-input input {
+      width: 100%;
+      padding: 14px 20px 14px 45px;
       border: 2px solid var(--border);
-      border-radius: 8px;
-      font-size: 14px;
+      border-radius: 10px;
+      font-size: 15px;
       transition: all 0.3s ease;
+      background: white url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23718096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>') no-repeat 15px center;
     }
 
-    .busqueda input:focus {
+    .search-input input:focus {
       outline: none;
       border-color: var(--primary-light);
       box-shadow: 0 0 0 3px rgba(74, 130, 226, 0.1);
     }
 
+    /* ===== BOTONES ===== */
     .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
       background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
       color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(74, 130, 226, 0.2);
+      box-shadow: 0 2px 5px rgba(74, 130, 226, 0.3);
     }
 
-    .btn:hover {
+    .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(74, 130, 226, 0.3);
+      box-shadow: 0 4px 8px rgba(74, 130, 226, 0.4);
     }
 
-    .btn:active {
-      transform: translateY(0);
+    .btn-success {
+      background: linear-gradient(135deg, var(--accent) 0%, #2f855a 100%);
+      color: white;
+      box-shadow: 0 2px 5px rgba(72, 187, 120, 0.3);
     }
 
-    /* ===== CONTENEDORES PRINCIPALES ===== */
-    .contenedor-avances {
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(72, 187, 120, 0.4);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #f7fafc;
+      border-color: var(--primary-light);
+    }
+
+    /* ===== LISTA DE PROYECTOS ===== */
+    .proyectos-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
       margin-bottom: 30px;
     }
 
-    .panel-avances {
+    .proyecto-card {
       background: white;
-      padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      box-shadow: var(--shadow);
       border: 1px solid var(--border);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: all 0.3s ease;
+      cursor: pointer;
     }
 
-    .panel-avances:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    .proyecto-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary-light);
     }
 
-    .panel-avances h3 {
+    .proyecto-card.active {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+    }
+
+    .proyecto-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+
+    .proyecto-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    .proyecto-status {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-activo {
+      background: var(--accent-light);
+      color: #22543d;
+    }
+
+    .status-pendiente {
+      background: #fed7d7;
+      color: #742a2a;
+    }
+
+    .status-finalizado {
+      background: #c6f6d5;
+      color: #22543d;
+    }
+
+    .proyecto-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .proyecto-info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    .progreso-bar {
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progreso-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-light), var(--primary));
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    .progreso-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      text-align: right;
+    }
+
+    /* ===== DETALLE DEL PROYECTO ===== */
+    .detalle-proyecto {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      margin-top: 30px;
+      border: 1px solid var(--border);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .detalle-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .detalle-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    .detalle-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .detalle-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+    }
+
+    .detalle-info {
+      background: var(--secondary);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .info-item {
+      margin-bottom: 15px;
+    }
+
+    .info-label {
+      font-size: 12px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      font-size: 16px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ===== FORMULARIO DE HITOS ===== */
+    .form-section {
+      background: var(--secondary);
+      padding: 25px;
+      border-radius: 12px;
+      margin: 25px 0;
+    }
+
+    .form-title {
+      font-size: 18px;
+      font-weight: 600;
       color: var(--primary);
       margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(74, 130, 226, 0.1);
+    }
+
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* ===== LISTA DE HITOS ===== */
+    .hitos-list {
+      margin-top: 25px;
+    }
+
+    .hitos-title {
       font-size: 20px;
       font-weight: 600;
-      border-bottom: 2px solid var(--primary-light);
-      padding-bottom: 10px;
-    }
-
-    .panel-avances h4 {
       color: var(--primary);
-      margin: 25px 0 15px 0;
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    /* ===== GRÁFICA ===== */
-    .grafica-progreso {
-      text-align: center;
-      margin: 20px 0;
-      padding: 20px;
-      background: var(--secondary);
-      border-radius: 8px;
-    }
-
-    .grafica-progreso canvas {
-      max-width: 180px;
-      margin: 0 auto;
-    }
-
-    /* ===== INFORMACIÓN DEL PROYECTO ===== */
-    .info-proyecto {
-      background: var(--secondary);
-      padding: 20px;
-      border-radius: 8px;
-      margin: 20px 0;
-    }
-
-    .info-proyecto p {
-      margin: 8px 0;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .info-proyecto strong {
-      color: var(--primary);
-    }
-
-    /* ===== HITOS ===== */
-    .lista-hitos {
-      margin: 15px 0;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .hito-item {
-      padding: 16px;
-      margin: 10px 0;
       background: white;
       border-left: 4px solid var(--primary-light);
-      border-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
       transition: all 0.3s ease;
     }
 
     .hito-item:hover {
       transform: translateX(5px);
-      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    .hito-completado {
-      border-left-color: var(--accent);
-      background: #f0fff4;
+    .hito-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
     }
 
-    .hito-item strong {
+    .hito-title {
+      font-size: 16px;
+      font-weight: 600;
       color: var(--primary);
-      font-size: 14px;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .hito-item p {
-      color: var(--text);
-      font-size: 13px;
-      margin: 5px 0;
-      line-height: 1.4;
-    }
-
-    .hito-item small {
-      color: var(--text-light);
-      font-size: 12px;
-    }
-
-    /* ===== COMENTARIOS ===== */
-    textarea {
-      width: 100%;
-      height: 120px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      resize: none;
-      padding: 12px;
-      font-size: 14px;
-      font-family: inherit;
-      transition: all 0.3s ease;
-      margin-bottom: 15px;
-    }
-
-    textarea:focus {
-      outline: none;
-      border-color: var(--primary-light);
-      box-shadow: 0 0 0 3px rgba(74, 130, 226, 0.1);
-    }
-
-    /* ===== HISTORIAL ===== */
-    .historial-avances {
-      max-height: 200px;
-      overflow-y: auto;
-      margin: 15px 0;
-    }
-
-    .avance-item {
-      padding: 12px 15px;
-      margin: 8px 0;
-      background: var(--secondary);
-      border-radius: 6px;
-      border-left: 3px solid #cbd5e0;
-    }
-
-    .avance-item p {
       margin: 0;
-      font-size: 13px;
-      line-height: 1.4;
     }
 
-    .avance-item strong {
-      color: var(--primary);
-    }
-
-    .avance-item small {
+    .hito-date {
+      font-size: 12px;
       color: var(--text-light);
-      font-size: 11px;
+      white-space: nowrap;
     }
 
-    /* ===== ACCIONES ===== */
-    .acciones-panel {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    .acciones-panel .btn {
-      flex: 1;
-      min-width: 140px;
-      text-align: center;
-    }
-
-    .acciones-footer {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 40px;
-      padding-top: 30px;
-      border-top: 1px solid var(--border);
-    }
-
-    .acciones-footer .btn {
-      padding: 14px 28px;
-      font-size: 15px;
+    .hito-content {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 10px 0;
     }
 
     /* ===== MENSAJES ===== */
@@ -436,9 +563,9 @@
       padding: 40px 30px;
       border-radius: 12px;
       margin: 40px auto;
-      width: 70%;
+      width: 100%;
       font-weight: 500;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow);
       border: 1px solid #81e6d9;
     }
 
@@ -449,56 +576,77 @@
       padding: 30px;
       border-radius: 12px;
       margin: 30px auto;
-      width: 70%;
+      width: 100%;
       font-weight: 500;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow);
       border: 1px solid #fc8181;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 50px 30px;
+      background: var(--secondary);
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      color: var(--text-light);
+    }
+
+    .empty-state h3 {
+      color: var(--text);
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .empty-state p {
+      color: var(--text-light);
+      max-width: 400px;
+      margin: 0 auto;
     }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
-      .contenedor-avances {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-      
-      .header-section {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-      }
-      
-      .busqueda {
-        width: 100%;
-      }
-      
-      .busqueda input {
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 768px) {
       .main-container {
         flex-direction: column;
       }
       
       .sidebar {
         width: 100%;
-        height: auto;
       }
       
-      .content {
-        padding: 20px;
+      .detalle-grid {
+        grid-template-columns: 1fr;
       }
-      
-      .acciones-footer {
+    }
+
+    @media (max-width: 768px) {
+      .header-section {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        gap: 15px;
       }
       
-      .acciones-footer .btn {
+      .search-container {
+        flex-direction: column;
+      }
+      
+      .proyectos-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .detalle-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .detalle-actions {
         width: 100%;
-        max-width: 300px;
+        justify-content: flex-start;
       }
     }
   </style>
@@ -515,10 +663,10 @@
       <nav class="nav-links">
         <a href="inicioE.html" id="btnHome">Home</a>
         <a href="proyectos.html" id="btnProyectos">Proyectos</a>
-        <a href="avancesMiProyecto.html" class="active">Reportes</a>
+        <a href="avancesMiProyecto.html" class="active">Mis Proyectos</a>
       </nav>
       <div class="user-info">
-        <span class="user-text">Coordinador</span>
+        <span class="user-text">Emprendedor</span>
         <div class="user-icon">👤</div>
       </div>
     </div>
@@ -526,384 +674,445 @@
 
   <div class="main-container">
     <!-- ===== SIDEBAR ===== -->
-     <aside class="sidebar">
-      <h2>Reportes</h2>
-      <a href="avancesMiProyecto.html" class="active">Avances de Mi Proyecto</a>
-      
+    <aside class="sidebar">
+      <h2>Mis Proyectos</h2>
+      <a href="avancesMiProyecto.html" class="active">📊 Avances de Mi Proyecto</a>
+      <a href="misReportesE.html">📈 Mis Reportes</a>
+      <a href="comentariosE.html">💬 Comentarios</a>
     </aside>
+
     <!-- ===== CONTENIDO PRINCIPAL ===== -->
     <section class="content">
       <div class="header-section">
-        <h1>Avances de Mi Proyecto</h1>
-        <div class="busqueda">
-          <input type="text" id="inputBusqueda" placeholder="Buscar proyecto por nombre...">
-          <button class="btn" id="btnBuscar">Buscar Proyecto</button>
+        <h1>📈 Mis Proyectos y Avances</h1>
+        <div class="search-container">
+          <div class="search-input">
+            <input type="text" id="inputBusqueda" placeholder="Buscar entre tus proyectos...">
+          </div>
+          <button class="btn btn-primary" id="btnBuscar">🔍 Buscar</button>
         </div>
       </div>
 
       <div id="contenedor">
         <div class="mensaje-info">
-          🔍 Ingresa el nombre de Tú proyecto para consultar sus avances y progreso
+          <div style="font-size: 24px; margin-bottom: 10px;">👋 ¡Bienvenido!</div>
+          <p>Carga tus proyectos o selecciona uno para ver sus avances y agregar nuevos hitos.</p>
         </div>
       </div>
-  </div>  
+    </section>
+  </div>
+
   <script>
-    const API = "http://localhost:3001/api/proyectos";
-    async function cargarMisProyectos(idUsuario) {
-      const res = await fetch(`${API}/usuario/${idUsuario}`);
-      const data = await res.json();
-    return data.data; 
-}
-    async function cargarProyecto(idProyecto) {
-    const res = await fetch(`${API}/${idProyecto}`);
-    const data = await res.json();
-    mostrarProyecto(data.data);
-}
-    async function cargarAvances(idProyecto) {
-    const res = await fetch(`${API}/${idProyecto}/avances`);
-    const data = await res.json();
-    mostrarAvances(data.data);
-}
+    const id_usuario = localStorage.getItem("id_usuario");
 
-async function cargarAvances(idProyecto) {
-    const res = await fetch(`${API}/${idProyecto}/avances`);
-    const data = await res.json();
-    mostrarAvances(data.data);
-}
-
+    const API_BASE = "http://localhost:3001/api/reportes/proyectos";
 
     const contenedor = document.getElementById('contenedor');
     const inputBusqueda = document.getElementById('inputBusqueda');
     const btnBuscar = document.getElementById('btnBuscar');
 
-    // Estado inicial
-    mostrarMensaje('Ingresa el nombre de tú proyecto para ver sus avances', 'info');
+    let proyectosUsuario = [];
+    let proyectoSeleccionado = null;
 
-    btnBuscar.addEventListener('click', buscarProyecto);
-    inputBusqueda.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') buscarProyecto();
-    });
+      ;
 
-    // Resto de tus funciones JavaScript permanecen igual...
-    async function buscarProyecto() {
-       try {
-        mostrarCargando();
+   
 
-        const response = await fetch(ENDPOINTS.miProyecto);
-        const data = await response.json();
+    // -------------------- INICIO --------------------
+    async function init() {
+        try {
+            mostrarCargando("Cargando tus proyectos...");
 
-        if (data.success) {
-            mostrarAvancesProyecto(data.data);
-        } else {
-            mostrarMensaje(data.message || 'Proyecto no encontrado', 'error');
+            const res = await fetch(`${API_BASE}/usuario/${id_usuario}`);
+            const json = await res.json();
+
+          //const proyectos = await getProyectosDeUsuario();
+            //const aprobados = proyectos.filter(p => p.estado === "aprobado")
+            //setProyectos(aprobados);
+            if (!json.success || !json.data || json.data.length === 0) {
+                mostrarMensajeSinProyectos();
+                return;
+            }
+
+            proyectosUsuario = json.data;
+            mostrarListaProyectos(proyectosUsuario);
+
+        } catch (err) {
+            console.error(err);
+            mostrarMensaje("❌ Error de conexión con el servidor", "error");
         }
-    } catch (error) {
-        console.error('Error al buscar proyecto:', error);
-        mostrarMensaje('Error al conectar con el servidor', 'error');
-    }
     }
 
-    function mostrarAvancesProyecto(datos) {
-        const { proyecto, avances, tareas } = datos;
-        
+
+
+    // -------------------- LISTA DE PROYECTOS --------------------
+    function mostrarListaProyectos(lista) {
+        if (!lista || lista.length === 0) {
+            mostrarMensajeSinProyectos();
+            return;
+        }
+
         contenedor.innerHTML = `
-            <div class="contenedor-avances">
-                <div class="panel-avances">
-                    <h3> Progreso del Proyecto: ${proyecto.nombre_proyecto}</h3>
-                    
-                    <div class="grafica-progreso">
-                        <canvas id="graficaProgreso"></canvas>
-                    </div>
-                    
-                    <div class="info-proyecto">
-                        <p><strong>👤 Emprendedor:</strong> ${proyecto.nombre_emprendedor} ${proyecto.apellido}</p>
-                        <p><strong>📈 Estado:</strong> ${proyecto.estatus}</p>
-                        <p><strong>🎯 Progreso:</strong> ${proyecto.progreso}</p>
-                        <p><strong>📅 Fecha inicio:</strong> ${formatearFecha(proyecto.fecha_inicio)}</p>
-                        <p><strong>📝 Descripción:</strong> ${proyecto.descripcion}</p>
-                    </div>
-                    
-                    <h4> Hitos del Proyecto</h4>
-                    <div class="lista-hitos" id="listaHitos">
-                        ${generarListaHitos(avances)}
-                    </div>
-                    
-                    <div class="acciones-panel">
-                        <button class="btn" onclick="actualizarProgreso(${proyecto.id_proyecto}, ${proyecto.progreso})">
-                             Actualizar Progreso
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="panel-avances">
-                    <h3> Comentarios del Coordinador</h3>
-                    
-                    <textarea id="nuevoComentario" placeholder="Escribe tus observaciones, comentarios o recomendaciones para este proyecto..."></textarea>
-                    <div class="acciones-panel">
-                        <button class="btn" onclick="agregarComentario(${proyecto.id_proyecto})">
-                             Guardar Comentario
-                        </button>
-                    </div>
-                    
-                    <h4> Historial de Avances</h4>
-                    <div class="historial-avances">
-                        ${generarHistorialAvances(avances)}
-                    </div>
-                    
-                    <div class="acciones-panel">
-                        <button class="btn" onclick="exportarExcel(${proyecto.id_proyecto})">
-                            📄 Exportar a Excel
-                        </button>
-                        <button class="btn" onclick="enviarComentarioEmprendedor(${proyecto.id_usuario})">
-                            ✉️ Enviar al Emprendedor
-                        </button>
-                    </div>
-                </div>
+            <h2 style="color: var(--primary); margin-bottom: 20px;">Mis Proyectos (${lista.length})</h2>
+            <div class="proyectos-grid" id="listaProyectos">
+                ${lista.map((p, index) => crearTarjetaProyecto(p, index)).join("")}
             </div>
+            <div id="detalleProyecto" style="display: none;"></div>
         `;
-        
-        crearGraficaProgreso(parseInt(proyecto.progreso));
-    }
 
-    // Resto de las funciones (generarListaHitos, generarHistorialAvances, crearGraficaProgreso, etc.)
-    // se mantienen igual que en tu código anterior...
-
-    function generarListaHitos(avances) {
-        if (!avances || avances.length === 0) {
-            return '<div class="hito-item" style="text-align: center; color: #718096;">No hay hitos registrados para este proyecto</div>';
-        }
-        
-        return avances.map(avance => `
-            <div class="hito-item ${avance.notas && avance.notas.includes('complet') ? 'hito-completado' : ''}">
-                <strong>${avance.hitos || 'Hito sin nombre'}</strong>
-                <p>${avance.notas || 'Sin descripción disponible'}</p>
-                <small>📅 ${formatearFecha(avance.fecha_creacion)}</small>
-            </div>
-        `).join('');
-    }
-
-    function generarHistorialAvances(avances) {
-        if (!avances || avances.length === 0) {
-            return '<div class="avance-item" style="text-align: center; color: #718096;">No hay historial de avances registrado</div>';
-        }
-        
-        return avances.map(avance => `
-            <div class="avance-item">
-                <p><strong>${avance.hitos || 'Hito'}:</strong> ${avance.notas || 'Sin notas'}</p>
-                <small>📅 ${formatearFecha(avance.fecha_creacion)}</small>
-            </div>
-        `).join('');
-    }
-
-    function crearGraficaProgreso(porcentaje) {
-        const ctx = document.getElementById('graficaProgreso');
-        if (!ctx) return;
-        
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Completado', 'Restante'],
-                datasets: [{
-                    data: [porcentaje, 100 - porcentaje],
-                    backgroundColor: ['#48bb78', '#e2e8f0'],
-                    borderWidth: 0,
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${context.label}: ${context.raw}%`;
-                            }
-                        }
-                    }
-                },
-                cutout: '75%'
+        // Agregar event listeners a las tarjetas
+        lista.forEach((p, index) => {
+            const card = document.querySelector(`#proyecto-${index}`);
+            if (card) {
+                card.addEventListener('click', () => seleccionarProyecto(p.id_proyecto));
             }
         });
     }
 
-    // Las demás funciones (agregarComentario, exportarExcel, actualizarProgreso, etc.)
-    // se mantienen igual que en tu código anterior...
-    async function guardarHito() {
-  const hitos = document.getElementById("inputHito").value;
-  const notas = document.getElementById("inputNotas").value;
-
-  const res = await fetch(ENDPOINTS.crearAvance, {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ hitos, notas })
-  });
-
-  const data = await res.json();
-  alert(data.message);
-}
-    async function agregarComentario(idProyecto) {
-        const comentario = document.getElementById('nuevoComentario').value.trim();
+    function crearTarjetaProyecto(proyecto, index) {
+        const statusClass = getStatusClass(proyecto.estatus);
+        const progressWidth = parseInt(proyecto.progreso) || 0;
         
-        if (!comentario) {
-            alert('Por favor, escribe un comentario antes de guardar');
-            return;
-        }
-        
-        try {
-            const response = await fetch(ENDPOINTS.COMENTARIO, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id_proyecto: idProyecto,
-                    comentario: comentario
-                })
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                alert('✅ Comentario guardado correctamente');
-                document.getElementById('nuevoComentario').value = '';
-                buscarProyecto();
-            } else {
-                alert('❌ Error al guardar comentario: ' + data.message);
-            }
-        } catch (error) {
-            console.error('Error al guardar comentario:', error);
-            alert('❌ Error al conectar con el servidor');
-        }
-    }
-
-    async function exportarExcel(idProyecto) {
-      idProyecto = idProyecto || proyectoActualId;
-      alert("Primero busque un proyecto");
-    if (!idProyecto) {
-        alert("Primero busque un proyecto");
-        return;
-    }
-    try {
-        const response = await fetch(`${ENDPOINTS.EXPORTAR_EXCEL}/${idProyecto}`);
-
-        if (!response.ok) {
-            alert("❌ Error al generar el Excel");
-            return;
-        }
-
-        // Convertir a blob
-        const blob = await response.blob();
-
-        // Crear descarga
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `reporte_proyecto_${idProyecto}.xlsx`;
-        a.click();
-        window.URL.revokeObjectURL(url);
-
-        alert("📊 Reporte generado correctamente");
-
-    } catch (error) {
-        console.error("Error al exportar:", error);
-        alert("❌ Error al conectar con el servidor");
-    }
-}
-
-    async function actualizarProgreso(idProyecto, progresoActual = 0) {
-        const nuevoProgreso = prompt(
-            `Ingrese el nuevo progreso (0-100):\nProgreso actual: ${progresoActual}%`, 
-            progresoActual
-        );
-        
-        if (nuevoProgreso !== null) {
-            const progresoNum = parseInt(nuevoProgreso);
-            
-            if (isNaN(progresoNum)) {
-                alert('Por favor, ingrese un número válido');
-                return;
-            }
-            
-            if (progresoNum < 0 || progresoNum > 100) {
-                alert('El progreso debe estar entre 0 y 100');
-                return;
-            }
-            
-            const confirmar = confirm(`¿Está seguro de actualizar el progreso a ${progresoNum}%?`);
-            if (!confirmar) return;
-            
-            try {
-                const response = await fetch(ENDPOINTS.ACTUALIZAR_PROGRESO, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        id_proyecto: idProyecto,
-                        progreso: progresoNum
-                    })
-                });
+        return `
+            <div class="proyecto-card" id="proyecto-${index}">
+                <div class="proyecto-header">
+                    <h3 class="proyecto-title">${proyecto.nombre_proyecto}</h3>
+                    <span class="proyecto-status ${statusClass}">${proyecto.estatus || 'Sin estado'}</span>
+                </div>
                 
-                const data = await response.json();
+                <div class="proyecto-info">
+                    <div class="proyecto-info-item">
+                        📅 <span>Inicio: ${new Date(proyecto.fecha_inicio).toLocaleDateString()}</span>
+                    </div>
+                    <div class="proyecto-info-item">
+                        📝 <span>${proyecto.descripcion?.substring(0, 60) || 'Sin descripción'}...</span>
+                    </div>
+                </div>
                 
-                if (data.success) {
-                    alert(`✅ Progreso actualizado a ${progresoNum}%`);
-                    buscarProyecto();
-                } else {
-                    alert('❌ Error al actualizar progreso: ' + data.message);
-                }
-            } catch (error) {
-                console.error('Error al actualizar progreso:', error);
-                alert('❌ Error al conectar con el servidor');
-            }
-        }
-    }
-
-    function enviarComentarioEmprendedor(idUsuario) {
-        const mensaje = prompt('Escribe el comentario para el emprendedor:');
-        if (mensaje) {
-            alert('✅ Comentario enviado al emprendedor');
-        }
-    }
-
-    function enviarComentarioGeneral() {
-        alert('ℹ️ Esta función enviará comentarios generales sobre los reportes');
-    }
-
-    function formatearFecha(fechaString) {
-        if (!fechaString) return 'Fecha no disponible';
-        try {
-            return new Date(fechaString).toLocaleDateString('es-ES');
-        } catch (error) {
-            return 'Fecha inválida';
-        }
-    }
-
-    function mostrarMensaje(mensaje, tipo = 'info') {
-        const className = tipo === 'error' ? 'mensaje-error' : 'mensaje-info';
-        contenedor.innerHTML = `<div class="${className}">${mensaje}</div>`;
-    }
-
-    function mostrarCargando() {
-        contenedor.innerHTML = `
-            <div class="mensaje-info">
-                🔍 Buscando proyecto...
+                <div class="progreso-bar">
+                    <div class="progreso-fill" style="width: ${progressWidth}%"></div>
+                </div>
+                <div class="progreso-text">Progreso: ${progressWidth}%</div>
+                
+                <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="event.stopPropagation(); seleccionarProyecto(${proyecto.id_proyecto})">
+                   Ver Detalles
+                </button>
             </div>
         `;
     }
 
-    // Navegación
-    const rol = localStorage.getItem('rolUsuario') || 'coordinador';
-    document.getElementById('btnHome').addEventListener('click', e => {
-        e.preventDefault();
-        window.location.href = rol === 'emprendedor' ? 'inicioE.html' : 'inicioC.html';
-    });
-    
-    document.getElementById('btnProyectos').addEventListener('click', e => {
-        e.preventDefault();
-        window.location.href = `proyectos.html?rol=${rol}`;
-    });
+    function getStatusClass(estatus) {
+        const statusLower = (estatus || '').toLowerCase();
+        if (statusLower.includes('curso') || statusLower.includes('activo')) return 'status-activo';
+        if (statusLower.includes('finalizado') || statusLower.includes('completado')) return 'status-finalizado';
+        return 'status-pendiente';
+    }
+
+    // -------------------- SELECCIONAR PROYECTO --------------------
+    async function seleccionarProyecto(id_Proyecto) {
+       mostrarCargando("Cargando información del proyecto...");
+
+        try {
+            const resProyecto = await fetch(`${API_BASE}/proyectos/${id_Proyecto}`);
+            const resAvances = await fetch(`${API_BASE}/emprendedor/proyectos/${id_Proyecto}/avances`);
+
+            const pj = await resProyecto.json();
+            const av = await resAvances.json();
+
+            if (!pj.success) {
+                mostrarMensaje("❌ Error al cargar el proyecto", "error");
+                return;
+            }
+
+            proyectoSeleccionado = pj.data;
+            proyectoSeleccionado.avances = av.data || [];
+            
+            console.log("PROYECTO SELECCIONADO ===>", proyectoSeleccionado);
+
+             
+            mostrarDetalleProyecto(proyectoSeleccionado);
+
+        } catch (e) {
+            console.error(e);
+            mostrarMensaje("❌ Error al cargar los datos del proyecto", "error");
+        }
+    }
+
+    // -------------------- DETALLE DEL PROYECTO --------------------
+    function mostrarDetalleProyecto(proyecto) {
+        const statusClass = getStatusClass(proyecto.estatus);
+        const progressWidth = parseInt(proyecto.progreso) || 0;
+        
+        contenedor.innerHTML = `
+            <div class="detalle-proyecto">
+                <div class="detalle-header">
+                    <h2 class="detalle-title">${proyecto.nombre_proyecto}</h2>
+                    <div class="detalle-actions">
+                        <button class="btn btn-secondary" onclick="volverALista()">← Volver</button>
+                        <button class="btn btn-success" onclick="descargarExcel()">📄 Descargar Excel</button>
+                    </div>
+                </div>
+                
+                <div class="detalle-grid">
+                    <div>
+                        <div class="detalle-info">
+                            <div class="info-item">
+                                <div class="info-label">Descripción</div>
+                                <div class="info-value">${proyecto.descripcion || 'Sin descripción'}</div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="info-item">
+                                    <div class="info-label">Estado</div>
+                                    <div class="info-value"><span class="proyecto-status ${statusClass}">${proyecto.estatus || 'Sin estado'}</span></div>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <div class="info-label">Progreso</div>
+                                    <div class="info-value">
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <div style="flex: 1;">
+                                                <div class="progreso-bar">
+                                                    <div class="progreso-fill" style="width: ${progressWidth}%"></div>
+                                                </div>
+                                            </div>
+                                            <div style="font-weight: bold;">${progressWidth}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="info-item">
+                                    <div class="info-label">Fecha de Inicio</div>
+                                    <div class="info-value">${new Date(proyecto.fecha_inicio).toLocaleDateString()}</div>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+                        
+                        <!-- Formulario para agregar hito -->
+                        <div class="form-section">
+                            <h3 class="form-title">➕ Agregar Nuevo Hito</h3>
+                            <div class="form-group">
+                                <label for="inputHito">Título del Hito</label>
+                                <input type="text" id="inputHito" class="form-control" placeholder="Ej: Completado prototipo inicial">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputNotas">Descripción</label>
+                                <textarea id="inputNotas" class="form-control" placeholder="Describe los detalles de este hito..."></textarea>
+                            </div>
+                            <button class="btn btn-success" onclick="guardarHito()">
+                                💾 Guardar Hito
+                            </button>
+                        </div>
+                        
+                        <!-- Lista de hitos -->
+                        <div class="hitos-list">
+                            <h3 class="hitos-title">📋 Historial de Hitos</h3>
+                            ${generarListaHitosHTML(proyecto.avances)}
+                        </div>
+                    </div>
+                    
+                    <!-- Formulario de comentarios -->
+                    <div>
+                        <div class="form-section">
+                            <h3 class="form-title">💬 Enviar Comentario al Coordinador</h3>
+                            <div class="form-group">
+                                <label for="inputComentario">Tu Comentario</label>
+                                <textarea id="inputComentario" class="form-control" placeholder="Escribe tu pregunta, comentario o solicitud aquí..."></textarea>
+                            </div>
+                            <button class="btn btn-primary" onclick="enviarComentario()">
+                                ✉️ Enviar Comentario
+                            </button>
+                            <p style="font-size: 12px; color: var(--text-light); margin-top: 10px;">
+                                Tu comentario será enviado al coordinador asignado.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function volverALista() {
+        mostrarListaProyectos(proyectosUsuario);
+    }
+
+    // -------------------- LISTA DE HITOS --------------------
+    function generarListaHitosHTML(avances) {
+        if (!avances || avances.length === 0) {
+            return `
+                <div class="empty-state">
+                    <div class="empty-state-icon">📝</div>
+                    <h3>No hay hitos registrados</h3>
+                    <p>Agrega tu primer hito para comenzar a documentar los avances de tu proyecto.</p>
+                </div>
+            `;
+        }
+
+        return avances
+            .map((a) => `
+                <div class="hito-item">
+                    <div class="hito-header">
+                        <h4 class="hito-title">${a.hitos || a.titulo || 'Hito sin título'}</h4>
+                        <div class="hito-date">${new Date(a.fecha_creacion || a.fecha).toLocaleDateString()}</div>
+                    </div>
+                    <div class="hito-content">${a.notas || a.descripcion || 'Sin descripción'}</div>
+                </div>
+            `)
+            .join("");
+    }
+
+    // -------------------- GUARDAR HITO --------------------
+    async function guardarHito() {
+        const hitos = document.getElementById("inputHito")?.value.trim();
+        const notas = document.getElementById("inputNotas")?.value.trim();
+
+        if (!hitos) {
+            alert("⚠️ Por favor, escribe un título para el hito.");
+            return;
+        }
+
+        if (!proyectoSeleccionado) {
+            alert("⚠️ No hay proyecto seleccionado.");
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/proyectos/${proyectoSeleccionado.id_proyecto}/avances`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ hitos, notas }),
+            });
+
+            const json = await res.json();
+
+            if (!json.success) {
+                alert("❌ Error al guardar el hito.");
+                return;
+            }
+
+            alert("✅ Hito guardado exitosamente.");
+            seleccionarProyecto(proyectoSeleccionado.id_proyecto);
+
+        } catch (error) {
+            console.error(error);
+            alert("❌ Error de conexión al guardar el hito.");
+        }
+    }
+
+    // -------------------- ENVIAR COMENTARIO --------------------
+    async function enviarComentario() {
+        const comentario = document.getElementById("inputComentario")?.value.trim();
+        
+        if (!comentario) {
+            alert("⚠️ Por favor, escribe un comentario.");
+            return;
+        }
+
+        if (!proyectoSeleccionado) {
+            alert("⚠️ No hay proyecto seleccionado.");
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/proyectos/${proyectoSeleccionado.id_proyecto}/comentarios`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    comentario, 
+                    id_usuario_emisor: id_usuario 
+                }),
+            });
+
+            const json = await res.json();
+
+            if (!json.success) {
+                alert("❌ Error al enviar el comentario.");
+                return;
+            }
+
+            alert("✅ Comentario enviado exitosamente.");
+            document.getElementById("inputComentario").value = "";
+
+        } catch (error) {
+            console.error(error);
+            alert("❌ Error de conexión al enviar el comentario.");
+        }
+    }
+
+    // -------------------- EXCEL --------------------
+    function descargarExcel() {
+        if (!proyectoSeleccionado) {
+            alert("⚠️ No hay proyecto seleccionado.");
+            return;
+        }
+        window.open(`${API_BASE}/proyectos/${proyectoSeleccionado.id_proyecto}/excel`);
+    }
+
+    // -------------------- BÚSQUEDA --------------------
+    btnBuscar.addEventListener("click", buscarProyecto);
+    inputBusqueda.addEventListener("keypress", (e) => e.key === "Enter" && buscarProyecto());
+
+    async function buscarProyecto() {
+        const nombre = inputBusqueda.value.trim();
+        if (!nombre) {
+            mostrarListaProyectos(proyectosUsuario);
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/buscar/${nombre}?id_usuario=${id_usuario}`);
+            const json = await res.json();
+
+            if (!json.success) {
+                mostrarMensaje("🔍 No se encontraron proyectos con ese nombre", "info");
+                return;
+            }
+
+            mostrarListaProyectos(json.data);
+
+        } catch (error) {
+            console.error(error);
+            mostrarMensaje("❌ Error al buscar proyectos", "error");
+        }
+    }
+
+    // -------------------- UTILIDADES --------------------
+    function mostrarMensaje(text, tipo = "info") {
+        const className = tipo === "error" ? "mensaje-error" : "mensaje-info";
+        contenedor.innerHTML = `<div class="${className}">${text}</div>`;
+    }
+
+    function mostrarCargando(text) {
+        contenedor.innerHTML = `
+            <div class="mensaje-info">
+                <div style="font-size: 20px; margin-bottom: 10px;">⏳ Cargando...</div>
+                <p>${text}</p>
+            </div>
+        `;
+    }
+
+    function mostrarMensajeSinProyectos() {
+        contenedor.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">📂</div>
+                <h3>No tienes proyectos registrados</h3>
+                <p>Parece que aún no tienes proyectos asignados. Contacta al coordinador para que te asigne uno.</p>
+                <button class="btn btn-primary" style="margin-top: 20px;" onclick="init()">
+                    🔄 Actualizar
+                </button>
+            </div>
+        `;
+    }
+
+    // Inicializar la aplicación
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
-</html>
 
+
+</html>
+window.seleccionarProyecto = seleccionarProyecto;

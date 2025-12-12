@@ -14,14 +14,33 @@ router.put('/actualizar-progreso', reportesController.actualizarProgresoProyecto
 router.get('/exportar-excel/:id_proyecto', reportesController.generarReporteExcel);
 router.get("/emprendedores", reportesController.getReporteEmprendedores);
 router.get('/proyectos', reportesController.getReporteProyectos);
-router.get('/estadisticas' ,reportesController.getEstadisticas);
+router.get("/estadisticas",reportesController.getEstadisticas);
 
-//rutas para emprendedor
-router.get("/proyectos/usuario/:idUsuario",reportesController.getProyectosDeUsuario);
-router.get("/proyectos/:idProyecto", reportesController.getProyecto);
-router.get("/proyectos/:idProyecto/avances", reportesController.getAvancesProyecto);
-router.post("/proyectos/:idProyecto/avances",reportesController.crearAvance);
-router.put("/proyectos/:idProyecto/progreso", reportesController.actualizarProgresoProyecto);
 
+
+
+
+
+
+//Rutas para emprendedor
+
+//lista filtrada
+router.get("/proyectos", reportesController.getProyectosFiltrados);
+//lista proyectos del usuario
+router.get('/proyectos/usuario/:id_usuario', reportesController.getProyectosDeUsuario); // lista proyectos del usuario
+// Buscar proyectos por nombre (acepta ?idUsuario= )
+router.get('/proyectos/buscar/:nombre', reportesController.buscarProyectoPorNombre);    // acepta ?idUsuario=#
+// Obtener un proyecto por ID
+router.get("/proyectos/:id", reportesController.getProyectoPorId);
+// Obtener avances del proyecto
+router.get("/emprendedor/proyectos/:id/avances", reportesController.getAvancesProyectoEmprendedor);
+// Crear avance (hito)
+router.post("/proyectos/:id/avances", reportesController.crearAvance);
+// Crear comentario del emprendedor
+router.post("/proyectos/:id/comentarios", reportesController.crearComentario);
+// Actualizar progreso del proyecto
+router.put("/proyectos/:id/progreso", reportesController.actualizarProgresoProyecto);
+// Descargar reporte en Excel
+router.get("/proyectos/:id/excel", reportesController.generarReporteExcel);
 
 module.exports = router;

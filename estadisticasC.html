@@ -477,11 +477,7 @@
 
       <!-- Estadísticas rápidas -->
       <div class="stats-overview" id="statsOverview">
-        <div class="stat-card">
-          <div class="stat-value" id="totalProyectos">0</div>
-          <div class="stat-label">Total de Proyectos</div>
-          <div class="stat-change positive">+12% vs último mes</div>
-        </div>
+        
         <div class="stat-card success">
           <div class="stat-value" id="proyectosActivos">0</div>
           <div class="stat-label">Proyectos Activos</div>
@@ -658,13 +654,15 @@
     // =========================
     function actualizarStatsRapidas(data) {
       // Estos valores deberían venir de tu API
+      console.log("TOTAL EMPRENDEDORES ===>", data.totalEmprendedores);
+
       // Por ahora usamos valores calculados de las gráficas
-      const totalProyectos = data.barras ? data.barras.reduce((a, b) => a + b, 0) : 0;
+      //const totalProyectos = data.barras ? data.barras.reduce((a, b) => a + b, 0) : 0;
       const proyectosActivos = data.pie ? data.pie[1] || 0 : 0;
       const proyectosPendientes = data.pie ? data.pie[2] || 0 : 0;
-      const totalEmprendedores = data.horizontal ? data.horizontal.reduce((a, b) => a + b, 0) : 0;
+      const totalEmprendedores = data.totalEmprendedores || 0;
 
-      document.getElementById('totalProyectos').textContent = totalProyectos;
+      //document.getElementById('totalProyectos').textContent = totalProyectos;
       document.getElementById('proyectosActivos').textContent = proyectosActivos;
       document.getElementById('proyectosPendientes').textContent = proyectosPendientes;
       document.getElementById('totalEmprendedores').textContent = totalEmprendedores;
@@ -750,7 +748,7 @@
       horizontalChart = new Chart(ctx3, {
         type: 'bar',
         data: {
-          labels: data.carreras || ['Sistemas', 'Industrial', 'Mecatrónica', 'Gestión', 'Química'],
+          labels: data.carreras || ['Sistemas', 'Industrial', 'Mecatrónica', 'Gestión', 'Electronica','Materiales','Mecanica'],
           datasets: [{
             label: 'Proyectos por carrera',
             data: data.horizontal || [8, 12, 6, 9, 4],
