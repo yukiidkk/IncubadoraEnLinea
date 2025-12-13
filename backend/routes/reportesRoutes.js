@@ -36,6 +36,9 @@ router.get("/proyectos/:id", reportesController.getProyectoPorId);
 router.get("/emprendedor/proyectos/:id/avances", reportesController.getAvancesProyectoEmprendedor);
 // Crear avance (hito)
 router.post("/proyectos/:id/avances", reportesController.crearAvance);
+
+
+
 // Crear comentario del emprendedor
 router.post("/proyectos/:id/comentarios", reportesController.crearComentario);
 // Actualizar progreso del proyecto

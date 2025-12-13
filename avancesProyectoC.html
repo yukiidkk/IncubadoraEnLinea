@@ -725,7 +725,8 @@
 
     async function agregarComentario(idProyecto) {
         const comentario = document.getElementById('nuevoComentario').value.trim();
-        
+        const id_usuario = localStorage.getItem("id_usuario");
+
         if (!comentario) {
             alert('Por favor, escribe un comentario antes de guardar');
             return;
@@ -739,7 +740,8 @@
                 },
                 body: JSON.stringify({
                     id_proyecto: idProyecto,
-                    comentario: comentario
+                    comentario: comentario,
+                    id_usuario: id_usuario
                 })
             });
             

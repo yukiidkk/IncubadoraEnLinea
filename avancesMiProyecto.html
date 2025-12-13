@@ -760,6 +760,15 @@
             <div id="detalleProyecto" style="display: none;"></div>
         `;
 
+        document.querySelectorAll(".btn-ver-detalle").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation(); // evita que dispare el click de la tarjeta
+    const id = btn.dataset.id;
+    seleccionarProyecto(id);
+  });
+});
+
+
         // Agregar event listeners a las tarjetas
         lista.forEach((p, index) => {
             const card = document.querySelector(`#proyecto-${index}`);
@@ -794,8 +803,11 @@
                 </div>
                 <div class="progreso-text">Progreso: ${progressWidth}%</div>
                 
-                <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="event.stopPropagation(); seleccionarProyecto(${proyecto.id_proyecto})">
-                   Ver Detalles
+                <button 
+                    class="btn btn-primary btn-ver-detalle"
+                    data-id="${proyecto.id_proyecto}"
+                    style="width: 100%; margin-top: 15px;">
+                 Ver Detalles
                 </button>
             </div>
         `;
@@ -809,23 +821,29 @@
     }
 
     // -------------------- SELECCIONAR PROYECTO --------------------
-    async function seleccionarProyecto(id_Proyecto) {
+    async function seleccionarProyecto(id_proyecto) {
        mostrarCargando("Cargando información del proyecto...");
-
+        console.log("👉 ID RECIBIDO EN seleccionarProyecto:", id_proyecto, typeof id_proyecto);
         try {
-            const resProyecto = await fetch(`${API_BASE}/proyectos/${id_Proyecto}`);
-            const resAvances = await fetch(`${API_BASE}/emprendedor/proyectos/${id_Proyecto}/avances`);
+            const resProyecto = await fetch(`${API_BASE}/${id_proyecto}`);
+           // const resAvances = await fetch(`${API_BASE}/emprendedor/proyectos/${id_proyecto}/avances`);
+             
+            const resAvances = await fetch(
+             `http://localhost:3001/api/reportes/emprendedor/proyectos/${id_proyecto}/avances`
+            );
 
             const pj = await resProyecto.json();
             const av = await resAvances.json();
+          
+             console.log("RESP PROYECTO ===>", pj);
+            console.log("RESP AVANCES ===>", av);
 
-            if (!pj.success) {
-                mostrarMensaje("❌ Error al cargar el proyecto", "error");
-                return;
+            if (!pj.success || !pj.data) {
+                throw new Error("Proyecto no válido");
             }
 
             proyectoSeleccionado = pj.data;
-            proyectoSeleccionado.avances = av.data || [];
+            proyectoSeleccionado.avances = av.success ? av.data : [];
             
             console.log("PROYECTO SELECCIONADO ===>", proyectoSeleccionado);
 
@@ -833,8 +851,8 @@
             mostrarDetalleProyecto(proyectoSeleccionado);
 
         } catch (e) {
-            console.error(e);
-            mostrarMensaje("❌ Error al cargar los datos del proyecto", "error");
+            console.error("ERROR REAL ===>",e);
+            mostrarMensaje("Error al cargar los datos del proyecto", "error");
         }
     }
 
@@ -952,23 +970,23 @@
             `;
         }
 
-        return avances
-            .map((a) => `
-                <div class="hito-item">
-                    <div class="hito-header">
-                        <h4 class="hito-title">${a.hitos || a.titulo || 'Hito sin título'}</h4>
-                        <div class="hito-date">${new Date(a.fecha_creacion || a.fecha).toLocaleDateString()}</div>
-                    </div>
-                    <div class="hito-content">${a.notas || a.descripcion || 'Sin descripción'}</div>
-                </div>
-            `)
-            .join("");
+          return avances.map(a => `
+             <div class="hito-item">
+            <div class="hito-header">
+              <strong>${a.hitos}</strong>
+               <span>${new Date(a.fecha_creacion).toLocaleDateString()}</span>
+            </div>
+           <p>${a.notas}</p>
+          <small>Por: ${a.nombre} ${a.apellido}</small>
+             </div>
+  `).join("");
     }
 
     // -------------------- GUARDAR HITO --------------------
     async function guardarHito() {
         const hitos = document.getElementById("inputHito")?.value.trim();
         const notas = document.getElementById("inputNotas")?.value.trim();
+        const id_usuario = localStorage.getItem("id_usuario");
 
         if (!hitos) {
             alert("⚠️ Por favor, escribe un título para el hito.");
@@ -981,10 +999,11 @@
         }
 
         try {
-            const res = await fetch(`${API_BASE}/proyectos/${proyectoSeleccionado.id_proyecto}/avances`, {
+            const res =await fetch ( `http://localhost:3001/api/reportes/proyectos/${proyectoSeleccionado.id_proyecto}/avances`,
+             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ hitos, notas }),
+                body: JSON.stringify({ hitos, notas , id_usuario}),
             });
 
             const json = await res.json();
@@ -1006,7 +1025,8 @@
     // -------------------- ENVIAR COMENTARIO --------------------
     async function enviarComentario() {
         const comentario = document.getElementById("inputComentario")?.value.trim();
-        
+        const id_usuario = localStorage.getItem("id_usuario");
+
         if (!comentario) {
             alert("⚠️ Por favor, escribe un comentario.");
             return;
@@ -1018,10 +1038,12 @@
         }
 
         try {
-            const res = await fetch(`${API_BASE}/proyectos/${proyectoSeleccionado.id_proyecto}/comentarios`, {
+            const res = await fetch(`${API_BASE}/${proyectoSeleccionado.id_proyecto}/comentarios`, {
+                        
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
+                    id_proyecto: proyectoSeleccionado.id_proyecto,
                     comentario, 
                     id_usuario_emisor: id_usuario 
                 }),
@@ -1049,7 +1071,7 @@
             alert("⚠️ No hay proyecto seleccionado.");
             return;
         }
-        window.open(`${API_BASE}/proyectos/${proyectoSeleccionado.id_proyecto}/excel`);
+        window.open(`${API_BASE}/${proyectoSeleccionado.id_proyecto}/excel`);
     }
 
     // -------------------- BÚSQUEDA --------------------

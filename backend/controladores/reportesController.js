@@ -98,14 +98,26 @@ const getProyectosCoordinador = async (req, res) => {
 // Agregar comentario/nota del coordinador
 const agregarComentarioAvance = async (req, res) => {
     try {
-        const { id_proyecto, comentario } = req.body;
+        const { id_proyecto, comentario ,id_usuario} = req.body;
+        console.log("👉 BODY RECIBIDO:", req.body);
+           
+        if (!id_proyecto || !comentario || !id_usuario) {
+      return res.status(400).json({
+        success: false,
+        message: "Datos incompletos"
+      });
+    }
 
-        const insertQuery = `
-            INSERT INTO avances (id_proyecto, hitos, notas, fecha_creacion)
-            VALUES (?, 'Comentario Coordinador', ?, NOW())
+        const sql = `
+            INSERT INTO avances (id_proyecto, hitos, notas, fecha_creacion , id_usuario)
+            VALUES (?, 'Comentario Coordinador', ?, NOW(),?)
         `;
-
-        await query(insertQuery, [id_proyecto, comentario]);
+         const params = [
+      Number(id_proyecto),
+      comentario,
+      Number(id_usuario)
+    ];
+        await query(sql , params);
 
         res.json({
             success: true,
@@ -453,18 +465,19 @@ const buscarProyectoPorNombre = async (req, res) => {
 
 const crearComentario = async (req, res) => {
   try {
-    const { id_proyecto } = req.params;
-    const { comentario, id_usuario_emisor } = req.body; // opcional id del que envía
+    //const { id_proyecto } = req.params;
+    console.log("👉 BODY RECIBIDO:", req.body);
+    const { id_proyecto, comentario, id_usuario_emisor } = req.body; // opcional id del que envía
 
     if (!comentario || comentario.trim() === '') {
       return res.status(400).json({ success: false, message: "Comentario vacío" });
     }
 
     const sql = `
-      INSERT INTO avances (id_proyecto, hitos, notas, fecha_creacion)
-      VALUES (?, 'Comentario Emprendedor', ?, CURDATE())
+      INSERT INTO avances (id_proyecto, hitos ,notas ,fecha_creacion,id_usuario)
+      VALUES (?, 'Comentario', ?, NOW(),?)
     `;
-    await query(sql, [id_proyecto, comentario]);
+    await query(sql, [id_proyecto, comentario , id_usuario_emisor ]);
 
     res.json( { success: true, message: "Comentario enviado al coordinador" });
   } catch (err) {
@@ -532,14 +545,14 @@ const getProyectoPorId = async (req, res) => {
 const crearAvance = async (req, res) => {
     try {
         const { id } = req.params;
-        const { hitos, notas } = req.body;
+        const { hitos, notas , id_usuario } = req.body;
 
         const sql = `
-            INSERT INTO avances(id_proyecto, hitos, notas)
-            VALUES (?, ?, ?)
+            INSERT INTO avances(id_proyecto, hitos, notas , id_usuario)
+            VALUES (?, ?, ? , ?)
         `;
 
-        await query(sql, [id, hitos, notas]);
+        await query(sql, [id, hitos, notas, id_usuario]);
 
         res.json({ success: true, message: "Avance creado" });
 
@@ -598,23 +611,37 @@ const getProyectosDeUsuario = async (req, res) => {
 //para el emprendedor
 const getAvancesProyectoEmprendedor = async (req, res) => {
     try {
+        console.log("👉 ENTRO AL CONTROLADOR getAvancesProyectoEmprendedor");
         const { id } = req.params;
-
-        const query = `
-            SELECT a.*, u.nombre_usuario
-            FROM avances a
-            INNER JOIN usuarios u ON u.id_usuario = a.id_usuario
-            WHERE a.id_proyecto = ?
+         console.log("👉 ID PROYECTO RECIBIDO:", id);
+        const sql = `
+          SELECT 
+        a.id_avances,
+        a.hitos,
+        a.notas,
+        a.fecha_creacion,
+        p.nombre,
+        p.apellido
+      FROM avances a
+      INNER JOIN usuarios u ON u.id_usuario = a.id_usuario
+      INNER JOIN persona p ON p.id_persona = u.id_persona
+      WHERE a.id_proyecto = ?
+      ORDER BY a.fecha_creacion DESC
         `;
 
        // const [rows] = await query(query, [id]);
-       const [rows] = await query(sql, [id]);
+        console.log("👉 SQL:", sql);
+       const rows = await query(sql, [id]);
+
+        console.log("👉 RESULTADO QUERY:", rows);
+
+
         res.json({
             success: true,
             data: rows
         });
     } catch (error) {
-        console.error(error);
+        console.error("Error en getAvancesProyectoEmprendedor:",error);
         res.status(500).json({
             success: false,
             message: "Error interno del servidor"
