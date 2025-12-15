@@ -5,410 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Eventos - Instituto Tecnológico de Saltillo</title>
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: #f3f4f6;
-      color: #001d3d;
-      font-family: 'Inter', sans-serif;
-    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; }
+    body { background-color: #f3f4f6; color: #001d3d; }
     
     /* --- NAVBAR --- */
-    header {
-      background-color: #003366;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 40px;
-      height: 55px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    header .logo {
-      display: flex;
-      align-items: center;
-      font-weight: 600;
-      font-size: 16px;
-    }
-
-    header .logo img {
-      height: 28px;
-      margin-right: 10px;
-      border-radius: 4px;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 14px;
-      position: relative;
-      padding: 8px 12px;
-      border-radius: 6px;
-      transition: background-color 0.3s ease;
-    }
-
-    nav a:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      text-decoration: none;
-    }
-
-    /* --- Dropdown --- */
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: white;
-      min-width: 220px;
-      box-shadow: 0px 6px 10px rgba(0,0,0,0.15);
-      border-radius: 6px;
-      z-index: 1;
-      top: 100%;
-      left: 0;
-      margin-top: 5px;
-      overflow: hidden;
-    }
-
-    .dropdown-content a {
-      color: #001d3d;
-      padding: 10px 15px;
-      text-decoration: none;
-      display: block;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .dropdown-content a:hover {
-      background-color: #f0f4f8;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
+    header { background-color: #003366; color: white; display: flex; align-items: center; justify-content: space-between; padding: 10px 40px; height: 55px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    header .logo { display: flex; align-items: center; font-weight: 600; font-size: 16px; }
+    header .logo img { height: 28px; margin-right: 10px; }
+    nav { display: flex; align-items: center; gap: 15px; }
+    nav a { color: white; text-decoration: none; font-weight: 500; font-size: 14px; padding: 8px 12px; border-radius: 6px; }
+    nav a:hover { background-color: rgba(255, 255, 255, 0.1); }
 
     /* Usuario */
-    .usuario {
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-      font-size: 14px;
-    }
+    .usuario { display: flex; align-items: center; font-weight: bold; font-size: 14px; }
+    .usuario .circle { width: 24px; height: 24px; background-color: #e0ebff; border-radius: 50%; margin-right: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #003366; font-size: 12px; }
 
-    .usuario .circle {
-      width: 24px;
-      height: 24px;
-      background-color: #e0ebff;
-      border-radius: 50%;
-      margin-right: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: #003366;
-      font-size: 12px;
-    }
+    /* --- CONTENIDO --- */
+    .container { display: flex; gap: 40px; padding: 40px; flex-wrap: wrap; max-width: 1400px; margin: 0 auto; }
+    .form-panel, .right-panel { background-color: white; border-radius: 10px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
+    .form-panel { flex: 2; min-width: 320px; }
+    .right-panel { flex: 1.5; min-width: 350px; }
 
-    /* --- CONTENIDO PRINCIPAL --- */
-    .container {
-      display: flex;
-      gap: 40px;
-      padding: 40px;
-      flex-wrap: wrap;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
+    h2 { color: #001d3d; margin-bottom: 20px; font-size: 22px; border-bottom: 2px solid #dbe7ff; padding-bottom: 10px; }
+    label { font-weight: 600; display: block; margin-top: 15px; font-size: 14px; color: #333; }
+    input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; background-color: #f9f9ff; }
+    textarea { height: 100px; resize: vertical; }
+    .row { display: flex; gap: 15px; flex-wrap: wrap; }
+    .row > div { flex: 1; min-width: 150px; }
 
-    .form-panel, .right-panel {
-      background-color: white;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      border: 1px solid #e0e0e0;
-    }
-
-    .form-panel {
-      flex: 2;
-      min-width: 320px;
-    }
-
-    .right-panel {
-      flex: 1;
-      min-width: 280px;
-    }
-
-    h2 {
-      color: #001d3d;
-      margin-bottom: 20px;
-      font-size: 22px;
-      border-bottom: 2px solid #dbe7ff;
-      padding-bottom: 10px;
-    }
-
-    label {
-      font-weight: 600;
-      display: block;
-      margin-top: 15px;
-      font-size: 14px;
-      color: #333;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-      background-color: #f9f9ff;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #003366;
-      box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.2);
-    }
-
-
-    textarea {
-      height: 100px;
-      resize: vertical;
-    }
-
-    .row {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
+    /* Botones */
+    .buttons { margin-top: 25px; display: flex; flex-wrap: wrap; gap: 15px; }
+    .btn-action-small { flex: 1; padding: 12px 15px; font-weight: 600; border-radius: 6px; color: white; border: none; cursor: pointer; text-align: center; text-decoration: none; display: inline-block;}
+    .btn-primary-its { background-color: #003366; }
+    .btn-secondary-its { background-color: #1a73e8; }
+    .btn-delete-its { background-color: #dc3545; }
     
-    .row > div {
-        flex: 1;
-        min-width: 150px;
-    }
-
-    /* --- Botones --- */
-    .buttons {
-      margin-top: 25px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-
-    .btn-action-small {
-      flex: 1;
-      padding: 12px 15px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      border-radius: 6px;
-      text-align: center;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      min-width: 120px;
-    }
-    
-    .btn-action-small:hover {
-        transform: translateY(-2px);
-    }
-
-    .btn-primary-its {
-      background-color: #003366;
-    }
-
-    .btn-primary-its:hover {
-      background-color: #001f54;
-    }
-
-    .btn-secondary-its {
-      background-color: #1a73e8;
-    }
-
-    .btn-secondary-its:hover {
-      background-color: #0d5ddf;
-    }
-
-    .btn-delete-its {
-      background-color: #dc3545;
-    }
-
-    .btn-delete-its:hover {
-      background-color: #b71c1c;
-    }
-
-    /* --- PANEL DERECHO --- */
-    .search-box {
-      display: flex;
-      margin-bottom: 20px;
-    }
-
-    .search-box input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px 0 0 6px;
-      outline: none;
-      margin-top: 0;
-    }
-
-    .search-box button {
-      border-radius: 0 6px 6px 0;
-      background-color: #003366;
-      padding: 10px 20px;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.3s ease;
-    }
-
-    .search-box button:hover {
-      background-color: #001f54;
-    }
-
-    /* Tabla de Eventos */
-    #eventos-list-container {
-        max-height: 400px;
-        overflow-y: auto;
-    }
-
-    #eventos-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 14px;
-    }
-
-    #eventos-table th, #eventos-table td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #eee;
-    }
-
-    #eventos-table th {
-        background-color: #f9f9ff;
-        font-weight: 600;
-        color: #001d3d;
-        position: sticky;
-        top: 0;
-    }
-    
-    #eventos-table tbody tr:hover {
-        background-color: #f0f4f8;
-        cursor: pointer;
-    }
-    
-    #eventos-table td {
-        color: #333;
-    }
-
-    /* Mensaje de Feedback */
-    #feedback-message {
-        display: none;
-        padding: 12px;
-        margin-top: 20px;
+    /* Botón especial para ir a listas */
+    .btn-go-list {
+        background-color: #fff;
+        color: #003366;
+        border: 1px solid #003366;
+        padding: 8px 15px;
         border-radius: 6px;
-        font-weight: 500;
+        font-size: 13px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s;
     }
-    .feedback-success {
-        background-color: #d4edda;
-        color: #155724;
-    }
-    .feedback-error {
-        background-color: #f8d7da;
-        color: #721c24;
-    }
-    /* Estilo para errores de conexión (permanente) */
-    .feedback-critical {
-        background-color: #b71c1c;
+    .btn-go-list:hover {
+        background-color: #003366;
         color: white;
     }
 
+    /* Panel Derecho */
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #dbe7ff; padding-bottom: 10px; }
+    .panel-header h2 { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
 
-    /* Responsive */
-    @media (max-width: 900px) {
-      .container {
-        flex-direction: column;
-        padding: 20px;
-      }
-      .form-panel, .right-panel {
-        width: 100%;
-      }
-      header {
-        padding: 10px 20px;
-        flex-direction: column;
-        height: auto;
-      }
-      nav {
-        margin-top: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-    }
+    .search-box { display: flex; margin-bottom: 20px; }
+    .search-box input { flex: 1; border-radius: 6px 0 0 6px; }
+    .search-box button { border-radius: 0 6px 6px 0; background-color: #003366; padding: 10px 20px; color: white; border: none; cursor: pointer; }
+    
+    #eventos-list-container { max-height: 400px; overflow-y: auto; }
+    #eventos-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    #eventos-table th, #eventos-table td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle; }
+    #eventos-table th { background-color: #f9f9ff; font-weight: 600; color: #001d3d; position: sticky; top: 0; }
+    #eventos-table tbody tr:hover { background-color: #f0f4f8; cursor: pointer; }
+
+    #feedback-message { display: none; padding: 12px; margin-top: 20px; border-radius: 6px; }
+    .feedback-success { background-color: #d4edda; color: #155724; }
+    .feedback-error { background-color: #f8d7da; color: #721c24; }
+
+    @media (max-width: 900px) { .container { flex-direction: column; padding: 20px; } header { flex-direction: column; height: auto; padding: 10px; gap: 10px;} }
   </style>
 </head>
 <body>
 <header>
   <div class="logo">
-    <img src="https://placehold.co/100x40/003366/FFFFFF?text=ITS" alt="Logo ITS" onerror="this.src='https://placehold.co/100x40/003366/FFFFFF?text=ITS'">
+    <img src="./images/logoITS.png" alt="Logo" onerror="this.style.display='none'">
     Instituto Tecnológico de Saltillo
   </div>
   <nav>
-    <a href="#">Home</a>
+    <a href="inicioC.html">Inicio</a>
     <a href="#">Proyectos</a>
     <a href="#">Usuarios</a>
-    <a href="#">Roles</a>
-
-    <div class="dropdown">
-      <a href="#">Eventos ▾</a>
-      <div class="dropdown-content">
-        <a href="#">Inscritos a Eventos</a>
-        <a href="#">Administrar Tipo de Evento</a>
-      </div>
-    </div>
+    <a href="tipos_evento.html">Tipos Evento</a>
   </nav>
 
   <div class="usuario">
     <div class="circle">U</div>
-    USUARIO
+    <span id="nombreUsuarioDisplay">COORDINADOR</span>
   </div>
 </header>
 
 <div class="container">
-  <!-- Panel Izquierdo -->
   <div class="form-panel">
     <h2>Eventos</h2>
     
-    <!-- Formulario de Eventos -->
     <form id="evento-form">
-      <!-- Campo oculto para ID de evento (para actualizar) -->
       <input type="hidden" id="id_evento" name="id_evento">
 
       <label for="nombre_evento">Nombre del evento</label>
       <input type="text" id="nombre_evento" name="nombre_evento" placeholder="Ingrese el nombre del evento" required>
 
       <div class="row">
-        <div style="flex: 1;">
+        <div>
           <label for="encargado_evento">Encargado del evento</label>
           <select id="encargado_evento" name="id_usuario" required>
             <option value="">Cargando coordinadores...</option>
           </select>
         </div>
-        <div style="flex: 1;">
+        <div>
           <label for="tipo_evento">Tipo de evento</label>
           <select id="tipo_evento" name="id_tipos_eve" required>
             <option value="">Cargando tipos...</option>
@@ -417,15 +123,15 @@
       </div>
 
       <div class="row">
-        <div style="flex: 1;">
+        <div>
           <label>Fecha del evento</label>
-          <div class="row">
-            <select id="fecha_dia" name="fecha_dia" required><option value="">Día</option></select>
-            <select id="fecha_mes" name="fecha_mes" required><option value="">Mes</option></select>
-            <select id="fecha_ano" name="fecha_ano" required><option value="">Año</option></select>
+          <div class="row" style="gap: 5px;">
+            <select id="fecha_dia" required><option value="">Día</option></select>
+            <select id="fecha_mes" required><option value="">Mes</option></select>
+            <select id="fecha_ano" required><option value="">Año</option></select>
           </div>
         </div>
-        <div style="flex: 1;">
+        <div>
           <label for="cupo_evento">Cupo del evento</label>
           <input type="number" id="cupo_evento" name="cupo" placeholder="Ingrese el cupo" required>
         </div>
@@ -441,14 +147,16 @@
       </div>
     </form>
     
-    <!-- Mensaje de Feedback -->
     <div id="feedback-message"></div>
-
   </div>
 
-  <!-- Panel Derecho -->
   <div class="right-panel">
-    <h2>Eventos Próximos</h2>
+    
+    <div class="panel-header">
+        <h2>Eventos Próximos</h2>
+        <a href="gestioninscripcioneventos.html" class="btn-go-list">Personas inscritas. </a>
+    </div>
+
     <div class="search-box">
       <input type="text" id="search-input" placeholder="Buscar evento por nombre">
       <button id="search-button">Buscar</button>
@@ -464,7 +172,6 @@
           </tr>
         </thead>
         <tbody id="eventos-table-body">
-          <!-- Las filas de eventos se cargarán aquí -->
         </tbody>
       </table>
     </div>
@@ -472,15 +179,13 @@
 </div>
 
 <script>
-  // URL base de tu API (Asegúrate de que coincida con tu servidor)
   const API_URL = 'http://localhost:3001/api';
 
-  // --- Elementos del DOM ---
+  // Elementos DOM
   const form = document.getElementById('evento-form');
   const feedbackMessage = document.getElementById('feedback-message');
   const tableBody = document.getElementById('eventos-table-body');
   
-  // Inputs del formulario
   const idEventoInput = document.getElementById('id_evento');
   const nombreInput = document.getElementById('nombre_evento');
   const encargadoSelect = document.getElementById('encargado_evento');
@@ -491,404 +196,200 @@
   const cupoInput = document.getElementById('cupo_evento');
   const descripcionInput = document.getElementById('descripcion_evento');
 
-  // Botones
   const btnActualizar = document.getElementById('btn-actualizar');
   const btnEliminar = document.getElementById('btn-eliminar');
   const btnBuscar = document.getElementById('search-button');
   const inputBuscar = document.getElementById('search-input');
 
-  /**
-   * Muestra un mensaje de feedback (éxito o error)
-   * @param {string} message - El mensaje a mostrar
-   * @param {string} type - 'success', 'error' o 'critical'
-   */
+  // Nombre usuario
+  document.addEventListener("DOMContentLoaded", () => {
+    const nombreGuardado = localStorage.getItem("usuario");
+    const elementoNombre = document.getElementById("nombreUsuarioDisplay");
+    if (elementoNombre && nombreGuardado) elementoNombre.textContent = nombreGuardado.toUpperCase();
+  });
+
   function showFeedback(message, type = 'success') {
     feedbackMessage.textContent = message;
     feedbackMessage.className = `feedback-${type}`;
     feedbackMessage.style.display = 'block';
-    
-    // Ocultar el mensaje después de 5 segundos, a menos que sea crítico
-    if (type !== 'critical') {
-        setTimeout(() => {
-            feedbackMessage.style.display = 'none';
-        }, 5000);
-    }
+    setTimeout(() => { feedbackMessage.style.display = 'none'; }, 5000);
   }
 
-  /**
-   * Maneja errores de carga (fetch) y muestra un mensaje crítico
-   * @param {Error} error - El objeto de error
-   * @param {string} context - Descripción de lo que falló
-   */
-  function handleLoadError(error, context) {
-      console.error(`Error en ${context}:`, error);
-      // Si el error es 'Failed to fetch', es un error de conexión de red
-      if (error.message.includes('Failed to fetch')) {
-          showFeedback('CRÍTICO: No se pudo conectar con el servidor backend. Asegúrate de que esté corriendo en el puerto 3001.', 'critical');
-      } else {
-          showFeedback(`Error al cargar ${context}.`, 'error');
-      }
-  }
-
-  /**
-   * Extrae el array de datos de una respuesta JSON,
-   * independientemente de si viene como un array plano o un objeto.
-   * @param {object|Array} data - La respuesta JSON del servidor
-   * @returns {Array} - El array de datos
-   */
   function extractArray(data) {
-      if (Array.isArray(data)) {
-          return data; // Ya es un array
-      }
-      // Si es un objeto, busca el array dentro de las claves comunes
+      if (Array.isArray(data)) return data;
       if (typeof data === 'object' && data !== null) {
-          if (Array.isArray(data.eventos)) return data.eventos;
-          if (Array.isArray(data.coordinadores)) return data.coordinadores;
-          if (Array.isArray(data.tipos)) return data.tipos;
-          if (Array.isArray(data.tiposEventos)) return data.tiposEventos;
+          return data.eventos || data.coordinadores || data.usuarios || data.tipos || data.tiposEventos || [];
       }
-      // Si no encuentra nada, devuelve un array vacío para evitar errores .forEach
-      console.warn("La respuesta del backend no era un array o un objeto esperado:", data);
       return []; 
   }
 
-
-  /**
-   * Carga los coordinadores (usuarios con rol=2) en el dropdown
-   */
+  // --- CARGA DE DATOS ---
+  
+  // 1. Coordinadores
   async function loadCoordinadores() {
     try {
-      const response = await fetch(`${API_URL}/usuarios-coordinadores`);
-      if (!response.ok) {
-        // Captura errores 500 (Error Interno del Servidor)
-        throw new Error('Error al obtener coordinadores');
-      }
+      const response = await fetch(`${API_URL}/solo-coordinadores-reales`);
+      if (!response.ok) throw new Error('Error');
       
       const data = await response.json();
-      const coordinadores = extractArray(data); // CORRECCIÓN: Extraer array
+      const coordinadores = extractArray(data);
       
-      encargadoSelect.innerHTML = '<option value="">Seleccionar coordinador</option>'; // Limpiar
+      encargadoSelect.innerHTML = '<option value="">Seleccionar coordinador</option>';
       
       coordinadores.forEach(user => {
         const option = document.createElement('option');
-        option.value = user.id_usuario; // El ID se guarda en 'value'
-        option.textContent = user.nombre; // El nombre se muestra
+        option.value = user.id_usuario; 
+        option.textContent = user.nombre;
         encargadoSelect.appendChild(option);
       });
-    } catch (error) {
-      handleLoadError(error, 'coordinadores');
-      encargadoSelect.innerHTML = '<option value="">Error al cargar</option>';
-    }
+    } catch (error) { console.error(error); }
   }
 
-  /**
-   * Carga los tipos de evento en el dropdown
-   */
+  // 2. Tipos Evento
   async function loadTiposEvento() {
     try {
       const response = await fetch(`${API_URL}/tipos-eventos`);
-      if (!response.ok) throw new Error('Error al cargar tipos de evento');
-      
       const data = await response.json();
-      const tipos = extractArray(data); // CORRECCIÓN: Extraer array
-      
-      if (!Array.isArray(tipos)) {
-          // Si extractArray falló o devolvió algo inesperado
-          throw new TypeError("La respuesta procesada no es un array");
-      }
-
-      tipoSelect.innerHTML = '<option value="">Seleccionar tipo</option>'; // Limpiar
-      
+      const tipos = extractArray(data);
+      tipoSelect.innerHTML = '<option value="">Seleccionar tipo</option>';
       tipos.forEach(tipo => {
         const option = document.createElement('option');
         option.value = tipo.id_tipos_eve;
         option.textContent = tipo.nombre_tipo_eve;
         tipoSelect.appendChild(option);
       });
-    } catch (error) {
-      handleLoadError(error, 'tipos de evento');
-      tipoSelect.innerHTML = '<option value="">Error al cargar</option>';
-    }
+    } catch (error) { console.error(error); }
   }
 
-  /**
-   * Carga la lista de eventos en la tabla del panel derecho
-   * @param {string} [searchQuery] - Término de búsqueda opcional
-   */
+  // 3. Lista Eventos (SIN COLUMNA EXTRA)
   async function loadEventos(searchQuery = '') {
     let url = `${API_URL}/eventos`;
-    if (searchQuery) {
-        // Usamos la ruta de búsqueda si hay un término
-        url = `${API_URL}/eventos/buscar?nombre=${encodeURIComponent(searchQuery)}`;
-    }
-
+    if (searchQuery) url = `${API_URL}/eventos/buscar?nombre=${encodeURIComponent(searchQuery)}`;
     try {
       const response = await fetch(url);
-      if (!response.ok) {
-        // Captura errores 500 (Error Interno del Servidor)
-        throw new Error('Error interno del servidor.');
-      }
-      
       const data = await response.json();
-      const eventos = extractArray(data); // CORRECCIÓN: Extraer array
-      
-      tableBody.innerHTML = ''; // Limpiar tabla
+      const eventos = extractArray(data);
+      tableBody.innerHTML = '';
       
       if (eventos.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="3">${searchQuery ? 'No se encontraron eventos.' : 'No hay eventos próximos.'}</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="3">No hay eventos.</td></tr>`;
         return;
       }
       
       eventos.forEach(evento => {
         const tr = document.createElement('tr');
-        // Formatear fecha (asumiendo YYYY-MM-DD T...Z)
-        const fecha = new Date(evento.fecha_evento).toLocaleDateString('es-ES', {
-            day: '2-digit', month: '2-digit', year: 'numeric'
-        });
+        const fecha = new Date(evento.fecha_evento).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
         
+        // Tabla simple de 3 columnas
         tr.innerHTML = `
-          <td>${evento.nombre_evento}</td>
-          <td>${fecha}</td>
-          <td>${evento.cupo}</td>
+            <td>${evento.nombre_evento}</td>
+            <td>${fecha}</td>
+            <td>${evento.cupo}</td>
         `;
         
-        // Guardar todos los datos del evento en el elemento <tr>
-        tr.dataset.evento = JSON.stringify(evento);
-        
-        // Añadir click listener para cargar datos en el formulario
         tr.addEventListener('click', () => populateForm(evento));
-        
         tableBody.appendChild(tr);
       });
-    } catch (error) {
-      handleLoadError(error, 'eventos');
-      tableBody.innerHTML = '<tr><td colspan="3">Error al cargar eventos.</td></tr>';
-    }
+    } catch (error) { console.error(error); }
   }
-  
-  /**
-   * Rellena el formulario con los datos de un evento (para actualizar/eliminar)
-   * @param {object} evento - El objeto del evento
-   */
-    function populateForm(evento) {
-    // Scroll al topo y enfocar el formulario
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
+
+  function populateForm(evento) {
     idEventoInput.value = evento.id_evento;
     nombreInput.value = evento.nombre_evento;
     encargadoSelect.value = evento.id_usuario;
     tipoSelect.value = evento.id_tipos_eve;
     cupoInput.value = evento.cupo;
     descripcionInput.value = evento.descripcion;
-
-    // Deconstruir la fecha (YYYY-MM-DD)
     try {
         const fecha = new Date(evento.fecha_evento);
-        // Ajustar por zona horaria para evitar errores de un día
         const userTimezoneOffset = fecha.getTimezoneOffset() * 60000;
         const localDate = new Date(fecha.getTime() + userTimezoneOffset);
-        
         diaSelect.value = localDate.getDate();
-        mesSelect.value = localDate.getMonth() + 1; // getMonth() es 0-11
+        mesSelect.value = localDate.getMonth() + 1;
         anoSelect.value = localDate.getFullYear();
-    } catch(e) {
-        console.error("Error al parsear fecha: ", e);
-    }
-    
-    // Habilitar botones de actualizar/eliminar
+    } catch(e) {}
     btnActualizar.disabled = false;
     btnEliminar.disabled = false;
-   }
-   
-   /**
-     * Limpia el formulario y resetea los botones
-     */
-    function resetForm() {
-        form.reset(); // Resetea todos los campos del formulario
-        idEventoInput.value = ''; // Asegurar que el ID oculto esté vacío
-        btnActualizar.disabled = true; // Deshabilitar botones
-        btnEliminar.disabled = true;
-    }
-
-  /**
-   * Pobla los dropdowns de fecha
-   */
-  function populateDateDropdowns() {
-    // Días (1-31)
-    for (let i = 1; i <= 31; i++) {
-      diaSelect.add(new Option(i, i));
-    }
-    // Meses (1-12)
-    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    meses.forEach((mes, index) => {
-      mesSelect.add(new Option(mes, index + 1));
-    });
-    // Años (2024-2030)
-    const currentYear = new Date().getFullYear();
-    for (let i = currentYear; i <= currentYear + 10; i++) {
-      anoSelect.add(new Option(i, i));
-    }
   }
 
-  /**
-   * Manejador del envío del formulario (Registrar)
-   */
+  function resetForm() {
+      form.reset();
+      idEventoInput.value = '';
+      btnActualizar.disabled = true;
+      btnEliminar.disabled = true;
+  }
+
+  function populateDateDropdowns() {
+    for (let i = 1; i <= 31; i++) diaSelect.add(new Option(i, i));
+    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    meses.forEach((mes, index) => mesSelect.add(new Option(mes, index + 1)));
+    const currentYear = new Date().getFullYear();
+    for (let i = currentYear; i <= currentYear + 5; i++) anoSelect.add(new Option(i, i));
+  }
+
+  // --- LISTENERS ---
   form.addEventListener('submit', async function(e) {
-    e.preventDefault(); // Evitar envío tradicional
-    
-    // Construir fecha en formato YYYY-MM-DD
-    const dia = String(diaSelect.value).padStart(2, '0');
-    const mes = String(mesSelect.value).padStart(2, '0');
-    const ano = anoSelect.value;
-    const fecha_evento = `${ano}-${mes}-${dia}`;
-    
+    e.preventDefault();
+    const fecha = `${anoSelect.value}-${String(mesSelect.value).padStart(2, '0')}-${String(diaSelect.value).padStart(2, '0')}`;
     const formData = {
       id_usuario: encargadoSelect.value,
       id_tipos_eve: tipoSelect.value,
       nombre_evento: nombreInput.value,
-      fecha_evento: fecha_evento,
+      fecha_evento: fecha,
       cupo: cupoInput.value,
       descripcion: descripcionInput.value
     };
-
     try {
       const response = await fetch(`${API_URL}/eventos`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData)
       });
-      
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.message || 'Error al registrar el evento');
-      }
-      
-      showFeedback('Evento registrado con éxito', 'success');
-      resetForm();
-      loadEventos(); // Recargar la lista de eventos
-      
-    } catch (error) {
-      console.error(error);
-      showFeedback(error.message, 'error');
-    }
+      if (!response.ok) throw new Error('Error al guardar');
+      showFeedback('Guardado con éxito');
+      resetForm(); loadEventos();
+    } catch (error) { showFeedback(error.message, 'error'); }
   });
-  
-  /**
-   * Manejador del botón Actualizar
-   */
+
   btnActualizar.addEventListener('click', async () => {
     const id = idEventoInput.value;
-    if (!id) {
-        showFeedback('Por favor, selecciona un evento de la lista para actualizar.', 'error');
-        return;
-    }
-    
-    // Construir fecha en formato YYYY-MM-DD
-    const dia = String(diaSelect.value).padStart(2, '0');
-    const mes = String(mesSelect.value).padStart(2, '0');
-    const ano = anoSelect.value;
-    const fecha_evento = `${ano}-${mes}-${dia}`;
-    
+    if (!id) return;
+    const fecha = `${anoSelect.value}-${String(mesSelect.value).padStart(2, '0')}-${String(diaSelect.value).padStart(2, '0')}`;
     const formData = {
       id_usuario: encargadoSelect.value,
       id_tipos_eve: tipoSelect.value,
       nombre_evento: nombreInput.value,
-      fecha_evento: fecha_evento,
+      fecha_evento: fecha,
       cupo: cupoInput.value,
       descripcion: descripcionInput.value
     };
-
     try {
-      const response = await fetch(`${API_URL}/eventos/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.message || 'Error al actualizar el evento');
-      }
-      
-      showFeedback('Evento actualizado con éxito', 'success');
-      resetForm();
-      loadEventos(); // Recargar la lista de eventos
-      
-    } catch (error) {
-      console.error(error);
-      showFeedback(error.message, 'error');
-    }
+        await fetch(`${API_URL}/eventos/${id}`, {
+            method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData)
+        });
+        showFeedback('Actualizado');
+        resetForm(); loadEventos();
+    } catch (e) { showFeedback('Error', 'error'); }
   });
 
-  /**
-   * Manejador del botón Eliminar
-   */
-    btnEliminar.addEventListener('click', async () => {
+  btnEliminar.addEventListener('click', async () => {
     const id = idEventoInput.value;
-    if (!id) {
-        showFeedback('Por favor, selecciona un evento de la lista para eliminar.', 'error');
-        return;
-    }
-    
-    // NOTA: window.confirm() está deshabilitado en este entorno de Vista Previa.
-    // En una aplicación real, usarías un modal personalizado.
-    // const confirmacion = confirm(`¿Estás seguro de que deseas eliminar el evento "${nombreInput.value}"?`);
-    // if (!confirmacion) {
-    //    return;
-    // }
-
+    if (!id || !confirm("¿Eliminar?")) return;
     try {
-      const response = await fetch(`${API_URL}/eventos/${id}`, {
-        method: 'DELETE'
-      });
-      
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.message || 'Error al eliminar el evento');
-      }
-      
-      showFeedback('Evento eliminado con éxito', 'success');
-      resetForm();
-      loadEventos(); // Recargar la lista de eventos
-      
-    } catch (error) {
-      console.error(error);
-      showFeedback(error.message, 'error');
-    }
-    });
+        await fetch(`${API_URL}/eventos/${id}`, { method: 'DELETE' });
+        showFeedback('Eliminado');
+        resetForm(); loadEventos();
+    } catch (e) { showFeedback('Error', 'error'); }
+  });
 
-  /**
-   * Manejador del botón de Búsqueda
-   */
-   btnBuscar.addEventListener('click', () => {
-        loadEventos(inputBuscar.value);
-   });
+  btnBuscar.addEventListener('click', () => loadEventos(inputBuscar.value));
 
-   // Opcional: Buscar también al presionar Enter en el input
-   inputBuscar.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') {
-            loadEventos(inputBuscar.value);
-        }
-   });
-
-
-  // --- Inicialización ---
   document.addEventListener('DOMContentLoaded', () => {
     populateDateDropdowns();
-    
-    // Cargar datos (Tipos de evento primero, como solicitaste)
     loadTiposEvento();
     loadCoordinadores();
     loadEventos();
-    
-    // Deshabilitar botones de acción al inicio
     btnActualizar.disabled = true;
     btnEliminar.disabled = true;
   });
 </script>
 </body>
 </html>
-

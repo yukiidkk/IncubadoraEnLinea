@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="./css/estilos.css">
 </head>
 <body>
-  <!-- NAVBAR -->
   <header class="navbar">
     <div class="nav-container">
       <img src="./images/logoITS.png" alt="Logo ITS">
@@ -18,7 +17,6 @@
     </div>
   </header>
 
-  <!-- FORMULARIO LOGIN -->
   <section class="login-section">
     <div class="login-card">
       <h2>Inicio de sesión</h2>
@@ -40,7 +38,6 @@
     </div>
   </section>
 
-  <!-- SCRIPT para conectar con el backend -->
   <script>
   document.querySelector(".login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -58,39 +55,46 @@
       const result = await response.json();
 
       if (result.success) {
-        // Guardar información del usuario en localStorage
+        // --- AQUÍ ESTÁ EL CAMBIO IMPORTANTE ---
+        // Guardamos toda la información necesaria
         localStorage.setItem("id_usuario", result.id_usuario);
+        
+        // ¡ESTA LÍNEA ES LA QUE NECESITAS PARA INSCRIBIRTE A EVENTOS!
+        // (Si id_persona viene null, usamos id_usuario como respaldo temporal)
+        localStorage.setItem("id_persona", result.id_persona || result.id_usuario);
+
         localStorage.setItem("nombre", result.nombre);
         localStorage.setItem("apellido", result.apellido);
         localStorage.setItem("correo", result.correo);
-        localStorage.setItem("rol", result.rol);
-        localStorage.setItem("tipo", result.tipo);
+        localStorage.setItem("rol", result.rol); // ID del rol (ej. 2 o 3)
+        localStorage.setItem("tipo", result.tipo); // Texto del rol (ej. 'Emprendedor')
+        
+        // Nombre completo para mostrar en la esquina
         localStorage.setItem("usuario", result.nombre + " " + result.apellido);
 
 
-        // Redirigir según el tipo de rol
-        switch (result.tipo.toLowerCase()) {
-          case "coordinador":
-            window.location.href = "inicioC.html";
-            break;
-          case "emprendedor":
-            window.location.href = "inicioE.html";
-            break;
-          case "administrador":
-            window.location.href = "inicioC.html";
-            break;
-          default:
-            alert("Rol no reconocido. Contacta al administrador.");
-            break;
+        // Redirigir según el tipo de rol (Manejo robusto de ID y Texto)
+        const idRol = parseInt(result.rol);
+        const tipoTexto = result.tipo ? result.tipo.toLowerCase() : "";
+
+        if (idRol === 3 || tipoTexto === "coordinador") {
+             window.location.href = "inicioC.html";
+        } else if (idRol === 2 || tipoTexto === "emprendedor") {
+             window.location.href = "inicioE.html";
+        } else if (idRol === 1 || tipoTexto === "administrador") {
+             window.location.href = "inicioC.html"; 
+        } else {
+             // Default por si acaso
+             window.location.href = "inicioE.html";
         }
 
       } else {
-        alert("❌ " + result.message);
+        alert(" " + result.message);
       }
 
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
-      alert("Error de conexión con el servidor. Verifica que el backend esté en ejecución.");
+      alert("Error de conexión con el servidor.");
     }
   });
   </script>

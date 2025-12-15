@@ -19,163 +19,33 @@
             </div>
 
             <div class="user-info">
-                <span class="user-text">USUARIO</span>
+                <span class="user-text" id="nombreUsuarioDisplay">USUARIO</span>
                 <div class="user-icon">👤</div>
             </div>
         </div>
         <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: #f3f4f6;
-      color: #001d3d;
-    }
-
-    /* NAVBAR */
-.navbar {
-    background: #003366;
-    color: #fff;
-    height: 50px; /* define altura fija */
-    display: flex;
-    align-items: center; /* centra verticalmente el contenido */
-}
-
-.nav-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
-    margin: 0 auto;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    width: 30px; /* tamaño del icono reducido */
-    height: 30px;
-    margin-right: 8px;
-}
-
-.nav-right {
-    font-weight: bold;
-    font-size: 14px;
-}
-
-    /* Contenido */
-    .container {
-      padding: 40px;
-    }
-
-    .container h2 {
-      color: #001d3d;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    .paneles {
-      display: flex;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-
-    .panel {
-      background-color: #dbe7ff;
-      flex: 1;
-      border-radius: 10px;
-      padding: 25px;
-      min-width: 300px;
-    }
-
-    label {
-      display: block;
-      font-weight: 600;
-      margin-top: 10px;
-    }
-
-    input[type="text"], select {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      margin-top: 5px;
-      margin-bottom: 15px;
-    }
-
-    /* Tabla */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 10px 12px;
-      border-bottom: 1px solid #eee;
-    }
-
-    th {
-      background-color: #e0ebff;
-      font-weight: 600;
-    }
-
-    tr:hover {
-      background-color: #f2f6ff;
-    }
-
-    /* Botones */
-    .botones {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 15px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .btn {
-      background-color: #003366;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      flex: 1;
-      min-width: 120px;
-    }
-
-    .btn:hover {
-      background-color: #001f54;
-    }
-
-    /* Sección buscar */
-    .buscar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .paneles {
-        flex-direction: column;
-      }
-
-      .botones {
-        flex-direction: column;
-        align-items: stretch;
-      }
-    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; }
+    body { background-color: #f3f4f6; color: #001d3d; }
+    .navbar { background: #003366; color: #fff; height: 50px; display: flex; align-items: center; }
+    .nav-content { display: flex; justify-content: space-between; align-items: center; width: 90%; margin: 0 auto; }
+    .logo { display: flex; align-items: center; }
+    .logo img { width: 30px; height: 30px; margin-right: 8px; }
+    .nav-right { font-weight: bold; font-size: 14px; }
+    .container { padding: 40px; }
+    .container h2 { color: #001d3d; font-size: 24px; margin-bottom: 20px; }
+    .paneles { display: flex; gap: 40px; flex-wrap: wrap; }
+    .panel { background-color: #dbe7ff; flex: 1; border-radius: 10px; padding: 25px; min-width: 300px; }
+    label { display: block; font-weight: 600; margin-top: 10px; }
+    input[type="text"], select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; margin-top: 5px; margin-bottom: 15px; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #eee; }
+    th { background-color: #e0ebff; font-weight: 600; }
+    tr:hover { background-color: #f2f6ff; }
+    .botones { display: flex; justify-content: space-between; margin-top: 15px; flex-wrap: wrap; gap: 10px; }
+    .btn { background-color: #003366; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; flex: 1; min-width: 120px; }
+    .btn:hover { background-color: #001f54; }
+    .buscar { display: flex; gap: 10px; margin-bottom: 15px; }
+    @media (max-width: 768px) { .paneles { flex-direction: column; } .botones { flex-direction: column; align-items: stretch; } }
   </style>
     </header>
     
@@ -186,23 +56,18 @@
             </header>
             
             <div class="paneles">
-      <!-- Panel izquierdo -->
       <section class="panel">
         <label>Nombre del tipo de evento </label>
         <input type="text" id="nombreTipoEInput" placeholder="Nombre del tipo de evento">
-
-        
 
         <h3>Tipo de evento creados</h3>
         <table>
           <thead>
             <tr>
               <th>Tipo de Evento</th>
-              
             </tr>
           </thead>
-          <tbody id="tablaTipoEvento">
-            </tbody>
+          <tbody id="tablaTipoEvento"></tbody>
         </table>
 
         <div class="botones">
@@ -212,11 +77,10 @@
         </div>
       </section>
 
-      <!-- Panel derecho -->
       <section class="panel">
         <div class="buscar">
           <input type="text" placeholder="Buscar un evento">
-          <button class="btn">Buscar</button>
+          <button class="btn" id="btnBuscarEvento">Buscar</button>
         </div>
 
         <table>
@@ -226,221 +90,200 @@
               <th>Tipo de evento asignado</th>
             </tr>
           </thead>
-          <tbody id="tablaTiposEventos">
-          </tbody>
+          <tbody id="tablaTiposEventos"></tbody>
         </table>
       </section>
     </div>
   </main>
   <script>
+// --- 1. MOSTRAR USUARIO LOGUEADO ---
+document.addEventListener("DOMContentLoaded", () => {
+    // Tu login guarda el nombre completo en la variable "usuario"
+    const nombreGuardado = localStorage.getItem("usuario"); 
+    
+    const elementoNombre = document.getElementById("nombreUsuarioDisplay");
+    
+    if (elementoNombre) {
+        if (nombreGuardado) {
+            // Si encontramos el nombre del login, lo ponemos
+            elementoNombre.textContent = nombreGuardado.toUpperCase();
+        } else {
+            // Si no hay login previo, ponemos un default
+            elementoNombre.textContent = "COORDINADOR"; 
+        }
+    }
+});
+
 // *** CONFIGURACIÓN DE ENDPOINTS DE LA API ***
 const API_TIPOS_EVENTOS = "http://localhost:3001/api/tipos-eventos"; 
 const API_EVENTOS_TIPO = "http://localhost:3001/api/eventos-con-tipo"; 
 const API_BUSCAR_EVENTO = "http://localhost:3001/api/eventos-con-tipo/buscar";
 
-
 // *** REFERENCIAS DEL DOM ***
 const inputNombreTipoE = document.querySelector("#nombreTipoEInput"); 
-const tablaTiposEventos = document.querySelector("#tablaTipoEvento"); 
+const tablaTiposEventosIzq = document.querySelector("#tablaTipoEvento"); 
 const btnCrear = document.querySelector("#btnCrear");
 const btnActualizar = document.querySelector("#btnActualizar");
 const btnEliminar = document.querySelector("#btnEliminar");
 const inputBuscarEvento = document.querySelector(".buscar input[type='text']");
-const btnBuscarEvento = document.querySelector(".buscar .btn"); 
-const tablaEventosTipo = document.querySelector("#tablaUsuariosRol"); 
+const btnBuscarEvento = document.querySelector("#btnBuscarEvento"); 
+const tablaEventosDerecha = document.querySelector("#tablaTiposEventos"); 
 
 let tipoEventoSeleccionadoId = null; 
 
-// Inicialización de botones (desactivar Actualizar/Eliminar al inicio)
+// Inicialización de botones
 btnActualizar.disabled = true;
 btnEliminar.disabled = true;
 
-// Función para actualizar los estados de los botones
 function actualizarEstadoBotones() {
     if (tipoEventoSeleccionadoId) {
-        btnCrear.textContent = "Nuevo"; // Indica que el formulario está en modo "edición"
+        btnCrear.textContent = "Nuevo"; 
         btnActualizar.disabled = false;
         btnEliminar.disabled = false;
     } else {
-        btnCrear.textContent = "Crear"; // Indica que el formulario está en modo "creación"
+        btnCrear.textContent = "Crear"; 
         btnActualizar.disabled = true;
         btnEliminar.disabled = true;
     }
 }
 
-// Función para cargar la tabla de Tipos de Eventos
+// Cargar Panel Izquierdo
 async function cargarTiposEventos() {
     try {
         const res = await fetch(API_TIPOS_EVENTOS);
         if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
-        
         const data = await res.json();
         if (!data.success) throw new Error("API devolvió éxito falso.");
 
-        tablaTiposEventos.innerHTML = "";
-        
+        tablaTiposEventosIzq.innerHTML = "";
         data.tiposEventos.forEach(te => {
             const fila = document.createElement("tr");
             fila.innerHTML = `<td>${te.nombre_tipo_eve}</td>`;
-            
             fila.addEventListener("click", () => {
-                // Al hacer clic, SELECCIONA el tipo de evento
                 tipoEventoSeleccionadoId = te.id_tipos_eve;
                 inputNombreTipoE.value = te.nombre_tipo_eve; 
-                
                 document.querySelectorAll("#tablaTipoEvento tr").forEach(r => r.style.backgroundColor = 'white');
                 fila.style.backgroundColor = '#f2f6ff'; 
-                
-                actualizarEstadoBotones(); // Actualiza el estado al seleccionar
+                actualizarEstadoBotones();
             });
-            tablaTiposEventos.appendChild(fila);
+            tablaTiposEventosIzq.appendChild(fila);
         });
-        
     } catch (err) {
-        console.error("Fallo al cargar tipos de eventos:", err);
-        alert("No se pudieron cargar los tipos de eventos. ¿Está el servidor activo?");
+        console.error("Fallo al cargar tipos:", err);
     }
 }
 
-// Cargar Eventos con su Tipo (sin cambios)
+// Cargar Panel Derecho
 async function cargarEventosConTipo() {
     try {
         const res = await fetch(API_EVENTOS_TIPO);
         if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
-
         const data = await res.json();
-        if (!data.success) throw new Error("La API devolvió un error.");
-
-        tablaEventosTipo.innerHTML = "";
+        tablaEventosDerecha.innerHTML = "";
         data.eventos.forEach(e => {
             const fila = document.createElement("tr");
             fila.innerHTML = `<td>${e.nombre_evento}</td><td>${e.nombre_tipo_eve}</td>`;
-            tablaEventosTipo.appendChild(fila);
+            tablaEventosDerecha.appendChild(fila);
         });
     } catch (err) {
-        console.error("Fallo al cargar eventos con tipo:", err);
+        console.error("Fallo al cargar eventos:", err);
     }
 }
 
-// Buscar Eventos por nombre (sin cambios)
+// Buscar
 async function buscarEvento() {
     const nombre = inputBuscarEvento.value.trim();
     if (!nombre) {
         cargarEventosConTipo();
         return;
     }
-    
     try {
         const url = `${API_BUSCAR_EVENTO}?nombre=${encodeURIComponent(nombre)}`;
         const res = await fetch(url);
-        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
-
         const data = await res.json();
-        if (!data.success) throw new Error("La API devolvió un error en la búsqueda.");
-
-        tablaEventosTipo.innerHTML = "";
+        tablaEventosDerecha.innerHTML = "";
         data.eventos.forEach(e => {
             const fila = document.createElement("tr");
             fila.innerHTML = `<td>${e.nombre_evento}</td><td>${e.nombre_tipo_eve}</td>`;
-            tablaEventosTipo.appendChild(fila);
+            tablaEventosDerecha.appendChild(fila);
         });
     } catch (err) {
-        console.error("Fallo al buscar eventos:", err);
+        console.error("Fallo al buscar:", err);
     }
 }
 
-// Limpia el formulario y lo pone en modo "Creación"
 function limpiarFormulario() {
     tipoEventoSeleccionadoId = null;
     inputNombreTipoE.value = "";
     document.querySelectorAll("#tablaTipoEvento tr").forEach(r => r.style.backgroundColor = 'white');
-    actualizarEstadoBotones(); // Vuelve al modo "Crear"
+    actualizarEstadoBotones(); 
 }
 
-// --- Event Listeners para el CRUD ---
-
+// Listeners
 btnCrear.addEventListener("click", async () => {
-    // Si el modo es "Nuevo", simplemente limpiamos el formulario para empezar a crear
     if (tipoEventoSeleccionadoId) {
         limpiarFormulario();
         return;
     }
-
-    // Lógica de CREACIÓN
     const nombreTipoE = inputNombreTipoE.value.trim();
-    if (!nombreTipoE) return alert("Completa el nombre del tipo de evento.");
+    if (!nombreTipoE) return alert("Completa el nombre.");
 
-    const res = await fetch(API_TIPOS_EVENTOS, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombreTipoE })
-    });
-    
-    if(res.ok) {
-        limpiarFormulario();
-        cargarTiposEventos();
-    } else {
-        alert("Error al crear el tipo de evento.");
+    try {
+        const res = await fetch(API_TIPOS_EVENTOS, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombreTipoE })
+        });
+        const data = await res.json();
+        if(res.ok) {
+            limpiarFormulario();
+            cargarTiposEventos();
+        } else {
+            // Muestra el error si ya existe
+            alert(data.message); 
+        }
+    } catch (error) {
+        alert("Error de conexión.");
     }
 });
 
 btnActualizar.addEventListener("click", async () => {
-    if (!tipoEventoSeleccionadoId) return alert("Selecciona un tipo de evento primero.");
-    
+    if (!tipoEventoSeleccionadoId) return alert("Selecciona uno primero.");
     const nombreTipoE = inputNombreTipoE.value.trim();
-
-    if (!nombreTipoE) return alert("Completa el nombre del tipo de evento.");
-
     const res = await fetch(`${API_TIPOS_EVENTOS}/${tipoEventoSeleccionadoId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombreTipoE })
     });
-    
     if(res.ok) {
         limpiarFormulario();
         cargarTiposEventos();
         cargarEventosConTipo(); 
-    } else {
-        alert("Error al actualizar el tipo de evento.");
     }
 });
 
 btnEliminar.addEventListener("click", async () => {
-    if (!tipoEventoSeleccionadoId) return alert("Selecciona un tipo de evento primero.");
-    
-    if (!confirm(`¿Estás seguro de que quieres eliminar el tipo de evento "${inputNombreTipoE.value}"?`)) return;
-
+    if (!tipoEventoSeleccionadoId) return alert("Selecciona uno primero.");
+    if (!confirm(`¿Eliminar "${inputNombreTipoE.value}"?`)) return;
     const res = await fetch(`${API_TIPOS_EVENTOS}/${tipoEventoSeleccionadoId}`, { method: "DELETE" });
-    
-    // Mejorar el manejo de errores para detectar la clave foránea (Error 409 o 400)
     if(res.ok) {
         limpiarFormulario();
         cargarTiposEventos();
         cargarEventosConTipo();
     } else {
-        const errorData = await res.json().catch(() => ({}));
-        
-        // Asumiendo que un error 500 puede ser la clave foránea si el backend no lo maneja
-        if (res.status === 500 || res.status === 409) {
-            alert("Error al eliminar el tipo de evento. Es probable que **uno o más eventos lo estén utilizando** (Error de Clave Foránea). Debes reasignar o eliminar esos eventos primero.");
-        } else {
-            alert(`Error al eliminar: ${errorData.message || 'Error desconocido'}`);
-        }
+        alert("Error al eliminar. Puede que esté en uso.");
     }
 });
 
-// Event Listener para el botón "Buscar"
 btnBuscarEvento.addEventListener("click", buscarEvento);
 inputBuscarEvento.addEventListener("keypress", (e) => {
     if (e.key === 'Enter') buscarEvento();
 });
 
-
-// Carga inicial
+// Inicio
 cargarTiposEventos();
 cargarEventosConTipo();
-actualizarEstadoBotones(); // Establece el estado inicial de los botones
+actualizarEstadoBotones();
 </script>
 </body>
 </html>

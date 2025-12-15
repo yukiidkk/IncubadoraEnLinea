@@ -3,321 +3,246 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscripción de Eventos - Instituto Tecnológico de Saltillo</title>
+  <title>Inscripción de Eventos - ITS</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background-color: #f5f6fa;
-    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; }
+    body { background-color: #f3f4f6; color: #001d3d; font-family: 'Inter', sans-serif; }
 
-    /* Encabezado */
-    header {
-      background-color: #002855;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 40px;
-    }
+    /* HEADER */
+    header { background-color: #003366; color: white; display: flex; align-items: center; justify-content: space-between; padding: 10px 40px; height: 55px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    header .logo { display: flex; align-items: center; font-weight: 600; font-size: 16px; }
+    header .logo img { height: 28px; margin-right: 10px; border-radius: 4px; }
+    nav { display: flex; align-items: center; gap: 15px; }
+    nav a { color: white; text-decoration: none; font-weight: 500; font-size: 14px; padding: 8px 12px; border-radius: 6px; transition: background-color 0.3s ease; }
+    nav a:hover { background-color: rgba(255, 255, 255, 0.1); }
+    .usuario { display: flex; align-items: center; font-weight: bold; font-size: 14px; }
+    .usuario .circle { width: 24px; height: 24px; background-color: #e0ebff; border-radius: 50%; margin-right: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #003366; font-size: 12px; }
 
-    header .logo {
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-      font-size: 18px;
-    }
+    /* LAYOUT */
+    .container { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 25px; padding: 40px; max-width: 1600px; margin: 0 auto; }
+    .panel { background-color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; min-width: 300px; display: flex; flex-direction: column; }
+    .panel-lista { max-height: 70vh; overflow-y: auto; }
+    h2 { color: #001d3d; margin-bottom: 20px; font-size: 22px; border-bottom: 2px solid #dbe7ff; padding-bottom: 5px; }
 
-    header .logo img {
-      height: 25px;
-      margin-right: 10px;
-    }
+    /* LISTAS */
+    .search-box { display: flex; margin-bottom: 20px; }
+    .search-box input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px 0 0 6px; outline: none; font-size: 14px; }
+    .search-box button { border-radius: 0 6px 6px 0; background-color: #003366; padding: 10px 20px; color: white; border: none; cursor: pointer; font-size: 14px; }
+    .event-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px; background-color: #f9f9ff; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0; transition: background-color 0.3s; }
+    .event-item-clickable { cursor: pointer; }
+    .event-item-clickable:hover { background-color: #f0f4f8; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .event-icon { font-size: 20px; margin-top: 2px; }
+    .event-info strong { color: #001d3d; display: block; font-size: 16px; }
+    .event-info p { margin: 0; font-size: 13px; color: #555; margin-top: 4px; }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: 500;
-    }
+    /* FORMULARIO */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    label { font-weight: 600; display: block; margin-bottom: 5px; font-size: 14px; }
+    input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; background-color: #f9f9ff; }
+    input[readonly], textarea[readonly] { background-color: #f0f0f0; cursor: not-allowed; }
+    textarea { resize: none; height: 120px; }
+    .full-width { grid-column: span 2; }
 
-    nav a:hover {
-      text-decoration: underline;
-    }
+    .submit-btn { display: block; background-color: #003366; color: white; border: none; padding: 12px 30px; border-radius: 6px; font-size: 16px; margin: 25px auto 0; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+    .submit-btn:hover { background-color: #001f54; transform: translateY(-2px); }
+    .submit-btn:disabled { background-color: #999; cursor: not-allowed; transform: none; }
+    
+    #feedback-message { display: none; padding: 12px; margin-top: 20px; border-radius: 6px; font-weight: 500; text-align: center; }
+    .feedback-success { background-color: #d4edda; color: #155724; }
+    .feedback-error { background-color: #f8d7da; color: #721c24; }
 
-    .usuario {
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    .usuario .circle {
-      width: 20px;
-      height: 20px;
-      background-color: #eee;
-      border-radius: 50%;
-      margin-right: 8px;
-    }
-
-    /* Contenedor principal */
-    .container {
-      display: flex;
-      justify-content: space-between;
-      gap: 25px;
-      padding: 40px;
-    }
-
-    .panel {
-      background-color: white;
-      flex: 1;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      color: #002855;
-      margin-bottom: 20px;
-    }
-
-    /* Panel de búsqueda */
-    .search-box {
-      display: flex;
-      margin-bottom: 25px;
-    }
-
-    .search-box input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px 0 0 5px;
-      outline: none;
-    }
-
-    .search-box button {
-      background-color: #002855;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 0 5px 5px 0;
-      cursor: pointer;
-    }
-
-    /* Lista de eventos */
-    .event-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .event-icon {
-      background-color: #e6f0ff;
-      border-radius: 50%;
-      padding: 8px;
-    }
-
-    .event-icon::before {
-      content: "✔";
-      color: #002855;
-      font-size: 14px;
-    }
-
-    .event-info strong {
-      color: #002855;
-      display: block;
-    }
-
-    .event-info p {
-      margin: 0;
-      font-size: 14px;
-      color: #555;
-    }
-
-    /* Formulario */
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    label {
-      font-weight: 600;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-
-    textarea {
-      resize: none;
-      height: 100px;
-    }
-
-    .full-width {
-      grid-column: span 2;
-    }
-
-    .submit-btn {
-      display: block;
-      background-color: #002855;
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 5px;
-      font-size: 16px;
-      margin: 25px auto 0;
-      cursor: pointer;
-    }
-
-    .submit-btn:hover {
-      background-color: #004aad;
-    }
-
-    /* Responsividad */
-    @media (max-width: 1000px) {
-      .container {
-        flex-direction: column;
-      }
-      .panel {
-        width: 100%;
-      }
-    }
+    @media (max-width: 1200px) { .container { grid-template-columns: 1fr 1fr; } .panel.center { grid-column: span 2; order: 1; } }
+    @media (max-width: 768px) { .container { grid-template-columns: 1fr; padding: 20px; } .panel.center { grid-column: span 1; } header { padding: 10px 20px; flex-direction: column; height: auto; } }
   </style>
 </head>
 <body>
   <header>
     <div class="logo">
-      <img src="C:\Users\reyes\OneDrive\Documentos\IncubadoraEnLinea\images\logoITS.png" alt="">
+      <img src="./images/logoITS.png" alt="Logo ITS" onerror="this.style.display='none'">
       Instituto Tecnológico de Saltillo
     </div>
     <nav>
-      <a href="http://127.0.0.1:5500/inicioE.html">Home</a>
-      <a href="http://127.0.0.1:5500/proyectos.html?rol=emprendedor">Proyectos</a>
-      <a href="http://127.0.0.1:5500/tutorias/tutorias_E.html">Tutorias</a>
-      <a href="http://127.0.0.1:5500/inscripcionaeventos.html">Eventos</a>
+      <a href="inicioE.html">Inicio</a>
+      <a href="#">Mis Proyectos</a>
+      <a href="#">Asesorías</a>
+      <a href="#">Eventos</a>
     </nav>
     <div class="usuario">
-      <div class="circle"></div>
-      USUARIO
+      <div class="circle" id="user-initial">U</div>
+      <span id="user-name">USUARIO</span>
     </div>
   </header>
 
   <div class="container">
-    <!-- Panel Izquierdo -->
-    <div class="panel">
+    <div class="panel panel-lista">
       <h2>Eventos Próximos</h2>
       <div class="search-box">
-        <input type="text" placeholder="Buscar un evento por nombre">
-        <button>Buscar</button>
+        <input type="text" id="search-input" placeholder="Buscar evento...">
+        <button id="search-button">Buscar</button>
       </div>
-
-      <div class="event-item">
-        <div class="event-icon"></div>
-        <div class="event-info">
-          <strong>Evento X</strong>
-          <p>Descripción del evento</p>
-        </div>
-      </div>
-      <div class="event-item">
-        <div class="event-icon"></div>
-        <div class="event-info">
-          <strong>Evento X</strong>
-          <p>Descripción del evento</p>
-        </div>
-      </div>
-      <div class="event-item">
-        <div class="event-icon"></div>
-        <div class="event-info">
-          <strong>Evento X</strong>
-          <p>Descripción del evento</p>
-        </div>
-      </div>
-      <div class="event-item">
-        <div class="event-icon"></div>
-        <div class="event-info">
-          <strong>Evento X</strong>
-          <p>Descripción del evento</p>
-        </div>
+      <div id="eventos-disponibles-lista">
+        <div class="event-item"><div class="event-icon">🕒</div><div class="event-info"><strong>Cargando...</strong></div></div>
       </div>
     </div>
 
-    <!-- Panel Central -->
-    <div class="panel">
-      <h2>Inscripción Evento</h2>
-
+    <div class="panel center">
+      <h2>Detalles del Evento</h2>
       <div class="form-grid">
-        <div>
-          <label>Nombre del evento</label>
-          <input type="text" placeholder="Nombre del evento">
-        </div>
-
-        <div>
-          <label>Encargado del evento</label>
-          <input type="text" placeholder="Información encargado evento">
-        </div>
-
-        <div>
-          <label>Fecha del evento</label>
-          <input type="text" placeholder="Información fecha y hora del evento">
-        </div>
-
-        <div>
-          <label>Cupo del evento</label>
-          <input type="text" placeholder="Número de lugares disponibles">
-        </div>
-
-        <div class="full-width">
-          <label>Descripción del evento</label>
-          <textarea placeholder="Descripción del evento"></textarea>
-        </div>
+        <div><label>Nombre</label><input type="text" id="evento-nombre" readonly placeholder="-"></div>
+        <div><label>Encargado</label><input type="text" id="evento-encargado" readonly placeholder="-"></div>
+        <div><label>Fecha</label><input type="text" id="evento-fecha" readonly placeholder="-"></div>
+        <div><label>Cupo</label><input type="text" id="evento-cupo" readonly placeholder="-"></div>
+        <div class="full-width"><label>Descripción</label><textarea id="evento-descripcion" readonly placeholder="-"></textarea></div>
       </div>
-
-      <button class="submit-btn">Inscribirse</button>
+      <div id="feedback-message"></div>
+      <button class="submit-btn" id="btn-inscribirse" disabled>Inscribirse</button>
     </div>
 
-    <!-- Panel Derecho -->
-    <div class="panel">
+    <div class="panel panel-lista my-events">
       <h2>Mis Eventos</h2>
-
-      <div class="event-item">
-        <div class="event-icon"></div>
-        <div class="event-info">
-          <strong>Evento X</strong>
-          <p>Descripción del evento</p>
-        </div>
-      </div>
-
-      <div class="event-item">
-        <div class="event-icon"></div>
-        <div class="event-info">
-          <strong>Evento X</strong>
-          <p>Descripción del evento</p>
-        </div>
-      </div>
-
-      <div class="event-item">
-        <div class="event-icon"></div>
-        <div class="event-info">
-          <strong>Evento X</strong>
-          <p>Descripción del evento</p>
-        </div>
-      </div>
-
-      <div class="event-item">
-        <div class="event-icon"></div>
-        <div class="event-info">
-          <strong>Evento X</strong>
-          <p>Descripción del evento</p>
-        </div>
+      <div id="mis-eventos-lista">
+        <div class="event-item"><div class="event-icon">🕒</div><div class="event-info"><strong>Cargando...</strong></div></div>
       </div>
     </div>
   </div>
+
+<script>
+const API_URL = 'http://localhost:3001/api';
+const currentUser = { id: localStorage.getItem("id_persona"), nombre: localStorage.getItem("usuario") || "Usuario" };
+
+let allEvents = [];
+let myEventIds = new Set();
+let selectedEventId = null;
+
+// UI Refs
+const eventosDisponiblesLista = document.getElementById('eventos-disponibles-lista');
+const misEventosLista = document.getElementById('mis-eventos-lista');
+const feedbackMessage = document.getElementById('feedback-message');
+const inscribirseBtn = document.getElementById('btn-inscribirse');
+const inputs = {
+  nombre: document.getElementById('evento-nombre'),
+  encargado: document.getElementById('evento-encargado'),
+  fecha: document.getElementById('evento-fecha'),
+  cupo: document.getElementById('evento-cupo'),
+  desc: document.getElementById('evento-descripcion')
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (!currentUser.id) { alert("Sin sesión. Redirigiendo..."); window.location.href = "login.html"; return; }
+    document.getElementById('user-name').textContent = currentUser.nombre.toUpperCase();
+    document.getElementById('user-initial').textContent = currentUser.nombre.charAt(0).toUpperCase();
+    
+    loadData();
+    document.getElementById('search-button').addEventListener('click', handleSearch);
+    inscribirseBtn.addEventListener('click', handleInscripcion);
+});
+
+async function loadData() {
+    await Promise.all([ loadAllEvents(), loadMyEvents() ]);
+}
+
+async function loadAllEvents() {
+    try {
+        const res = await fetch(`${API_URL}/eventos`);
+        const data = await res.json();
+        allEvents = Array.isArray(data) ? data : [];
+        renderEventos(allEvents);
+    } catch (e) { console.error(e); }
+}
+
+async function loadMyEvents() {
+    try {
+        const res = await fetch(`${API_URL}/inscripciones/persona/${currentUser.id}`);
+        const data = await res.json();
+        const mis = Array.isArray(data) ? data : [];
+        myEventIds = new Set(mis.map(e => e.id_evento));
+        
+        misEventosLista.innerHTML = mis.length ? mis.map(e => `
+            <div class="event-item">
+                <div class="event-icon" style="color:green;">✅</div>
+                <div class="event-info"><strong>${e.nombre_evento}</strong><p>Inscrito</p></div>
+            </div>`).join('') : '<p style="padding:10px; color:#666;">Sin inscripciones.</p>';
+    } catch (e) { console.error(e); }
+}
+
+function renderEventos(list) {
+    if (!list.length) { eventosDisponiblesLista.innerHTML = '<p style="padding:10px;">No hay eventos.</p>'; return; }
+    eventosDisponiblesLista.innerHTML = list.map(e => {
+        const desc = e.descripcion ? (e.descripcion.substring(0,40) + "...") : "Sin descripción";
+        return `<div class="event-item event-item-clickable" onclick="selectEvent(${e.id_evento})">
+            <div class="event-icon">📅</div>
+            <div class="event-info"><strong>${e.nombre_evento}</strong><p>${desc}</p></div>
+        </div>`;
+    }).join('');
+}
+
+function selectEvent(id) {
+    const ev = allEvents.find(e => e.id_evento === id);
+    if (!ev) return;
+    selectedEventId = id;
+    
+    inputs.nombre.value = ev.nombre_evento || "";
+    inputs.encargado.value = ev.nombre_encargado || "N/A";
+    inputs.cupo.value = `${ev.inscritos || 0} / ${ev.cupo} ocupados`;
+    inputs.desc.value = ev.descripcion || "";
+    try { inputs.fecha.value = new Date(ev.fecha_evento).toLocaleDateString(); } catch(e){ inputs.fecha.value = "-"; }
+
+    // Lógica simplificada: Solo botón de inscribirse o deshabilitado
+    const yaInscrito = myEventIds.has(id);
+    const lleno = (ev.inscritos || 0) >= ev.cupo;
+
+    if (yaInscrito) {
+        inscribirseBtn.disabled = true;
+        inscribirseBtn.textContent = "Ya estás inscrito";
+        inscribirseBtn.style.backgroundColor = "#4caf50"; // Verde
+    } else if (lleno) {
+        inscribirseBtn.disabled = true;
+        inscribirseBtn.textContent = "Cupo Lleno";
+        inscribirseBtn.style.backgroundColor = "#f44336"; // Rojo
+    } else {
+        inscribirseBtn.disabled = false;
+        inscribirseBtn.textContent = "Inscribirse";
+        inscribirseBtn.style.backgroundColor = "#003366"; // Azul
+    }
+}
+
+async function handleInscripcion() {
+    if (!selectedEventId) return;
+    inscribirseBtn.disabled = true;
+    inscribirseBtn.textContent = "Procesando...";
+
+    try {
+        const res = await fetch(`${API_URL}/inscripciones`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_evento: selectedEventId, id_persona: currentUser.id })
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.message);
+
+        showFeedback("¡Inscripción Exitosa!", "success");
+        await loadData();
+        // Actualizar estado del botón para el evento seleccionado
+        selectEvent(selectedEventId); 
+
+    } catch (e) {
+        showFeedback(e.message, "error");
+        inscribirseBtn.disabled = false;
+        inscribirseBtn.textContent = "Intentar de nuevo";
+    }
+}
+
+function handleSearch() {
+    const q = document.getElementById('search-input').value.toLowerCase();
+    renderEventos(allEvents.filter(e => (e.nombre_evento||'').toLowerCase().includes(q)));
+}
+
+function showFeedback(msg, type) {
+    feedbackMessage.textContent = msg;
+    feedbackMessage.className = `feedback-${type}`;
+    feedbackMessage.style.display = 'block';
+    setTimeout(() => { feedbackMessage.style.display = 'none'; }, 4000);
+}
+</script>
 </body>
 </html>
