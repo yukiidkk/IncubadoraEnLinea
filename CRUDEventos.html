@@ -75,6 +75,33 @@
     .feedback-success { background-color: #d4edda; color: #155724; }
     .feedback-error { background-color: #f8d7da; color: #721c24; }
 
+    /* --- ESTILOS DEL MODAL PERSONALIZADO --- */
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none; justify-content: center; align-items: center; z-index: 1000;
+        backdrop-filter: blur(3px);
+    }
+    .modal-box {
+        background-color: white; padding: 30px; border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center;
+        width: 350px; max-width: 90%;
+        border-top: 5px solid #dc3545;
+    }
+    .modal-box h3 { color: #001d3d; margin-bottom: 10px; font-size: 20px; }
+    .modal-box p { color: #555; margin-bottom: 25px; font-size: 14px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: center; }
+    .btn-modal-cancel {
+        background-color: #e0e0e0; color: #333; border: none; padding: 10px 20px;
+        border-radius: 6px; cursor: pointer; font-weight: 600;
+    }
+    .btn-modal-confirm {
+        background-color: #dc3545; color: white; border: none; padding: 10px 20px;
+        border-radius: 6px; cursor: pointer; font-weight: 600;
+    }
+    .btn-modal-cancel:hover { background-color: #d0d0d0; }
+    .btn-modal-confirm:hover { background-color: #b02a37; }
+
     @media (max-width: 900px) { .container { flex-direction: column; padding: 20px; } header { flex-direction: column; height: auto; padding: 10px; gap: 10px;} }
   </style>
 </head>
@@ -178,10 +205,21 @@
   </div>
 </div>
 
+<div id="custom-modal-eliminar" class="modal-overlay">
+    <div class="modal-box">
+        <h3>¿Eliminar evento?</h3>
+        <p>Esta acción no se puede deshacer.</p>
+        <div class="modal-actions">
+            <button id="modal-btn-cancelar" class="btn-modal-cancel">Cancelar</button>
+            <button id="modal-btn-confirmar" class="btn-modal-confirm">Sí, eliminar</button>
+        </div>
+    </div>
+</div>
+
 <script>
   const API_URL = 'http://localhost:3001/api';
 
-  // Elementos DOM
+  // DOM Elements
   const form = document.getElementById('evento-form');
   const feedbackMessage = document.getElementById('feedback-message');
   const tableBody = document.getElementById('eventos-table-body');
@@ -190,9 +228,11 @@
   const nombreInput = document.getElementById('nombre_evento');
   const encargadoSelect = document.getElementById('encargado_evento');
   const tipoSelect = document.getElementById('tipo_evento');
+  // Date Selects
   const diaSelect = document.getElementById('fecha_dia');
   const mesSelect = document.getElementById('fecha_mes');
   const anoSelect = document.getElementById('fecha_ano');
+
   const cupoInput = document.getElementById('cupo_evento');
   const descripcionInput = document.getElementById('descripcion_evento');
 
@@ -201,7 +241,13 @@
   const btnBuscar = document.getElementById('search-button');
   const inputBuscar = document.getElementById('search-input');
 
-  // Nombre usuario
+  // Modal Elements
+  const modalEliminar = document.getElementById('custom-modal-eliminar');
+  const btnModalCancelar = document.getElementById('modal-btn-cancelar');
+  const btnModalConfirmar = document.getElementById('modal-btn-confirmar');
+
+  const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
   document.addEventListener("DOMContentLoaded", () => {
     const nombreGuardado = localStorage.getItem("usuario");
     const elementoNombre = document.getElementById("nombreUsuarioDisplay");
@@ -223,19 +269,100 @@
       return []; 
   }
 
-  // --- CARGA DE DATOS ---
+  // --- LOGICA DE FECHAS DINÁMICAS (AQUÍ ESTÁ LA MAGIA) ---
   
-  // 1. Coordinadores
+  function initDateLogic() {
+      // 1. Llenar Años (Solo actual y futuros)
+      const currentYear = new Date().getFullYear();
+      anoSelect.innerHTML = '';
+      for (let i = currentYear; i <= currentYear + 5; i++) {
+          anoSelect.add(new Option(i, i));
+      }
+
+      // Listeners: Cuando cambia año o mes, actualizar días
+      anoSelect.addEventListener('change', updateMeses);
+      mesSelect.addEventListener('change', updateDias);
+
+      // Inicializar
+      updateMeses();
+  }
+
+  function updateMeses() {
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth(); // 0-11
+      const selectedYear = parseInt(anoSelect.value);
+
+      // Guardar selección actual si es posible
+      const prevVal = mesSelect.value;
+
+      mesSelect.innerHTML = ''; // Limpiar
+
+      // Lógica: Si el año es el actual, empezar desde el mes actual
+      let startMonth = 0;
+      if (selectedYear === currentYear) {
+          startMonth = currentMonth;
+      }
+
+      for (let i = startMonth; i < 12; i++) {
+          mesSelect.add(new Option(nombresMeses[i], i + 1));
+      }
+
+      // Intentar restaurar valor previo si aún es válido, si no, poner el primero
+      if (prevVal >= startMonth + 1) {
+          mesSelect.value = prevVal;
+      } else {
+          mesSelect.selectedIndex = 0; 
+      }
+
+      // Al cambiar meses, actualizar días
+      updateDias();
+  }
+
+  function updateDias() {
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth() + 1; // 1-12
+      const currentDay = today.getDate();
+
+      const selectedYear = parseInt(anoSelect.value);
+      const selectedMonth = parseInt(mesSelect.value);
+
+      // Guardar selección previa
+      const prevVal = diaSelect.value;
+
+      // Calcular días en el mes seleccionado
+      const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
+
+      diaSelect.innerHTML = ''; // Limpiar
+
+      // Lógica: Si año y mes son los actuales, empezar desde el día de hoy
+      let startDay = 1;
+      if (selectedYear === currentYear && selectedMonth === currentMonth) {
+          startDay = currentDay;
+      }
+
+      for (let i = startDay; i <= daysInMonth; i++) {
+          diaSelect.add(new Option(i, i));
+      }
+
+      // Intentar restaurar valor
+      if (prevVal >= startDay && prevVal <= daysInMonth) {
+          diaSelect.value = prevVal;
+      } else {
+          diaSelect.selectedIndex = 0;
+      }
+  }
+
+  // --- CARGA DE DATOS ---
+
   async function loadCoordinadores() {
     try {
       const response = await fetch(`${API_URL}/solo-coordinadores-reales`);
       if (!response.ok) throw new Error('Error');
-      
       const data = await response.json();
       const coordinadores = extractArray(data);
-      
       encargadoSelect.innerHTML = '<option value="">Seleccionar coordinador</option>';
-      
       coordinadores.forEach(user => {
         const option = document.createElement('option');
         option.value = user.id_usuario; 
@@ -245,7 +372,6 @@
     } catch (error) { console.error(error); }
   }
 
-  // 2. Tipos Evento
   async function loadTiposEvento() {
     try {
       const response = await fetch(`${API_URL}/tipos-eventos`);
@@ -261,7 +387,6 @@
     } catch (error) { console.error(error); }
   }
 
-  // 3. Lista Eventos (SIN COLUMNA EXTRA)
   async function loadEventos(searchQuery = '') {
     let url = `${API_URL}/eventos`;
     if (searchQuery) url = `${API_URL}/eventos/buscar?nombre=${encodeURIComponent(searchQuery)}`;
@@ -270,23 +395,14 @@
       const data = await response.json();
       const eventos = extractArray(data);
       tableBody.innerHTML = '';
-      
       if (eventos.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="3">No hay eventos.</td></tr>`;
         return;
       }
-      
       eventos.forEach(evento => {
         const tr = document.createElement('tr');
         const fecha = new Date(evento.fecha_evento).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        
-        // Tabla simple de 3 columnas
-        tr.innerHTML = `
-            <td>${evento.nombre_evento}</td>
-            <td>${fecha}</td>
-            <td>${evento.cupo}</td>
-        `;
-        
+        tr.innerHTML = `<td>${evento.nombre_evento}</td><td>${fecha}</td><td>${evento.cupo}</td>`;
         tr.addEventListener('click', () => populateForm(evento));
         tableBody.appendChild(tr);
       });
@@ -300,14 +416,22 @@
     tipoSelect.value = evento.id_tipos_eve;
     cupoInput.value = evento.cupo;
     descripcionInput.value = evento.descripcion;
+    
+    // Al editar, permitimos cargar la fecha original aunque sea vieja
     try {
         const fecha = new Date(evento.fecha_evento);
         const userTimezoneOffset = fecha.getTimezoneOffset() * 60000;
         const localDate = new Date(fecha.getTime() + userTimezoneOffset);
-        diaSelect.value = localDate.getDate();
-        mesSelect.value = localDate.getMonth() + 1;
+        
+        // NOTA: Para edición de eventos pasados, podríamos necesitar lógica extra, 
+        // pero por ahora seteamos los valores si existen en el dropdown.
         anoSelect.value = localDate.getFullYear();
+        updateMeses(); // Refrescar meses para el año seleccionado
+        mesSelect.value = localDate.getMonth() + 1;
+        updateDias(); // Refrescar días para el mes seleccionado
+        diaSelect.value = localDate.getDate();
     } catch(e) {}
+    
     btnActualizar.disabled = false;
     btnEliminar.disabled = false;
   }
@@ -317,19 +441,32 @@
       idEventoInput.value = '';
       btnActualizar.disabled = true;
       btnEliminar.disabled = true;
-  }
-
-  function populateDateDropdowns() {
-    for (let i = 1; i <= 31; i++) diaSelect.add(new Option(i, i));
-    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    meses.forEach((mes, index) => mesSelect.add(new Option(mes, index + 1)));
-    const currentYear = new Date().getFullYear();
-    for (let i = currentYear; i <= currentYear + 5; i++) anoSelect.add(new Option(i, i));
+      // Resetear fechas a hoy
+      anoSelect.value = new Date().getFullYear();
+      updateMeses();
   }
 
   // --- LISTENERS ---
+  
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
+
+    // Validación doble (aunque el UI ya restringe)
+    const fechaSeleccionada = new Date(anoSelect.value, mesSelect.value - 1, diaSelect.value);
+    const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+    if (fechaSeleccionada < hoy) { showFeedback('Fecha inválida.', 'error'); return; }
+
+    try {
+        const checkResponse = await fetch(`${API_URL}/eventos`);
+        const checkData = await checkResponse.json();
+        const listaEventos = extractArray(checkData);
+        const nombreNuevo = nombreInput.value.trim().toLowerCase();
+        if (listaEventos.some(evento => evento.nombre_evento.trim().toLowerCase() === nombreNuevo)) {
+            showFeedback('El nombre ya existe.', 'error');
+            return;
+        }
+    } catch (err) {}
+
     const fecha = `${anoSelect.value}-${String(mesSelect.value).padStart(2, '0')}-${String(diaSelect.value).padStart(2, '0')}`;
     const formData = {
       id_usuario: encargadoSelect.value,
@@ -370,20 +507,32 @@
     } catch (e) { showFeedback('Error', 'error'); }
   });
 
-  btnEliminar.addEventListener('click', async () => {
+  // LOGICA MODAL
+  btnEliminar.addEventListener('click', () => {
+    if (!idEventoInput.value) return;
+    modalEliminar.style.display = 'flex';
+  });
+  btnModalCancelar.addEventListener('click', () => {
+    modalEliminar.style.display = 'none';
+  });
+  btnModalConfirmar.addEventListener('click', async () => {
     const id = idEventoInput.value;
-    if (!id || !confirm("¿Eliminar?")) return;
+    modalEliminar.style.display = 'none'; 
     try {
-        await fetch(`${API_URL}/eventos/${id}`, { method: 'DELETE' });
-        showFeedback('Eliminado');
+        const response = await fetch(`${API_URL}/eventos/${id}`, { method: 'DELETE' });
+        if(!response.ok) throw new Error("Error");
+        showFeedback('Eliminado correctamente');
         resetForm(); loadEventos();
-    } catch (e) { showFeedback('Error', 'error'); }
+    } catch (e) { showFeedback('Error al eliminar', 'error'); }
+  });
+  modalEliminar.addEventListener('click', (e) => {
+      if (e.target === modalEliminar) modalEliminar.style.display = 'none';
   });
 
   btnBuscar.addEventListener('click', () => loadEventos(inputBuscar.value));
 
   document.addEventListener('DOMContentLoaded', () => {
-    populateDateDropdowns();
+    initDateLogic(); // Inicializar lógica de fechas
     loadTiposEvento();
     loadCoordinadores();
     loadEventos();

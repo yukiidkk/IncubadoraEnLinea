@@ -6,155 +6,252 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Centro de Emprendurismo ITS</title>
     <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
-    <link rel="stylesheet" href="./css/normalize.css">
-    <link rel="stylesheet" href="./css/estilos.css">
+    <style>
+        /* RESET Y BASE */
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; }
+        body { background-color: #f3f4f6; color: #001d3d; }
+        
+        /* NAVBAR */
+        .navbar { background: #003366; color: #fff; height: 60px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; width: 90%; margin: 0 auto; }
+        .logo { display: flex; align-items: center; font-weight: 600; font-size: 1.1rem; }
+        .logo img { width: 35px; height: 35px; margin-right: 10px; }
+        .user-info { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 600; }
+        .user-icon { background: rgba(255,255,255,0.2); padding: 5px 8px; border-radius: 50%; }
+
+        /* CONTENEDOR PRINCIPAL */
+        .main-content { padding: 40px; max-width: 1400px; margin: 0 auto; }
+        header h2 { color: #001d3d; font-size: 24px; margin-bottom: 25px; border-bottom: 2px solid #dbe7ff; padding-bottom: 10px; }
+        
+        /* PANELES */
+        .paneles { display: flex; gap: 30px; flex-wrap: wrap; }
+        .panel { background-color: white; flex: 1; border-radius: 12px; padding: 30px; min-width: 320px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e1e1e1; }
+        
+        /* FORMULARIOS Y TABLAS */
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; }
+        input[type="text"] { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 20px; background: #f9f9ff; font-size: 14px; }
+        input[type="text"]:focus { outline: none; border-color: #003366; background: white; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+        th { background-color: #f1f5f9; color: #003366; font-weight: 700; text-align: left; padding: 12px; border-bottom: 2px solid #e0e0e0; }
+        td { padding: 12px; border-bottom: 1px solid #eee; color: #555; }
+        tr:hover { background-color: #f8fbff; cursor: pointer; }
+        
+        /* BOTONES */
+        .botones { display: flex; gap: 10px; margin-top: 25px; }
+        .btn { padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; border: none; flex: 1; transition: transform 0.1s, opacity 0.2s; }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background-color: #003366; color: white; }
+        .btn-update { background-color: #1a73e8; color: white; }
+        .btn-delete { background-color: #dc3545; color: white; }
+        .btn:disabled { background-color: #ccc; cursor: not-allowed; opacity: 0.7; }
+        
+        .buscar { display: flex; gap: 10px; margin-bottom: 0; }
+        .buscar input { margin-bottom: 0; }
+
+        /* --- 1. ESTILOS DE NOTIFICACIONES (TOAST) --- */
+        #toast-container {
+            position: fixed; top: 20px; right: 20px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .toast {
+            min-width: 280px; padding: 16px 20px; background: white;
+            border-left: 5px solid #333; border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            display: flex; align-items: center; justify-content: space-between;
+            animation: slideInRight 0.3s ease-out; font-size: 14px; font-weight: 500;
+        }
+        .toast.success { border-left-color: #28a745; color: #155724; }
+        .toast.error { border-left-color: #dc3545; color: #721c24; }
+        .toast.warning { border-left-color: #ffc107; color: #856404; }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+
+        /* --- 2. ESTILOS DE MINI-MODAL (Confirmación Sutil) --- */
+        .mini-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Fondo más suave */
+            display: none; justify-content: center; align-items: center; z-index: 5000;
+            backdrop-filter: blur(2px); /* Desenfoque ligero */
+        }
+        .mini-modal {
+            background: white; width: 320px; padding: 25px;
+            border-radius: 10px; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: scale(0.9); animation: popIn 0.2s forwards;
+        }
+        @keyframes popIn { to { transform: scale(1); } }
+        
+        .mini-modal h3 { margin-bottom: 10px; font-size: 18px; color: #001d3d; }
+        .mini-modal p { color: #666; font-size: 14px; margin-bottom: 20px; }
+        .mini-actions { display: flex; gap: 10px; justify-content: center; }
+        .btn-mini { padding: 8px 16px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold; font-size: 13px; }
+        .btn-cancel { background: #e0e0e0; color: #333; }
+        .btn-confirm { background: #dc3545; color: white; }
+
+        @media (max-width: 768px) { .paneles { flex-direction: column; } .botones { flex-direction: column; } }
+    </style>
 </head>
 <body>
 
+    <div id="toast-container"></div>
+
+    <div id="modalEliminar" class="mini-modal-overlay">
+        <div class="mini-modal">
+            <h3>¿Eliminar este tipo?</h3>
+            <p>Se borrará permanentemente.</p>
+            <div class="mini-actions">
+                <button class="btn-mini btn-cancel" id="btnCancelarModal">Cancelar</button>
+                <button class="btn-mini btn-confirm" id="btnConfirmarModal">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+
     <header class="navbar">
-        <div class="container nav-content">
+        <div class="nav-content">
             <div class="logo">
-                <img src="./images/logoITS.png" alt="ITS" />
+                <img src="./images/logoITS.png" alt="ITS" onerror="this.style.display='none'" />
                 <span>Instituto Tecnológico de Saltillo</span>
             </div>
-
             <div class="user-info">
                 <span class="user-text" id="nombreUsuarioDisplay">USUARIO</span>
                 <div class="user-icon">👤</div>
             </div>
         </div>
-        <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; }
-    body { background-color: #f3f4f6; color: #001d3d; }
-    .navbar { background: #003366; color: #fff; height: 50px; display: flex; align-items: center; }
-    .nav-content { display: flex; justify-content: space-between; align-items: center; width: 90%; margin: 0 auto; }
-    .logo { display: flex; align-items: center; }
-    .logo img { width: 30px; height: 30px; margin-right: 8px; }
-    .nav-right { font-weight: bold; font-size: 14px; }
-    .container { padding: 40px; }
-    .container h2 { color: #001d3d; font-size: 24px; margin-bottom: 20px; }
-    .paneles { display: flex; gap: 40px; flex-wrap: wrap; }
-    .panel { background-color: #dbe7ff; flex: 1; border-radius: 10px; padding: 25px; min-width: 300px; }
-    label { display: block; font-weight: 600; margin-top: 10px; }
-    input[type="text"], select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; margin-top: 5px; margin-bottom: 15px; }
-    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
-    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #eee; }
-    th { background-color: #e0ebff; font-weight: 600; }
-    tr:hover { background-color: #f2f6ff; }
-    .botones { display: flex; justify-content: space-between; margin-top: 15px; flex-wrap: wrap; gap: 10px; }
-    .btn { background-color: #003366; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; flex: 1; min-width: 120px; }
-    .btn:hover { background-color: #001f54; }
-    .buscar { display: flex; gap: 10px; margin-bottom: 15px; }
-    @media (max-width: 768px) { .paneles { flex-direction: column; } .botones { flex-direction: column; align-items: stretch; } }
-  </style>
     </header>
     
-    <div class="main-content role-management-view">
-        <div class="form-container">
-            <header>
-                <h2>Tipos de Eventos</h2>
-            </header>
+    <div class="main-content">
+        <header>
+            <h2>Gestión de Tipos de Eventos</h2>
+        </header>
             
-            <div class="paneles">
-      <section class="panel">
-        <label>Nombre del tipo de evento </label>
-        <input type="text" id="nombreTipoEInput" placeholder="Nombre del tipo de evento">
+        <div class="paneles">
+            <section class="panel">
+                <label>Nombre del tipo de evento</label>
+                <input type="text" id="nombreTipoEInput" placeholder="Ej. Conferencia, Taller...">
 
-        <h3>Tipo de evento creados</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Tipo de Evento</th>
-            </tr>
-          </thead>
-          <tbody id="tablaTipoEvento"></tbody>
-        </table>
+                <h3 style="font-size: 16px; margin-bottom: 10px; color:#003366;">Tipos existentes</h3>
+                <div style="max-height: 300px; overflow-y: auto;">
+                    <table>
+                        <thead>
+                            <tr><th>Nombre</th></tr>
+                        </thead>
+                        <tbody id="tablaTipoEvento">
+                            </tbody>
+                    </table>
+                </div>
 
-        <div class="botones">
-          <button class="btn" id="btnCrear">Crear</button>
-          <button class="btn" id="btnActualizar">Actualizar</button>
-          <button class="btn" id="btnEliminar">Eliminar</button>
+                <div class="botones">
+                    <button class="btn btn-primary" id="btnCrear">Crear</button>
+                    <button class="btn btn-update" id="btnActualizar">Actualizar</button>
+                    <button class="btn btn-delete" id="btnEliminar">Eliminar</button>
+                </div>
+            </section>
+
+            <section class="panel">
+                <label>Eventos asignados</label>
+                <div class="buscar">
+                    <input type="text" id="inputBuscarEvento" placeholder="Buscar evento por nombre...">
+                    <button class="btn btn-primary" id="btnBuscarEvento" style="flex: 0 0 80px;">Buscar</button>
+                </div>
+
+                <div style="max-height: 400px; overflow-y: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Evento</th>
+                                <th>Tipo Asignado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaTiposEventos">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
-      </section>
-
-      <section class="panel">
-        <div class="buscar">
-          <input type="text" placeholder="Buscar un evento">
-          <button class="btn" id="btnBuscarEvento">Buscar</button>
-        </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Evento</th>
-              <th>Tipo de evento asignado</th>
-            </tr>
-          </thead>
-          <tbody id="tablaTiposEventos"></tbody>
-        </table>
-      </section>
     </div>
-  </main>
-  <script>
-// --- 1. MOSTRAR USUARIO LOGUEADO ---
+
+<script>
+// --- 0. SISTEMA DE NOTIFICACIONES (TOASTS) ---
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `<span>${message}</span>`;
+    
+    container.appendChild(toast);
+
+    // Sonido sutil opcional (puedes quitarlo si no te gusta)
+    // const audio = new Audio(type === 'error' ? './error.mp3' : './success.mp3'); audio.play().catch(()=>{});
+
+    // Desaparecer después de 3.5 segundos
+    setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.3s forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3500);
+}
+
+// --- 1. USUARIO ---
 document.addEventListener("DOMContentLoaded", () => {
-    // Tu login guarda el nombre completo en la variable "usuario"
     const nombreGuardado = localStorage.getItem("usuario"); 
-    
     const elementoNombre = document.getElementById("nombreUsuarioDisplay");
-    
     if (elementoNombre) {
-        if (nombreGuardado) {
-            // Si encontramos el nombre del login, lo ponemos
-            elementoNombre.textContent = nombreGuardado.toUpperCase();
-        } else {
-            // Si no hay login previo, ponemos un default
-            elementoNombre.textContent = "COORDINADOR"; 
-        }
+        elementoNombre.textContent = nombreGuardado ? nombreGuardado.toUpperCase() : "COORDINADOR";
     }
 });
 
-// *** CONFIGURACIÓN DE ENDPOINTS DE LA API ***
+// --- 2. VARIABLES Y DOM ---
 const API_TIPOS_EVENTOS = "http://localhost:3001/api/tipos-eventos"; 
 const API_EVENTOS_TIPO = "http://localhost:3001/api/eventos-con-tipo"; 
 const API_BUSCAR_EVENTO = "http://localhost:3001/api/eventos-con-tipo/buscar";
 
-// *** REFERENCIAS DEL DOM ***
 const inputNombreTipoE = document.querySelector("#nombreTipoEInput"); 
 const tablaTiposEventosIzq = document.querySelector("#tablaTipoEvento"); 
 const btnCrear = document.querySelector("#btnCrear");
 const btnActualizar = document.querySelector("#btnActualizar");
 const btnEliminar = document.querySelector("#btnEliminar");
-const inputBuscarEvento = document.querySelector(".buscar input[type='text']");
+
+// Modal Elements
+const modalEliminar = document.getElementById('modalEliminar');
+const btnConfirmarModal = document.getElementById('btnConfirmarModal');
+const btnCancelarModal = document.getElementById('btnCancelarModal');
+
+const inputBuscarEvento = document.querySelector("#inputBuscarEvento");
 const btnBuscarEvento = document.querySelector("#btnBuscarEvento"); 
 const tablaEventosDerecha = document.querySelector("#tablaTiposEventos"); 
 
 let tipoEventoSeleccionadoId = null; 
 
-// Inicialización de botones
 btnActualizar.disabled = true;
 btnEliminar.disabled = true;
 
 function actualizarEstadoBotones() {
     if (tipoEventoSeleccionadoId) {
-        btnCrear.textContent = "Nuevo"; 
+        btnCrear.textContent = "Limpiar"; 
+        btnCrear.style.backgroundColor = "#6c757d"; // Gris para limpiar
         btnActualizar.disabled = false;
         btnEliminar.disabled = false;
     } else {
         btnCrear.textContent = "Crear"; 
+        btnCrear.style.backgroundColor = "#003366"; // Azul original
         btnActualizar.disabled = true;
         btnEliminar.disabled = true;
     }
 }
 
-// Cargar Panel Izquierdo
+// --- 3. FUNCIONES DE CARGA ---
 async function cargarTiposEventos() {
     try {
         const res = await fetch(API_TIPOS_EVENTOS);
-        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+        if (!res.ok) throw new Error();
         const data = await res.json();
-        if (!data.success) throw new Error("API devolvió éxito falso.");
-
+        
         tablaTiposEventosIzq.innerHTML = "";
         data.tiposEventos.forEach(te => {
             const fila = document.createElement("tr");
@@ -162,54 +259,50 @@ async function cargarTiposEventos() {
             fila.addEventListener("click", () => {
                 tipoEventoSeleccionadoId = te.id_tipos_eve;
                 inputNombreTipoE.value = te.nombre_tipo_eve; 
+                
+                // Resaltar selección
                 document.querySelectorAll("#tablaTipoEvento tr").forEach(r => r.style.backgroundColor = 'white');
-                fila.style.backgroundColor = '#f2f6ff'; 
+                fila.style.backgroundColor = '#e0ebff'; 
+                
                 actualizarEstadoBotones();
             });
             tablaTiposEventosIzq.appendChild(fila);
         });
     } catch (err) {
-        console.error("Fallo al cargar tipos:", err);
+        showToast("Error al cargar la lista de tipos", "error");
     }
 }
 
-// Cargar Panel Derecho
 async function cargarEventosConTipo() {
     try {
         const res = await fetch(API_EVENTOS_TIPO);
-        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
         const data = await res.json();
-        tablaEventosDerecha.innerHTML = "";
-        data.eventos.forEach(e => {
-            const fila = document.createElement("tr");
-            fila.innerHTML = `<td>${e.nombre_evento}</td><td>${e.nombre_tipo_eve}</td>`;
-            tablaEventosDerecha.appendChild(fila);
-        });
-    } catch (err) {
-        console.error("Fallo al cargar eventos:", err);
-    }
+        llenarTablaDerecha(data.eventos);
+    } catch (err) { console.error(err); }
 }
 
-// Buscar
-async function buscarEvento() {
-    const nombre = inputBuscarEvento.value.trim();
-    if (!nombre) {
-        cargarEventosConTipo();
+function llenarTablaDerecha(eventos) {
+    tablaEventosDerecha.innerHTML = "";
+    if(!eventos || eventos.length === 0) {
+        tablaEventosDerecha.innerHTML = "<tr><td colspan='2'>No hay eventos registrados.</td></tr>";
         return;
     }
+    eventos.forEach(e => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `<td>${e.nombre_evento}</td><td>${e.nombre_tipo_eve}</td>`;
+        tablaEventosDerecha.appendChild(fila);
+    });
+}
+
+async function buscarEvento() {
+    const nombre = inputBuscarEvento.value.trim();
+    if (!nombre) { cargarEventosConTipo(); return; }
     try {
         const url = `${API_BUSCAR_EVENTO}?nombre=${encodeURIComponent(nombre)}`;
         const res = await fetch(url);
         const data = await res.json();
-        tablaEventosDerecha.innerHTML = "";
-        data.eventos.forEach(e => {
-            const fila = document.createElement("tr");
-            fila.innerHTML = `<td>${e.nombre_evento}</td><td>${e.nombre_tipo_eve}</td>`;
-            tablaEventosDerecha.appendChild(fila);
-        });
-    } catch (err) {
-        console.error("Fallo al buscar:", err);
-    }
+        llenarTablaDerecha(data.eventos);
+    } catch (err) { showToast("Error en la búsqueda", "error"); }
 }
 
 function limpiarFormulario() {
@@ -219,68 +312,94 @@ function limpiarFormulario() {
     actualizarEstadoBotones(); 
 }
 
-// Listeners
+// --- 4. ACCIONES (CON TOASTS) ---
+
 btnCrear.addEventListener("click", async () => {
+    // Si el botón dice "Limpiar", solo limpia
     if (tipoEventoSeleccionadoId) {
         limpiarFormulario();
         return;
     }
+
     const nombreTipoE = inputNombreTipoE.value.trim();
-    if (!nombreTipoE) return alert("Completa el nombre.");
+    if (!nombreTipoE) {
+        showToast("Escribe un nombre para el tipo", "warning");
+        return;
+    }
 
     try {
         const res = await fetch(API_TIPOS_EVENTOS, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: "POST", headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nombreTipoE })
         });
         const data = await res.json();
+
         if(res.ok) {
+            showToast("Tipo de evento creado exitosamente", "success");
             limpiarFormulario();
             cargarTiposEventos();
         } else {
-            // Muestra el error si ya existe
-            alert(data.message); 
+            showToast(data.message || "Error al crear", "error");
         }
-    } catch (error) {
-        alert("Error de conexión.");
-    }
+    } catch (error) { showToast("Error de conexión", "error"); }
 });
 
 btnActualizar.addEventListener("click", async () => {
-    if (!tipoEventoSeleccionadoId) return alert("Selecciona uno primero.");
+    if (!tipoEventoSeleccionadoId) return;
     const nombreTipoE = inputNombreTipoE.value.trim();
-    const res = await fetch(`${API_TIPOS_EVENTOS}/${tipoEventoSeleccionadoId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombreTipoE })
-    });
-    if(res.ok) {
-        limpiarFormulario();
-        cargarTiposEventos();
-        cargarEventosConTipo(); 
-    }
+    
+    try {
+        const res = await fetch(`${API_TIPOS_EVENTOS}/${tipoEventoSeleccionadoId}`, {
+            method: "PUT", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombreTipoE })
+        });
+        
+        if(res.ok) {
+            showToast("Actualizado correctamente", "success");
+            limpiarFormulario();
+            cargarTiposEventos();
+            cargarEventosConTipo(); 
+        } else {
+            showToast("No se pudo actualizar", "error");
+        }
+    } catch(e) { showToast("Error de servidor", "error"); }
 });
 
-btnEliminar.addEventListener("click", async () => {
-    if (!tipoEventoSeleccionadoId) return alert("Selecciona uno primero.");
-    if (!confirm(`¿Eliminar "${inputNombreTipoE.value}"?`)) return;
-    const res = await fetch(`${API_TIPOS_EVENTOS}/${tipoEventoSeleccionadoId}`, { method: "DELETE" });
-    if(res.ok) {
-        limpiarFormulario();
-        cargarTiposEventos();
-        cargarEventosConTipo();
-    } else {
-        alert("Error al eliminar. Puede que esté en uso.");
-    }
+// --- 5. LOGICA DEL MINI MODAL ---
+btnEliminar.addEventListener("click", () => {
+    if (!tipoEventoSeleccionadoId) return;
+    modalEliminar.style.display = 'flex'; // Mostrar el modal bonito
+});
+
+btnCancelarModal.addEventListener("click", () => {
+    modalEliminar.style.display = 'none'; // Cerrar sin hacer nada
+});
+
+btnConfirmarModal.addEventListener("click", async () => {
+    modalEliminar.style.display = 'none'; // Cerrar modal inmediatamente
+    
+    try {
+        const res = await fetch(`${API_TIPOS_EVENTOS}/${tipoEventoSeleccionadoId}`, { method: "DELETE" });
+        if(res.ok) {
+            showToast("Eliminado correctamente", "success");
+            limpiarFormulario();
+            cargarTiposEventos();
+            cargarEventosConTipo();
+        } else {
+            showToast("No se puede eliminar (quizás tiene eventos asignados)", "error");
+        }
+    } catch(e) { showToast("Error al eliminar", "error"); }
+});
+
+// Cerrar modal al hacer clic fuera
+modalEliminar.addEventListener("click", (e) => {
+    if(e.target === modalEliminar) modalEliminar.style.display = 'none';
 });
 
 btnBuscarEvento.addEventListener("click", buscarEvento);
-inputBuscarEvento.addEventListener("keypress", (e) => {
-    if (e.key === 'Enter') buscarEvento();
-});
+inputBuscarEvento.addEventListener("keypress", (e) => { if (e.key === 'Enter') buscarEvento(); });
 
-// Inicio
+// Inicializar
 cargarTiposEventos();
 cargarEventosConTipo();
 actualizarEstadoBotones();

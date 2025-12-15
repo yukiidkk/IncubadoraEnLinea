@@ -3,246 +3,351 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscripción de Eventos - ITS</title>
+  <title>Listas de Asistencia - ITS</title>
   <style>
+    /* --- ESTILOS GLOBALES --- */
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; }
-    body { background-color: #f3f4f6; color: #001d3d; font-family: 'Inter', sans-serif; }
+    body { background-color: #f3f4f6; color: #001d3d; font-family: 'Inter', sans-serif; height: 100vh; display: flex; flex-direction: column;}
 
-    /* HEADER */
-    header { background-color: #003366; color: white; display: flex; align-items: center; justify-content: space-between; padding: 10px 40px; height: 55px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    header .logo { display: flex; align-items: center; font-weight: 600; font-size: 16px; }
-    header .logo img { height: 28px; margin-right: 10px; border-radius: 4px; }
-    nav { display: flex; align-items: center; gap: 15px; }
-    nav a { color: white; text-decoration: none; font-weight: 500; font-size: 14px; padding: 8px 12px; border-radius: 6px; transition: background-color 0.3s ease; }
-    nav a:hover { background-color: rgba(255, 255, 255, 0.1); }
-    .usuario { display: flex; align-items: center; font-weight: bold; font-size: 14px; }
-    .usuario .circle { width: 24px; height: 24px; background-color: #e0ebff; border-radius: 50%; margin-right: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #003366; font-size: 12px; }
+    /* NAVBAR */
+    header { background-color: #003366; color: white; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 60px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0; }
+    header .logo { display: flex; align-items: center; font-weight: 600; font-size: 16px; gap: 10px; }
+    header .logo img { height: 28px; border-radius: 4px; }
+    nav { display: flex; gap: 20px; }
+    nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; font-size: 14px; padding: 8px 12px; border-radius: 6px; transition: 0.3s; }
+    nav a:hover { background-color: rgba(255, 255, 255, 0.1); color: white; }
+    .usuario { display: flex; align-items: center; font-weight: bold; font-size: 14px; gap: 10px; }
+    .avatar { width: 32px; height: 32px; background-color: #e0ebff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #003366; font-size: 13px; }
 
     /* LAYOUT */
-    .container { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 25px; padding: 40px; max-width: 1600px; margin: 0 auto; }
-    .panel { background-color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; min-width: 300px; display: flex; flex-direction: column; }
-    .panel-lista { max-height: 70vh; overflow-y: auto; }
-    h2 { color: #001d3d; margin-bottom: 20px; font-size: 22px; border-bottom: 2px solid #dbe7ff; padding-bottom: 5px; }
-
-    /* LISTAS */
-    .search-box { display: flex; margin-bottom: 20px; }
-    .search-box input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px 0 0 6px; outline: none; font-size: 14px; }
-    .search-box button { border-radius: 0 6px 6px 0; background-color: #003366; padding: 10px 20px; color: white; border: none; cursor: pointer; font-size: 14px; }
-    .event-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px; background-color: #f9f9ff; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0; transition: background-color 0.3s; }
-    .event-item-clickable { cursor: pointer; }
-    .event-item-clickable:hover { background-color: #f0f4f8; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .event-icon { font-size: 20px; margin-top: 2px; }
-    .event-info strong { color: #001d3d; display: block; font-size: 16px; }
-    .event-info p { margin: 0; font-size: 13px; color: #555; margin-top: 4px; }
-
-    /* FORMULARIO */
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    label { font-weight: 600; display: block; margin-bottom: 5px; font-size: 14px; }
-    input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; background-color: #f9f9ff; }
-    input[readonly], textarea[readonly] { background-color: #f0f0f0; cursor: not-allowed; }
-    textarea { resize: none; height: 120px; }
-    .full-width { grid-column: span 2; }
-
-    .submit-btn { display: block; background-color: #003366; color: white; border: none; padding: 12px 30px; border-radius: 6px; font-size: 16px; margin: 25px auto 0; cursor: pointer; font-weight: 600; transition: all 0.2s; }
-    .submit-btn:hover { background-color: #001f54; transform: translateY(-2px); }
-    .submit-btn:disabled { background-color: #999; cursor: not-allowed; transform: none; }
+    .container { 
+        display: grid; 
+        grid-template-columns: 1fr 1.5fr 1fr; 
+        gap: 25px; 
+        padding: 30px 40px; 
+        max-width: 1600px; 
+        margin: 0 auto; 
+        flex: 1; 
+        overflow: hidden; 
+    }
     
-    #feedback-message { display: none; padding: 12px; margin-top: 20px; border-radius: 6px; font-weight: 500; text-align: center; }
-    .feedback-success { background-color: #d4edda; color: #155724; }
-    .feedback-error { background-color: #f8d7da; color: #721c24; }
+    .panel { 
+        background-color: white; 
+        padding: 20px; 
+        border-radius: 10px; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+        border: 1px solid #e0e0e0; 
+        display: flex; 
+        flex-direction: column; 
+        overflow: hidden;
+    }
 
-    @media (max-width: 1200px) { .container { grid-template-columns: 1fr 1fr; } .panel.center { grid-column: span 2; order: 1; } }
-    @media (max-width: 768px) { .container { grid-template-columns: 1fr; padding: 20px; } .panel.center { grid-column: span 1; } header { padding: 10px 20px; flex-direction: column; height: auto; } }
+    h2 { 
+        color: #003366; 
+        margin: 0 0 15px 0; 
+        font-size: 18px; 
+        border-bottom: 2px solid #f0f0f0; 
+        padding-bottom: 10px; 
+        font-weight: 700;
+    }
+
+    /* LISTAS CON SCROLL */
+    .scroll-area { 
+        flex: 1; 
+        overflow-y: auto; 
+        padding-right: 5px; 
+    }
+    .scroll-area::-webkit-scrollbar { width: 6px; }
+    .scroll-area::-webkit-scrollbar-track { background: #f1f1f1; }
+    .scroll-area::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+
+    /* ITEMS DE EVENTO */
+    .event-card { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 5px; 
+        margin-bottom: 10px; 
+        background-color: #fff; 
+        padding: 12px 15px; 
+        border-radius: 8px; 
+        border: 1px solid #eee; 
+        cursor: pointer; 
+        transition: all 0.2s; 
+    }
+    .event-card:hover { 
+        background-color: #f8fbff; 
+        border-color: #003366; 
+        transform: translateY(-2px); 
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .event-card.selected { 
+        background-color: #003366; 
+        color: white; 
+        border-color: #003366; 
+    }
+    .event-card.selected strong { color: white; }
+    .event-card.selected small { color: #ccc; }
+
+    .event-card strong { display: block; font-size: 15px; color: #001d3d; margin-bottom: 4px; }
+    .event-card small { color: #666; font-size: 12px; display: flex; justify-content: space-between; }
+
+    /* BUSCADOR */
+    .search-box { display: flex; margin-bottom: 15px; }
+    .search-box input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px 0 0 6px; outline: none; font-size: 13px; }
+    .search-box button { border-radius: 0 6px 6px 0; background-color: #003366; padding: 0 15px; color: white; border: none; cursor: pointer; }
+
+    /* LISTA DE ALUMNOS */
+    .student-item { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 12px; 
+        border-bottom: 1px solid #f0f0f0; 
+        font-size: 14px; 
+    }
+    .student-item:last-child { border-bottom: none; }
+    .student-name { font-weight: 600; color: #333; }
+    .student-meta { font-size: 12px; color: #777; }
+    .student-control { 
+        background: #e0ebff; 
+        color: #003366; 
+        padding: 4px 8px; 
+        border-radius: 4px; 
+        font-family: monospace; 
+        font-size: 12px; 
+        font-weight: bold; 
+    }
+
+    /* HEADER DEL CENTRO */
+    .info-header {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    .info-title { font-size: 16px; font-weight: bold; color: #003366; display: block; margin-bottom: 5px; }
+    
+    .status-badge {
+        display: inline-block; padding: 4px 10px; border-radius: 15px;
+        font-size: 11px; font-weight: bold; color: white; text-transform: uppercase;
+    }
+    .bg-green { background-color: #4caf50; }
+    .bg-red { background-color: #f44336; }
+    .bg-blue { background-color: #003366; }
+
+    @media (max-width: 1000px) { .container { grid-template-columns: 1fr; overflow-y: auto; } .panel { min-height: 400px; } }
   </style>
 </head>
 <body>
   <header>
     <div class="logo">
-      <img src="./images/logoITS.png" alt="Logo ITS" onerror="this.style.display='none'">
+      <img src="./images/logoITS.png" alt="ITS" onerror="this.style.display='none'">
       Instituto Tecnológico de Saltillo
     </div>
     <nav>
-      <a href="inicioE.html">Inicio</a>
-      <a href="#">Mis Proyectos</a>
-      <a href="#">Asesorías</a>
-      <a href="#">Eventos</a>
+      <a href="inicioC.html">Inicio</a>
+      <a href="tipos_evento.html">Tipos Evento</a>
+      <a href="#" style="background: rgba(255,255,255,0.2);">Inscritos</a>
     </nav>
     <div class="usuario">
-      <div class="circle" id="user-initial">U</div>
-      <span id="user-name">USUARIO</span>
+      <div class="avatar">A</div>
+      <span id="user-name">ADMIN</span>
     </div>
   </header>
 
   <div class="container">
-    <div class="panel panel-lista">
-      <h2>Eventos Próximos</h2>
+    
+    <div class="panel">
+      <h2>Todos los Eventos</h2>
       <div class="search-box">
-        <input type="text" id="search-input" placeholder="Buscar evento...">
-        <button id="search-button">Buscar</button>
+        <input type="text" id="search-left" placeholder="Buscar evento...">
+        <button></button>
       </div>
-      <div id="eventos-disponibles-lista">
-        <div class="event-item"><div class="event-icon">🕒</div><div class="event-info"><strong>Cargando...</strong></div></div>
+      <div id="lista-izq" class="scroll-area">
+        <p style="color:#888; text-align:center; padding:20px;">Cargando...</p>
       </div>
     </div>
 
-    <div class="panel center">
-      <h2>Detalles del Evento</h2>
-      <div class="form-grid">
-        <div><label>Nombre</label><input type="text" id="evento-nombre" readonly placeholder="-"></div>
-        <div><label>Encargado</label><input type="text" id="evento-encargado" readonly placeholder="-"></div>
-        <div><label>Fecha</label><input type="text" id="evento-fecha" readonly placeholder="-"></div>
-        <div><label>Cupo</label><input type="text" id="evento-cupo" readonly placeholder="-"></div>
-        <div class="full-width"><label>Descripción</label><textarea id="evento-descripcion" readonly placeholder="-"></textarea></div>
+    <div class="panel">
+      <h2> Lista de Asistencia</h2>
+      
+      <div id="info-evento-seleccionado" class="info-header" style="display:none;">
+        <span class="info-title" id="titulo-evento-centro">Evento</span>
+        <span id="badge-cupo" class="status-badge bg-blue">Cupo: -/-</span>
       </div>
-      <div id="feedback-message"></div>
-      <button class="submit-btn" id="btn-inscribirse" disabled>Inscribirse</button>
+
+      <div id="lista-alumnos" class="scroll-area">
+        <div style="text-align:center; padding:40px; color:#888;">
+          <p>Selecciona un evento de los paneles laterales<br>para ver quién está inscrito.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="panel panel-lista my-events">
-      <h2>Mis Eventos</h2>
-      <div id="mis-eventos-lista">
-        <div class="event-item"><div class="event-icon">🕒</div><div class="event-info"><strong>Cargando...</strong></div></div>
+    <div class="panel">
+      <h2 style="color: #29099c; border-color: #ffcdd2;">📅 Eventos de HOY</h2>
+      <div id="lista-der" class="scroll-area">
+        <p style="color:#888; text-align:center; padding:20px;">Cargando...</p>
       </div>
     </div>
+
   </div>
 
 <script>
 const API_URL = 'http://localhost:3001/api';
-const currentUser = { id: localStorage.getItem("id_persona"), nombre: localStorage.getItem("usuario") || "Usuario" };
 
-let allEvents = [];
-let myEventIds = new Set();
-let selectedEventId = null;
-
-// UI Refs
-const eventosDisponiblesLista = document.getElementById('eventos-disponibles-lista');
-const misEventosLista = document.getElementById('mis-eventos-lista');
-const feedbackMessage = document.getElementById('feedback-message');
-const inscribirseBtn = document.getElementById('btn-inscribirse');
-const inputs = {
-  nombre: document.getElementById('evento-nombre'),
-  encargado: document.getElementById('evento-encargado'),
-  fecha: document.getElementById('evento-fecha'),
-  cupo: document.getElementById('evento-cupo'),
-  desc: document.getElementById('evento-descripcion')
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    if (!currentUser.id) { alert("Sin sesión. Redirigiendo..."); window.location.href = "login.html"; return; }
-    document.getElementById('user-name').textContent = currentUser.nombre.toUpperCase();
-    document.getElementById('user-initial').textContent = currentUser.nombre.charAt(0).toUpperCase();
-    
-    loadData();
-    document.getElementById('search-button').addEventListener('click', handleSearch);
-    inscribirseBtn.addEventListener('click', handleInscripcion);
+document.addEventListener("DOMContentLoaded", () => {
+    const usuario = localStorage.getItem("usuario");
+    if(usuario) document.getElementById("user-name").textContent = usuario.toUpperCase();
+    cargarEventos();
 });
 
-async function loadData() {
-    await Promise.all([ loadAllEvents(), loadMyEvents() ]);
-}
+let todosLosEventos = [];
 
-async function loadAllEvents() {
+async function cargarEventos() {
     try {
         const res = await fetch(`${API_URL}/eventos`);
         const data = await res.json();
-        allEvents = Array.isArray(data) ? data : [];
-        renderEventos(allEvents);
-    } catch (e) { console.error(e); }
+        todosLosEventos = Array.isArray(data) ? data : [];
+        renderizarPaneles();
+    } catch (error) {
+        console.error(error);
+        document.getElementById("lista-izq").innerHTML = '<p style="color:red; text-align:center;">Error de conexión.</p>';
+        document.getElementById("lista-der").innerHTML = '<p style="color:red; text-align:center;">Error.</p>';
+    }
 }
 
-async function loadMyEvents() {
-    try {
-        const res = await fetch(`${API_URL}/inscripciones/persona/${currentUser.id}`);
-        const data = await res.json();
-        const mis = Array.isArray(data) ? data : [];
-        myEventIds = new Set(mis.map(e => e.id_evento));
+function renderizarPaneles() {
+    const listaIzq = document.getElementById("lista-izq");
+    const listaDer = document.getElementById("lista-der");
+    listaIzq.innerHTML = "";
+    listaDer.innerHTML = "";
+
+    // --- PASO 1: OBTENER FECHA DE HOY MANUALMENTE ---
+    const hoyObj = new Date();
+    // Forzamos "en-CA" porque siempre devuelve formato YYYY-MM-DD (ej: "2025-12-15")
+    const hoyString = hoyObj.toLocaleDateString('en-CA'); 
+
+    console.log("HOY ES:", hoyString); // Para que lo veas en consola (F12)
+
+    let hayEventosHoy = false;
+
+    todosLosEventos.forEach(evento => {
+        // --- PASO 2: OBTENER FECHA DEL EVENTO MANUALMENTE ---
+        // La API devuelve algo como "2025-12-15T00:00:00.000Z"
+        // Vamos a romper el texto para sacar solo lo que nos interesa.
+        const rawFecha = String(evento.fecha_evento); 
         
-        misEventosLista.innerHTML = mis.length ? mis.map(e => `
-            <div class="event-item">
-                <div class="event-icon" style="color:green;">✅</div>
-                <div class="event-info"><strong>${e.nombre_evento}</strong><p>Inscrito</p></div>
-            </div>`).join('') : '<p style="padding:10px; color:#666;">Sin inscripciones.</p>';
-    } catch (e) { console.error(e); }
+        // Tomamos los primeros 10 caracteres: "2025-12-15"
+        // Esto ignora completamente las horas y zonas horarias.
+        const fechaEventoString = rawFecha.substring(0, 10);
+
+        // --- PASO 3: COMPARAR TEXTO VS TEXTO ---
+        const esHoy = (fechaEventoString === hoyString);
+        
+        if (esHoy) {
+            console.log("¡Evento de hoy encontrado!", evento.nombre_evento);
+        }
+
+        // --- Visualización Bonita (Sin afectar la lógica) ---
+        // Partimos el string para crear una fecha visual segura
+        const [anio, mes, dia] = fechaEventoString.split('-');
+        const fechaVisual = new Date(anio, mes - 1, dia); // Mes es index 0-11
+        const fechaBonita = fechaVisual.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+
+        const inscritos = evento.inscritos || 0;
+        const cupo = evento.cupo || 0;
+        const lleno = inscritos >= cupo;
+        const colorEstado = lleno ? "#f44336" : "#4caf50"; 
+        const textoEstado = lleno ? "LLENO" : "DISPONIBLE";
+
+        const cardHTML = `
+            <div class="event-card" onclick="cargarAlumnos(${evento.id_evento}, '${evento.nombre_evento}', ${inscritos}, ${cupo}, this)">
+                <strong>${evento.nombre_evento}</strong>
+                <small>
+                    <span> ${fechaBonita}</span>
+                    <span style="color:${colorEstado}; font-weight:bold;">${textoEstado} (${inscritos}/${cupo})</span>
+                </small>
+            </div>
+        `;
+
+        // Llenar Izquierda
+        listaIzq.insertAdjacentHTML('beforeend', cardHTML);
+
+        // Llenar Derecha (HOY)
+        if (esHoy) {
+            listaDer.insertAdjacentHTML('beforeend', cardHTML);
+            hayEventosHoy = true;
+        }
+    });
+
+    if (todosLosEventos.length === 0) listaIzq.innerHTML = '<p style="text-align:center; color:#888;">Sin registros.</p>';
+    if (!hayEventosHoy) listaDer.innerHTML = '<p style="text-align:center; color:#888; margin-top:20px;">No hay eventos para hoy.</p>';
 }
 
-function renderEventos(list) {
-    if (!list.length) { eventosDisponiblesLista.innerHTML = '<p style="padding:10px;">No hay eventos.</p>'; return; }
-    eventosDisponiblesLista.innerHTML = list.map(e => {
-        const desc = e.descripcion ? (e.descripcion.substring(0,40) + "...") : "Sin descripción";
-        return `<div class="event-item event-item-clickable" onclick="selectEvent(${e.id_evento})">
-            <div class="event-icon">📅</div>
-            <div class="event-info"><strong>${e.nombre_evento}</strong><p>${desc}</p></div>
-        </div>`;
-    }).join('');
-}
+async function cargarAlumnos(idEvento, nombreEvento, inscritos, cupo, cardElement) {
+    document.querySelectorAll('.event-card').forEach(el => el.classList.remove('selected'));
+    if(cardElement) cardElement.classList.add('selected');
 
-function selectEvent(id) {
-    const ev = allEvents.find(e => e.id_evento === id);
-    if (!ev) return;
-    selectedEventId = id;
+    const headerInfo = document.getElementById("info-evento-seleccionado");
+    headerInfo.style.display = "block";
+    document.getElementById("titulo-evento-centro").textContent = nombreEvento;
     
-    inputs.nombre.value = ev.nombre_evento || "";
-    inputs.encargado.value = ev.nombre_encargado || "N/A";
-    inputs.cupo.value = `${ev.inscritos || 0} / ${ev.cupo} ocupados`;
-    inputs.desc.value = ev.descripcion || "";
-    try { inputs.fecha.value = new Date(ev.fecha_evento).toLocaleDateString(); } catch(e){ inputs.fecha.value = "-"; }
-
-    // Lógica simplificada: Solo botón de inscribirse o deshabilitado
-    const yaInscrito = myEventIds.has(id);
-    const lleno = (ev.inscritos || 0) >= ev.cupo;
-
-    if (yaInscrito) {
-        inscribirseBtn.disabled = true;
-        inscribirseBtn.textContent = "Ya estás inscrito";
-        inscribirseBtn.style.backgroundColor = "#4caf50"; // Verde
-    } else if (lleno) {
-        inscribirseBtn.disabled = true;
-        inscribirseBtn.textContent = "Cupo Lleno";
-        inscribirseBtn.style.backgroundColor = "#f44336"; // Rojo
+    const badge = document.getElementById("badge-cupo");
+    badge.textContent = `Cupo: ${inscritos} / ${cupo}`;
+    
+    if (inscritos >= cupo) {
+        badge.className = "status-badge bg-red";
+        badge.textContent += " (LLENO)";
     } else {
-        inscribirseBtn.disabled = false;
-        inscribirseBtn.textContent = "Inscribirse";
-        inscribirseBtn.style.backgroundColor = "#003366"; // Azul
+        badge.className = "status-badge bg-green";
     }
-}
 
-async function handleInscripcion() {
-    if (!selectedEventId) return;
-    inscribirseBtn.disabled = true;
-    inscribirseBtn.textContent = "Procesando...";
+    const listaContainer = document.getElementById("lista-alumnos");
+    listaContainer.innerHTML = '<p style="text-align:center; padding:20px;">Cargando lista...</p>';
 
     try {
-        const res = await fetch(`${API_URL}/inscripciones`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_evento: selectedEventId, id_persona: currentUser.id })
+        const res = await fetch(`${API_URL}/inscripciones/evento/${idEvento}`);
+        const alumnos = await res.json();
+        const listaLimpia = Array.isArray(alumnos) ? alumnos : [];
+
+        listaContainer.innerHTML = "";
+
+        if (listaLimpia.length === 0) {
+            listaContainer.innerHTML = `
+                <div style="text-align:center; padding:40px; color:#888;">
+                    <p>No hay alumnos inscritos.</p>
+                </div>`;
+            return;
+        }
+
+        listaLimpia.forEach(alu => {
+            const div = document.createElement("div");
+            div.className = "student-item";
+            div.innerHTML = `
+                <div>
+                    <div class="student-name">${alu.nombre} ${alu.apellido}</div>
+                    <div class="student-meta">${alu.correo}</div>
+                </div>
+                <div class="student-control">${alu.no_control || 'S/N'}</div>
+            `;
+            listaContainer.appendChild(div);
         });
-        const json = await res.json();
-        if (!res.ok) throw new Error(json.message);
 
-        showFeedback("¡Inscripción Exitosa!", "success");
-        await loadData();
-        // Actualizar estado del botón para el evento seleccionado
-        selectEvent(selectedEventId); 
-
-    } catch (e) {
-        showFeedback(e.message, "error");
-        inscribirseBtn.disabled = false;
-        inscribirseBtn.textContent = "Intentar de nuevo";
+    } catch (error) {
+        console.error(error);
+        listaContainer.innerHTML = '<p style="color:red; text-align:center;">Error al cargar datos.</p>';
     }
 }
 
-function handleSearch() {
-    const q = document.getElementById('search-input').value.toLowerCase();
-    renderEventos(allEvents.filter(e => (e.nombre_evento||'').toLowerCase().includes(q)));
-}
-
-function showFeedback(msg, type) {
-    feedbackMessage.textContent = msg;
-    feedbackMessage.className = `feedback-${type}`;
-    feedbackMessage.style.display = 'block';
-    setTimeout(() => { feedbackMessage.style.display = 'none'; }, 4000);
-}
+document.getElementById("search-left").addEventListener("keyup", (e) => {
+    const texto = e.target.value.toLowerCase();
+    document.querySelectorAll("#lista-izq .event-card").forEach(card => {
+        const titulo = card.querySelector("strong").textContent.toLowerCase();
+        card.style.display = titulo.includes(texto) ? "flex" : "none";
+    });
+});
 </script>
 </body>
 </html>

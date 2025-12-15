@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listas de Asistencia - ITS</title>
   <style>
-    /* --- ESTILOS GLOBALES (Mismos que inicioE.html) --- */
+    /* --- ESTILOS GLOBALES --- */
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; }
     body { background-color: #f3f4f6; color: #001d3d; font-family: 'Inter', sans-serif; height: 100vh; display: flex; flex-direction: column;}
 
@@ -19,16 +19,18 @@
     .usuario { display: flex; align-items: center; font-weight: bold; font-size: 14px; gap: 10px; }
     .avatar { width: 32px; height: 32px; background-color: #e0ebff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #003366; font-size: 13px; }
 
-    /* LAYOUT */
+    /* LAYOUT DE 2 COLUMNAS */
     .container { 
         display: grid; 
-        grid-template-columns: 1fr 1.5fr 1fr; 
+        /* Izquierda fija (350px), Derecha flexible (resto) */
+        grid-template-columns: 350px 1fr; 
         gap: 25px; 
         padding: 30px 40px; 
         max-width: 1600px; 
         margin: 0 auto; 
         flex: 1; 
-        overflow: hidden; /* Evita scroll en toda la página */
+        overflow: hidden; 
+        width: 100%;
     }
     
     .panel { 
@@ -51,18 +53,17 @@
         font-weight: 700;
     }
 
-    /* LISTAS CON SCROLL */
+    /* SCROLL */
     .scroll-area { 
         flex: 1; 
         overflow-y: auto; 
         padding-right: 5px; 
     }
-    /* Scrollbar bonita */
     .scroll-area::-webkit-scrollbar { width: 6px; }
     .scroll-area::-webkit-scrollbar-track { background: #f1f1f1; }
     .scroll-area::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
 
-    /* ITEMS DE EVENTO (Diseño Tarjeta) */
+    /* TARJETAS DE EVENTO (Lado Izquierdo) */
     .event-card { 
         display: flex; 
         flex-direction: column; 
@@ -74,7 +75,6 @@
         border: 1px solid #eee; 
         cursor: pointer; 
         transition: all 0.2s; 
-        position: relative;
     }
     .event-card:hover { 
         background-color: #f8fbff; 
@@ -98,54 +98,54 @@
     .search-box input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px 0 0 6px; outline: none; font-size: 13px; }
     .search-box button { border-radius: 0 6px 6px 0; background-color: #003366; padding: 0 15px; color: white; border: none; cursor: pointer; }
 
-    /* LISTA DE ALUMNOS (CENTRO) */
+    /* LISTA DE ALUMNOS (Lado Derecho) */
     .student-item { 
         display: flex; 
         justify-content: space-between; 
         align-items: center; 
-        padding: 12px; 
+        padding: 15px; 
         border-bottom: 1px solid #f0f0f0; 
-        font-size: 14px; 
+        font-size: 15px; 
     }
+    .student-item:hover { background-color: #fafafa; }
     .student-item:last-child { border-bottom: none; }
-    .student-name { font-weight: 600; color: #333; }
-    .student-meta { font-size: 12px; color: #777; }
+    
+    .student-name { font-weight: 600; color: #333; font-size: 16px; }
+    .student-meta { font-size: 13px; color: #777; margin-top: 3px; }
+    
     .student-control { 
         background: #e0ebff; 
         color: #003366; 
-        padding: 4px 8px; 
-        border-radius: 4px; 
+        padding: 6px 12px; 
+        border-radius: 6px; 
         font-family: monospace; 
-        font-size: 12px; 
+        font-size: 14px; 
         font-weight: bold; 
+        letter-spacing: 0.5px;
     }
 
     /* HEADER DEL CENTRO */
     .info-header {
         background-color: #f8f9fa;
         border: 1px solid #e9ecef;
-        padding: 15px;
+        padding: 20px;
         border-radius: 8px;
-        margin-bottom: 15px;
-        text-align: center;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
-    .info-title { font-size: 16px; font-weight: bold; color: #003366; display: block; margin-bottom: 5px; }
+    .info-title { font-size: 20px; font-weight: bold; color: #003366; }
     
-    /* ETIQUETAS DE ESTADO (Tus colores) */
     .status-badge {
-        display: inline-block;
-        padding: 4px 10px;
-        border-radius: 15px;
-        font-size: 11px;
-        font-weight: bold;
-        color: white;
-        text-transform: uppercase;
+        display: inline-block; padding: 6px 12px; border-radius: 20px;
+        font-size: 12px; font-weight: bold; color: white; text-transform: uppercase;
     }
-    .bg-green { background-color: #4caf50; } /* Verde - Disponible */
-    .bg-red { background-color: #f44336; }   /* Rojo - Lleno */
-    .bg-blue { background-color: #003366; }  /* Azul - Info */
+    .bg-green { background-color: #4caf50; }
+    .bg-red { background-color: #f44336; }
+    .bg-blue { background-color: #003366; }
 
-    @media (max-width: 1000px) { .container { grid-template-columns: 1fr; overflow-y: auto; } .panel { min-height: 400px; } }
+    @media (max-width: 900px) { .container { grid-template-columns: 1fr; overflow-y: auto; } .panel { min-height: 400px; } }
   </style>
 </head>
 <body>
@@ -168,7 +168,7 @@
   <div class="container">
     
     <div class="panel">
-      <h2>Todos los Eventos</h2>
+      <h2>Seleccionar Evento</h2>
       <div class="search-box">
         <input type="text" id="search-left" placeholder="Buscar evento...">
         <button></button>
@@ -179,24 +179,21 @@
     </div>
 
     <div class="panel">
-      <h2>👥 Lista de Asistencia</h2>
+      <h2 style="border-bottom-color: #003366;"> Lista de Asistencia</h2>
       
       <div id="info-evento-seleccionado" class="info-header" style="display:none;">
-        <span class="info-title" id="titulo-evento-centro">Evento</span>
+        <div>
+            <span style="display:block; font-size:12px; color:#666; margin-bottom:4px;">EVENTO SELECCIONADO:</span>
+            <span class="info-title" id="titulo-evento-centro">Evento</span>
+        </div>
         <span id="badge-cupo" class="status-badge bg-blue">Cupo: -/-</span>
       </div>
 
       <div id="lista-alumnos" class="scroll-area">
-        <div style="text-align:center; padding:40px; color:#888;">
-          <p>Selecciona un evento de los paneles laterales<br>para ver quién está inscrito.</p>
+        <div style="text-align:center; padding:60px; color:#888;">
+          <div style="font-size:40px; margin-bottom:15px; opacity:0.3;"></div>
+          <p style="font-size:16px;">Selecciona un evento de la izquierda<br>para ver a los alumnos inscritos.</p>
         </div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h2 style="color: #29099c; border-color: #ffcdd2;"> Eventos de hoy</h2>
-      <div id="lista-der" class="scroll-area">
-        <p style="color:#888; text-align:center; padding:20px;">Cargando...</p>
       </div>
     </div>
 
@@ -218,33 +215,31 @@ async function cargarEventos() {
         const res = await fetch(`${API_URL}/eventos`);
         const data = await res.json();
         todosLosEventos = Array.isArray(data) ? data : [];
-        renderizarPaneles();
+        renderizarEventos();
     } catch (error) {
         console.error(error);
         document.getElementById("lista-izq").innerHTML = '<p style="color:red; text-align:center;">Error de conexión.</p>';
     }
 }
 
-function renderizarPaneles() {
+function renderizarEventos() {
     const listaIzq = document.getElementById("lista-izq");
-    const listaDer = document.getElementById("lista-der");
     listaIzq.innerHTML = "";
-    listaDer.innerHTML = "";
 
-    const hoyString = new Date().toLocaleDateString('en-CA'); 
-    let hayEventosHoy = false;
+    if (todosLosEventos.length === 0) {
+        listaIzq.innerHTML = '<p style="text-align:center; color:#888;">Sin registros.</p>';
+        return;
+    }
 
     todosLosEventos.forEach(evento => {
-        const fechaObj = new Date(evento.fecha_evento);
-        const fechaEventoString = fechaObj.toISOString().split('T')[0]; 
-        const fechaBonita = fechaObj.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+        // Procesar fecha para mostrar bonito
+        const fechaBD = new Date(evento.fecha_evento);
+        const fechaVisual = new Date(fechaBD.getTime() + fechaBD.getTimezoneOffset() * 60000);
+        const fechaBonita = fechaVisual.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
 
-        // Calcular estado del cupo para los colores
         const inscritos = evento.inscritos || 0;
         const cupo = evento.cupo || 0;
         const lleno = inscritos >= cupo;
-        
-        // Usamos tus colores: Rojo si está lleno, Verde si hay lugar
         const colorEstado = lleno ? "#f44336" : "#4caf50"; 
         const textoEstado = lleno ? "LLENO" : "DISPONIBLE";
 
@@ -252,49 +247,36 @@ function renderizarPaneles() {
             <div class="event-card" onclick="cargarAlumnos(${evento.id_evento}, '${evento.nombre_evento}', ${inscritos}, ${cupo}, this)">
                 <strong>${evento.nombre_evento}</strong>
                 <small>
-                    <span>📅 ${fechaBonita}</span>
+                    <span> ${fechaBonita}</span>
                     <span style="color:${colorEstado}; font-weight:bold;">${textoEstado} (${inscritos}/${cupo})</span>
                 </small>
             </div>
         `;
-
-        // IZQUIERDA
         listaIzq.insertAdjacentHTML('beforeend', cardHTML);
-
-        // DERECHA (Hoy)
-        if (fechaEventoString === hoyString) {
-            listaDer.insertAdjacentHTML('beforeend', cardHTML);
-            hayEventosHoy = true;
-        }
     });
-
-    if (todosLosEventos.length === 0) listaIzq.innerHTML = '<p style="text-align:center; color:#888;">Sin registros.</p>';
-    if (!hayEventosHoy) listaDer.innerHTML = '<p style="text-align:center; color:#888; margin-top:20px;">No hay eventos hoy.</p>';
 }
 
 async function cargarAlumnos(idEvento, nombreEvento, inscritos, cupo, cardElement) {
-    // Efecto visual de selección
+    // Resaltar tarjeta seleccionada
     document.querySelectorAll('.event-card').forEach(el => el.classList.remove('selected'));
     if(cardElement) cardElement.classList.add('selected');
 
-    // Actualizar Header Central con tus colores
+    // Mostrar Header con info
     const headerInfo = document.getElementById("info-evento-seleccionado");
-    headerInfo.style.display = "block";
+    headerInfo.style.display = "flex"; // Flex para que se separen título y cupo
     document.getElementById("titulo-evento-centro").textContent = nombreEvento;
     
     const badge = document.getElementById("badge-cupo");
-    badge.textContent = `Cupo: ${inscritos} / ${cupo}`;
+    badge.textContent = `Inscritos: ${inscritos} / ${cupo}`;
     
-    // Lógica de colores (Verde/Rojo) en el badge central
     if (inscritos >= cupo) {
-        badge.className = "status-badge bg-red"; // Rojo
-        badge.textContent += " (LLENO)";
+        badge.className = "status-badge bg-red";
     } else {
-        badge.className = "status-badge bg-green"; // Verde
+        badge.className = "status-badge bg-green";
     }
 
     const listaContainer = document.getElementById("lista-alumnos");
-    listaContainer.innerHTML = '<p style="text-align:center; padding:20px;">Cargando lista...</p>';
+    listaContainer.innerHTML = '<p style="text-align:center; padding:40px; color:#666;">Cargando lista de asistencia...</p>';
 
     try {
         const res = await fetch(`${API_URL}/inscripciones/evento/${idEvento}`);
@@ -305,29 +287,33 @@ async function cargarAlumnos(idEvento, nombreEvento, inscritos, cupo, cardElemen
 
         if (listaLimpia.length === 0) {
             listaContainer.innerHTML = `
-                <div style="text-align:center; padding:40px; color:#888;">
-                    <div style="font-size:30px; margin-bottom:10px;">📭</div>
-                    <p>No hay alumnos inscritos en este evento.</p>
+                <div style="text-align:center; padding:60px; color:#888;">
+                    <div style="font-size:30px; margin-bottom:10px;"></div>
+                    <p style="font-size:16px;">Nadie se ha inscrito a este evento todavía.</p>
                 </div>`;
             return;
         }
 
-        listaLimpia.forEach(alu => {
+        listaLimpia.forEach((alu, index) => {
             const div = document.createElement("div");
             div.className = "student-item";
+            // Agregamos un número de lista para que se vea más pro
             div.innerHTML = `
-                <div>
-                    <div class="student-name">${alu.nombre} ${alu.apellido}</div>
-                    <div class="student-meta">${alu.correo}</div>
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <span style="color:#999; font-weight:bold; width:20px;">${index + 1}.</span>
+                    <div>
+                        <div class="student-name">${alu.nombre} ${alu.apellido}</div>
+                        <div class="student-meta"> ${alu.correo}</div>
+                    </div>
                 </div>
-                <div class="student-control">${alu.no_control || 'S/N'}</div>
+                <div class="student-control">NC: ${alu.no_control || 'S/N'}</div>
             `;
             listaContainer.appendChild(div);
         });
 
     } catch (error) {
         console.error(error);
-        listaContainer.innerHTML = '<p style="color:red; text-align:center;">Error al cargar datos.</p>';
+        listaContainer.innerHTML = '<p style="color:red; text-align:center; padding:40px;">Error al cargar los datos del servidor.</p>';
     }
 }
 
