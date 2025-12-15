@@ -2,39 +2,60 @@ const { query } = require("../config/database");
 
 // --- CRUD para TIPOS_EVENTOS ---
 
-// Crear nuevo tipo de evento
+// Crear nuevo tipo de evento (CON VALIDACIÓN ESTRICTA)
 exports.crearTipoEvento = async (req, res) => {
-    const { nombreTipoE } = req.body;
+    // 1. Obtenemos el nombre
+    let { nombreTipoE } = req.body;
+
+    // Validación básica de existencia
+    if (!nombreTipoE) {
+        return res.status(400).json({ success: false, message: "El nombre es obligatorio" });
+    }
+
+    // 2. LIMPIEZA: Quitamos espacios al inicio y final
+    // Esto hace que " Asamblea " sea igual a "Asamblea"
+    nombreTipoE = nombreTipoE.trim();
+
+    if (nombreTipoE === '') {
+        return res.status(400).json({ success: false, message: "El nombre no puede estar vacío" });
+    }
+
     try {
-        await query("INSERT INTO tipos_eventos (nombre_tipo_eve) VALUES (?)", [
-            nombreTipoE
-        ]);
+        console.log(`[DEBUG] Intentando crear: "${nombreTipoE}"`);
+
+        // 3. BUSCAR SI YA EXISTE (Validación de duplicados)
+        // Buscamos exactamente ese nombre en la base de datos
+        const busqueda = await query("SELECT id_tipos_eve FROM tipos_eventos WHERE nombre_tipo_eve = ?", [nombreTipoE]);
+
+        console.log(`[DEBUG] Resultado búsqueda:`, busqueda);
+
+        if (busqueda && busqueda.length > 0) {
+            // Si el arreglo tiene datos, es que ya existe
+            console.log("[DEBUG] ¡Duplicado detectado!");
+            return res.status(400).json({ success: false, message: `¡El tipo de evento "${nombreTipoE}" ya existe!` });
+        }
+
+        // 4. SI NO EXISTE, LO CREAMOS
+        await query("INSERT INTO tipos_eventos (nombre_tipo_eve) VALUES (?)", [nombreTipoE]);
+        
+        console.log("[DEBUG] Insertado correctamente.");
         res.status(201).json({ success: true, message: "Tipo de Evento creado correctamente" });
+
     } catch (err) {
         console.error("Error al crear tipo de evento:", err);
-        res.status(500).json({ success: false, message: "Error al crear tipo de evento" });
+        res.status(500).json({ success: false, message: "Error interno al crear tipo de evento" });
     }
 };
 
-exports.obtenerTiposEventos = async (req, res) => {
-    try {
-        const sql = "SELECT id_tipos_eve, nombre_tipo_eve FROM tipos_eventos ORDER BY nombre_tipo_eve";
-        const tipos = await query(sql);
-        
-        // Devolvemos el array directamente para que el frontend lo consuma
-        res.json(tipos); 
-
-    } catch (error) {
-        console.error("Error al obtener tipos de evento:", error);
-        // Devolvemos una respuesta de error consistente
-        res.status(500).json({ success: false, message: "Error al obtener tipos de evento" });
-    }
-};
 // Actualizar tipo de evento
 exports.actualizarTipoEvento = async (req, res) => {
     const { id } = req.params; 
-    const { nombreTipoE } = req.body;
+    let { nombreTipoE } = req.body;
+
     try {
+        // Limpiamos el nombre también al actualizar
+        if(nombreTipoE) nombreTipoE = nombreTipoE.trim();
+
         await query("UPDATE tipos_eventos SET nombre_tipo_eve=? WHERE id_tipos_eve=?", [
             nombreTipoE,
             id
@@ -54,6 +75,10 @@ exports.eliminarTipoEvento = async (req, res) => {
         res.json({ success: true, message: "Tipo de Evento eliminado correctamente" });
     } catch (err) {
         console.error("Error al eliminar tipo de evento:", err);
+        // Manejo básico de llave foránea
+        if (err.code === 'ER_ROW_IS_REFERENCED_2' || err.errno === 1451) {
+             return res.status(409).json({ success: false, message: "No se puede eliminar porque hay eventos usando este tipo." });
+        }
         res.status(500).json({ success: false, message: "Error al eliminar tipo de evento" });
     }
 };
@@ -66,7 +91,7 @@ exports.obtenerTiposEventos = async (req, res) => {
         res.json({ 
             success: true, 
             tiposEventos: tiposEventos, 
-            permisosDisponibles: [] // Se mantiene la clave por consistencia con el viejo endpoint, aunque esté vacía
+            permisosDisponibles: [] 
         });
     } catch (err) {
         console.error("Error al obtener tipos de eventos:", err);
@@ -76,7 +101,7 @@ exports.obtenerTiposEventos = async (req, res) => {
 
 // --- Funciones para el Panel Derecho (Relación con Eventos) ---
 
-// Obtener Eventos con su Tipo de Evento asignado (Asume tabla 'eventos')
+// Obtener Eventos con su Tipo de Evento asignado
 exports.obtenerEventosConTipo = async (req, res) => {
     try {
         const eventos = await query(`
