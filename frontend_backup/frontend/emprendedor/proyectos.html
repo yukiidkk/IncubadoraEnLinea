@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Proyectos</title>
+  <link rel="stylesheet" ../css/normalize.css/>
+  <link rel="stylesheet" ../css/estilos.css/>
+  <style>
+    body {
+      background:#f4f6f9;
+      margin:0;
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    header {
+      background:#003366;
+      color:#fff;
+      padding:10px 40px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    header .left {
+      display:flex;
+      align-items:center;
+      gap:15px;
+    }
+    header img { height:35px; }
+    header nav a {
+      color:#fff;
+      text-decoration:none;
+      margin-right:20px;
+      font-weight:bold;
+    }
+    header nav a:hover { text-decoration:underline; }
+
+    .contenido { padding:20px 40px; }
+    h1 { text-align:center; color:#003366; }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      background:#fff;
+      border-radius:8px;
+      overflow:hidden;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding:12px 10px;
+      border-bottom:1px solid #ddd;
+      text-align:left;
+    }
+    th {
+      background:#aac1e2;
+      color:#003366;
+      font-weight:600;
+    }
+
+    .botones {
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      margin:25px 0;
+    }
+    .botones a, .botones button {
+      background:#1e63b5;
+      color:#fff;
+      border:none;
+      border-radius:8px;
+      padding:10px 18px;
+      font-weight:600;
+      text-decoration:none;
+      cursor:pointer;
+      transition:background 0.3s ease;
+    }
+    .botones a:hover, .botones button:hover {
+      background:#004b9a;
+    }
+    .descargar { background:#759fcf; }
+    .descargar:hover { background:#5d8ec0; }
+
+    /* Panel usuario */
+    .user-info {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#0a2b57;
+      padding:6px 10px;
+      border-radius:10px;
+      box-shadow:0 1px 3px rgba(0,0,0,0.2);
+    }
+    .user-text { font-weight:bold; color:#fff; }
+    .logout-btn {
+      background:#c0392b;
+      color:white;
+      border:none;
+      padding:5px 10px;
+      border-radius:6px;
+      cursor:pointer;
+      font-size:14px;
+      transition:background 0.2s ease;
+    }
+    .logout-btn:hover { background:#e74c3c; }
+
+    /* Botón gestionar */
+    .gestionar-btn {
+      background:#0056b3;
+      color:white;
+      border:none;
+      padding:7px 14px;
+      border-radius:6px;
+      cursor:pointer;
+      transition:all 0.2s ease;
+    }
+    .gestionar-btn:hover {
+      background:#003f82;
+    }
+
+    /* Modal */
+    .modal {
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.5);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:1000;
+    }
+    .modal-content {
+      background:#fff;
+      padding:25px 30px;
+      border-radius:10px;
+      text-align:center;
+      box-shadow:0 2px 8px rgba(0,0,0,0.3);
+      width:370px;
+      animation:fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { transform:scale(0.95); opacity:0; }
+      to { transform:scale(1); opacity:1; }
+    }
+
+    .modal h3 {
+      margin-bottom:10px;
+      color:#003366;
+    }
+    .modal-buttons {
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:15px;
+    }
+    .modal-buttons button {
+      padding:10px;
+      border:none;
+      border-radius:6px;
+      font-weight:bold;
+      color:#fff;
+      cursor:pointer;
+      transition:opacity 0.2s ease;
+    }
+    .modal-buttons button:hover { opacity:0.9; }
+
+    #btnAprobar { background:#2ecc71; }
+    #btnRechazar { background:#e74c3c; }
+    #btnDescargar { background:#3498db; }
+    #btnCerrarModal {
+      margin-top:15px;
+      background:#7f8c8d;
+      color:#fff;
+      border:none;
+      padding:8px 14px;
+      border-radius:5px;
+      cursor:pointer;
+    }
+
+    /* Colores dinámicos de estatus */
+    .estatus-pendiente { color:#f39c12; font-weight:bold; }
+    .estatus-aprobado { color:#27ae60; font-weight:bold; }
+    .estatus-rechazado { color:#c0392b; font-weight:bold; }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="left">
+    <img src="/frontend/images/logoITS.png" alt="Logo ITS">
+    <span>Instituto Tecnológico de Saltillo</span>
+    <nav><a href="#" id="btnHome">Home</a></nav>
+  </div>
+  <div class="user-info">
+    <span class="user-text" id="userName">USUARIO</span>
+    <button class="logout-btn" id="logoutBtn" style="display:none;">Cerrar sesión</button>
+  </div>
+</header>
+
+<div class="contenido">
+  <h1>Página principal de proyectos</h1>
+  <div class="botones">
+    <a id="btnCrear" href="/frontend/emprendedor/crearproyecto.html">Crear nuevo proyecto</a>
+    <a class="descargar" href="/documentos/Formato_20de_20_Registro.doc" download>Descargar formato de registro</a>
+    <a id="btnSeguimiento" href="#">Seguimiento de proyectos</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Título del proyecto</th>
+        <th>Responsable</th>
+        <th>Fecha de inicio</th>
+        <th>Estatus</th>
+        <th>Progreso</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+  </table>
+</div>
+
+<!-- Modal -->
+<div id="modalGestion" class="modal">
+  <div class="modal-content">
+    <h3>Gestión de proyecto</h3>
+    <p id="modalProyectoNombre"></p>
+    <div class="modal-buttons">
+      <button id="btnAprobar">Aprobar</button>
+      <button id="btnRechazar">Rechazar</button>
+      <button id="btnDescargar">Descargar formato</button>
+    </div>
+    <button id="btnCerrarModal">Cerrar</button>
+  </div>
+</div>
+
+<script>
+  // --- Inicialización y autenticación ---
+  const params = new URLSearchParams(window.location.search);
+  const rol = params.get('rol') || localStorage.getItem('rolUsuario') || 'emprendedor';
+  localStorage.setItem('rolUsuario', rol);
+
+  const btnCrear = document.getElementById('btnCrear');
+  if (rol === 'coordinador') btnCrear.style.display = 'none';
+
+  document.getElementById('btnSeguimiento').onclick = () => {
+    window.location.href = `seguimientoProyectos.html?rol=${rol}`;
+  };
+
+  document.getElementById('btnHome').onclick = (e) => {
+    e.preventDefault();
+    window.location.href = (rol === 'coordinador') ? 'inicioC.html' : 'inicioE.html';
+  };
+
+  // --- Cargar tabla ---
+  document.addEventListener("DOMContentLoaded", async () => {
+    const id_usuario = localStorage.getItem("id_usuario");
+    const tipo = (localStorage.getItem("tipo") || "").toLowerCase();
+
+    if (!id_usuario) {
+      alert("Debes iniciar sesión para ver tus proyectos.");
+      window.location.href = "/auth/login.html";
+      return;
+    }
+
+    const nombre = localStorage.getItem("nombre");
+    const apellido = localStorage.getItem("apellido");
+    const correo = localStorage.getItem("correo");
+    const userNameSpan = document.getElementById("userName");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    userNameSpan.textContent = `${nombre} ${apellido || ""}`.trim() || correo || "Invitado";
+    logoutBtn.style.display = "inline-block";
+    logoutBtn.onclick = () => {
+      if (confirm("¿Deseas cerrar sesión?")) {
+        localStorage.clear();
+        window.location.href = "/auth/login.html";
+      }
+    };
+
+    const endpoint =
+      tipo === "coordinador"
+        ? `http://localhost:3001/api/proyectos/${id_usuario}?rol=coordinador`
+        : `http://localhost:3001/api/proyectos/${id_usuario}`;
+
+    const res = await fetch(endpoint);
+    const data = await res.json();
+    const tabla = document.querySelector("table");
+    const tbody = document.createElement("tbody");
+
+    if (!data.length) {
+      const fila = document.createElement("tr");
+      fila.innerHTML = `<td colspan="6" style="text-align:center;color:#555;">No hay proyectos registrados.</td>`;
+      tbody.appendChild(fila);
+    } else {
+      data.forEach(p => {
+  const responsable = p.responsable
+    ? `${p.responsable} ${p.responsable_apellido || ""}`.trim()
+    : (nombre + " " + apellido).trim() || "Tú";
+
+  const fila = document.createElement("tr");
+
+  // Determinar si el usuario puede gestionar el proyecto
+  const puedeGestionar = (tipo === "coordinador" || tipo === "administrador");
+
+  fila.innerHTML = `
+    <td>${p.nombre_proyecto}</td>
+    <td>${responsable}</td>
+    <td>${p.fecha_inicio ? new Date(p.fecha_inicio).toLocaleDateString() : "-"}</td>
+    <td>${p.estatus}</td>
+    <td>${p.progreso}</td>
+    <td>
+      ${
+        puedeGestionar
+          ? `<button class="gestionar-btn" data-id="${p.id_proyecto}">Gestionar</button>`
+          : `<span style="color:#888;">Sin permisos</span>`
+      }
+    </td>
+  `;
+
+  tbody.appendChild(fila);
+});
+
+    }
+    tabla.appendChild(tbody);
+
+    // --- Modal dinámico ---
+    const modal = document.getElementById("modalGestion");
+    const modalProyectoNombre = document.getElementById("modalProyectoNombre");
+    const btnAprobar = document.getElementById("btnAprobar");
+    const btnRechazar = document.getElementById("btnRechazar");
+    const btnDescargar = document.getElementById("btnDescargar");
+    const btnCerrarModal = document.getElementById("btnCerrarModal");
+
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("gestionar-btn")) {
+        const id = e.target.dataset.id;
+        const proyecto = data.find(p => p.id_proyecto == id);
+        if (!proyecto) return;
+
+        modalProyectoNombre.textContent = proyecto.nombre_proyecto;
+        modal.dataset.id = id;
+        modal.dataset.estatus = proyecto.estatus;
+        modal.style.display = "flex";
+
+        // Desactivar botones si ya tiene estatus final
+        const bloqueado = (proyecto.estatus !== "Pendiente");
+        btnAprobar.disabled = bloqueado;
+        btnRechazar.disabled = bloqueado;
+        btnAprobar.style.opacity = bloqueado ? "0.5" : "1";
+        btnRechazar.style.opacity = bloqueado ? "0.5" : "1";
+      }
+    });
+
+    btnCerrarModal.onclick = () => modal.style.display = "none";
+
+    btnAprobar.onclick = async () => {
+      const id = modal.dataset.id;
+      await fetch(`http://localhost:3001/api/proyectos/estatus`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_proyecto: id, estatus: "Aprobado" })
+      });
+      alert("Proyecto aprobado correctamente.");
+      modal.style.display = "none";
+      location.reload();
+    };
+
+    btnRechazar.onclick = async () => {
+      const id = modal.dataset.id;
+      await fetch(`http://localhost:3001/api/proyectos/estatus`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_proyecto: id, estatus: "Rechazado" })
+      });
+      alert("Proyecto rechazado.");
+      modal.style.display = "none";
+      location.reload();
+    };
+
+    btnDescargar.onclick = () => {
+      const id = modal.dataset.id;
+      window.open(`http://localhost:3001/api/archivo/${id}`, "_blank");
+    };
+  });
+</script>
+</body>
+</html>
+
+
+
+
+
+

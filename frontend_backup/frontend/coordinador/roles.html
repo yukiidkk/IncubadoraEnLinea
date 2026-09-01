@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Emprendurismo ITS</title>
+    <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
+    <link rel="stylesheet" href="/frontend/css/normalize.css">
+    <link rel="stylesheet" href="/frontend/css/estilos.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <img src="/frontend/images/logoITS.png" alt="ITS" />
+                <span>Instituto Tecnológico de Saltillo</span>
+            </div>
+
+            <div class="user-info">
+                <span class="user-text">USUARIO</span>
+                <div class="user-icon">👤</div>
+            </div>
+        </div>
+        <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #f3f4f6;
+      color: #001d3d;
+    }
+
+    /* NAVBAR */
+.navbar {
+    background: #003366;
+    color: #fff;
+    height: 50px; /* define altura fija */
+    display: flex;
+    align-items: center; /* centra verticalmente el contenido */
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 30px; /* tamaño del icono reducido */
+    height: 30px;
+    margin-right: 8px;
+}
+
+.nav-right {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+    /* Contenido */
+    .container {
+      padding: 40px;
+    }
+
+    .container h2 {
+      color: #001d3d;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .paneles {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .panel {
+      background-color: #dbe7ff;
+      flex: 1;
+      border-radius: 10px;
+      padding: 25px;
+      min-width: 300px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    /* Tabla */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #e0ebff;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f2f6ff;
+    }
+
+    /* Botones */
+    .botones {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      background-color: #003366;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .btn:hover {
+      background-color: #001f54;
+    }
+
+    /* Sección buscar */
+    .buscar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    /* Mensajes visuales */
+    .mensaje {
+      width: 90%;
+      margin: 15px auto;
+      padding: 12px 18px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .mensaje.error {
+      background-color: #ffdddd;
+      color: #a00000;
+      border: 1px solid #ff7a7a;
+    }
+
+    .mensaje.exito {
+      background-color: #ddffdd;
+      color: #006600;
+      border: 1px solid #7aff7a;
+    }
+
+    .oculto {
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .paneles {
+        flex-direction: column;
+      }
+
+      .botones {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+    </header>
+
+    <!-- Contenedor para mensajes visuales -->
+    <div id="mensajeError" class="mensaje oculto"></div>
+    
+    <div class="main-content role-management-view">
+        <div class="form-container">
+            <header>
+                <h2>Gestión de Roles</h2>
+            </header>
+            
+            <div class="paneles">
+      <!-- Panel izquierdo -->
+      <section class="panel">
+        <label>Nombre del rol</label>
+        <input type="text" id="nombreRolInput" placeholder="Nombre del rol" maxlength="30">
+
+        <label>Permisos del rol:</label>
+        <select id="selectPermiso">
+          <option>Seleccione el permiso</option>
+          <option>Administrador</option>
+          <option>Usuario</option>
+        </select>
+
+        <h3>Roles creados</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre del Rol</th>
+              <th>Permiso</th>
+            </tr>
+          </thead>
+          <tbody id="tablaRoles">
+            </tbody>
+        </table>
+
+        <div class="botones">
+          <button class="btn" id="btnCrear">Crear rol</button>
+          <button class="btn" id="btnActualizar">Actualizar rol</button>
+          <button class="btn" id="btnEliminar">Eliminar rol</button>
+        </div>
+      </section>
+
+      <!-- Panel derecho -->
+      <section class="panel">
+        <div class="buscar">
+          <input type="text" id="inputBuscarUsuario" placeholder="Buscar un usuario">
+          <button class="btn" id="btnBuscarUsuario">Buscar</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Rol asignado</th>
+            </tr>
+          </thead>
+          <tbody id="tablaUsuariosRol">
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+  <script>
+const API_URL = "http://localhost:3001/api/roles"; 
+const tablaRoles = document.querySelector("#tablaRoles"); 
+const inputNombre = document.querySelector("#nombreRolInput");
+const selectPermiso = document.querySelector("#selectPermiso");
+const btnCrear = document.querySelector("#btnCrear");
+const btnActualizar = document.querySelector("#btnActualizar");
+const btnEliminar = document.querySelector("#btnEliminar");
+let rolSeleccionadoId = null;
+
+// Función para mostrar mensajes en pantalla
+function mostrarMensaje(texto, tipo = "error") {
+  const mensajeDiv = document.getElementById("mensajeError");
+  mensajeDiv.textContent = texto;
+  mensajeDiv.className = `mensaje ${tipo}`;
+  mensajeDiv.classList.remove("oculto");
+
+  // Ocultar automáticamente después de 4 segundos
+  setTimeout(() => {
+    mensajeDiv.classList.add("oculto");
+  }, 4000);
+}
+
+// Función para inicializar el ComboBox de Permisos
+function cargarPermisos(permisos) {
+    selectPermiso.innerHTML = '<option value="">Seleccione el permiso</option>';
+    permisos.forEach(permiso => {
+        const option = document.createElement("option");
+        option.value = permiso;
+        option.textContent = permiso;
+        selectPermiso.appendChild(option);
+    });
+}
+
+// Función principal para cargar la tabla de roles
+async function cargarRoles() {
+    try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+        
+        const data = await res.json();
+        if (!data.success) throw new Error("API devolvió éxito falso.");
+
+        if (data.permisosDisponibles && selectPermiso.options.length <= 1) {
+            cargarPermisos(data.permisosDisponibles);
+        }
+
+        tablaRoles.innerHTML = "";
+        data.roles.forEach(rol => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td>${rol.nombre_rol}</td><td>${rol.permisos}</td>`;
+            
+            fila.addEventListener("click", () => {
+                rolSeleccionadoId = rol.id_rol;
+                inputNombre.value = rol.nombre_rol;
+                selectPermiso.value = rol.permisos;
+                document.querySelectorAll("#tablaRoles tr").forEach(r => r.style.backgroundColor = 'white');
+                fila.style.backgroundColor = '#f2f6ff';
+            });
+            tablaRoles.appendChild(fila);
+        });
+        
+    } catch (err) {
+        console.error("Fallo al cargar roles:", err);
+        mostrarMensaje("No se pudieron cargar los roles. Revisa el servidor.", "error");
+    }
+}
+
+const API_USUARIOS_ROL = "http://localhost:3001/api/usuarios-con-rol";
+const tablaUsuariosRol = document.querySelector("#tablaUsuariosRol");
+
+async function cargarUsuariosConRol() {
+    try {
+        const res = await fetch(API_USUARIOS_ROL);
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+
+        const data = await res.json();
+        if (!data.success) throw new Error("La API devolvió un error.");
+
+        tablaUsuariosRol.innerHTML = "";
+        data.usuarios.forEach(u => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td>${u.nombre}</td><td>${u.nombre_rol}</td>`;
+            tablaUsuariosRol.appendChild(fila);
+        });
+    } catch (err) {
+        console.error("Fallo al cargar usuarios con rol:", err);
+        mostrarMensaje("Error al cargar usuarios con rol.", "error");
+    }
+}
+
+const inputBuscarUsuario = document.querySelector("#inputBuscarUsuario");
+const btnBuscarUsuario = document.querySelector("#btnBuscarUsuario");
+
+btnBuscarUsuario.addEventListener("click", async () => {
+    const nombre = inputBuscarUsuario.value.trim();
+    if (!nombre) {
+        cargarUsuariosConRol();
+        return;
+    }
+
+    try {
+        const res = await fetch(`http://localhost:3001/api/buscar-usuario?nombre=${encodeURIComponent(nombre)}`);
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+
+        const data = await res.json();
+        if (!data.success) throw new Error("Error en la búsqueda.");
+
+        tablaUsuariosRol.innerHTML = "";
+
+        if (data.usuarios.length === 0) {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td colspan="2">No se encontraron resultados</td>`;
+            tablaUsuariosRol.appendChild(fila);
+            return;
+        }
+
+        data.usuarios.forEach(u => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td>${u.nombre}</td><td>${u.nombre_rol}</td>`;
+            tablaUsuariosRol.appendChild(fila);
+        });
+    } catch (err) {
+        console.error("Fallo en búsqueda:", err);
+        mostrarMensaje("Ocurrió un error al buscar el usuario.", "error");
+    }
+});
+
+function limpiarFormulario() {
+    rolSeleccionadoId = null;
+    inputNombre.value = "";
+    selectPermiso.value = "";
+    document.querySelectorAll("#tablaRoles tr").forEach(r => r.style.backgroundColor = 'white');
+}
+
+btnCrear.addEventListener("click", async () => {
+    const nombreRol = inputNombre.value;
+    const permisos = selectPermiso.value;
+
+    if (!nombreRol || !permisos)
+        return mostrarMensaje("Completa el nombre y selecciona un permiso.", "error");
+
+    const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombreRol, permisos })
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+        mostrarMensaje(data.message || "Error al crear el rol.", "error");
+        return;
+    }
+
+    mostrarMensaje("Rol creado correctamente.", "exito");
+    limpiarFormulario();
+    cargarRoles();
+});
+
+btnActualizar.addEventListener("click", async () => {
+    if (!rolSeleccionadoId)
+        return mostrarMensaje("Selecciona un rol primero.", "error");
+    
+    const nombreRol = inputNombre.value;
+    const permisos = selectPermiso.value;
+
+    if (!nombreRol || !permisos)
+        return mostrarMensaje("Completa el nombre y selecciona un permiso.", "error");
+
+    await fetch(`${API_URL}/${rolSeleccionadoId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombreRol, permisos })
+    });
+    mostrarMensaje("Rol actualizado correctamente.", "exito");
+    limpiarFormulario();
+    cargarRoles();
+});
+
+btnEliminar.addEventListener("click", async () => {
+    if (!rolSeleccionadoId)
+        return mostrarMensaje("Selecciona un rol primero.", "error");
+    
+    if (!confirm("¿Estás seguro de que quieres eliminar este rol?")) return;
+
+    await fetch(`${API_URL}/${rolSeleccionadoId}`, { method: "DELETE" });
+    mostrarMensaje("Rol eliminado correctamente.", "exito");
+    limpiarFormulario();
+    cargarRoles();
+});
+
+cargarRoles();
+cargarUsuariosConRol();
+</script>
+</body>
+</html>
+
+
+
+
+
+

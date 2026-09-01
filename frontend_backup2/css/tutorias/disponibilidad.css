@@ -1,0 +1,228 @@
+/* ===== ESTILOS GENERALES ===== */
+body {
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    background-color: #f6f8fb;
+}
+
+/* ===== HEADER ===== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #002b5c;
+    color: white;
+    padding: 10px 30px;
+}
+
+.header .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header .logo-img {
+    width: 35px;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+.usuario {
+    font-weight: bold;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.container {
+    display: flex;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    background-color: #003b80;
+    color: white;
+    width: 200px;
+    height: calc(100vh - 60px);
+    padding: 20px;
+}
+
+.sidebar h3 {
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.sidebar li {
+    margin: 15px 0;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    display: block;
+    border-radius: 5px;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+    background-color: #0056b3;
+}
+
+/* ===== CONTENIDO ===== */
+.main {
+    flex: 1;
+    padding: 20px 40px;
+}
+
+.main h2 {
+    color: #002b5c;
+    margin-bottom: 5px;
+}
+
+.main h3 {
+    color: #004aad;
+    margin-bottom: 20px;
+}
+
+/* ===== CALENDARIO Y FORMULARIO ===== */
+.content-wrapper {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* Calendario */
+.calendario-container {
+    flex: 1;
+    background-color: #4e4e4e;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    max-width: 400px;
+}
+
+.calendar-box table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+
+.calendar-box th, .calendar-box td {
+    padding: 8px;
+}
+
+.calendar-box td {
+    cursor: pointer;
+}
+
+.calendar-box td.selected {
+    background-color: #004aad;
+    border-radius: 50%;
+}
+
+/* ===== FORMULARIO ===== */
+.form-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    max-width: 400px;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.row {
+    display: flex;
+    gap: 5px;
+}
+
+.row select {
+    flex: 1;
+}
+
+select, textarea {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+textarea {
+   height: 70px;
+    resize: none;
+}
+
+/* ===== BOTONES ===== */
+.buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 600;
+    flex: 1;
+}
+
+.btn.registrar { background-color: #004aad; }
+.btn.actualizar { background-color: #0073e6; }
+.btn.eliminar { background-color: #c0392b; }
+
+.btn:hover {
+    opacity: 0.85;
+}
+
+/* ===== MARCAR DISPONIBILIDAD ===== */
+.con-disponibilidad {
+    background-color: #c8ffd4 !important;
+    border: 2px solid #00b46b;
+    border-radius: 6px;
+}
+
+.calendar-box td.selected {
+    background-color: #ffd4a3 !important;
+    border: 2px solid #ff8800;
+    border-radius: 50%;
+}
+.calendar {
+    background-color: #4e4e4e;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* ALERTAS INTERNAS */
+        #alerta {
+            width: 100%;
+            padding: 12px;
+            display: none;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .alerta-ok { background: #c8f7c5; border: 1px solid #27ae60; color:#27ae60; }
+        .alerta-error { background: #f7c5c5; border: 1px solid #e74c3c; color:#e74c3c; }

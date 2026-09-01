@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tutorías - Historial</title>
-  <link rel="stylesheet" href="css/historial.css">
+  <link rel="stylesheet" ../../css/tutorias/historial.css>
 </head>
 <body>
   <!-- ===== ENCABEZADO ===== -->
   <header class="header">
   <div class="logo">
-    <img src="../images/logoITS.png" alt="Logo" class="logo-img">
+    <img src="/images/logoITS.png" alt="Logo" class="logo-img">
     <span>Instituto Tecnológico de Saltillo </span>
   </div>
 
@@ -18,14 +18,14 @@
     <a href="..\inicioC.html">Inicio</a>
     <a href="..\gestionUsuarios.html">Usuarios</a>
     <a href="..\roles.html">Roles</a>
-    <a href="..\proyectos.html">Proyectos</a>
-    <a href="..\reportesC.html">Reportes</a>
-    <a href="..\eventosC.html">Eventos</a>
+    <a href="/emprendedor/proyectos.html">Proyectos</a>
+    <a href="/coordinador/reportes/reportesC.html">Reportes</a>
+    <a href="/coordinador/eventos/CRUDEventos.html">Eventos</a>
   </nav>
 
   <div class="usuario">
       <span id="nombre-usuario">Coordinador</span>
-      <img src="../images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
+      <img src="/images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
 
       <!-- 🔥 BOTÓN DE CERRAR SESIÓN -->
       <button id="btn-logout" class="logout-btn">Cerrar sesión</button>
@@ -55,8 +55,8 @@
     <aside class="sidebar">
       <h3>Menú</h3>
       <ul>
-        <li><a href="tutorias.html">Agenda</a></li>
-        <li><a href="disponibilidad.html">Disponibilidad</a></li>
+        <li><a href="/coordinador/tutorias/tutorias.html">Agenda</a></li>
+        <li><a href="/coordinador/tutorias/disponibilidad.html">Disponibilidad</a></li>
         <li><a href="#" class="active">Historial</a></li>
       </ul>
     </aside>
@@ -170,7 +170,7 @@ const nombre_usuario_logueado = localStorage.getItem("usuario");
 
 if (!nombre_usuario_logueado) {
     alert("Error: No se encontró nombre de usuario. Inicie sesión nuevamente.");
-    window.location.href = "../login.html";
+    window.location.href = "/auth/login.html";
 } else {
     document.getElementById("nombre-usuario").textContent = nombre_usuario_logueado;
 }
@@ -178,7 +178,7 @@ if (!nombre_usuario_logueado) {
 // Botón cerrar sesión
 document.getElementById("btn-logout").addEventListener("click", () => {
     localStorage.clear();
-    window.location.href = "../login.html"; // volver al login fuera de /tutorias
+    window.location.href = "/auth/login.html"; // volver al login fuera de /tutorias
 });
 
 </script>
@@ -190,3 +190,19 @@ document.getElementById("btn-logout").addEventListener("click", () => {
   </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

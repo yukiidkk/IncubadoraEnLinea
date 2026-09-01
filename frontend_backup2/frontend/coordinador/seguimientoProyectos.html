@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seguimiento de avances de proyectos</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f7fb;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 12px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    header img {
+      height: 35px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: 500;
+    }
+
+    .usuario {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .usuario span {
+      background-color: white;
+      color: #003366;
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .btnLogout {
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btnLogout:hover {
+      background-color: #96281b;
+    }
+
+    h1 {
+      text-align: center;
+      color: #003366;
+      margin-top: 25px;
+    }
+
+    .subtitulo {
+      text-align: center;
+      color: #004c99;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    #proyectoActual {
+      text-align: center;
+      color: #222;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    #btnVolver {
+      display: none;
+      margin: 0 auto 25px auto;
+      background-color: #1e63b5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    #btnVolver:hover {
+      background-color: #004b9a;
+    }
+
+    .tablero {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      padding: 0 40px;
+    }
+
+    .columna {
+      flex: 1;
+      min-width: 250px;
+      max-width: 300px;
+      background-color: #edf2fa;
+      border: 1px solid #7d8aa3;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .columna h3 {
+      background-color: #b8c9e8;
+      text-align: center;
+      color: #003366;
+      margin: 0;
+      padding: 8px;
+      border-bottom: 1px solid #7d8aa3;
+    }
+
+    .contenido-columna {
+      flex-grow: 1;
+      padding: 10px;
+      min-height: 250px;
+      background-color: #f1f8f1;
+    }
+
+    .tarjeta-proyecto {
+      border: 1px solid #777;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #c9dcfa;
+      cursor: pointer;
+    }
+
+    .tarea {
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      padding: 6px;
+      margin: 5px 0;
+      background-color: #eaf2ff;
+      cursor: pointer;
+    }
+
+    .tarea:hover { background-color: #d6e6ff; }
+    .seleccionada { background-color: #bcd9ff !important; }
+
+    .botones-inferiores {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .botones-inferiores button {
+      background-color: #1e63b5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 0 10px;
+    }
+
+    .botones-inferiores button:hover {
+      background-color: #004b9a;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      width: 380px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .modal-content h3 {
+      text-align: center;
+      color: #003366;
+      margin-top: 0;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .modal-content input, .modal-content select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 4px;
+      border-radius: 4px;
+      border: 1px solid #999;
+    }
+
+    .modal-buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .modal-buttons button {
+      margin: 0 10px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-guardar { background-color: #1e63b5; color: white; }
+    .btn-eliminar { background-color: #c0392b; color: white; }
+    .btn-cerrar { background-color: #ccc; }
+
+    /* 🔹 NUEVO: botón regresar abajo a la izquierda */
+    #btnRegresar {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: #1e63b5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      z-index: 1000;
+    }
+
+    #btnRegresar:hover {
+      background-color: #004b9a;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="left">
+      <img src="/frontend/images/logoITS.png" alt="Logo ITS" />
+      <span>Instituto Tecnológico de Saltillo</span>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Proyectos</a>
+      </nav>
+    </div>
+    <div class="usuario">
+      <span id="usuarioNombre">USUARIO</span>
+      <button id="btnLogout" class="btnLogout">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <h1>Seguimiento de avances de proyectos</h1>
+  <p id="proyectoActual">Selecciona un proyecto</p>
+  <button id="btnVolver">Volver a proyectos</button>
+
+  <div class="tablero">
+    <div class="columna">
+      <h3>Pendientes</h3>
+      <div class="contenido-columna" id="colPendientes"></div>
+    </div>
+    <div class="columna">
+      <h3>En curso</h3>
+      <div class="contenido-columna" id="colEnCurso"></div>
+    </div>
+    <div class="columna">
+      <h3>Completadas</h3>
+      <div class="contenido-columna" id="colCompletadas"></div>
+    </div>
+  </div>
+
+  <div class="botones-inferiores">
+    <button id="btnAsignar">Asignar nueva tarea</button>
+    <button id="btnEditar" disabled>Editar / Eliminar tarea</button>
+  </div>
+
+  <div id="modalTarea" class="modal">
+    <div class="modal-content">
+      <h3 id="modalTitulo">Tarea</h3>
+      <label for="nombreTarea">Nombre:</label>
+      <input type="text" id="nombreTarea" />
+      <label for="estadoTarea">Estatus:</label>
+      <select id="estadoTarea">
+        <option>Pendiente</option>
+        <option>En curso</option>
+        <option>Completado</option>
+      </select>
+      <div class="modal-buttons">
+        <button class="btn-guardar" id="guardarTarea">Guardar</button>
+        <button class="btn-eliminar" id="eliminarTarea" style="display:none;">Eliminar</button>
+        <button class="btn-cerrar" id="cerrarModal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔹 NUEVO BOTÓN FIJO ABAJO -->
+  <button id="btnRegresar">← Regresar</button>
+
+  <script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", async function () {
+    const API_URL = "http://localhost:3001/api/seguimiento";
+
+    // 🔹 Botón que regresa a proyectos.html
+    document.getElementById("btnRegresar").addEventListener("click", () => {
+      window.location.href = "/frontend/emprendedor/proyectos.html";
+    });
+
+    const colPendientes = document.getElementById("colPendientes");
+    const colEnCurso = document.getElementById("colEnCurso");
+    const colCompletadas = document.getElementById("colCompletadas");
+    const modal = document.getElementById("modalTarea");
+    const cerrarModal = document.getElementById("cerrarModal");
+    const guardarTarea = document.getElementById("guardarTarea");
+    const eliminarTareaBtn = document.getElementById("eliminarTarea");
+    const nombreTarea = document.getElementById("nombreTarea");
+    const estadoTarea = document.getElementById("estadoTarea");
+    const usuarioNombre = document.getElementById("usuarioNombre");
+    const btnLogout = document.getElementById("btnLogout");
+    const btnAsignar = document.getElementById("btnAsignar");
+    const btnEditar = document.getElementById("btnEditar");
+    const btnVolver = document.getElementById("btnVolver");
+    const proyectoActual = document.getElementById("proyectoActual");
+
+    let proyectoSeleccionado = null;
+    let tareaSeleccionada = null;
+
+    const id_usuario = localStorage.getItem("id_usuario");
+    const id_rol = localStorage.getItem("rol");
+    const nombreUsuario = localStorage.getItem("usuario");
+
+    usuarioNombre.textContent = nombreUsuario || "USUARIO";
+
+    if (!id_usuario || !id_rol) {
+      alert("No se encontró información del usuario. Inicia sesión nuevamente.");
+      window.location.href = "/frontend/auth/login.html";
+      return;
+    }
+
+    if (id_rol != 1 && id_rol != 3) {
+      btnAsignar.style.display = "none";
+      btnEditar.style.display = "none";
+    }
+
+    async function cargarProyectos() {
+      colPendientes.innerHTML = colEnCurso.innerHTML = colCompletadas.innerHTML = "";
+      proyectoActual.textContent = "Selecciona un proyecto";
+      btnVolver.style.display = "none";
+
+      const res = await fetch(`${API_URL}/proyectos?id_usuario=${id_usuario}&id_rol=${id_rol}`);
+      const proyectos = await res.json();
+
+      colEnCurso.innerHTML = "";
+
+      const aprobados = proyectos.filter(p => p.estatus && p.estatus.toLowerCase() === "aprobado");
+
+if (aprobados.length === 0) {
+  colEnCurso.innerHTML = `<p style="text-align:center;color:#555;">No tienes proyectos aprobados.</p>`;
+  return;
+}
+
+aprobados.forEach((p) => {
+  const tarjeta = document.createElement("div");
+  tarjeta.classList.add("tarjeta-proyecto");
+  tarjeta.innerHTML = `<strong>${p.nombre_proyecto}</strong><div>${p.estatus}</div>`;
+  tarjeta.addEventListener("click", async () => {
+    proyectoSeleccionado = p.id_proyecto;
+    proyectoActual.textContent = `Proyecto actual: ${p.nombre_proyecto}`;
+    btnVolver.style.display = "block";
+    await cargarTareas(p.id_proyecto);
+  });
+  colEnCurso.appendChild(tarjeta);
+});
+
+    }
+
+    async function cargarTareas(id_proyecto) {
+      colPendientes.innerHTML = colEnCurso.innerHTML = colCompletadas.innerHTML = "";
+
+      const res = await fetch(`${API_URL}/proyectos/${id_proyecto}/tareas`);
+      const tareas = await res.json();
+
+      tareas.forEach((t) => {
+        const div = document.createElement("div");
+        div.classList.add("tarea");
+        div.textContent = t.nombre_tarea;
+        div.addEventListener("click", () => {
+          document.querySelectorAll(".tarea").forEach(x => x.classList.remove("seleccionada"));
+          div.classList.add("seleccionada");
+          tareaSeleccionada = t;
+          btnEditar.disabled = false;
+        });
+
+        if (t.estatus === "Pendiente") colPendientes.appendChild(div);
+        else if (t.estatus === "En curso") colEnCurso.appendChild(div);
+        else colCompletadas.appendChild(div);
+      });
+    }
+
+    btnVolver.addEventListener("click", () => {
+      proyectoSeleccionado = null;
+      tareaSeleccionada = null;
+      btnEditar.disabled = true;
+      cargarProyectos();
+    });
+
+    btnAsignar.addEventListener("click", () => {
+      if (!proyectoSeleccionado) return alert("Selecciona primero un proyecto.");
+      tareaSeleccionada = null;
+      nombreTarea.value = "";
+      estadoTarea.value = "Pendiente";
+      eliminarTareaBtn.style.display = "none";
+      modal.style.display = "flex";
+      document.getElementById("modalTitulo").textContent = "Nueva tarea";
+    });
+
+    btnEditar.addEventListener("click", () => {
+      if (!tareaSeleccionada) return;
+      modal.style.display = "flex";
+      nombreTarea.value = tareaSeleccionada.nombre_tarea;
+      estadoTarea.value = tareaSeleccionada.estatus;
+      eliminarTareaBtn.style.display = "inline-block";
+      document.getElementById("modalTitulo").textContent = "Editar tarea";
+    });
+
+    cerrarModal.addEventListener("click", () => modal.style.display = "none");
+    window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
+
+    guardarTarea.addEventListener("click", async () => {
+      if (!nombreTarea.value.trim()) return alert("Escribe un nombre para la tarea.");
+
+      const datos = {
+        id_proyecto: proyectoSeleccionado,
+        nombre_tarea: nombreTarea.value.trim(),
+        descripcion_tarea: "",
+        estatus: estadoTarea.value,
+      };
+
+      let url = `${API_URL}/tareas`;
+      let method = "POST";
+
+      if (tareaSeleccionada) {
+        datos.id_tarea = tareaSeleccionada.id_tarea;
+        method = "PUT";
+      }
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
+      });
+
+      const result = await res.json();
+      alert(result.mensaje);
+      modal.style.display = "none";
+      await cargarTareas(proyectoSeleccionado);
+    });
+
+    eliminarTareaBtn.addEventListener("click", async () => {
+      if (!tareaSeleccionada) return;
+      if (!confirm("¿Seguro que deseas eliminar esta tarea?")) return;
+
+      const res = await fetch(`${API_URL}/tareas/${tareaSeleccionada.id_tarea}`, { method: "DELETE" });
+      const result = await res.json();
+      alert(result.mensaje);
+      modal.style.display = "none";
+      await cargarTareas(proyectoSeleccionado);
+    });
+
+    btnLogout.addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "/frontend/auth/login.html";
+    });
+
+    // Inicializar vista
+    cargarProyectos();
+  });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -5,9 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestión de Usuarios - Incubadora ITS</title>
-  <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
-  <link rel="stylesheet" href="./css/normalize.css">
-  <link rel="stylesheet" href="./css/estilos.css">
+  <link rel="shortcut icon" href="/images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/estilos.css">
 
   <style>
     body {
@@ -209,7 +209,7 @@
 <body>
   <header class="navbar">
     <div class="logo">
-      <img src="./images/logoITS.png" alt="ITS" />
+      <img src="/images/logoITS.png" alt="ITS" />
       <span>Instituto Tecnológico de Saltillo</span>
     </div>
     <div class="user-info">
@@ -305,11 +305,11 @@
         if (confirm("¿Deseas cerrar sesión?")) {
           localStorage.clear();
           alert("Sesión cerrada correctamente.");
-          window.location.href = "login.html";
+          window.location.href = "/auth/login.html";
         }
       });
 
-      homeBtn.addEventListener("click", () => window.location.href = "inicioC.html");
+      homeBtn.addEventListener("click", () => window.location.href = "/coordinador/inicioC.html");
 
       const sendRequest = async (url, method = "GET", body = null) => {
         try {
@@ -526,3 +526,16 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

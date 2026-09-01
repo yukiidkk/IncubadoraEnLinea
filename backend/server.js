@@ -1,17 +1,47 @@
 // backend/server.js
+
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
+
 const { pool } = require("./config/database");
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+// ======================================================
+// CONFIGURACIÓN DEL FRONTEND
+// ======================================================
 
-// Importar rutas
+const frontendPath = path.join(__dirname, "..", "frontend");
+
+// Servir archivos estáticos del frontend
+app.use(express.static(frontendPath));
+
+// Ruta principal
+app.get("/", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
+
+// ======================================================
+// MIDDLEWARE
+// ======================================================
+
+app.use(cors());
+
+app.use(express.json({
+  limit: "50mb"
+}));
+
+app.use(express.urlencoded({
+  extended: true,
+  limit: "50mb"
+}));
+
+// ======================================================
+// IMPORTAR RUTAS
+// ======================================================
+
 const registroRoutes = require("./routes/registroRoutes");
 const loginRoutes = require("./routes/loginRoutes");
 const rolRoutes = require("./routes/rolRoutes");
@@ -23,8 +53,10 @@ const seguimientoRoutes = require("./routes/seguimientoRoutes");
 const tutoriasRoutes = require("./routes/tutoriasRoutes");
 const reportesRoutes = require("./routes/reportesRoutes");
 
+// ======================================================
+// USAR RUTAS DE LA API
+// ======================================================
 
-// Usar rutas
 app.use("/api", registroRoutes);
 app.use("/api", loginRoutes);
 app.use("/api", rolRoutes);
@@ -34,24 +66,54 @@ app.use("/api", tipo_eventoRoutes);
 app.use("/api", eventosRoutes);
 app.use("/api/seguimiento", seguimientoRoutes);
 app.use("/api/tutorias", tutoriasRoutes);
-app.use('/api/reportes', reportesRoutes);
+app.use("/api/reportes", reportesRoutes);
 
-// Probar conexión
+// ======================================================
+// PRUEBA DE CONEXIÓN A LA BASE DE DATOS
+// ======================================================
+
 app.get("/test-db", async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT NOW() AS fecha_actual");
-    res.json({ success: true, fecha_actual: rows[0].fecha_actual });
+    const [rows] = await pool.query(
+      "SELECT NOW() AS fecha_actual"
+    );
+
+    res.json({
+      success: true,
+      fecha_actual: rows[0].fecha_actual
+    });
+
   } catch (err) {
-    console.error("Error en la conexión a MySQL:", err);
-    res
-      .status(500)
-      .json({ success: false, message: "Error de conexión a MySQL" });
+
+    console.error(
+      "Error en la conexión a MySQL:",
+      err
+    );
+
+    res.status(500).json({
+      success: false,
+      message: "Error de conexión a MySQL"
+    });
   }
 });
 
+// ======================================================
+// INFORMACIÓN DEL SERVIDOR
+// ======================================================
+
 console.log("Rutas montadas en /api y /api/seguimiento");
+console.log("Frontend:", frontendPath);
+
+// ======================================================
+// INICIAR SERVIDOR
+// ======================================================
 
 const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
-  console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
+
+  console.log(
+    `Servidor backend + frontend corriendo en http://localhost:${PORT}`
+  );
+
 });

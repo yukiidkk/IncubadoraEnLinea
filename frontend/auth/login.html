@@ -5,14 +5,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inicio de Sesión | ITS</title>
-  <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
-  <link rel="stylesheet" href="./css/normalize.css">
-  <link rel="stylesheet" href="./css/estilos.css">
+  <link rel="shortcut icon" href="../images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/estilos.css">
 </head>
 <body>
   <header class="navbar">
     <div class="nav-container">
-      <img src="./images/logoITS.png" alt="Logo ITS">
+      <img src="../images/logoITS.png" alt="Logo ITS">
       <h1>Instituto Tecnológico de Saltillo</h1>
     </div>
   </header>
@@ -78,14 +78,14 @@
         const tipoTexto = result.tipo ? result.tipo.toLowerCase() : "";
 
         if (idRol === 3 || tipoTexto === "coordinador") {
-             window.location.href = "inicioC.html";
+             window.location.href = "/coordinador/inicioC.html";
         } else if (idRol === 2 || tipoTexto === "emprendedor") {
-             window.location.href = "inicioE.html";
+             window.location.href = "/emprendedor/inicioE.html";
         } else if (idRol === 1 || tipoTexto === "administrador") {
-             window.location.href = "inicioC.html"; 
+             window.location.href = "/coordinador/inicioC.html"; 
         } else {
              // Default por si acaso
-             window.location.href = "inicioE.html";
+             window.location.href = "/emprendedor/inicioE.html";
         }
 
       } else {
@@ -101,3 +101,16 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

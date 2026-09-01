@@ -5,16 +5,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro | ITS</title>
-  <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon">
-  <link rel="stylesheet" href="./css/normalize.css">
-  <link rel="stylesheet" href="./css/estilos.css">
+  <link rel="shortcut icon" href="/images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/estilos.css">
 </head>
 <body>
 
 <header class="navbar">
   <div class="container nav-content">
     <div class="logo">
-      <img src="./images/logoITS.png" alt="ITS" />
+      <img src="../images/logoITS.png" alt="ITS" />
       <span>Instituto Tecnológico de Saltillo</span>
     </div>
   </div>
@@ -256,7 +256,7 @@ document.querySelector(".account-form").addEventListener("submit", async (e) => 
     if (result.success) {
       alert("Registro exitoso. Serás redirigido al inicio de sesión.");
       e.target.reset();
-      setTimeout(() => window.location.href = "login.html", 1500);
+      setTimeout(() => window.location.href = "/auth/login.html", 1500);
     } else {
       alert("Error: " + result.message);
     }
@@ -269,3 +269,19 @@ document.querySelector(".account-form").addEventListener("submit", async (e) => 
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

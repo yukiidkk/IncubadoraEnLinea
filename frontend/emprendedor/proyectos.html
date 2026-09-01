@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Proyectos</title>
-  <link rel="stylesheet" href="css/normalize.css"/>
-  <link rel="stylesheet" href="css/estilos.css"/>
+  <link rel="stylesheet" ../css/normalize.css/>
+  <link rel="stylesheet" ../css/estilos.css/>
   <style>
     body {
       background:#f4f6f9;
@@ -185,7 +185,7 @@
 <body>
 <header>
   <div class="left">
-    <img src="images/logoITS.png" alt="Logo ITS">
+    <img src="/images/logoITS.png" alt="Logo ITS">
     <span>Instituto Tecnológico de Saltillo</span>
     <nav><a href="#" id="btnHome">Home</a></nav>
   </div>
@@ -198,8 +198,8 @@
 <div class="contenido">
   <h1>Página principal de proyectos</h1>
   <div class="botones">
-    <a id="btnCrear" href="crearProyecto.html">Crear nuevo proyecto</a>
-    <a class="descargar" href="documentos/Formato_20de_20_Registro.doc" download>Descargar formato de registro</a>
+    <a id="btnCrear" href="/emprendedor/crearproyecto.html">Crear nuevo proyecto</a>
+    <a class="descargar" href="/documentos/Formato_20de_20_Registro.docx" download>Descargar formato de registro</a>
     <a id="btnSeguimiento" href="#">Seguimiento de proyectos</a>
   </div>
 
@@ -256,7 +256,7 @@
 
     if (!id_usuario) {
       alert("Debes iniciar sesión para ver tus proyectos.");
-      window.location.href = "login.html";
+      window.location.href = "/auth/login.html";
       return;
     }
 
@@ -271,7 +271,7 @@
     logoutBtn.onclick = () => {
       if (confirm("¿Deseas cerrar sesión?")) {
         localStorage.clear();
-        window.location.href = "login.html";
+        window.location.href = "/auth/login.html";
       }
     };
 
@@ -383,3 +383,20 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
