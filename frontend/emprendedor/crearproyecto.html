@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Creación de nuevo proyecto</title>
-  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" ../css/estilos.css>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -364,11 +364,11 @@ input[type="file"]::-webkit-file-upload-button:hover {
 
    <header>
     <div class="left">
-      <img src="images/logoITS.png" alt="Logo ITS">
+      <img src="/images/logoITS.png" alt="Logo ITS">
       <span>Instituto Tecnológico de Saltillo</span>
       <nav>
-        <a href="inicioE.html">Home</a>
-        <a href="proyectos.html">Proyectos</a>
+        <a href="/emprendedor/inicioE.html">Home</a>
+        <a href="/emprendedor/proyectos.html">Proyectos</a>
       </nav>
     </div>
     <div class="usuario" id="nombreUsuario">USUARIO</div>
@@ -378,7 +378,7 @@ input[type="file"]::-webkit-file-upload-button:hover {
     <h1>Página principal de proyectos</h1>
 
     <div class="subnav">
-      <a href="proyectos.html">Inicio</a> |
+      <a href="/emprendedor/proyectos.html">Inicio</a> |
       <a href="#">Seguimiento de proyectos</a>
     </div>
 
@@ -387,7 +387,7 @@ input[type="file"]::-webkit-file-upload-button:hover {
       <select>
         <option value="">Filtrar por...</option>
       </select>
-      <button onclick="location.href='crearProyecto.html'">Crear nuevo proyecto ➕</button>
+      <button onclick="location.href='/emprendedor/crearproyecto.html'">Crear nuevo proyecto ➕</button>
       <button class="descargar">Descargar formato de registro</button>
     </div>
 
@@ -432,7 +432,7 @@ input[type="file"]::-webkit-file-upload-button:hover {
       <div class="botones">
         <button id="btnGuardar">Guardar</button>
         <button id="btnLimpiar">Limpiar campos</button>
-        <a href="proyectos.html"><button type="button">Cerrar</button></a>
+        <a href="/emprendedor/proyectos.html"><button type="button">Cerrar</button></a>
       </div>
     </div>
   </div>
@@ -467,7 +467,7 @@ input[type="file"]::-webkit-file-upload-button:hover {
         card.classList.add('socio-card');
         card.innerHTML = `
           <div class="info">
-            <img src="images/user-icon.png" alt="icono usuario">
+            <img src="/images/user-icon.png" alt="icono usuario">
             <span><strong>${u.Nombre || u.nombre} ${u.Apellido || u.apellido}</strong></span>
           </div>
           <div class="acciones-socio">
@@ -601,7 +601,7 @@ function actualizarListaSocios() {
       if (response.ok) {
         alert('Proyecto creado con éxito');
         limpiarCampos();
-        window.location.href = 'proyectos.html';
+        window.location.href = '/emprendedor/proyectos.html';
       } else {
         alert('Error: ' + (data.mensaje || 'No se pudo guardar el proyecto.'));
       }
@@ -631,3 +631,16 @@ function actualizarListaSocios() {
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

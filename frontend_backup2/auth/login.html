@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio de Sesión | ITS</title>
+  <link rel="shortcut icon" href="../images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" href="/frontend/css/normalize.css">
+  <link rel="stylesheet" href="/frontend/css/estilos.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-container">
+      <img src="../images/logoITS.png" alt="Logo ITS">
+      <h1>Instituto Tecnológico de Saltillo</h1>
+    </div>
+  </header>
+
+  <section class="login-section">
+    <div class="login-card">
+      <h2>Inicio de sesión</h2>
+
+      <form class="login-form">
+        <label for="usuario">Correo electrónico</label>
+        <input type="email" id="usuario" name="usuario" placeholder="Ingrese su correo electrónico" required>
+
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
+
+        <button type="submit" class="btn-login">Iniciar sesión</button>
+      </form>
+
+      <p class="text-center">
+        ¿No tienes cuenta?
+        <a href="registroE.html">Regístrate aquí</a>
+      </p>
+    </div>
+  </section>
+
+  <script>
+  document.querySelector(".login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const correo = document.querySelector("#usuario").value.trim();
+    const password = document.querySelector("#password").value.trim();
+
+    try {
+      const response = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo, password })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // --- AQUÍ ESTÁ EL CAMBIO IMPORTANTE ---
+        // Guardamos toda la información necesaria
+        localStorage.setItem("id_usuario", result.id_usuario);
+        
+        // ¡ESTA LÍNEA ES LA QUE NECESITAS PARA INSCRIBIRTE A EVENTOS!
+        // (Si id_persona viene null, usamos id_usuario como respaldo temporal)
+        localStorage.setItem("id_persona", result.id_persona || result.id_usuario);
+
+        localStorage.setItem("nombre", result.nombre);
+        localStorage.setItem("apellido", result.apellido);
+        localStorage.setItem("correo", result.correo);
+        localStorage.setItem("rol", result.rol); // ID del rol (ej. 2 o 3)
+        localStorage.setItem("tipo", result.tipo); // Texto del rol (ej. 'Emprendedor')
+        
+        // Nombre completo para mostrar en la esquina
+        localStorage.setItem("usuario", result.nombre + " " + result.apellido);
+
+
+        // Redirigir según el tipo de rol (Manejo robusto de ID y Texto)
+        const idRol = parseInt(result.rol);
+        const tipoTexto = result.tipo ? result.tipo.toLowerCase() : "";
+
+        if (idRol === 3 || tipoTexto === "coordinador") {
+             window.location.href = "/frontend/coordinador/inicioC.html";
+        } else if (idRol === 2 || tipoTexto === "emprendedor") {
+             window.location.href = "/frontend/emprendedor/inicioE.html";
+        } else if (idRol === 1 || tipoTexto === "administrador") {
+             window.location.href = "/frontend/coordinador/inicioC.html"; 
+        } else {
+             // Default por si acaso
+             window.location.href = "/frontend/emprendedor/inicioE.html";
+        }
+
+      } else {
+        alert(" " + result.message);
+      }
+
+    } catch (err) {
+      console.error("Error al iniciar sesión:", err);
+      alert("Error de conexión con el servidor.");
+    }
+  });
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

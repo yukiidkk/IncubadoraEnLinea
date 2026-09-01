@@ -5,9 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Centro de Emprendurismo ITS — Coordinadora</title>
-  <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon" />
-  <link rel="stylesheet" href="./css/normalize.css" />
-  <link rel="stylesheet" href="./css/estilos.css" />
+  <link rel="shortcut icon" href="/images/logoITS.png" type="image/x-icon" />
+  <link rel="stylesheet" href="/css/normalize.css" />
+  <link rel="stylesheet" href="/css/estilos.css" />
   <style>
     body {
       background: #eaf2ff;
@@ -109,7 +109,7 @@
 
 <header class="navbar">
   <div class="logo">
-    <img src="./images/logoITS.png" alt="ITS" />
+    <img src="/images/logoITS.png" alt="ITS" />
     <span>Instituto Tecnológico de Saltillo</span>
   </div>
   <!-- 🔹 Panel usuario -->
@@ -130,22 +130,22 @@
     <h2>Módulos</h2>
 
     <div class="modules-grid">
-      <a href="gestionUsuarios.html" class="module-card">
+      <a href="/coordinador/gestionUsuarios.html" class="module-card">
         <div class="icon-circle">👤</div><span class="module-name">Usuarios</span>
       </a>
-      <a href="roles.html" class="module-card">
+      <a href="/coordinador/roles.html" class="module-card">
         <div class="icon-circle">📰</div><span class="module-name">Roles</span>
       </a>
-      <a href="proyectos.html?rol=coordinador" class="module-card">
+      <a href="/emprendedor/proyectos.html?rol=coordinador" class="module-card">
         <div class="icon-circle">📁</div><span class="module-name">Proyectos</span>
       </a>
-      <a href="reporteEmprendedoresC.html" class="module-card">
+      <a href="/coordinador/reportes/reporteEmprendedoresC.html" class="module-card">
         <div class="icon-circle">📄</div><span class="module-name">Reportes</span>
       </a>
-      <a href="CRUDEventos.html" class="module-card">
+      <a href="/coordinador/eventos/CRUDEventos.html" class="module-card">
         <div class="icon-circle">🗓️</div><span class="module-name">Eventos</span>
       </a>
-      <a href="crudtipodeventos.html" class="module-card">
+      <a href="/coordinador/eventos/crudtipodeventos.html" class="module-card">
         <div class="icon-circle">✅</div><span class="module-name">Tipo de Eventos</span>
       </a>
       <a href="tutorias/tutorias.html" class="module-card">
@@ -177,7 +177,7 @@
       if (confirm("¿Deseas cerrar sesión?")) {
         localStorage.clear();
         alert("👋 Sesión cerrada correctamente.");
-        window.location.href = "login.html";
+        window.location.href = "/auth/login.html";
       }
     });
   });
@@ -188,3 +188,17 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

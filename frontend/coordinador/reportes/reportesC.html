@@ -5,9 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reportes — Centro de Emprendurismo ITS</title>
-  <link rel="shortcut icon" href="images/logoITS.png" type="image/x-icon">
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="shortcut icon" href="/images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" ../../css/normalize.css>
+  <link rel="stylesheet" ../../css/estilos.css>
   <style>
     /* ===== Ajustes específicos del módulo de reportes ===== */
     body {
@@ -176,15 +176,15 @@
   <header class="navbar">
     <div class="container nav-content">
       <div class="logo">
-        <img src="images/logoITS.png" alt="ITS" />
+        <img src="/images/logoITS.png" alt="ITS" />
         <span>Instituto Tecnológico de Saltillo</span>
       </div>
 
       <nav class="nav-links">
-        <a href="inicioC.html" id="btnHome">Home</a>
-        <a href="proyectos.html" id="btnProyectos">Proyectos</a>
-         <!--<a href="reportes.html" class="active">Reportes</a>-->
-        <a href="gestioninscripcioneventos.html">Eventos</a>
+        <a href="/coordinador/inicioC.html" id="btnHome">Home</a>
+        <a href="/emprendedor/proyectos.html" id="btnProyectos">Proyectos</a>
+         <!--<a href="/coordinador/reportes/reportesC.html" class="active">Reportes</a>-->
+        <a href="/coordinador/eventos/gestioninscripcioneventos.html">Eventos</a>
       </nav>
 
       <div class="user-info">
@@ -200,10 +200,10 @@
    <aside class="sidebar">
   <h3>Página principal</h3>
   <ul>
-    <li><a href="reporteEmprendedoresC.html" >Reporte de Emprendedores</a></li>
-    <li><a href="reporteProyectosC.html">Reporte de Proyectos</a></li>
-    <li><a href="avancesProyectoC.html">Avances por Proyecto</a></li>
-    <li><a href="estadisticasC.html">Estadísticas</a></li>
+    <li><a href="/coordinador/reportes/reporteEmprendedoresC.html" >Reporte de Emprendedores</a></li>
+    <li><a href="/coordinador/reportes/reporteProyectosC.html">Reporte de Proyectos</a></li>
+    <li><a href="/coordinador/avancesProyectoC.html">Avances por Proyecto</a></li>
+    <li><a href="/coordinador/reportes/estadisticasC.html">Estadísticas</a></li>
   </ul>
 </aside>
 
@@ -242,9 +242,9 @@
     btnHome.addEventListener('click', e => {
       e.preventDefault();
       if (rol === 'emprendedor') {
-        window.location.href = 'inicioE.html';
+        window.location.href = '/emprendedor/inicioE.html';
       } else {
-        window.location.href = 'inicioC.html';
+        window.location.href = '/coordinador/inicioC.html';
       }
     });
 
@@ -257,3 +257,17 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -264,7 +264,7 @@
 <body>
   <header>
     <div class="left">
-      <img src="images/logoITS.png" alt="Logo ITS" />
+      <img src="/images/logoITS.png" alt="Logo ITS" />
       <span>Instituto Tecnológico de Saltillo</span>
       <nav>
         <a href="#">Home</a>
@@ -329,7 +329,7 @@
 
     // 🔹 Botón que regresa a proyectos.html
     document.getElementById("btnRegresar").addEventListener("click", () => {
-      window.location.href = "proyectos.html";
+      window.location.href = "/emprendedor/proyectos.html";
     });
 
     const colPendientes = document.getElementById("colPendientes");
@@ -359,7 +359,7 @@
 
     if (!id_usuario || !id_rol) {
       alert("No se encontró información del usuario. Inicia sesión nuevamente.");
-      window.location.href = "login.html";
+      window.location.href = "/auth/login.html";
       return;
     }
 
@@ -495,7 +495,7 @@ aprobados.forEach((p) => {
 
     btnLogout.addEventListener("click", () => {
       localStorage.clear();
-      window.location.href = "login.html";
+      window.location.href = "/auth/login.html";
     });
 
     // Inicializar vista
@@ -504,3 +504,16 @@ aprobados.forEach((p) => {
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes de Emprendedores — Centro de Emprendurismo ITS</title>
+  <link rel="shortcut icon" href="/frontend/images/logoITS.png" type="image/x-icon">
+  <link rel="stylesheet" ../../css/normalize.css>
+  <link rel="stylesheet" ../../css/estilos.css>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --primary: #002f6c;
+      --primary-light: #4a82e2;
+      --secondary: #f8fafc;
+      --accent: #48bb78;
+      --text: #2d3748;
+      --text-light: #718096;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: linear-gradient(135deg, var(--primary) 0%, #001f47 100%);
+      color: white;
+      padding: 15px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .logo span {
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-links a.active {
+      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-text {
+      font-weight: 500;
+    }
+
+    .user-icon {
+      background-color: var(--primary-light);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ===== CONTENEDOR PRINCIPAL ===== */
+    .main-container {
+      display: flex;
+      max-width: 1200px;
+      margin: 30px auto;
+      gap: 25px;
+      padding: 0 20px;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 260px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 25px 0;
+      flex-shrink: 0;
+    }
+
+    .sidebar h2 {
+      color: var(--primary);
+      padding: 0 20px 15px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--border);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      background-color: #f7fafc;
+      color: var(--primary);
+      border-left-color: var(--primary-light);
+    }
+
+    .sidebar a.active {
+      background-color: #edf2f7;
+      color: var(--primary);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ===== CONTENIDO PRINCIPAL ===== */
+    .content {
+      flex: 1;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .content:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-section h1 {
+      color: var(--primary);
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    /* ===== BÚSQUEDA ===== */
+    .search-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      background: var(--secondary);
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-container label {
+      font-weight: 600;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .search-input {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-input input {
+      width: 100%;
+      padding: 12px 15px 12px 40px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: white url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23718096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>') no-repeat 15px center;
+    }
+
+    .search-input input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(74, 130, 226, 0.1);
+    }
+
+    /* ===== TABLA ===== */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      margin-bottom: 25px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    thead {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    }
+
+    th {
+      color: white;
+      padding: 15px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    th:first-child {
+      border-top-left-radius: 10px;
+    }
+
+    th:last-child {
+      border-top-right-radius: 10px;
+    }
+
+    tbody tr {
+      transition: all 0.2s ease;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr:hover {
+      background-color: #f7fafc;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    td {
+      padding: 14px 12px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    /* ===== BADGES Y ESTADOS ===== */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .badge-proyectos {
+      background-color: #e6fffa;
+      color: #234e52;
+    }
+
+    /* ===== MENSAJE VACÍO ===== */
+    .empty-state {
+      text-align: center;
+      padding: 50px 30px;
+      background: var(--secondary);
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      color: var(--text-light);
+    }
+
+    .empty-state h3 {
+      color: var(--text);
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .empty-state p {
+      color: var(--text-light);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* ===== BOTONES ===== */
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+      color: white;
+      box-shadow: 0 2px 5px rgba(74, 130, 226, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(74, 130, 226, 0.4);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #f7fafc;
+      border-color: var(--primary-light);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .main-container {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .search-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .search-input {
+        width: 100%;
+      }
+      
+      .actions {
+        flex-direction: column;
+      }
+      
+      .btn {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ====== NAVBAR ====== -->
+  <header class="navbar">
+    <div class="container nav-content">
+      <div class="logo">
+        <img src="/frontend/images/logoITS.png" alt="ITS" />
+        <span>Instituto Tecnológico de Saltillo</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="/frontend/coordinador/inicioC.html" id="btnHome">Home</a>
+        <a href="/frontend/emprendedor/proyectos.html" id="btnProyectos">Proyectos</a>
+        <a href="/frontend/coordinador/reportes/reportesC.html" class="active">Reportes</a>
+        <a href="#">Eventos</a>
+      </nav>
+
+      <div class="user-info">
+        <span class="user-text">Coordinador</span>
+        <div class="user-icon">👤</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== CONTENIDO PRINCIPAL ====== -->
+  <div class="main-container">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <h2>Reportes</h2>
+      <a href="/frontend/coordinador/reportes/reporteEmprendedoresC.html" >Reporte de Emprendedores</a>
+      <a href="/frontend/coordinador/reportes/reporteProyectosC.html" class="active">Reporte de Proyectos</a>
+      <a href="/frontend/coordinador/avancesProyectoC.html">Avances por Proyecto</a>
+      <a href="/frontend/coordinador/reportes/estadisticasC.html">Estadísticas</a>
+    </aside>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <section class="content">
+      <div class="header-section">
+        <h1>Reporte de Proyectos</h1>
+      </div>
+
+      <div class="search-container">
+        <label for="busqueda"> Buscar Proyecto:</label>
+        <div class="search-input">
+          <input type="text" id="busqueda" placeholder="Escribe el nombre del emprendedor...">
+        </div>
+      </div>
+
+      <!-- Tabla con datos -->
+      <div class="table-container">
+        <table id="tablaDatos">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>Proyecto</th>
+              <th>Emprendedor</th>
+              <th>Fecha Inicio</th>
+              <th>Estatus</th>
+              <th>Progreso</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpoTabla">
+            <!-- Los datos se cargarán aquí dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mensaje cuando no hay datos -->
+      <div id="mensajeVacio" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">📭</div>
+        <h3>No se encontraron datos</h3>
+        <p>No hay proyectos registrados en el sistema en este momento.</p>
+      </div>
+
+      <div class="actions">
+        <button id="btnPDF" class="btn btn-primary">
+          📄 Exportar a PDF
+        </button>
+        <button class="btn btn-secondary" id="btnRegresar">
+          ← Regresar
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const tablaBody = document.querySelector("#tablaDatos tbody");
+    const inputBusqueda = document.getElementById("busqueda");
+    const mensajeVacio = document.getElementById("mensajeVacio");
+    const tablaDatos = document.getElementById("tablaDatos");
+
+    // URL de la API
+    const API_URL = "http://localhost:3001/api/reportes/proyectos";
+
+    // Función para cargar los emprendedores
+    async function cargarProyectos() {
+      try {
+        const respuesta = await fetch(API_URL);
+        const datos = await respuesta.json();
+
+        console.log("Datos recibidos:", datos);
+
+        tablaBody.innerHTML = ""; // limpiar tabla
+
+        if (!datos.success || datos.data.length === 0) {
+          tablaDatos.style.display = 'none';
+          mensajeVacio.style.display = 'block';
+          return;
+        }
+
+        // Mostrar la tabla y ocultar el mensaje vacío
+        tablaDatos.style.display = 'table';
+        mensajeVacio.style.display = 'none';
+
+        // Llenar la tabla con los datos
+        datos.data.forEach(e => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `
+            <td>${e.id_proyecto || "<span style='color: #a0aec0;"}</td>
+            <td>${e.nombre_proyecto || "<span style='color: #a0aec0;'"}</td>
+            <td>
+              <div style="font-weight: 600;">${e.nombre} ${e.apellido}</div>
+            </td>
+            <td>${e.fecha_inicio ? new Date(e.fecha_inicio).toLocaleDateString() : '<span style="color: #a0aec0;">—</span>'}</td>
+            <td>${e.estatus || "<span style='color: #a0aec0;'>—</span>"}</td>
+            <td>${e.progreso || "<span style='color: #a0aec0;'>—</span>"}</td>
+          `;
+          tablaBody.appendChild(fila);
+        });
+        
+      } catch (err) {
+        console.error("ERROR AL OBTENER DATOS:", err);
+        tablaDatos.style.display = 'none';
+        mensajeVacio.innerHTML = `
+          <div class="empty-state-icon">⚠️</div>
+          <h3>Error de conexión</h3>
+          <p>No se pudo conectar con el servidor. Intente nuevamente.</p>
+        `;
+        mensajeVacio.style.display = 'block';
+      }
+    }
+
+    // Función para exportar a PDF
+    document.getElementById("btnPDF").addEventListener("click", () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      let y = 20;
+
+      // Título
+      doc.setFontSize(18);
+      doc.setTextColor(0, 47, 108);
+      doc.text("Reporte de Proyectos - ITS", 20, y);
+      y += 15;
+
+      // Fecha
+      doc.setFontSize(10);
+      doc.setTextColor(80, 80, 80);
+      doc.text(`Generado el: ${new Date().toLocaleDateString()}`, 20, y);
+      y += 10;
+
+      // Encabezados de tabla
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+        const headers = ["ID", "Proyecto", "Emprendedor", "Inicio", "Estatus", "Progreso"];
+        const colX = [10, 30, 75, 140, 165, 185]; // posiciones X de cada columna
+
+    headers.forEach((header, i) => {
+     doc.text(header, colX[i], y);
+      });
+      y += 6;
+      doc.line(10, y, 200, y);
+      y += 4;
+
+       // ====== FILAS DE LA TABLA ======
+  doc.setFontSize(10);
+
+  const filas = document.querySelectorAll("#tablaDatos tbody tr");
+
+  filas.forEach(fila => {
+    const celdas = fila.querySelectorAll("td");
+
+    // Verificar saltos de página
+    if (y > 270) {
+      doc.addPage();
+      y = 20;
+    }
+
+    // Dibujar cada celda
+    doc.text(celdas[0].textContent, colX[0], y);
+    doc.text(celdas[1].textContent, colX[1], y);
+    doc.text(e.nombre || "—", colX[2], y);
+    doc.text(celdas[3].textContent, colX[3], y);
+    doc.text(celdas[4].textContent, colX[4], y);
+    doc.text(celdas[5].textContent, colX[5], y);
+
+    y += 7;
+  });
+
+  // Guardar archivo
+  doc.save("reporte_proyectos_ITS.pdf");
+    });
+
+    // Filtro por nombre
+    inputBusqueda.addEventListener("input", () => {
+      const filtro = inputBusqueda.value.toLowerCase().trim();
+      let hayResultados = false;
+
+      for (const fila of tablaBody.rows) {
+        const nombreProyecto = fila.cells[1].textContent.toLowerCase();
+        if (nombreProyecto.includes(filtro)) {
+          fila.style.display = "";
+          hayResultados = true;
+        } else {
+          fila.style.display = "none";
+        }
+      }
+
+      // Mostrar mensaje si no hay resultados
+      if (!hayResultados && filtro !== "") {
+        tablaDatos.style.display = 'none';
+        mensajeVacio.innerHTML = `
+          <div class="empty-state-icon">🔍</div>
+          <h3>No se encontraron resultados</h3>
+          <p>No hay proyectos que coincidan con "${filtro}"</p>
+        `;
+        mensajeVacio.style.display = 'block';
+      } else if (filtro === "") {
+        tablaDatos.style.display = 'table';
+        mensajeVacio.style.display = 'none';
+      }
+    });
+
+    // Botón regresar
+    document.getElementById("btnRegresar").addEventListener("click", () => {
+      window.location.href = "/frontend/coordinador/reportes/reportesC.html";
+    });
+
+    // Navegación
+    const rol = localStorage.getItem('rolUsuario') || 'coordinador';
+    document.getElementById('btnHome').addEventListener('click', e => {
+      e.preventDefault();
+      window.location.href = rol === 'emprendedor' ? 'inicioE.html' : 'inicioC.html';
+    });
+    
+    document.getElementById('btnProyectos').addEventListener('click', e => {
+      e.preventDefault();
+      window.location.href = `proyectos.html?rol=${rol}`;
+    });
+
+    // Ejecutar al cargar la página
+    document.addEventListener('DOMContentLoaded', cargarProyectos);
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -5,9 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Centro de Emprendurismo ITS — Emprendedor</title>
-  <link rel="shortcut icon" href="./images/logoITS.png" type="image/x-icon" />
-  <link rel="stylesheet" href="./css/normalize.css" />
-  <link rel="stylesheet" href="./css/estilos.css" />
+  <link rel="shortcut icon" href="/images/logoITS.png" type="image/x-icon" />
+  <link rel="stylesheet" href="/css/normalize.css" />
+  <link rel="stylesheet" href="/css/estilos.css" />
   <style>
     body { background:#eaf2ff; margin:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     .navbar{background:#003366;color:#fff;padding:10px 40px;display:flex;justify-content:space-between;align-items:center}
@@ -24,7 +24,7 @@
 
 <header class="navbar">
   <div class="logo">
-    <img src="./images/logoITS.png" alt="ITS" />
+    <img src="/images/logoITS.png" alt="ITS" />
     <span>Instituto Tecnológico de Saltillo</span>
   </div>
   <div class="user-info">
@@ -48,11 +48,11 @@
         <div class="icon-circle">📁</div><span class="module-name">Proyectos</span>
       </a>
 
-      <a href="avancesMiProyecto.html" class="module-card">
+      <a href="/emprendedor/avancesMiProyecto.html" class="module-card">
         <div class="icon-circle">📄</div><span class="module-name">Reportes</span>
       </a>
 
-      <a href="inscripcionaeventos.html" class="module-card">
+      <a href="/emprendedor/inscripcionaeventos.html" class="module-card">
         <div class="icon-circle">🗓️</div><span class="module-name">Eventos</span>
       </a>
 
@@ -76,7 +76,7 @@ const id_usuario = localStorage.getItem("id_usuario");
 
 if (!usuario || !id_usuario) {
   alert("Debes iniciar sesión primero");
-  window.location.href = "login.html";
+  window.location.href = "/auth/login.html";
 } else {
   // Mostrar nombre de usuario en la interfaz - CORREGIDO
   const userElement = document.querySelector('.user-text');
@@ -91,3 +91,16 @@ if (!usuario || !id_usuario) {
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

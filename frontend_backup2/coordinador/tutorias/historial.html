@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorías - Historial</title>
+  <link rel="stylesheet" ../../css/tutorias/historial.css>
+</head>
+<body>
+  <!-- ===== ENCABEZADO ===== -->
+  <header class="header">
+  <div class="logo">
+    <img src="/frontend/images/logoITS.png" alt="Logo" class="logo-img">
+    <span>Instituto Tecnológico de Saltillo </span>
+  </div>
+
+  <nav class="nav">
+    <a href="..\inicioC.html">Inicio</a>
+    <a href="..\gestionUsuarios.html">Usuarios</a>
+    <a href="..\roles.html">Roles</a>
+    <a href="..\proyectos.html">Proyectos</a>
+    <a href="..\reportesC.html">Reportes</a>
+    <a href="..\eventosC.html">Eventos</a>
+  </nav>
+
+  <div class="usuario">
+      <span id="nombre-usuario">Coordinador</span>
+      <img src="/frontend/images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
+
+      <!-- 🔥 BOTÓN DE CERRAR SESIÓN -->
+      <button id="btn-logout" class="logout-btn">Cerrar sesión</button>
+  </div>
+</header>
+
+<style>
+.logout-btn {
+    margin-left: 10px;
+    background-color: #c62828;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.logout-btn:hover {
+    background-color: #a31414;
+}
+</style>
+
+
+  <!-- ===== CONTENEDOR PRINCIPAL ===== -->
+  <div class="container">
+    <!-- MENÚ LATERAL -->
+    <aside class="sidebar">
+      <h3>Menú</h3>
+      <ul>
+        <li><a href="/frontend/coordinador/tutorias/tutorias.html">Agenda</a></li>
+        <li><a href="/frontend/coordinador/tutorias/disponibilidad.html">Disponibilidad</a></li>
+        <li><a href="#" class="active">Historial</a></li>
+      </ul>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main">
+      <h2>Tutorías</h2>
+      <h3>Historial</h3>
+
+
+          <!--CALENDATIO-->
+  <div class="content-wrapper">
+    <div class="content">
+      <div class="calendar">
+        <input type="month" id="mes" value="2023-01">
+        <div class="calendar-box">
+          <table>
+            <thead>
+              <tr>
+                <th>Dom</th>
+                <th>Lun</th>
+                <th>Ma</th>
+                <th>Mie</th>
+                <th>Jue</th>
+                <th>Vie</th>
+                <th>Sab</th>
+              </tr>
+            </thead>
+            <tbody id="calendar-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- LISTA DE TUTORÍAS -->
+      <div class="tutorias">
+        <h4>Tutorías Agendadas</h4>
+        <div class="lista">
+          <label class="item">
+            <input type="radio" name="tutoria" checked>
+            <div>
+              <strong>Hora X</strong><br>
+              <small>Nombre proyecto, nombre emprendedor</small>
+            </div>
+          </label>
+  
+          <label class="item">
+            <input type="radio" name="tutoria">
+            <div>
+              <strong>Hora X</strong><br>
+              <small>Nombre proyecto, nombre emprendedor</small>
+            </div>
+          </label>
+  
+          <label class="item">
+            <input type="radio" name="tutoria">
+            <div>
+              <strong>Hora X</strong><br>
+              <small>Nombre proyecto, nombre emprendedor</small>
+            </div>
+          </label>
+        </div>
+        </main>
+      </div>
+
+<script>
+    const monthInput = document.getElementById("mes");
+    const calendarBody = document.getElementById("calendar-body");
+
+    function generarCalendario(year, month) {
+        calendarBody.innerHTML = "";
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+        let date = 1;
+
+        for (let i = 0; i < 6; i++) {
+            const row = document.createElement("tr");
+            for (let j = 0; j < 7; j++) {
+                const cell = document.createElement("td");
+                if (i === 0 && j < firstDay) {
+                    cell.classList.add("empty");
+                    row.appendChild(cell);
+                } else if (date > lastDate) {
+                    cell.classList.add("empty");
+                    row.appendChild(cell);
+                } else {
+                    cell.textContent = date;
+                    cell.addEventListener("click", () => seleccionarFecha(cell));
+                    row.appendChild(cell);
+                    date++;
+                }
+            }
+            calendarBody.appendChild(row);
+        }
+    }
+
+    function seleccionarFecha(cell) {
+        document.querySelectorAll("td").forEach(td => td.classList.remove("selected"));
+        cell.classList.add("selected");
+    }
+
+    monthInput.addEventListener("change", () => {
+        const [year, month] = monthInput.value.split("-").map(Number);
+        generarCalendario(year, month - 1);
+    });
+
+    // Inicializar calendario al cargar
+    const [initYear, initMonth] = monthInput.value.split("-").map(Number);
+    generarCalendario(initYear, initMonth - 1);
+
+    // Cargar nombre desde localStorage
+const nombre_usuario_logueado = localStorage.getItem("usuario");
+
+if (!nombre_usuario_logueado) {
+    alert("Error: No se encontró nombre de usuario. Inicie sesión nuevamente.");
+    window.location.href = "/frontend/auth/login.html";
+} else {
+    document.getElementById("nombre-usuario").textContent = nombre_usuario_logueado;
+}
+
+// Botón cerrar sesión
+document.getElementById("btn-logout").addEventListener("click", () => {
+    localStorage.clear();
+    window.location.href = "/frontend/auth/login.html"; // volver al login fuera de /tutorias
+});
+
+</script>
+                </div>
+
+        
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

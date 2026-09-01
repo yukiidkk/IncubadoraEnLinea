@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutorías </title>
-    <link rel="stylesheet" href="css/tutorias.css">
+    <link rel="stylesheet" ../../css/tutorias/tutorias.css>
 </head>
 
 <body>
@@ -13,19 +13,19 @@
 
    <header class="header">
     <div class="logo">
-        <img src="../images/logoITS.png" alt="Logo" class="logo-img">
+        <img src="/images/logoITS.png" alt="Logo" class="logo-img">
         <span>Instituto Tecnológico de Saltillo</span>
     </div>
 
     <nav class="nav">
         <a href="..\inicioE.html">Inicio</a>
         <a href="..\proyectos.html">Mi Proyecto</a>
-        <a href="tutorias_E.html">Tutorias</a>
+        <a href="/emprendedor/tutorias/tutorias_E.html">Tutorias</a>
     </nav>
 
     <div class="usuario">
         <span id="nombre-usuario">Emprendedor</span>
-        <img src="../images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
+        <img src="/images/user-icon.png" alt="usuario" class="usuario-img" width="25" height="25">
 
         <button id="btn-logout" class="logout-btn">Cerrar sesión</button>
     </div>
@@ -154,7 +154,7 @@ const nombre_usuario_logueado = localStorage.getItem("usuario");
 
 if (!id_usuario_logueado) {
     alert("Error: No se encontró ID de usuario. Por favor, inicie sesión nuevamente.");
-    window.location.href = "login.html"; // Redirigir al login
+    window.location.href = "/auth/login.html"; // Redirigir al login
 }
 
 document.getElementById("nombre-usuario").textContent = nombre_usuario_logueado;
@@ -615,7 +615,7 @@ monthInput.addEventListener("change", () => {
 // Botón cerrar sesión
 document.getElementById("btn-logout").addEventListener("click", () => {
     localStorage.clear();
-    window.location.href = "../login.html";  
+    window.location.href = "/auth/login.html";  
 });
 
 
@@ -627,3 +627,15 @@ document.getElementById("btn-logout").addEventListener("click", () => {
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

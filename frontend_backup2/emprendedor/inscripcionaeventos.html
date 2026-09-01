@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listas de Asistencia - ITS</title>
+  <style>
+    /* --- ESTILOS GLOBALES --- */
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; }
+    body { background-color: #f3f4f6; color: #001d3d; font-family: 'Inter', sans-serif; height: 100vh; display: flex; flex-direction: column;}
+
+    /* NAVBAR */
+    header { background-color: #003366; color: white; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 60px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0; }
+    header .logo { display: flex; align-items: center; font-weight: 600; font-size: 16px; gap: 10px; }
+    header .logo img { height: 28px; border-radius: 4px; }
+    nav { display: flex; gap: 20px; }
+    nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; font-size: 14px; padding: 8px 12px; border-radius: 6px; transition: 0.3s; }
+    nav a:hover { background-color: rgba(255, 255, 255, 0.1); color: white; }
+    .usuario { display: flex; align-items: center; font-weight: bold; font-size: 14px; gap: 10px; }
+    .avatar { width: 32px; height: 32px; background-color: #e0ebff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #003366; font-size: 13px; }
+
+    /* LAYOUT */
+    .container { 
+        display: grid; 
+        grid-template-columns: 1fr 1.5fr 1fr; 
+        gap: 25px; 
+        padding: 30px 40px; 
+        max-width: 1600px; 
+        margin: 0 auto; 
+        flex: 1; 
+        overflow: hidden; 
+    }
+    
+    .panel { 
+        background-color: white; 
+        padding: 20px; 
+        border-radius: 10px; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+        border: 1px solid #e0e0e0; 
+        display: flex; 
+        flex-direction: column; 
+        overflow: hidden;
+    }
+
+    h2 { 
+        color: #003366; 
+        margin: 0 0 15px 0; 
+        font-size: 18px; 
+        border-bottom: 2px solid #f0f0f0; 
+        padding-bottom: 10px; 
+        font-weight: 700;
+    }
+
+    /* LISTAS CON SCROLL */
+    .scroll-area { 
+        flex: 1; 
+        overflow-y: auto; 
+        padding-right: 5px; 
+    }
+    .scroll-area::-webkit-scrollbar { width: 6px; }
+    .scroll-area::-webkit-scrollbar-track { background: #f1f1f1; }
+    .scroll-area::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+
+    /* ITEMS DE EVENTO */
+    .event-card { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 5px; 
+        margin-bottom: 10px; 
+        background-color: #fff; 
+        padding: 12px 15px; 
+        border-radius: 8px; 
+        border: 1px solid #eee; 
+        cursor: pointer; 
+        transition: all 0.2s; 
+    }
+    .event-card:hover { 
+        background-color: #f8fbff; 
+        border-color: #003366; 
+        transform: translateY(-2px); 
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .event-card.selected { 
+        background-color: #003366; 
+        color: white; 
+        border-color: #003366; 
+    }
+    .event-card.selected strong { color: white; }
+    .event-card.selected small { color: #ccc; }
+
+    .event-card strong { display: block; font-size: 15px; color: #001d3d; margin-bottom: 4px; }
+    .event-card small { color: #666; font-size: 12px; display: flex; justify-content: space-between; }
+
+    /* BUSCADOR */
+    .search-box { display: flex; margin-bottom: 15px; }
+    .search-box input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px 0 0 6px; outline: none; font-size: 13px; }
+    .search-box button { border-radius: 0 6px 6px 0; background-color: #003366; padding: 0 15px; color: white; border: none; cursor: pointer; }
+
+    /* LISTA DE ALUMNOS */
+    .student-item { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 12px; 
+        border-bottom: 1px solid #f0f0f0; 
+        font-size: 14px; 
+    }
+    .student-item:last-child { border-bottom: none; }
+    .student-name { font-weight: 600; color: #333; }
+    .student-meta { font-size: 12px; color: #777; }
+    .student-control { 
+        background: #e0ebff; 
+        color: #003366; 
+        padding: 4px 8px; 
+        border-radius: 4px; 
+        font-family: monospace; 
+        font-size: 12px; 
+        font-weight: bold; 
+    }
+
+    /* HEADER DEL CENTRO */
+    .info-header {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    .info-title { font-size: 16px; font-weight: bold; color: #003366; display: block; margin-bottom: 5px; }
+    
+    .status-badge {
+        display: inline-block; padding: 4px 10px; border-radius: 15px;
+        font-size: 11px; font-weight: bold; color: white; text-transform: uppercase;
+    }
+    .bg-green { background-color: #4caf50; }
+    .bg-red { background-color: #f44336; }
+    .bg-blue { background-color: #003366; }
+
+    @media (max-width: 1000px) { .container { grid-template-columns: 1fr; overflow-y: auto; } .panel { min-height: 400px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="/frontend/images/logoITS.png" alt="ITS" onerror="this.style.display='none'">
+      Instituto Tecnológico de Saltillo
+    </div>
+    <nav>
+      <a href="/frontend/coordinador/inicioC.html">Inicio</a>
+      <a href="/frontend/coordinador/eventos/crudtipodeventos.html">Tipos Evento</a>
+      <a href="#" style="background: rgba(255,255,255,0.2);">Inscritos</a>
+    </nav>
+    <div class="usuario">
+      <div class="avatar">A</div>
+      <span id="user-name">ADMIN</span>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <div class="panel">
+      <h2>Todos los Eventos</h2>
+      <div class="search-box">
+        <input type="text" id="search-left" placeholder="Buscar evento...">
+        <button></button>
+      </div>
+      <div id="lista-izq" class="scroll-area">
+        <p style="color:#888; text-align:center; padding:20px;">Cargando...</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2> Lista de Asistencia</h2>
+      
+      <div id="info-evento-seleccionado" class="info-header" style="display:none;">
+        <span class="info-title" id="titulo-evento-centro">Evento</span>
+        <span id="badge-cupo" class="status-badge bg-blue">Cupo: -/-</span>
+      </div>
+
+      <div id="lista-alumnos" class="scroll-area">
+        <div style="text-align:center; padding:40px; color:#888;">
+          <p>Selecciona un evento de los paneles laterales<br>para ver quién está inscrito.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 style="color: #29099c; border-color: #ffcdd2;">📅 Eventos de HOY</h2>
+      <div id="lista-der" class="scroll-area">
+        <p style="color:#888; text-align:center; padding:20px;">Cargando...</p>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+const API_URL = 'http://localhost:3001/api';
+
+document.addEventListener("DOMContentLoaded", () => {
+    const usuario = localStorage.getItem("usuario");
+    if(usuario) document.getElementById("user-name").textContent = usuario.toUpperCase();
+    cargarEventos();
+});
+
+let todosLosEventos = [];
+
+async function cargarEventos() {
+    try {
+        const res = await fetch(`${API_URL}/eventos`);
+        const data = await res.json();
+        todosLosEventos = Array.isArray(data) ? data : [];
+        renderizarPaneles();
+    } catch (error) {
+        console.error(error);
+        document.getElementById("lista-izq").innerHTML = '<p style="color:red; text-align:center;">Error de conexión.</p>';
+        document.getElementById("lista-der").innerHTML = '<p style="color:red; text-align:center;">Error.</p>';
+    }
+}
+
+function renderizarPaneles() {
+    const listaIzq = document.getElementById("lista-izq");
+    const listaDer = document.getElementById("lista-der");
+    listaIzq.innerHTML = "";
+    listaDer.innerHTML = "";
+
+    // --- PASO 1: OBTENER FECHA DE HOY MANUALMENTE ---
+    const hoyObj = new Date();
+    // Forzamos "en-CA" porque siempre devuelve formato YYYY-MM-DD (ej: "2025-12-15")
+    const hoyString = hoyObj.toLocaleDateString('en-CA'); 
+
+    console.log("HOY ES:", hoyString); // Para que lo veas en consola (F12)
+
+    let hayEventosHoy = false;
+
+    todosLosEventos.forEach(evento => {
+        // --- PASO 2: OBTENER FECHA DEL EVENTO MANUALMENTE ---
+        // La API devuelve algo como "2025-12-15T00:00:00.000Z"
+        // Vamos a romper el texto para sacar solo lo que nos interesa.
+        const rawFecha = String(evento.fecha_evento); 
+        
+        // Tomamos los primeros 10 caracteres: "2025-12-15"
+        // Esto ignora completamente las horas y zonas horarias.
+        const fechaEventoString = rawFecha.substring(0, 10);
+
+        // --- PASO 3: COMPARAR TEXTO VS TEXTO ---
+        const esHoy = (fechaEventoString === hoyString);
+        
+        if (esHoy) {
+            console.log("¡Evento de hoy encontrado!", evento.nombre_evento);
+        }
+
+        // --- Visualización Bonita (Sin afectar la lógica) ---
+        // Partimos el string para crear una fecha visual segura
+        const [anio, mes, dia] = fechaEventoString.split('-');
+        const fechaVisual = new Date(anio, mes - 1, dia); // Mes es index 0-11
+        const fechaBonita = fechaVisual.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+
+        const inscritos = evento.inscritos || 0;
+        const cupo = evento.cupo || 0;
+        const lleno = inscritos >= cupo;
+        const colorEstado = lleno ? "#f44336" : "#4caf50"; 
+        const textoEstado = lleno ? "LLENO" : "DISPONIBLE";
+
+        const cardHTML = `
+            <div class="event-card" onclick="cargarAlumnos(${evento.id_evento}, '${evento.nombre_evento}', ${inscritos}, ${cupo}, this)">
+                <strong>${evento.nombre_evento}</strong>
+                <small>
+                    <span> ${fechaBonita}</span>
+                    <span style="color:${colorEstado}; font-weight:bold;">${textoEstado} (${inscritos}/${cupo})</span>
+                </small>
+            </div>
+        `;
+
+        // Llenar Izquierda
+        listaIzq.insertAdjacentHTML('beforeend', cardHTML);
+
+        // Llenar Derecha (HOY)
+        if (esHoy) {
+            listaDer.insertAdjacentHTML('beforeend', cardHTML);
+            hayEventosHoy = true;
+        }
+    });
+
+    if (todosLosEventos.length === 0) listaIzq.innerHTML = '<p style="text-align:center; color:#888;">Sin registros.</p>';
+    if (!hayEventosHoy) listaDer.innerHTML = '<p style="text-align:center; color:#888; margin-top:20px;">No hay eventos para hoy.</p>';
+}
+
+async function cargarAlumnos(idEvento, nombreEvento, inscritos, cupo, cardElement) {
+    document.querySelectorAll('.event-card').forEach(el => el.classList.remove('selected'));
+    if(cardElement) cardElement.classList.add('selected');
+
+    const headerInfo = document.getElementById("info-evento-seleccionado");
+    headerInfo.style.display = "block";
+    document.getElementById("titulo-evento-centro").textContent = nombreEvento;
+    
+    const badge = document.getElementById("badge-cupo");
+    badge.textContent = `Cupo: ${inscritos} / ${cupo}`;
+    
+    if (inscritos >= cupo) {
+        badge.className = "status-badge bg-red";
+        badge.textContent += " (LLENO)";
+    } else {
+        badge.className = "status-badge bg-green";
+    }
+
+    const listaContainer = document.getElementById("lista-alumnos");
+    listaContainer.innerHTML = '<p style="text-align:center; padding:20px;">Cargando lista...</p>';
+
+    try {
+        const res = await fetch(`${API_URL}/inscripciones/evento/${idEvento}`);
+        const alumnos = await res.json();
+        const listaLimpia = Array.isArray(alumnos) ? alumnos : [];
+
+        listaContainer.innerHTML = "";
+
+        if (listaLimpia.length === 0) {
+            listaContainer.innerHTML = `
+                <div style="text-align:center; padding:40px; color:#888;">
+                    <p>No hay alumnos inscritos.</p>
+                </div>`;
+            return;
+        }
+
+        listaLimpia.forEach(alu => {
+            const div = document.createElement("div");
+            div.className = "student-item";
+            div.innerHTML = `
+                <div>
+                    <div class="student-name">${alu.nombre} ${alu.apellido}</div>
+                    <div class="student-meta">${alu.correo}</div>
+                </div>
+                <div class="student-control">${alu.no_control || 'S/N'}</div>
+            `;
+            listaContainer.appendChild(div);
+        });
+
+    } catch (error) {
+        console.error(error);
+        listaContainer.innerHTML = '<p style="color:red; text-align:center;">Error al cargar datos.</p>';
+    }
+}
+
+document.getElementById("search-left").addEventListener("keyup", (e) => {
+    const texto = e.target.value.toLowerCase();
+    document.querySelectorAll("#lista-izq .event-card").forEach(card => {
+        const titulo = card.querySelector("strong").textContent.toLowerCase();
+        card.style.display = titulo.includes(texto) ? "flex" : "none";
+    });
+});
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
